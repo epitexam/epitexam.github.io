@@ -1,5 +1,5 @@
 ---
-import { SITE_TITLE } from "../consts";
+import { GITHUB_URL, SITE_TITLE } from "../consts";
 
 const today = new Date();
 ---
@@ -7,7 +7,7 @@ const today = new Date();
 <footer>
 	&copy; {today.getFullYear()} {SITE_TITLE}. All rights reserved.
 	<div class="social-links">
-		<a href="https://github.com/epitexam" target="_blank">
+		<a href={GITHUB_URL} target="_blank">
 			<span class="sr-only">{SITE_TITLE}'s GitHub</span>
 			<svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32" astro-icon="social/github"
 				><path
