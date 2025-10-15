@@ -184,9 +184,3 @@ img {
 	clip-path: inset(50%);
 	white-space: nowrap;
 }
-
-h2::before {
-	content: "$ ";
-	color: rgb(var(--accent));
-	opacity: 0.8;
-}
