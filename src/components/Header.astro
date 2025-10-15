@@ -28,8 +28,9 @@ import HeaderLink from './HeaderLink.astro';
 	header {
 		margin: 0;
 		padding: 0 1em;
-		background: white;
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
+		background: rgb(var(--bg)); /* Fond sombre */
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); /* Ombre plus sombre */
+		border-bottom: 1px solid rgba(0, 255, 150, 0.05); /* Ligne subtile d’accent */
 	}
 	h2 {
 		margin: 0;
@@ -39,6 +40,7 @@ import HeaderLink from './HeaderLink.astro';
 	h2 a,
 	h2 a.active {
 		text-decoration: none;
+		color: rgb(var(--text)); /* Texte clair */
 	}
 	nav {
 		display: flex;
@@ -47,17 +49,27 @@ import HeaderLink from './HeaderLink.astro';
 	}
 	nav a {
 		padding: 1em 0.5em;
-		color: var(--black);
-		border-bottom: 4px solid transparent;
+		color: rgb(var(--text)); /* Liens clairs */
+		border-bottom: 2px solid transparent; /* Moins épais, plus élégant */
 		text-decoration: none;
+		transition: border-color 0.2s ease, color 0.2s ease;
 	}
-	nav a.active {
-		text-decoration: none;
-		border-bottom-color: var(--accent);
+	nav a.active,
+	nav a:hover {
+		color: rgb(var(--accent)); /* Vert néon au survol ou actif */
+		border-bottom-color: rgb(var(--accent));
 	}
 	.social-links,
 	.social-links a {
 		display: flex;
+		align-items: center;
+	}
+	.social-links svg {
+		fill: rgb(var(--text)); /* Icône GitHub en clair */
+		transition: fill 0.2s ease;
+	}
+	.social-links a:hover svg {
+		fill: rgb(var(--accent));
 	}
 	@media (max-width: 720px) {
 		.social-links {
