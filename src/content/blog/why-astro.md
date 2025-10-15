@@ -6,7 +6,7 @@ heroImage: '../../assets/pexels-sliceisop-24827271.webp'
 draft: true
 ---
 
-Après avoir testé successivement Hugo, React / Pract, Jekyll, et VueJS pour la construction de mon site portfolio blog, j'ai entrepris une refonte complète de mon approche technique.
+Après avoir testé successivement Hugo, React / Preact, Jekyll, et VueJS pour la construction de mon site portfolio blog, j'ai entrepris une refonte complète de mon approche technique.
 
 Chaque solution présentait ses avantages, mais aucune ne répondait de manière optimale à l'ensemble de mes contraintes : performance, simplicité de déploiement, flexibilité technique et légèreté du bundle.
 
