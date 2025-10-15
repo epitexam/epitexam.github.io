@@ -2,7 +2,7 @@
 title: 'Pourquoi Astro / Bientôt disponible'
 description: 'Analyse technique du choix d''Astro pour la refonte de mon site portfolio blog après une exploration de plusieurs solutions'
 pubDate: 'Oct 15 2025'
-heroImage: '../../assets/blog-placeholder-1.jpg'
+heroImage: '../../assets/pexels-sliceisop-24827271.webp'
 draft: true
 ---
 
