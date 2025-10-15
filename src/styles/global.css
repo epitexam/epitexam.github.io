@@ -5,7 +5,7 @@
 
    Heavily customized for a dark "hacker" aesthetic.
    Custom theme by [ton nom/prénom ou pseudo].
- */
+*/
 
 :root {
 	--bg: 10, 12, 20;
@@ -19,6 +19,7 @@
 }
 
 body {
+	width: 100%;
 	font-family: "Atkinson", "IBM Plex Mono", "Fira Code", monospace, sans-serif;
 	background-color: rgb(var(--bg));
 	color: rgb(var(--text));
@@ -28,11 +29,23 @@ body {
 	line-height: 1.7;
 }
 
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	overflow-x: hidden;
+}
+
 main {
-	width: 720px;
-	max-width: calc(100% - 2em);
+	width: 100%;
+	max-width: 960px;
 	margin: auto;
-	padding: 3em 1em;
+	padding: 0 1.5rem;
+	padding-bottom: 4em;
 }
 
 h1,
