@@ -1,15 +1,7 @@
-/*
-  Style "hacker épuré" pour un portfolio/blog Astro
-  Inspiré de Bear Blog, mais repensé en mode dark + tech
-*/
-
 :root {
 	--bg: 10, 12, 20;
-	/* Noir profond */
 	--text: 220, 255, 220;
-	/* Vert pâle / gris clair */
 	--accent: 0, 255, 150;
-	/* Vert néon (classique hacker) */
 	--accent-dark: 0, 200, 100;
 	--gray: 80, 100, 100;
 	--gray-light: 40, 50, 50;
@@ -17,8 +9,6 @@
 	--box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
-/* Option 1 : Garder Atkinson (propre, moderne) */
-/* Option 2 : Basculer vers une monospace comme "JetBrains Mono", "Fira Code", ou "IBM Plex Mono" */
 body {
 	font-family: "Atkinson", "IBM Plex Mono", "Fira Code", monospace, sans-serif;
 	background-color: rgb(var(--bg));
@@ -36,7 +26,6 @@ main {
 	padding: 3em 1em;
 }
 
-/* Titres */
 h1,
 h2,
 h3,
@@ -61,7 +50,6 @@ h3 {
 	font-size: 1.8em;
 }
 
-/* Liens */
 a {
 	color: rgb(var(--accent));
 	text-decoration: none;
@@ -82,11 +70,9 @@ a::after {
 
 a:hover::after {
 	width: 60%;
-	/* ou une valeur fixe comme 40px, 60px, etc. */
 	left: 50%;
 }
 
-/* Paragraphes */
 p {
 	margin-bottom: 1.2em;
 }
@@ -95,7 +81,6 @@ p {
 	margin-bottom: 1.8em;
 }
 
-/* Code & blocs */
 code {
 	padding: 2px 6px;
 	background: rgba(0, 30, 20, 0.6);
@@ -122,7 +107,6 @@ pre>code {
 	border: none;
 }
 
-/* Blockquote – style terminal */
 blockquote {
 	border-left: 2px solid rgb(var(--accent));
 	padding-left: 1.2em;
@@ -131,7 +115,6 @@ blockquote {
 	color: rgb(var(--gray-dark));
 }
 
-/* HR */
 hr {
 	border: none;
 	height: 1px;
@@ -139,7 +122,6 @@ hr {
 	margin: 2em 0;
 }
 
-/* Images – désactiver l'arrondi si tu veux un look plus "brut" */
 img {
 	max-width: 100%;
 	height: auto;
@@ -147,7 +129,6 @@ img {
 	border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Responsive */
 @media (max-width: 720px) {
 	body {
 		font-size: 17px;
@@ -174,12 +155,8 @@ img {
 	height: 1px;
 	width: 1px;
 	overflow: hidden;
-	/* IE6, IE7 - a 0 height clip, off to the bottom right of the visible 1px box */
 	clip: rect(1px 1px 1px 1px);
-	/* maybe deprecated but we need to support legacy browsers */
 	clip: rect(1px, 1px, 1px, 1px);
-	/* modern browsers, clip-path works inwards from each corner */
 	clip-path: inset(50%);
-	/* added line to stop words getting smushed together (as they go onto separate lines and some screen readers do not understand line feeds as a space */
 	white-space: nowrap;
 }

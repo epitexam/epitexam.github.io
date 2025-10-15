@@ -28,9 +28,9 @@ import HeaderLink from './HeaderLink.astro';
 	header {
 		margin: 0;
 		padding: 0 1em;
-		background: rgb(var(--bg)); /* Fond sombre */
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); /* Ombre plus sombre */
-		border-bottom: 1px solid rgba(0, 255, 150, 0.05); /* Ligne subtile d’accent */
+		background: rgb(var(--bg));
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+		border-bottom: 1px solid rgba(0, 255, 150, 0.05);
 	}
 	h2 {
 		margin: 0;
@@ -40,7 +40,7 @@ import HeaderLink from './HeaderLink.astro';
 	h2 a,
 	h2 a.active {
 		text-decoration: none;
-		color: rgb(var(--text)); /* Texte clair */
+		color: rgb(var(--text));
 	}
 	nav {
 		display: flex;
@@ -49,14 +49,14 @@ import HeaderLink from './HeaderLink.astro';
 	}
 	nav a {
 		padding: 1em 0.5em;
-		color: rgb(var(--text)); /* Liens clairs */
-		border-bottom: 2px solid transparent; /* Moins épais, plus élégant */
+		color: rgb(var(--text));
+		border-bottom: 2px solid transparent;
 		text-decoration: none;
 		transition: border-color 0.2s ease, color 0.2s ease;
 	}
 	nav a.active,
 	nav a:hover {
-		color: rgb(var(--accent)); /* Vert néon au survol ou actif */
+		color: rgb(var(--accent));
 		border-bottom-color: rgb(var(--accent));
 	}
 	.social-links,
@@ -65,7 +65,7 @@ import HeaderLink from './HeaderLink.astro';
 		align-items: center;
 	}
 	.social-links svg {
-		fill: rgb(var(--text)); /* Icône GitHub en clair */
+		fill: rgb(var(--text));
 		transition: fill 0.2s ease;
 	}
 	.social-links a:hover svg {
