@@ -10,7 +10,7 @@ export default defineConfig({
 	site: 'https://epitexam.github.io',
 	base: '/',
 	integrations: [mdx(), sitemap(),],
-	  vite: {
-    plugins: [tailwindcss()],
-  },
+	vite: {
+		plugins: [tailwindcss()],
+	},
 });
