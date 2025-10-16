@@ -10,23 +10,25 @@ import Layout from "../layouts/BlogPost.astro";
 	pubDate={new Date("2025-10-15")}
 	heroImage={AboutHeroImage}
 >
-	<p>
-		Ce site est un espace personnel dédié au développement web, à l’embarqué
-		et à la domotique. On y retrouve des projets allant du code bas niveau
-		sur microcontrôleurs à des applications web modernes.
-	</p>
+	<div class="text-center space-y-6">
+		<p>
+			Ce site est un espace personnel dédié au développement web, à l’embarqué
+			et à la domotique. On y retrouve des projets allant du code bas niveau
+			sur microcontrôleurs à des applications web modernes.
+		</p>
 
-	<p>
-		Formé à l’informatique et passionné par la création technique, je
-		m’intéresse autant aux systèmes connectés qu’à l’architecture
-		logicielle. J’aime comprendre comment les technologies s’articulent
-		entre matériel et logiciel pour créer des solutions concrètes.
-	</p>
+		<p>
+			Formé à l’informatique et passionné par la création technique, je
+			m’intéresse autant aux systèmes connectés qu’à l’architecture
+			logicielle. J’aime comprendre comment les technologies s’articulent
+			entre matériel et logiciel pour créer des solutions concrètes.
+		</p>
 
-	<p>
-		Sur ce site, je partage mes projets, mes essais techniques et quelques
-		réflexions autour du code, de l’efficacité et de la sécurité. Vous
-		pouvez explorer mes travaux plus en détail sur
-		<a href={GITHUB_URL} class="text-blue-600 hover:underline">GitHub</a>.
-	</p>
+		<p>
+			Sur ce site, je partage mes projets, mes essais techniques et quelques
+			réflexions autour du code, de l’efficacité et de la sécurité. Vous
+			pouvez explorer mes travaux plus en détail sur
+			<a href={GITHUB_URL} class="text-accent hover:underline">GitHub</a>.
+		</p>
+	</div>
 </Layout>
