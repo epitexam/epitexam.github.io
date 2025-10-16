@@ -2,7 +2,7 @@
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
-import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import { SITE_DESCRIPTION, SITE_TITLE, GITHUB_URL } from "../consts";
 ---
 
 <!doctype html>
@@ -10,46 +10,43 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
-	<body>
+	<body class="flex flex-col min-h-screen">
 		<Header />
-		<main class="mx-auto max-w-3xl px-6 py-20 text-center">
-			<h1 class="text-4xl font-bold mb-4">{SITE_TITLE}</h1>
-			<p class="text-lg text-gray-600 mb-8">
-				Développeur passionné par l’embarqué, le web et les systèmes
-				connectés. Ce site regroupe mes projets, mes explorations
-				techniques et quelques retours d’expérience.
-			</p>
+		<main class="flex-grow flex flex-col items-center justify-center px-6 py-12 text-center">
+			<div class="max-w-2xl w-full space-y-10">
+				<h1 class="text-4xl font-bold">{SITE_TITLE}</h1>
+				<p class="text-lg opacity-90">
+					Développeur passionné par l’embarqué, le web et les systèmes
+					connectés. Ce site regroupe mes projets, mes explorations
+					techniques et quelques retours d’expérience.
+				</p>
 
-			<section class="mt-12 text-left">
-				<h2 class="text-2xl font-semibold mb-3">Derniers projets</h2>
-				<ul class="space-y-4 text-gray-700">
-					<li>
+				<div class="space-y-4 opacity-90">
+					<p>
 						<strong>Surveillance de la qualité de l’air</strong> — un
 						système IoT complet basé sur un ESP32-H2 et un capteur SGP30,
 						avec transmission Zigbee et intégration dans Home Assistant.
-					</li>
-					<li>
+					</p>
+					<p>
 						<strong>Automatisation et sécurité</strong> — expérimentation
 						de protocoles Zigbee, configuration réseau sous Linux, et
 						renforcement de la cybersécurité sur systèmes embarqués.
-					</li>
-					<li>
-						D’autres projets sont en cours de publication sur <a
-							href="https://github.com/epitexam"
-							class="text-blue-600 hover:underline">GitHub</a
-						>.
-					</li>
-				</ul>
-			</section>
+					</p>
+					<p>
+						D’autres projets sont en cours de publication sur{" "}
+						<a href={GITHUB_URL} class="text-accent hover:underline">
+							GitHub
+						</a>.
+					</p>
+				</div>
 
-			<section class="mt-16">
 				<a
 					href="/blog"
-					class="inline-block bg-blue-600 text-white px-6 py-3 rounded-2xl shadow hover:bg-blue-700 transition"
+					class="inline-block bg-accent text-bg px-6 py-3 rounded-xl font-medium hover:bg-accent-dark transition-colors"
 				>
 					Accéder au blog
 				</a>
-			</section>
+			</div>
 		</main>
 		<Footer />
 	</body>
