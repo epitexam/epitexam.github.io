@@ -1,18 +1,22 @@
-// tailwind.config.js
-export default {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: ["./src/**/*.{astro,html,js,jsx,ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        bg: "rgb(var(--bg) / <alpha-value>)",
-        text: "rgb(var(--text) / <alpha-value>)",
-        accent: "rgb(var(--accent) / <alpha-value>)",
+        bg: 'rgb(10, 12, 20)',
+        text: 'rgb(220, 255, 220)',
+        accent: 'rgb(0, 255, 150)',
+        'accent-dark': 'rgb(0, 200, 100)',
       },
       fontFamily: {
-        mono: ["JetBrains Mono", "Fira Code", "IBM Plex Mono", "ui-monospace", "monospace"],
+        sans: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
       },
       boxShadow: {
-        glow: "0 2px 8px rgba(0,0,0,0.5)",
+        custom: '0 2px 8px rgba(0, 0, 0, 0.4)',
       },
     },
   },
+  plugins: [],
 };
