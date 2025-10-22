@@ -12,29 +12,42 @@ import { SITE_DESCRIPTION, SITE_TITLE, GITHUB_URL } from "../consts";
 	</head>
 	<body class="flex flex-col min-h-screen">
 		<Header />
-		<main class="flex-grow flex flex-col items-center justify-center px-6 py-12 text-center">
+		<main
+			class="flex-grow flex flex-col items-center justify-center px-6 py-12 text-center"
+		>
 			<div class="max-w-2xl w-full space-y-10">
 				<h1 class="text-4xl font-bold">{SITE_TITLE}</h1>
 				<p class="text-lg opacity-90">
 					Développeur passionné par l’embarqué, le web et les systèmes
-					connectés. Ce site regroupe mes projets, mes explorations
+					connectés, je partage ici mes projets, mes explorations
 					techniques et quelques retours d’expérience.
 				</p>
 
 				<div class="space-y-4 opacity-90">
 					<p>
-						<strong>Surveillance de la qualité de l’air</strong> — un
-						système IoT complet basé sur un ESP32-H2 et un capteur SGP30,
-						avec transmission Zigbee et intégration dans Home Assistant.
+						La plupart de ces réalisations ont été conçues pendant
+						mes études, comme autant d’occasions de mettre en
+						pratique mes connaissances et d’explorer des
+						technologies au-delà du cadre strict des cours.
 					</p>
 					<p>
-						<strong>Automatisation et sécurité</strong> — expérimentation
-						de protocoles Zigbee, configuration réseau sous Linux, et
-						renforcement de la cybersécurité sur systèmes embarqués.
+						<strong>Surveillance de la qualité de l’air</strong> — Projet
+						académique autour d’un ESP32-H2 et d’un capteur SGP30, avec
+						transmission Zigbee et intégration dans Home Assistant.
 					</p>
 					<p>
-						D’autres projets sont en cours de publication sur{" "}
-						<a href={GITHUB_URL} class="text-accent hover:underline">
+						<strong>Automatisation et sécurité</strong> — Expérimentations
+						menées en parallèle de ma formation : configuration de réseaux
+						Zigbee sous Linux, sécurisation de systèmes embarqués, et
+						exploration d’architectures domotiques.
+					</p>
+					<p>
+						D’autres projets universitaires sont en cours de
+						documentation et seront bientôt disponibles sur{" "}
+						<a
+							href={GITHUB_URL}
+							class="text-accent hover:underline"
+						>
 							GitHub
 						</a>.
 					</p>
