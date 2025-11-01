@@ -29,7 +29,6 @@ const sections = [
             },
         ],
     },
-
     {
         title: "Frameworks & Bibliothèques",
         tools: [
@@ -53,7 +52,6 @@ const sections = [
             },
         ],
     },
-
     {
         title: "Systèmes & Environnements",
         tools: [
@@ -71,7 +69,6 @@ const sections = [
             },
         ],
     },
-
     {
         title: "Collaboration & API",
         tools: [
@@ -89,7 +86,6 @@ const sections = [
             },
         ],
     },
-
     {
         title: "Outils de développement",
         tools: [
@@ -107,23 +103,20 @@ const sections = [
 <!doctype html>
 <html lang="fr">
     <head>
-        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+        <BaseHead title={`${SITE_TITLE}`} description={SITE_DESCRIPTION} />
     </head>
     <body
         class="flex flex-col min-h-screen bg-[rgb(var(--bg))] text-[rgb(var(--text))] font-mono"
     >
         <Header />
 
-        <main
-            class="no-global-style flex-grow flex flex-col items-center justify-center px-6 py-12 text-center"
-        >
-            <div class="max-w-6xl w-full">
+        <main class="no-global-style flex-grow flex flex-col items-center px-6">
+            <div class="max-w-6xl w-full pt-16 pb-12">
                 <h1
-                    class="text-4xl md:text-5xl font-bold text-center my-[90px] tracking-tight text-[rgb(var(--accent))]"
+                    class="text-4xl md:text-5xl font-bold text-center mb-12 tracking-tight text-[rgb(var(--accent))]"
                 >
                     Mes outils
                 </h1>
-
                 {
                     sections.map((section) => (
                         <ToolSection

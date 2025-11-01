@@ -10,12 +10,19 @@ import { SITE_DESCRIPTION, SITE_TITLE, GITHUB_URL } from "../consts";
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
-	<body class="flex flex-col min-h-screen">
+	<body
+		class="flex flex-col min-h-screen bg-[rgb(var(--bg))] text-[rgb(var(--text))] font-mono"
+	>
 		<Header />
-<main class="no-global-style flex-grow flex flex-col items-center justify-center px-6 py-12 text-center">
 
-			<div class="max-w-2xl w-full space-y-10">
-				<h1 class="text-4xl font-bold">{SITE_TITLE}</h1>
+		<main class="no-global-style flex-grow flex flex-col items-center px-6 text-center">
+			<div class="max-w-2xl w-full pt-16 pb-12 space-y-8">
+				<h1
+					class="text-4xl md:text-5xl font-bold text-center tracking-tight text-[rgb(var(--accent))]"
+				>
+					{SITE_TITLE}
+				</h1>
+
 				<p class="text-lg opacity-90">
 					Développeur passionné par l’embarqué, le web et les systèmes
 					connectés, je partage ici mes projets, mes explorations
@@ -43,23 +50,21 @@ import { SITE_DESCRIPTION, SITE_TITLE, GITHUB_URL } from "../consts";
 					<p>
 						D’autres projets universitaires sont en cours de
 						documentation et seront bientôt disponibles sur{" "}
-						<a
-							href={GITHUB_URL}
-							class="text-accent hover:underline"
-						>
-							GitHub
-						</a>.
+						<a href={GITHUB_URL} class="text-accent hover:underline"
+							>GitHub</a
+						>.
 					</p>
 				</div>
 
 				<a
 					href="/blog"
-					class="inline-block bg-accent text-bg px-6 py-3 rounded-xl font-medium hover:bg-accent-dark transition-colors"
+					class="inline-block bg-accent text-bg px-6 py-3 rounded-xl font-medium hover:bg-accent-dark transition-colors mt-4"
 				>
 					Accéder au blog
 				</a>
 			</div>
 		</main>
+
 		<Footer />
 	</body>
 </html>
