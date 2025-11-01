@@ -27,7 +27,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
@@ -95,7 +96,7 @@ pre {
   margin: 1.5rem 0;
 }
 
-pre > code {
+pre>code {
   all: unset;
   font-family: 'Fira Code', 'JetBrains Mono', monospace;
   color: rgb(var(--text));
@@ -127,16 +128,29 @@ img {
 }
 
 /* === Typographie === */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: rgb(var(--text));
   margin: 0 0 0.75rem;
   line-height: 1.2;
   font-weight: 600;
 }
 
-h1 { font-size: 2.8em; }
-h2 { font-size: 2.2em; }
-h3 { font-size: 1.8em; }
+h1 {
+  font-size: 2.8em;
+}
+
+h2 {
+  font-size: 2.2em;
+}
+
+h3 {
+  font-size: 1.8em;
+}
 
 p {
   margin-bottom: 1.2rem;
@@ -152,11 +166,15 @@ p {
     padding: 1rem;
   }
 
-  h1 { font-size: 2.2em; }
-  h2 { font-size: 1.9em; }
+  h1 {
+    font-size: 2.2em;
+  }
+
+  h2 {
+    font-size: 1.9em;
+  }
 }
 
-/* === Accessibilité === */
 .sr-only {
   position: absolute !important;
   width: 1px;
@@ -167,4 +185,165 @@ p {
   clip: rect(1px, 1px, 1px, 1px);
   white-space: nowrap;
   border: 0;
+}
+
+.tool-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 28rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(var(--accent), 0.25);
+  background: linear-gradient(135deg,
+      rgba(20, 25, 20, 0.3),
+      rgba(10, 15, 10, 0.2));
+  backdrop-filter: blur(12px) saturate(140%);
+  padding: 1.25rem;
+  transition: transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+  cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .tool-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .tool-card {
+    padding: 1.75rem;
+  }
+}
+
+.tool-card:hover {
+  transform: translateY(-4px);
+  background: linear-gradient(135deg,
+      rgba(25, 35, 25, 0.4),
+      rgba(15, 25, 15, 0.25));
+  border-color: rgba(var(--accent), 0.5);
+  box-shadow:
+    0 8px 24px rgba(var(--accent), 0.15),
+    inset 0 0 12px rgba(var(--accent), 0.05);
+}
+
+.tool-card:active {
+  transform: scale(0.98);
+  background: rgba(30, 45, 30, 0.45);
+  border-color: rgba(var(--accent), 0.6);
+  box-shadow:
+    0 0 25px rgba(var(--accent), 0.25),
+    inset 0 0 20px rgba(var(--accent), 0.1);
+}
+
+.tool-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .tool-inner {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+}
+
+.tool-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: rgb(var(--accent));
+  background: rgba(var(--accent), 0.08);
+  border: 1px solid rgba(var(--accent), 0.25);
+  box-shadow: inset 0 0 10px rgba(var(--accent), 0.15);
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.tool-card:hover .tool-icon {
+  background: rgba(var(--accent), 0.15);
+  border-color: rgba(var(--accent), 0.4);
+  box-shadow: inset 0 0 12px rgba(var(--accent), 0.25);
+  transform: scale(1.07);
+}
+
+.tool-card:active .tool-icon {
+  background: rgba(var(--accent), 0.25);
+  transform: scale(0.95);
+}
+
+.tool-content {
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .tool-content {
+    text-align: left;
+  }
+}
+
+.tool-title {
+  font-weight: 600;
+  color: rgb(var(--text));
+  font-size: 1.1rem;
+  line-height: 1.3;
+  margin-bottom: 0.35rem;
+  letter-spacing: 0.01em;
+  transition: color 0.25s ease;
+}
+
+.tool-card:hover .tool-title {
+  color: rgb(var(--accent));
+}
+
+@media (min-width: 768px) {
+  .tool-title {
+    font-size: 1.25rem;
+  }
+}
+
+.tool-description {
+  color: rgba(var(--gray-dark), 0.85);
+  font-weight: 300;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  transition: color 0.3s ease;
+}
+
+.tool-card:hover .tool-description {
+  color: rgba(var(--gray-dark), 0.9);
+}
+
+.tool-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease, box-shadow 0.4s ease;
+  mix-blend-mode: screen;
+}
+
+.tool-card:hover .tool-glow {
+  opacity: 1;
+  box-shadow:
+    0 0 50px 10px rgba(var(--accent), 0.12),
+    0 0 120px 30px rgba(var(--accent), 0.08);
+}
+
+.tool-card:active .tool-glow {
+  opacity: 1;
+  box-shadow:
+    0 0 60px 15px rgba(var(--accent), 0.25),
+    0 0 150px 40px rgba(var(--accent), 0.15);
 }
