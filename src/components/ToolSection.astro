@@ -1,0 +1,26 @@
+---
+import ToolCard from "./ToolCard.astro";
+
+export interface Props {
+    title: string;
+    tools: {
+        icon: string;
+        name: string;
+        description: string;
+    }[];
+}
+
+const { title, tools } = Astro.props;
+---
+
+<section class="mb-16 w-full">
+    <h2
+        class="text-2xl font-semibold mb-8 text-[rgb(var(--accent))] tracking-tight"
+    >
+        {title}
+    </h2>
+
+    <div class:list={["grid gap-6 sm:grid-cols-2 sm:justify-items-center"]}>
+        {tools.map((tool) => <ToolCard {...tool} />)}
+    </div>
+</section>
