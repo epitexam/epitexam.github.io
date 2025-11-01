@@ -1,0 +1,70 @@
+---
+export interface Props {
+  icon: string;
+  name: string;
+  description: string;
+}
+
+const { icon, name, description } = Astro.props;
+---
+
+<div
+  class="relative group border border-[rgba(var(--accent),0.25)]
+  bg-[rgba(20,25,20,0.25)] hover:bg-[rgba(25,35,25,0.35)]
+  active:bg-[rgba(30,40,30,0.45)]
+  rounded-lg p-4 sm:p-5
+  transition-all duration-300 ease-out
+  hover:border-[rgba(var(--accent),0.5)]
+  active:border-[rgba(var(--accent),0.7)]
+  hover:shadow-[0_0_25px_6px_rgba(var(--accent),0.25),0_0_50px_12px_rgba(var(--accent),0.1)]
+  active:shadow-[0_0_35px_8px_rgba(var(--accent),0.35),0_0_70px_20px_rgba(var(--accent),0.2)]
+  w-full max-w-md backdrop-blur-md cursor-pointer select-none"
+>
+  <div class="flex items-start gap-3 sm:gap-4">
+    <!-- Icône -->
+    <div
+      class="w-10 h-10 flex items-center justify-center
+      rounded-md bg-[rgba(var(--accent),0.08)]
+      border border-[rgba(var(--accent),0.3)]
+      text-[rgb(var(--accent))] text-lg font-semibold
+      group-hover:bg-[rgba(var(--accent),0.15)]
+      group-active:bg-[rgba(var(--accent),0.25)]
+      group-hover:scale-105 group-active:scale-95
+      transition-all duration-300
+      shadow-[inset_0_0_8px_rgba(var(--accent),0.2)] flex-shrink-0"
+    >
+      {icon}
+    </div>
+
+    <!-- Contenu -->
+    <div class="flex-1">
+      <h3
+        class="font-semibold text-[rgb(var(--text))]
+        text-[1.1rem] sm:text-[1.2rem]
+        mb-1 tracking-wide leading-snug
+        transition-all duration-300 ease-out
+        group-hover:text-[rgb(var(--accent))]
+        group-active:text-[rgb(var(--accent))]
+        group-hover:drop-shadow-[0_0_6px_rgba(var(--accent),0.4)]
+        group-active:drop-shadow-[0_0_10px_rgba(var(--accent),0.6)]"
+      >
+        {name}
+      </h3>
+      <p
+        class="text-[0.95rem] text-[rgba(var(--gray-dark),0.85)] leading-relaxed font-light tracking-tight"
+      >
+        {description}
+      </p>
+    </div>
+  </div>
+
+  <!-- Halo lumineux -->
+  <div
+    class="absolute inset-0 rounded-lg opacity-0
+    group-hover:opacity-100 group-active:opacity-100
+    transition-[opacity,box-shadow] duration-300 pointer-events-none
+    shadow-[0_0_30px_6px_rgba(var(--accent),0.15),0_0_80px_20px_rgba(var(--accent),0.08)]
+    group-active:shadow-[0_0_40px_10px_rgba(var(--accent),0.3),0_0_100px_30px_rgba(var(--accent),0.15)]"
+  >
+  </div>
+</div>
