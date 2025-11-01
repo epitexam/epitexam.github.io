@@ -15,7 +15,9 @@ import { SITE_DESCRIPTION, SITE_TITLE, GITHUB_URL } from "../consts";
 	>
 		<Header />
 
-		<main class="no-global-style flex-grow flex flex-col items-center px-6 text-center">
+		<main
+			class="no-global-style flex-grow flex flex-col items-center px-6 text-center"
+		>
 			<div class="max-w-2xl w-full pt-16 pb-12 space-y-8">
 				<h1
 					class="text-4xl md:text-5xl font-bold text-center tracking-tight text-[rgb(var(--accent))]"
@@ -23,45 +25,50 @@ import { SITE_DESCRIPTION, SITE_TITLE, GITHUB_URL } from "../consts";
 					{SITE_TITLE}
 				</h1>
 
-				<p class="text-lg opacity-90">
-					Développeur passionné par l’embarqué, le web et les systèmes
-					connectés, je partage ici mes projets, mes explorations
-					techniques et quelques retours d’expérience.
-				</p>
+				<div class="my-10">
+					<p class="text-lg opacity-90">
+						Développeur passionné par l’embarqué, le web et les
+						systèmes connectés, je partage ici mes projets, mes
+						explorations techniques et quelques retours
+						d’expérience.
+					</p>
 
-				<div class="space-y-4 opacity-90">
-					<p>
-						La plupart de ces réalisations ont été conçues pendant
-						mes études, comme autant d’occasions de mettre en
-						pratique mes connaissances et d’explorer des
-						technologies au-delà du cadre strict des cours.
-					</p>
-					<p>
-						<strong>Surveillance de la qualité de l’air</strong> — Projet
-						académique autour d’un ESP32-H2 et d’un capteur SGP30, avec
-						transmission Zigbee et intégration dans Home Assistant.
-					</p>
-					<p>
-						<strong>Automatisation et sécurité</strong> — Expérimentations
-						menées en parallèle de ma formation : configuration de réseaux
-						Zigbee sous Linux, sécurisation de systèmes embarqués, et
-						exploration d’architectures domotiques.
-					</p>
-					<p>
-						D’autres projets universitaires sont en cours de
-						documentation et seront bientôt disponibles sur{" "}
-						<a href={GITHUB_URL} class="text-accent hover:underline"
-							>GitHub</a
-						>.
-					</p>
+					<div class="space-y-4 opacity-90">
+						<p>
+							La plupart de ces réalisations ont été conçues
+							pendant mes études, comme autant d’occasions de
+							mettre en pratique mes connaissances et d’explorer
+							des technologies au-delà du cadre strict des cours.
+						</p>
+						<p>
+							<strong>Surveillance de la qualité de l’air</strong>
+							— Projet académique autour d’un ESP32-H2 et d’un capteur
+							SGP30, avec transmission Zigbee et intégration dans Home
+							Assistant.
+						</p>
+						<p>
+							<strong>Automatisation et sécurité</strong> — Expérimentations
+							menées en parallèle de ma formation : configuration de
+							réseaux Zigbee sous Linux, sécurisation de systèmes embarqués,
+							et exploration d’architectures domotiques.
+						</p>
+						<p>
+							D’autres projets universitaires sont en cours de
+							documentation et seront bientôt disponibles sur{" "}
+							<a
+								href={GITHUB_URL}
+								class="text-accent hover:underline">GitHub</a
+							>.
+						</p>
+					</div>
+
+					<a
+						href="/blog"
+						class="inline-block bg-accent text-bg px-6 py-3 rounded-xl font-medium hover:bg-accent-dark transition-colors mt-4"
+					>
+						Accéder au blog
+					</a>
 				</div>
-
-				<a
-					href="/blog"
-					class="inline-block bg-accent text-bg px-6 py-3 rounded-xl font-medium hover:bg-accent-dark transition-colors mt-4"
-				>
-					Accéder au blog
-				</a>
 			</div>
 		</main>
 

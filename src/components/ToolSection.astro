@@ -13,16 +13,16 @@ export interface Props {
 const { title, tools } = Astro.props;
 ---
 
-<section class="mb-16 w-full flex flex-col items-center">
+<section class="mb-24 w-full flex flex-col items-center">
     <h2
-        class="text-2xl font-semibold mb-8 text-[rgb(var(--accent))] tracking-tight text-center"
+        class="text-3xl font-semibold mb-12 text-[rgb(var(--accent))] tracking-tight text-center drop-shadow-[0_0_10px_rgba(var(--accent),0.6)]"
     >
         {title}
     </h2>
 
     <div
         class:list={[
-            // grille responsive : 1 colonne sur mobile/tablette, 2 colonnes sur grand écran
+            "mt-5",
             "grid gap-6 w-full max-w-4xl justify-items-center",
             "md:grid-cols-1", // 1 colonne sur tablette et moins
             "lg:grid-cols-2"  // 2 colonnes à partir du desktop

@@ -6,12 +6,14 @@ import HeaderLink from "./HeaderLink.astro";
 <header>
 	<nav>
 		<h2><a href="/">{SITE_TITLE}</a></h2>
+
 		<div class="internal-links">
 			<HeaderLink href="/">Home</HeaderLink>
 			<HeaderLink href="/blog">Blog</HeaderLink>
 			<HeaderLink href="/tools">Tools</HeaderLink>
 			<HeaderLink href="/about">About</HeaderLink>
 		</div>
+
 		<div class="social-links">
 			<a href={GITHUB_URL} target="_blank" rel="noopener">
 				<span class="sr-only">{SITE_TITLE}'s GitHub</span>
@@ -55,6 +57,7 @@ import HeaderLink from "./HeaderLink.astro";
 		align-items: center;
 		justify-content: space-between;
 		gap: 1.5rem;
+		flex-wrap: wrap;
 	}
 
 	.internal-links {
@@ -93,11 +96,10 @@ import HeaderLink from "./HeaderLink.astro";
 		fill: rgb(var(--accent));
 	}
 
-	/* ✨ Responsive : tout en colonne sur mobile */
 	@media (max-width: 720px) {
 		nav {
 			flex-direction: column;
-			justify-content: center;
+			align-items: center;
 			gap: 1rem;
 		}
 
@@ -107,7 +109,8 @@ import HeaderLink from "./HeaderLink.astro";
 			gap: 0.75rem;
 		}
 
-		/* Optionnel : cacher GitHub sur mobile si trop encombrant */
-		/* .social-links { display: none; } */
+		.social-links {
+			margin-top: 0.5rem;
+		}
 	}
 </style>

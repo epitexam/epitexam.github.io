@@ -110,21 +110,25 @@ const sections = [
     >
         <Header />
 
-        <main class="no-global-style flex-grow flex flex-col items-center px-6">
+        <main
+            class="no-global-style flex-grow flex flex-col items-center px-6 text-center"
+        >
             <div class="max-w-6xl w-full pt-16 pb-12">
                 <h1
                     class="text-4xl md:text-5xl font-bold text-center mb-12 tracking-tight text-[rgb(var(--accent))]"
                 >
                     Mes outils
                 </h1>
-                {
-                    sections.map((section) => (
-                        <ToolSection
-                            title={section.title}
-                            tools={section.tools}
-                        />
-                    ))
-                }
+                <div class="my-10">
+                    {
+                        sections.map((section) => (
+                            <ToolSection
+                                title={section.title}
+                                tools={section.tools}
+                            />
+                        ))
+                    }
+                </div>
             </div>
         </main>
 
