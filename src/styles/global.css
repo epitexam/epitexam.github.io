@@ -203,6 +203,7 @@ p {
   cursor: pointer;
   user-select: none;
   overflow: hidden;
+  will-change: transform, box-shadow, background;
 }
 
 @media (min-width: 640px) {
@@ -331,7 +332,7 @@ p {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.4s ease, box-shadow 0.4s ease;
-  mix-blend-mode: screen;
+  will-change: opacity, box-shadow;
 }
 
 .tool-card:hover .tool-glow {
