@@ -42,7 +42,7 @@ body {
 }
 
 /* === Layout === */
-main {
+main:not(.no-global-style) {
   max-width: 960px;
   width: 100%;
   margin: auto;
