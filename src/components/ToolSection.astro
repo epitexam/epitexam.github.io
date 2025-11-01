@@ -1,0 +1,33 @@
+---
+import ToolCard from "./ToolCard.astro";
+
+export interface Props {
+    title: string;
+    tools: {
+        icon: string;
+        name: string;
+        description: string;
+    }[];
+}
+
+const { title, tools } = Astro.props;
+---
+
+<section class="mb-16 w-full flex flex-col items-center">
+    <h2
+        class="text-2xl font-semibold mb-8 text-[rgb(var(--accent))] tracking-tight text-center"
+    >
+        {title}
+    </h2>
+
+    <div
+        class:list={[
+            // grille responsive : 1 colonne sur mobile/tablette, 2 colonnes sur grand écran
+            "grid gap-6 w-full max-w-4xl justify-items-center",
+            "md:grid-cols-1", // 1 colonne sur tablette et moins
+            "lg:grid-cols-2"  // 2 colonnes à partir du desktop
+        ]}
+    >
+        {tools.map((tool) => <ToolCard {...tool} />)}
+    </div>
+</section>

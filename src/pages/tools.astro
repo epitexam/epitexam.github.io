@@ -1,0 +1,140 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import ToolSection from "../components/ToolSection.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+
+const sections = [
+    {
+        title: "Langages informatiques",
+        tools: [
+            {
+                icon: "JS",
+                name: "JavaScript / TypeScript",
+                description:
+                    "Langages que j’utilise pour le développement front-end et full-stack. TypeScript apporte typage et sécurité sur des projets complexes.",
+            },
+            {
+                icon: "C",
+                name: "C / C++",
+                description:
+                    "Langages bas niveau que j’utilise pour comprendre les mécanismes internes et pour des projets performants ou systèmes.",
+            },
+            {
+                icon: "P",
+                name: "Python",
+                description:
+                    "Langage polyvalent pour scripts, automatisation, data science et prototypage rapide.",
+            },
+        ],
+    },
+
+    {
+        title: "Frameworks & Bibliothèques",
+        tools: [
+            {
+                icon: "R",
+                name: "React",
+                description:
+                    "Bibliothèque front-end pour construire des interfaces dynamiques et réactives avec des composants modulaires.",
+            },
+            {
+                icon: "T",
+                name: "Tailwind CSS",
+                description:
+                    "Framework CSS utilitaire pour créer rapidement des designs responsives et cohérents.",
+            },
+            {
+                icon: "A",
+                name: "Astro",
+                description:
+                    "Framework moderne pour créer des sites rapides et optimisés avec un rendu côté serveur performant.",
+            },
+        ],
+    },
+
+    {
+        title: "Systèmes & Environnements",
+        tools: [
+            {
+                icon: "L",
+                name: "Linux / WSL",
+                description:
+                    "Mon environnement quotidien : terminal zsh, tmux, et configuration pensée pour la performance.",
+            },
+            {
+                icon: "D",
+                name: "Docker",
+                description:
+                    "Pour isoler et gérer des environnements reproductibles, idéal pour le développement en équipe et les déploiements.",
+            },
+        ],
+    },
+
+    {
+        title: "Collaboration & API",
+        tools: [
+            {
+                icon: "G",
+                name: "Git & GitHub",
+                description:
+                    "Gestion de version, branches claires et intégration continue. GitHub centralise collaboration et revue de code.",
+            },
+            {
+                icon: "P",
+                name: "Postman",
+                description:
+                    "Outil pour tester et documenter les API, avec collections organisées par projet pour des tests rapides et reproductibles.",
+            },
+        ],
+    },
+
+    {
+        title: "Outils de développement",
+        tools: [
+            {
+                icon: "V",
+                name: "Visual Studio Code",
+                description:
+                    "Mon éditeur principal, configuré avec ESLint, Prettier et GitLens. Rapide, personnalisable et parfaitement adapté à mon flux de travail.",
+            },
+        ],
+    },
+];
+---
+
+<!doctype html>
+<html lang="fr">
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+    </head>
+    <body
+        class="flex flex-col min-h-screen bg-[rgb(var(--bg))] text-[rgb(var(--text))] font-mono"
+    >
+        <Header />
+
+        <main
+            class="flex-grow flex flex-col items-center justify-center px-6 py-20"
+        >
+            <div class="max-w-6xl w-full">
+                <h1
+                    class="text-4xl md:text-5xl font-bold text-center my-[90px] tracking-tight text-[rgb(var(--accent))]"
+                >
+                    Mes outils
+                </h1>
+
+                {
+                    sections.map((section) => (
+                        <ToolSection
+                            title={section.title}
+                            tools={section.tools}
+                        />
+                    ))
+                }
+            </div>
+        </main>
+
+        <Footer />
+    </body>
+</html>
