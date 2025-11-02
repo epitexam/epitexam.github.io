@@ -13,19 +13,49 @@ const sections = [
                 icon: "JS",
                 name: "JavaScript / TypeScript",
                 description:
-                    "Langages que j’utilise pour le développement front-end et full-stack. TypeScript apporte typage et sécurité sur des projets complexes.",
+                    "Mon terrain de jeu principal pour le web — front ou full-stack. TypeScript apporte la rigueur qu’il faut pour garder le code solide sans perdre la souplesse du JS.",
             },
             {
                 icon: "C",
-                name: "C / C++",
+                name: "C",
                 description:
-                    "Langages bas niveau que j’utilise pour comprendre les mécanismes internes et pour des projets performants ou systèmes.",
+                    "Utilisé pour des projets embarqués, notamment un driver ESP32H2 connecté à un capteur de CO₂. J’aime le côté brut du C, quand il faut vraiment parler à la machine.",
             },
             {
-                icon: "P",
+                icon: "C++",
+                name: "C++",
+                description:
+                    "Employé sur quelques applis expérimentales, notamment avec wxWidgets. Puissant, exigeant — parfait pour comprendre la mécanique derrière les abstractions modernes.",
+            },
+            {
+                icon: "Asm",
+                name: "Assembleur (6502 / x64)",
+                description:
+                    "Un trip purement technique : écrire de l’assembleur aide à voir comment tout fonctionne, bit par bit. C’est comme démonter un moteur juste pour le plaisir. (Merci aux cours de Gustavo Pezzi)",
+            },
+            {
+                icon: "Go",
+                name: "Go",
+                description:
+                    "Pour de sombres projets fait maison.",
+            },
+            {
+                icon: "Py",
                 name: "Python",
                 description:
-                    "Langage polyvalent pour scripts, automatisation, data science et prototypage rapide.",
+                    "Je m’en sers pour automatiser, écrire des scripts ou tester des idées vite fait. Un bon compagnon de route pour le prototypage.",
+            },
+            {
+                icon: "E",
+                name: "Erlang",
+                description:
+                    "Langage que j’explore actuellement. J’aime sa vision de la concurrence et sa robustesse — c’est un vrai changement de paradigme par rapport au reste.",
+            },
+            {
+                icon: "L",
+                name: "Lua / LÖVE2D",
+                description:
+                    "J’ai codé un petit jeu avec LÖVE2D. Lua est léger, fun et parfait pour expérimenter rapidement des mécaniques de gameplay.",
             },
         ],
     },
@@ -36,19 +66,43 @@ const sections = [
                 icon: "R",
                 name: "React",
                 description:
-                    "Bibliothèque front-end pour construire des interfaces dynamiques et réactives avec des composants modulaires.",
-            },
-            {
-                icon: "T",
-                name: "Tailwind CSS",
-                description:
-                    "Framework CSS utilitaire pour créer rapidement des designs responsives et cohérents.",
+                    "Le framework que j’utilise le plus sérieusement pour le front. J’aime sa logique déclarative et la façon dont il structure les projets.",
             },
             {
                 icon: "A",
                 name: "Astro",
                 description:
-                    "Framework moderne pour créer des sites rapides et optimisés avec un rendu côté serveur performant.",
+                    "Celui qui fait tourner ce site. Rapide, simple et flexible : un vrai bonheur pour un portfolio ou un site statique moderne.",
+            },
+            {
+                icon: "V",
+                name: "Vue.js",
+                description:
+                    "J’apprécie son équilibre entre simplicité et puissance. C’est un framework que j’ai utilisé sur plusieurs petits projets d’expérimentation.",
+            },
+            {
+                icon: "N",
+                name: "Next.js",
+                description:
+                    "Exploré pour comprendre le rendu côté serveur et les déploiements modernes. Très complet, idéal pour le full-stack React.",
+            },
+            {
+                icon: "S",
+                name: "Svelte",
+                description:
+                    "Testé sur quelques projets : ultra fluide, sans virtual DOM, et très agréable à utiliser.",
+            },
+            {
+                icon: "So",
+                name: "Solid.js",
+                description:
+                    "Un framework que j’ai creusé par curiosité technique. Sa gestion granulaire de la réactivité est franchement impressionnante.",
+            },
+            {
+                icon: "T",
+                name: "Tailwind CSS",
+                description:
+                    "Mon outil favori pour le style. Il me permet de concevoir vite, proprement et sans jamais toucher un fichier CSS à la main.",
             },
         ],
     },
@@ -57,15 +111,21 @@ const sections = [
         tools: [
             {
                 icon: "L",
-                name: "Linux / WSL",
+                name: "Linux (Fedora / Arch / WSL)",
                 description:
-                    "Mon environnement quotidien : terminal zsh, tmux, et configuration pensée pour la performance.",
+                    "J’utilise Fedora et Arch Linux régulièrement. J’aime le côté rolling release et le contrôle total qu’elles offrent. WSL reste une solution de secours pratique.",
             },
             {
                 icon: "D",
                 name: "Docker",
                 description:
-                    "Pour isoler et gérer des environnements reproductibles, idéal pour le développement en équipe et les déploiements.",
+                    "Pour isoler et gérer mes environnements. Idéal pour garder les devs reproductibles, surtout quand je bosse sur plusieurs technos à la fois.",
+            },
+            {
+                icon: "CICD",
+                name: "CI/CD",
+                description:
+                    "J’intègre l’automatisation dans mes projets via des workflows GitHub Actions — tests, build, et déploiement. Ça rend le tout propre et prévisible.",
             },
         ],
     },
@@ -74,15 +134,15 @@ const sections = [
         tools: [
             {
                 icon: "G",
-                name: "Git & GitHub",
+                name: "Git & GitHub / Gitlab (Parfois Gitea)",
                 description:
-                    "Gestion de version, branches claires et intégration continue. GitHub centralise collaboration et revue de code.",
+                    "Je garde mes dépôts propres, mes commits clairs, et j’automatise ce qui peut l’être. Le tout branché sur des pipelines CI/CD.",
             },
             {
                 icon: "P",
                 name: "Postman",
                 description:
-                    "Outil pour tester et documenter les API, avec collections organisées par projet pour des tests rapides et reproductibles.",
+                    "Mon outil de référence pour tester et documenter les API. Simple, pratique, efficace — rien à redire.",
             },
         ],
     },
@@ -93,7 +153,13 @@ const sections = [
                 icon: "V",
                 name: "Visual Studio Code",
                 description:
-                    "Mon éditeur principal, configuré avec ESLint, Prettier et GitLens. Rapide, personnalisable et parfaitement adapté à mon flux de travail.",
+                    "Mon éditeur principal. Configuration minimaliste, zéro extension, juste l’essentiel. Rapide et sans distractions.",
+            },
+            {
+                icon: "Vim",
+                name: "Vim",
+                description:
+                    "J’y touche quand il faut, mais j’en sors dès que possible.",
             },
         ],
     },
