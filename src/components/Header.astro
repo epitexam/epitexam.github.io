@@ -5,24 +5,48 @@ import HeaderLink from "./HeaderLink.astro";
 
 <header>
 	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
+		<div class="nav-left">
+			<h2><a href="/">{SITE_TITLE}</a></h2>
+			<button
+				class="menu-toggle"
+				aria-label="Toggle menu"
+				id="menu-button"
+				aria-expanded="false"
+			>
+				<svg
+					viewBox="0 0 24 24"
+					width="28"
+					height="28"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+				>
+					<path d="M3 6h18M3 12h18M3 18h18"></path>
+				</svg>
+			</button>
+		</div>
 
-		<div class="internal-links">
+		<div class="nav-center" id="menu">
 			<HeaderLink href="/">Home</HeaderLink>
 			<HeaderLink href="/blog">Blog</HeaderLink>
 			<HeaderLink href="/tools">Tools</HeaderLink>
 			<HeaderLink href="/about">About</HeaderLink>
+			<a
+				href={GITHUB_URL}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="mobile-github-link">GitHub</a
+			>
 		</div>
 
-		<div class="social-links">
-			<a href={GITHUB_URL} target="_blank" rel="noopener">
-				<span class="sr-only">{SITE_TITLE}'s GitHub</span>
-				<svg
-					viewBox="0 0 16 16"
-					aria-hidden="true"
-					width="24"
-					height="24"
-				>
+		<div class="social-links desktop-only">
+			<a
+				href={GITHUB_URL}
+				target="_blank"
+				rel="noopener noreferrer"
+				aria-label="{SITE_TITLE}'s GitHub"
+			>
+				<svg viewBox="0 0 16 16" width="24" height="24">
 					<path
 						fill="currentColor"
 						d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
@@ -33,36 +57,74 @@ import HeaderLink from "./HeaderLink.astro";
 	</nav>
 </header>
 
+<script>
+	document.addEventListener("DOMContentLoaded", () => {
+		const button = document.getElementById("menu-button");
+		const menu = document.getElementById("menu");
+
+		if (!button || !menu) return;
+
+		button.addEventListener("click", () => {
+			const isOpen = menu.classList.contains("open");
+			menu.classList.toggle("open", !isOpen);
+			button.classList.toggle("active", !isOpen);
+			button.setAttribute("aria-expanded", String(!isOpen));
+		});
+	});
+</script>
+
 <style>
 	header {
 		margin: 0;
-		padding: 1rem;
-		background: rgb(var(--bg));
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-		border-bottom: 1px solid rgba(0, 255, 150, 0.05);
-	}
-
-	h2 {
-		margin: 0;
-		font-size: 1.2em;
-	}
-
-	h2 a {
-		text-decoration: none;
-		color: rgb(var(--text));
+		padding: 1rem 1.5rem;
+		background: rgba(10, 15, 10, 0.4);
+		border-bottom: 1px solid rgba(var(--accent), 0.25);
+		backdrop-filter: blur(10px) saturate(160%);
+		position: sticky;
+		top: 0;
+		z-index: 50;
+		box-shadow: 0 0 15px rgba(0, 255, 150, 0.05);
 	}
 
 	nav {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		flex-wrap: nowrap;
 		gap: 1.5rem;
-		flex-wrap: wrap;
 	}
 
-	.internal-links {
+	.nav-left {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	h2 {
+		margin: 0;
+		font-size: 1.2em;
+		letter-spacing: 0.02em;
+	}
+
+	h2 a {
+		text-decoration: none;
+		color: rgb(var(--text));
+		transition:
+			color 0.3s ease,
+			text-shadow 0.3s ease;
+	}
+
+	h2 a:hover {
+		color: rgb(var(--accent));
+		text-shadow: 0 0 8px rgba(var(--accent), 0.5);
+	}
+
+	.nav-center {
 		display: flex;
 		gap: 1.25rem;
+		transition:
+			max-height 0.3s ease,
+			opacity 0.3s ease;
 	}
 
 	nav a {
@@ -71,8 +133,9 @@ import HeaderLink from "./HeaderLink.astro";
 		border-bottom: 2px solid transparent;
 		text-decoration: none;
 		transition:
-			border-color 0.2s ease,
-			color 0.2s ease;
+			border-color 0.25s ease,
+			color 0.25s ease,
+			text-shadow 0.25s ease;
 		font-weight: 500;
 	}
 
@@ -80,6 +143,7 @@ import HeaderLink from "./HeaderLink.astro";
 	nav a.active {
 		color: rgb(var(--accent));
 		border-bottom-color: rgb(var(--accent));
+		text-shadow: 0 0 6px rgba(var(--accent), 0.4);
 	}
 
 	.social-links {
@@ -89,28 +153,75 @@ import HeaderLink from "./HeaderLink.astro";
 
 	.social-links svg {
 		fill: rgb(var(--text));
-		transition: fill 0.2s ease;
+		transition:
+			fill 0.25s ease,
+			filter 0.25s ease;
 	}
 
 	.social-links a:hover svg {
 		fill: rgb(var(--accent));
+		filter: drop-shadow(0 0 6px rgba(var(--accent), 0.6));
+	}
+
+	.mobile-github-link {
+		display: none;
+		color: rgb(var(--accent)) !important;
+		border-bottom: 2px solid transparent !important;
+	}
+
+	.mobile-github-link:hover {
+		border-bottom-color: rgb(var(--accent)) !important;
+		text-shadow: 0 0 6px rgba(var(--accent), 0.4) !important;
+	}
+
+	.menu-toggle {
+		display: none;
+		background: none;
+		border: none;
+		color: rgb(var(--accent));
+		cursor: pointer;
+		transition: transform 0.3s ease;
+	}
+
+	.menu-toggle.active {
+		transform: rotate(90deg);
 	}
 
 	@media (max-width: 720px) {
 		nav {
 			flex-direction: column;
-			align-items: center;
-			gap: 1rem;
+			align-items: stretch;
+			gap: 0.5rem;
 		}
 
-		.internal-links {
+		.menu-toggle {
+			display: block;
+		}
+
+		.nav-center {
+			overflow: hidden;
 			flex-direction: column;
 			align-items: center;
-			gap: 0.75rem;
+			max-height: 0;
+			opacity: 0;
+		}
+
+		.nav-center.open {
+			max-height: 500px;
+			opacity: 1;
+		}
+
+		.desktop-only {
+			display: none;
+		}
+
+		.mobile-github-link {
+			display: block;
 		}
 
 		.social-links {
-			margin-top: 0.5rem;
+			margin-top: 0.75rem;
+			justify-content: center;
 		}
 	}
 </style>
