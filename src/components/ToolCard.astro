@@ -8,17 +8,19 @@ export interface Props {
 const { icon, name, description } = Astro.props;
 ---
 
-<div class="tool-card group">
+<div class="tool-card animate-fadeIn group">
+  <div class="tool-glow"></div>
+
   <div class="tool-inner">
-    <div class="tool-icon">{icon}</div>
+    <div class="tool-icon">
+      {icon}
+    </div>
 
     <div class="tool-content">
-      <h3 class="tool-title group-hover:text-[rgb(var(--accent))]">
-        {name}
-      </h3>
+      <h3 class="tool-title group-hover:text-[rgb(var(--accent))]">{name}</h3>
       <p class="tool-description">{description}</p>
     </div>
   </div>
 
-  <div class="tool-glow"></div>
+  <div class="tool-reflection"></div>
 </div>
