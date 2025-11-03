@@ -35,7 +35,8 @@ import HeaderLink from "./HeaderLink.astro";
 				href={GITHUB_URL}
 				target="_blank"
 				rel="noopener noreferrer"
-				class="mobile-github-link">GitHub</a
+				class="mobile-github-link"
+				>GitHub</a
 			>
 		</div>
 
@@ -49,7 +50,19 @@ import HeaderLink from "./HeaderLink.astro";
 				<svg viewBox="0 0 16 16" width="24" height="24">
 					<path
 						fill="currentColor"
-						d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+						d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 
+						5.47 7.59.4.07.55-.17.55-.38 
+						0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94
+						-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53
+						.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66
+						.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
+						0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
+						0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 
+						1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 
+						1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 
+						0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 
+						1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 
+						8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
 					></path>
 				</svg>
 			</a>
@@ -61,7 +74,6 @@ import HeaderLink from "./HeaderLink.astro";
 	document.addEventListener("DOMContentLoaded", () => {
 		const button = document.getElementById("menu-button");
 		const menu = document.getElementById("menu");
-
 		if (!button || !menu) return;
 
 		button.addEventListener("click", () => {
@@ -77,20 +89,28 @@ import HeaderLink from "./HeaderLink.astro";
 	header {
 		margin: 0;
 		padding: 1rem 1.5rem;
-		background: rgba(10, 15, 10, 0.4);
-		border-bottom: 1px solid rgba(var(--accent), 0.25);
-		backdrop-filter: blur(10px) saturate(160%);
 		position: sticky;
 		top: 0;
 		z-index: 50;
-		box-shadow: 0 0 15px rgba(0, 255, 150, 0.05);
+		background: rgba(10, 15, 10, 0.55);
+		backdrop-filter: blur(14px) saturate(180%);
+		box-shadow: 0 0 25px rgba(var(--accent), 0.1);
+		animation: ambientGlow 6s ease-in-out infinite alternate;
+	}
+
+	@keyframes ambientGlow {
+		from {
+			box-shadow: 0 0 20px rgba(var(--accent), 0.1);
+		}
+		to {
+			box-shadow: 0 0 40px rgba(var(--accent), 0.2);
+		}
 	}
 
 	nav {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		flex-wrap: nowrap;
 		gap: 1.5rem;
 	}
 
@@ -102,21 +122,15 @@ import HeaderLink from "./HeaderLink.astro";
 
 	h2 {
 		margin: 0;
-		font-size: 1.2em;
-		letter-spacing: 0.02em;
-	}
-
-	h2 a {
-		text-decoration: none;
+		font-size: 1.25em;
+		letter-spacing: 0.03em;
 		color: rgb(var(--text));
-		transition:
-			color 0.3s ease,
-			text-shadow 0.3s ease;
+		text-shadow: 0 0 12px rgba(var(--accent), 0.25);
+		transition: text-shadow 0.3s ease;
 	}
 
-	h2 a:hover {
-		color: rgb(var(--accent));
-		text-shadow: 0 0 8px rgba(var(--accent), 0.5);
+	h2:hover {
+		text-shadow: 0 0 20px rgba(var(--accent), 0.6);
 	}
 
 	.nav-center {
@@ -130,20 +144,18 @@ import HeaderLink from "./HeaderLink.astro";
 	nav a {
 		padding: 0.5em 0.75em;
 		color: rgb(var(--text));
-		border-bottom: 2px solid transparent;
 		text-decoration: none;
-		transition:
-			border-color 0.25s ease,
-			color 0.25s ease,
-			text-shadow 0.25s ease;
 		font-weight: 500;
+		border: none;
+		transition:
+			color 0.3s ease,
+			text-shadow 0.3s ease;
 	}
 
 	nav a:hover,
 	nav a.active {
 		color: rgb(var(--accent));
-		border-bottom-color: rgb(var(--accent));
-		text-shadow: 0 0 6px rgba(var(--accent), 0.4);
+		text-shadow: 0 0 8px rgba(var(--accent), 0.8);
 	}
 
 	.social-links {
@@ -153,25 +165,12 @@ import HeaderLink from "./HeaderLink.astro";
 
 	.social-links svg {
 		fill: rgb(var(--text));
-		transition:
-			fill 0.25s ease,
-			filter 0.25s ease;
+		transition: fill 0.3s ease, filter 0.3s ease;
 	}
 
 	.social-links a:hover svg {
 		fill: rgb(var(--accent));
-		filter: drop-shadow(0 0 6px rgba(var(--accent), 0.6));
-	}
-
-	.mobile-github-link {
-		display: none;
-		color: rgb(var(--accent)) !important;
-		border-bottom: 2px solid transparent !important;
-	}
-
-	.mobile-github-link:hover {
-		border-bottom-color: rgb(var(--accent)) !important;
-		text-shadow: 0 0 6px rgba(var(--accent), 0.4) !important;
+		filter: drop-shadow(0 0 10px rgba(var(--accent), 0.6));
 	}
 
 	.menu-toggle {
@@ -180,11 +179,20 @@ import HeaderLink from "./HeaderLink.astro";
 		border: none;
 		color: rgb(var(--accent));
 		cursor: pointer;
-		transition: transform 0.3s ease;
+		transition: transform 0.3s ease, filter 0.3s ease;
+	}
+
+	.menu-toggle:hover {
+		filter: drop-shadow(0 0 8px rgba(var(--accent), 0.6));
 	}
 
 	.menu-toggle.active {
 		transform: rotate(90deg);
+	}
+
+	.mobile-github-link {
+		display: none;
+		color: rgb(var(--accent)) !important;
 	}
 
 	@media (max-width: 720px) {
@@ -204,11 +212,17 @@ import HeaderLink from "./HeaderLink.astro";
 			align-items: center;
 			max-height: 0;
 			opacity: 0;
+			transform: translateY(-10px);
+			transition:
+				max-height 0.4s ease,
+				opacity 0.4s ease,
+				transform 0.4s ease;
 		}
 
 		.nav-center.open {
 			max-height: 500px;
 			opacity: 1;
+			transform: translateY(0);
 		}
 
 		.desktop-only {
