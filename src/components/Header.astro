@@ -3,7 +3,9 @@ import { GITHUB_URL, SITE_TITLE } from "../consts";
 import HeaderLink from "./HeaderLink.astro";
 ---
 
-<header>
+<header
+	class="sticky top-0 z-50 bg-[rgba(10,12,20,0.8)] backdrop-blur-md border-b border-white/5 shadow-[0_0_25px_rgba(0,255,150,0.2)]"
+>
 	<nav>
 		<div class="nav-left">
 			<h2><a href="/">{SITE_TITLE}</a></h2>
@@ -35,8 +37,7 @@ import HeaderLink from "./HeaderLink.astro";
 				href={GITHUB_URL}
 				target="_blank"
 				rel="noopener noreferrer"
-				class="mobile-github-link"
-				>GitHub</a
+				class="mobile-github-link">GitHub</a
 			>
 		</div>
 
@@ -98,6 +99,23 @@ import HeaderLink from "./HeaderLink.astro";
 		animation: ambientGlow 6s ease-in-out infinite alternate;
 	}
 
+	.header-glow {
+		background: rgba(10, 12, 20, 0.6);
+		backdrop-filter: blur(12px) saturate(160%);
+		border: 1px solid rgba(0, 255, 150, 0.15);
+		box-shadow: 0 4px 20px rgba(0, 255, 150, 0.08);
+	}
+
+	.header-glow {
+		transition:
+			box-shadow 0.3s ease,
+			border-color 0.3s ease;
+	}
+
+	.header-glow.scrolled {
+		border-color: rgba(0, 255, 150, 0.3);
+		box-shadow: 0 6px 25px rgba(0, 255, 150, 0.12);
+	}
 	@keyframes ambientGlow {
 		from {
 			box-shadow: 0 0 20px rgba(var(--accent), 0.1);
@@ -165,7 +183,9 @@ import HeaderLink from "./HeaderLink.astro";
 
 	.social-links svg {
 		fill: rgb(var(--text));
-		transition: fill 0.3s ease, filter 0.3s ease;
+		transition:
+			fill 0.3s ease,
+			filter 0.3s ease;
 	}
 
 	.social-links a:hover svg {
@@ -179,7 +199,9 @@ import HeaderLink from "./HeaderLink.astro";
 		border: none;
 		color: rgb(var(--accent));
 		cursor: pointer;
-		transition: transform 0.3s ease, filter 0.3s ease;
+		transition:
+			transform 0.3s ease,
+			filter 0.3s ease;
 	}
 
 	.menu-toggle:hover {
