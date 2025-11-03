@@ -1,8 +1,7 @@
-// tailwind.config.cjs
 module.exports = {
   content: ["./src/**/*.{astro,html,js,jsx,ts,tsx}"],
   corePlugins: {
-    preflight: false, // 🔥 DÉSACTIVE le reset de Tailwind (Preflight)
+    preflight: false,
   },
   theme: {
     extend: {
@@ -20,6 +19,15 @@ module.exports = {
       fontFamily: {
         sans: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+      },
+      keyframes: {
+        fadeIn: {
+          from: { opacity: '0', transform: 'translateY(15px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
+        }
+      },
+      animation: {
+        fadeIn: 'fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards',
       }
     },
   },
