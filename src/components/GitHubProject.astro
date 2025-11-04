@@ -1,0 +1,92 @@
+---
+export interface Props {
+    project: {
+        id: number;
+        name: string;
+        description: string;
+        html_url: string;
+        language: string | null;
+        stargazers_count: number;
+        pushed_at: string;
+        owner: {
+            login: string;
+            avatar_url: string;
+        };
+    };
+}
+
+const { project } = Astro.props;
+---
+
+<a
+    href={project.html_url}
+    target="_blank"
+    rel="noopener noreferrer"
+    class="project-card"
+>
+    <!-- Header with owner info -->
+    <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+            <img
+                src={project.owner.avatar_url}
+                alt={`${project.owner.login} avatar`}
+                class="w-6 h-6 rounded-full"
+            />
+            <span class="font-semibold text-text">{project.name}</span>
+        </div>
+
+        {
+            project.language && (
+                <span class="language-badge">{project.language}</span>
+            )
+        }
+    </div>
+
+    <!-- Project description -->
+    <p class="text-xs text-text/80 line-clamp-2">
+        {project.description || "No description provided."}
+    </p>
+
+    <!-- Footer with stars and last updated date -->
+    <div class="mt-3 flex justify-between text-xs text-text/70">
+        <span>⭐ {project.stargazers_count}</span>
+        <span>📅 {new Date(project.pushed_at).toLocaleDateString()}</span>
+    </div>
+</a>
+
+<style>
+    .project-card {
+        display: block;
+        padding: 1.2rem;
+        border-radius: 1rem;
+        border: 1px solid rgba(0, 255, 150, 0.25);
+        background: radial-gradient(
+            ellipse at top left,
+            rgba(25, 35, 30, 0.35),
+            rgba(10, 15, 10, 0.15) 70%
+        );
+        backdrop-filter: blur(12px) saturate(160%);
+        transition: all 0.35s ease;
+        box-shadow:
+            inset 0 0 10px rgba(0, 255, 150, 0.05),
+            0 0 20px rgba(0, 255, 150, 0.08);
+        text-decoration: none;
+        color: rgb(var(--text));
+    }
+
+    .project-card:hover {
+        transform: translateY(-4px);
+        box-shadow:
+            inset 0 0 15px rgba(0, 255, 150, 0.05),
+            0 0 25px rgba(0, 255, 150, 0.15);
+    }
+
+    .language-badge {
+        font-size: 0.75rem;
+        background: rgba(0, 255, 150, 0.1);
+        color: rgb(0, 255, 150);
+        padding: 0.2rem 0.5rem;
+        border-radius: 0.6rem;
+        border: 1px solid rgba(0, 255, 150, 0.25);
+    }
+</style>
