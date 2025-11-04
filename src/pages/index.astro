@@ -151,12 +151,30 @@ try {
 				</div>
 			</section>
 
-			<section class="text-center space-y-6">
+			<section
+				class="text-center space-y-6 relative overflow-hidden py-8"
+			>
 				<h2 class="text-xl font-bold text-accent tracking-tight">
 					Au quotidien :
 				</h2>
-				<div class="flex flex-wrap justify-center gap-3">
-					{stack.map((tech) => <TechStack tech={tech} />)}
+
+				<div class="stack-marquee mt-15">
+					<div class="marquee-row marquee-row-1 mb-5">
+						{
+							stack
+								.concat(stack)
+								.map((tech) => <TechStack tech={tech} />)
+						}
+					</div>
+					<div class="marquee-row marquee-row-2">
+						{
+							stack
+								.concat(stack)
+								.map((tech) => <TechStack tech={tech} />)
+						}
+					</div>
+					<div class="fade fade-left"></div>
+					<div class="fade fade-right"></div>
 				</div>
 			</section>
 
@@ -164,7 +182,7 @@ try {
 				<h2 class="text-xl font-bold text-accent tracking-tight">
 					Mes derniers projets :
 				</h2>
-				<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+				<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-15">
 					{
 						projects.length > 0 ? (
 							projects.map((repo) => (
@@ -187,3 +205,97 @@ try {
 		<Footer />
 	</body>
 </html>
+
+<style>
+	.stack-marquee {
+		position: relative;
+		overflow: hidden;
+		mask-image: linear-gradient(
+			to right,
+			transparent 0%,
+			black 10%,
+			black 90%,
+			transparent 100%
+		);
+		-webkit-mask-image: linear-gradient(
+			to right,
+			transparent 0%,
+			black 10%,
+			black 90%,
+			transparent 100%
+		);
+	}
+
+	.marquee-row {
+		display: flex;
+		gap: 1rem;
+		white-space: nowrap;
+		width: max-content;
+		animation-timing-function: linear;
+		will-change: transform;
+		padding: 0.3rem 0;
+	}
+
+	.marquee-row-1 {
+		animation: marquee-left 65s linear infinite;
+	}
+
+	.marquee-row-2 {
+		animation: marquee-right 70s linear infinite;
+		opacity: 0.8;
+	}
+
+	@keyframes marquee-left {
+		0% {
+			transform: translateX(0);
+		}
+		100% {
+			transform: translateX(-50%);
+		}
+	}
+
+	@keyframes marquee-right {
+		0% {
+			transform: translateX(-50%);
+		}
+		100% {
+			transform: translateX(0);
+		}
+	}
+
+	.fade {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 8rem;
+		pointer-events: none;
+		z-index: 2;
+	}
+
+	.fade-left {
+		left: 0;
+		background: linear-gradient(
+			to right,
+			rgba(10, 12, 20, 1),
+			rgba(10, 12, 20, 0)
+		);
+	}
+
+	.fade-right {
+		right: 0;
+		background: linear-gradient(
+			to left,
+			rgba(10, 12, 20, 1),
+			rgba(10, 12, 20, 0)
+		);
+	}
+
+	@media (max-width: 720px) {
+		.marquee-row-1 {
+			animation-duration: 60s;
+		}
+		.marquee-row-2 {
+			animation-duration: 65s;
+		}
+	}
+</style>
