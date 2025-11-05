@@ -16,6 +16,7 @@ export interface Props {
 }
 
 const { project } = Astro.props;
+import { Image } from "astro:assets";
 ---
 
 <a
@@ -23,15 +24,22 @@ const { project } = Astro.props;
     target="_blank"
     rel="noopener noreferrer"
     class="project-card"
-    data-lang={project.language ?? "Default"}
 >
-    <div class="project-header">
+    <div class="smoke"></div>
+    <div class="smoke smoke--2"></div>
+    <div class="smoke smoke--3"></div>
+
+    <header class="project-header">
         <div class="owner-info">
-            <img
+            <Image
                 src={project.owner.avatar_url}
                 alt={`${project.owner.login} avatar`}
+                width={64}
+                height={64}
+                loading="lazy"
                 class="avatar"
             />
+
             <span class="project-name">{project.name}</span>
         </div>
 
@@ -40,219 +48,252 @@ const { project } = Astro.props;
                 <span class="language-badge">{project.language}</span>
             )
         }
-    </div>
+    </header>
 
     <p class="project-description">
         {project.description || "No description provided."}
     </p>
 
-    <div class="project-footer">
+    <footer class="project-footer">
         <span>⭐ {project.stargazers_count}</span>
         <span>📅 {new Date(project.pushed_at).toLocaleDateString()}</span>
-    </div>
+    </footer>
 </a>
 
 <style>
     .project-card {
         position: relative;
-        display: block;
-        padding: 1.25rem;
-        border-radius: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+        padding: 1.3rem 1.5rem;
+        border-radius: 1.1rem;
         border: 1px solid rgba(0, 255, 150, 0.25);
+        background: rgba(10, 20, 15, 0.45);
+        backdrop-filter: blur(6px) saturate(180%);
+        -webkit-backdrop-filter: blur(6px) saturate(180%);
+        box-shadow:
+            inset 0 0 20px rgba(0, 255, 150, 0.08),
+            0 0 25px rgba(0, 255, 150, 0.06);
         color: rgb(var(--text));
         text-decoration: none;
-
-        background: linear-gradient(
-            135deg,
-            rgba(15, 25, 20, 0.55) 0%,
-            rgba(10, 15, 12, 0.25) 100%
-        );
-        backdrop-filter: blur(18px) saturate(160%);
-        box-shadow:
-            inset 0 0 20px rgba(0, 255, 150, 0.06),
-            0 0 20px rgba(0, 255, 150, 0.08);
-
+        overflow: hidden;
+        cursor: pointer;
+        isolation: isolate;
         transition:
             transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
             box-shadow 0.45s ease,
-            border-color 0.4s ease;
-        overflow: hidden;
-        cursor: pointer;
+            border-color 0.35s ease,
+            background 0.35s ease;
     }
 
-    .project-card::before {
+    /* === FUMÉE : PLUS BASSE, PLUS DYNAMIQUE === */
+    .smoke {
+        position: absolute;
+        bottom: -5%;
+        left: -50%;
+        width: 200%;
+        height: 45%;
+        background: radial-gradient(
+                circle at 20% 90%,
+                rgba(0, 100, 60, 0.25) 0%,
+                transparent 65%
+            ),
+            radial-gradient(
+                circle at 80% 100%,
+                rgba(0, 120, 70, 0.2) 0%,
+                transparent 70%
+            ),
+            radial-gradient(
+                circle at 50% 100%,
+                rgba(0, 255, 150, 0.1) 0%,
+                transparent 75%
+            );
+        opacity: 0.4;
+        filter: blur(22px) contrast(140%) brightness(90%);
+        mix-blend-mode: screen;
+        mask-image: linear-gradient(to top, black 30%, transparent 100%);
+        animation: smokeDrift 12s ease-in-out infinite alternate;
+        z-index: -1;
+    }
+
+    .smoke--2 {
+        animation: smokeDrift2 16s ease-in-out infinite alternate-reverse;
+        opacity: 0.3;
+        filter: blur(20px) contrast(160%) brightness(85%);
+    }
+
+    .smoke--3 {
+        animation: smokeDrift3 20s ease-in-out infinite alternate;
+        opacity: 0.25;
+        filter: blur(25px) contrast(150%) brightness(75%);
+    }
+
+    /* mouvement plus fluide, style marée agitée */
+    @keyframes smokeDrift {
+        0% {
+            transform: translateX(-10%) translateY(0) scale(1.05);
+        }
+        50% {
+            transform: translateX(8%) translateY(-2%) scale(1.08);
+        }
+        100% {
+            transform: translateX(-6%) translateY(0) scale(1.04);
+        }
+    }
+    @keyframes smokeDrift2 {
+        0% {
+            transform: translateX(12%) translateY(-1%) scale(1.1);
+        }
+        50% {
+            transform: translateX(-10%) translateY(1%) scale(1.15);
+        }
+        100% {
+            transform: translateX(6%) translateY(-1%) scale(1.1);
+        }
+    }
+    @keyframes smokeDrift3 {
+        0% {
+            transform: translateX(-8%) translateY(0) scale(1.05);
+        }
+        50% {
+            transform: translateX(8%) translateY(-2%) scale(1.08);
+        }
+        100% {
+            transform: translateX(-6%) translateY(0) scale(1.04);
+        }
+    }
+
+    /* === Reflet plus intense === */
+    .project-card::after {
         content: "";
         position: absolute;
         inset: 0;
         background: linear-gradient(
             120deg,
             transparent 0%,
-            rgba(0, 255, 150, 0.12) 40%,
-            rgba(0, 255, 150, 0.05) 60%,
-            transparent 100%
+            rgba(0, 255, 150, 0.25) 45%,
+            rgba(255, 255, 255, 0.15) 50%,
+            transparent 55%
         );
-        filter: blur(2px);
-        transform: translateX(-150%) skewX(-10deg);
-        animation: shimmer 8s infinite ease-in-out;
+        mix-blend-mode: screen;
+        opacity: 0;
+        transform: translateX(-120%) skewX(-15deg);
+        animation: shine 7s infinite cubic-bezier(0.6, 0, 0.4, 1);
         pointer-events: none;
+        z-index: 1;
     }
-
-    .project-card::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background: radial-gradient(
-            ellipse at top,
-            rgba(255, 255, 255, 0.04),
-            transparent 70%
-        );
-        mix-blend-mode: overlay;
-        opacity: 0.5;
-        pointer-events: none;
-    }
-
-    .project-card::after {
-        background-image: radial-gradient(
-            rgba(255, 255, 255, 0.03) 1px,
-            transparent 1px
-        );
-        background-size: 3px 3px;
-        mix-blend-mode: overlay;
-        opacity: 0.25;
-    }
-
-    .project-card:hover {
-        transform: translateY(-6px) scale(1.02);
-        border-color: rgba(0, 255, 150, 0.5);
-        box-shadow:
-            0 10px 35px rgba(0, 255, 150, 0.2),
-            inset 0 0 25px rgba(0, 255, 150, 0.08);
-    }
-
-    .project-card {
-        perspective: 1000px;
-        transform-style: preserve-3d;
-    }
-    .project-card:hover {
-        transform: rotateY(3deg) rotateX(-2deg) scale(1.02);
-    }
-
-    @keyframes shimmer {
+    @keyframes shine {
         0% {
-            transform: translateX(-150%) skewX(-10deg);
-            opacity: 0.05;
+            opacity: 0;
+            transform: translateX(-120%) skewX(-15deg);
         }
-        50% {
-            transform: translateX(150%) skewX(10deg);
-            opacity: 0.1;
+        15% {
+            opacity: 0.5;
+        }
+        60% {
+            opacity: 0;
+            transform: translateX(120%) skewX(-15deg);
         }
         100% {
-            transform: translateX(150%) skewX(10deg);
             opacity: 0;
         }
     }
 
+    .project-card:hover {
+        transform: translateY(-6px) scale(1.03);
+        border-color: rgba(0, 255, 150, 0.55);
+        box-shadow:
+            0 0 28px rgba(0, 255, 150, 0.25),
+            inset 0 0 25px rgba(0, 255, 150, 0.12);
+        background: rgba(10, 25, 18, 0.5);
+    }
+    .project-card:hover .smoke {
+        opacity: 0.55;
+        filter: blur(18px) contrast(160%) brightness(100%);
+    }
+
+    /* === Contenu === */
     .project-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
         gap: 0.6rem;
-        margin-bottom: 0.75rem;
     }
 
     .owner-info {
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        min-width: 0;
     }
 
     .avatar {
-        width: 1.8rem;
-        height: 1.8rem;
-        border-radius: 9999px;
+        width: 1.9rem;
+        height: 1.9rem;
+        border-radius: 50%;
         border: 1px solid rgba(0, 255, 150, 0.25);
-        box-shadow: 0 0 8px rgba(0, 255, 150, 0.25);
+        box-shadow: 0 0 8px rgba(0, 255, 150, 0.2);
         transition:
-            box-shadow 0.3s ease,
-            transform 0.3s ease;
+            transform 0.3s ease,
+            box-shadow 0.3s ease;
     }
     .project-card:hover .avatar {
         transform: scale(1.1);
-        box-shadow: 0 0 15px rgba(0, 255, 150, 0.45);
+        box-shadow: 0 0 15px rgba(0, 255, 150, 0.4);
     }
 
     .project-name {
         font-weight: 600;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        letter-spacing: 0.02em;
         color: rgb(var(--text));
-        letter-spacing: 0.01em;
         transition:
             color 0.3s ease,
-            text-shadow 0.3s ease,
-            letter-spacing 0.3s ease;
+            text-shadow 0.3s ease;
     }
     .project-card:hover .project-name {
         color: rgb(0, 255, 150);
-        text-shadow: 0 0 10px rgba(0, 255, 150, 0.5);
-        letter-spacing: 0.03em;
+        text-shadow: 0 0 10px rgba(0, 255, 150, 0.4);
     }
 
     .language-badge {
         font-size: 0.75rem;
-        background: rgba(0, 255, 150, 0.1);
-        color: rgb(0, 255, 150);
         padding: 0.25rem 0.6rem;
         border-radius: 0.6rem;
         border: 1px solid rgba(0, 255, 150, 0.25);
-        box-shadow: inset 0 0 6px rgba(0, 255, 150, 0.15);
+        color: rgb(0, 255, 150);
+        background: rgba(0, 255, 150, 0.1);
+        box-shadow: inset 0 0 6px rgba(0, 255, 150, 0.1);
     }
 
     .project-description {
         font-size: 0.9rem;
-        color: rgba(200, 255, 200, 0.8);
+        color: rgba(220, 255, 220, 0.9);
         line-height: 1.5;
-        margin-bottom: 0.75rem;
-        display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
+        display: -webkit-box;
         overflow: hidden;
         text-overflow: ellipsis;
         transition:
             color 0.3s ease,
-            transform 0.3s ease,
-            opacity 0.3s ease;
+            transform 0.3s ease;
     }
     .project-card:hover .project-description {
-        color: rgba(220, 255, 220, 0.95);
+        color: rgba(240, 255, 240, 0.95);
         transform: translateY(-2px);
-        opacity: 1;
     }
 
     .project-footer {
         display: flex;
         justify-content: space-between;
         font-size: 0.8rem;
-        color: rgba(200, 255, 200, 0.6);
+        color: rgba(200, 255, 200, 0.7);
     }
 
     @media (max-width: 480px) {
         .project-card {
-            padding: 0.9rem;
-        }
-        .project-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 0.25rem;
-        }
-        .project-footer {
-            flex-direction: column;
-            gap: 0.25rem;
-            align-items: flex-start;
+            padding: 1rem;
         }
     }
 </style>
