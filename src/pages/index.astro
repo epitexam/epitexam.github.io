@@ -5,6 +5,8 @@ import Footer from "../components/Footer.astro";
 import TechStack from "../components/TechStack.astro";
 import GitHubProject from "../components/GitHubProject.astro";
 import { SITE_DESCRIPTION, SITE_TITLE, GITHUB_URL } from "../consts";
+import { Image } from "astro:assets";
+import profile from "../assets/profile.webp";
 
 const stack = [
 	// Frontend
@@ -32,6 +34,7 @@ const stack = [
 	"Python",
 	"C",
 	"C++",
+	"Godot",
 
 	// Base de données
 	"Postgres",
@@ -44,7 +47,11 @@ const stack = [
 	"Docker",
 	"Podman",
 	"Linux",
-	"Windows 🗿​",
+	"Windows 💀​​",
+	"Debian",
+	"Ubuntu",
+	"Fedora",
+	"Arch linux",
 
 	// Hardware / IoT
 	"Asm 6502 / x64",
@@ -93,10 +100,13 @@ try {
 		>
 			<section class="text-center space-y-6">
 				<div class="flex flex-col items-center gap-4">
-					<img
-						src="/profile.png"
+					<Image
+						src={profile}
 						alt="Avatar"
-						class="w-16 h-16 rounded-full border border-accent/30"
+						width={64}
+						height={64}
+						loading="eager"
+						class="rounded-full border border-accent/30"
 					/>
 
 					<h1 class="text-4xl md:text-5xl font-bold tracking-tight">
