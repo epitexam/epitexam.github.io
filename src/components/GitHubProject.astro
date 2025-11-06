@@ -1,18 +1,8 @@
 ---
+import type { Project } from "../types/github";
+
 export interface Props {
-    project: {
-        id: number;
-        name: string;
-        description: string;
-        html_url: string;
-        language: string | null;
-        stargazers_count: number;
-        pushed_at: string;
-        owner: {
-            login: string;
-            avatar_url: string;
-        };
-    };
+    project: Project;
 }
 
 const { project } = Astro.props;
@@ -38,7 +28,6 @@ import { Image } from "astro:assets";
                 decoding="async"
                 class="avatar"
             />
-
             <span class="project-name">{project.name}</span>
         </div>
 
