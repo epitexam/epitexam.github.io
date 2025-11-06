@@ -7,8 +7,9 @@ import GitHubProject from "../components/GitHubProject.astro";
 import { SITE_DESCRIPTION, SITE_TITLE, GITHUB_URL } from "../consts";
 import { Image } from "astro:assets";
 import profile from "../assets/profile.webp";
+import type { Project } from "../types/github";
 
-const stack = [
+const fullStack = [
 	// Frontend
 	"ElectronJS",
 	"Tauri",
@@ -60,30 +61,26 @@ const stack = [
 	"ESP32",
 ];
 
-let projects: any[] = [];
+let projects: Project[] = [];
 try {
 	const token = import.meta.env.TOKEN_GITHUB || "";
 	const username = SITE_TITLE.toLowerCase().replace(/\s+/g, "");
 	const res = await fetch(`https://api.github.com/users/${username}/repos`, {
 		headers: token ? { Authorization: `token ${token}` } : {},
 	});
-
 	if (res.ok) {
-		const allProjects = await res.json();
-		projects = allProjects
-			.filter((repo: any) => !repo.fork)
+		projects = ((await res.json()) as Project[])
 			.sort(
-				(a: any, b: any) =>
+				(a: Project, b: Project) =>
 					new Date(b.pushed_at).getTime() -
 					new Date(a.pushed_at).getTime(),
 			)
 			.slice(0, 4);
-	} else {
-		console.warn("GitHub API error:", res.status);
 	}
-} catch (err) {
-	console.error("GitHub fetch failed:", err);
-}
+} catch {}
+
+const stack = fullStack;
+const mobileStack = fullStack.slice(0, Math.min(12, fullStack.length));
 ---
 
 <html lang="fr">
@@ -108,7 +105,6 @@ try {
 						loading="eager"
 						class="rounded-full border border-accent/30"
 					/>
-
 					<h1 class="text-4xl md:text-5xl font-bold tracking-tight">
 						Ici <span class="text-accent">{SITE_TITLE} !</span> 👋
 					</h1>
@@ -121,7 +117,6 @@ try {
 					<p class="text-sm opacity-70">
 						Full-stack / IoT / Bas niveau • 🇫🇷
 					</p>
-
 					<div class="flex items-center gap-2 text-xs">
 						<div
 							class="w-2.5 h-2.5 rounded-full bg-green-400 animate-pulse"
@@ -134,27 +129,14 @@ try {
 				</div>
 
 				<div class="flex flex-wrap justify-center gap-4 mt-6">
-					<!-- <a
-						href="mailto:contact@example.com"
-						class="group relative px-6 py-2.5 rounded-xl border border-accent/30 bg-[rgba(25,35,30,0.35)] text-accent transition-all duration-300 backdrop-blur-sm hover:border-accent/50 hover:shadow-[var(--glow)] no-underline"
-						style="background: radial-gradient(ellipse at top left, rgba(25, 35, 30, 0.35), rgba(10, 15, 10, 0.15) 70%); box-shadow: 0 4px 12px rgba(0,0,0,0.2);"
+					<a href="/blog" class="glass-button glass-neutral"
+						>Voir le blog</a
 					>
-						Envoyer un email
-					</a> -->
-
-					<div class="flex flex-wrap justify-center gap-4 mt-6">
-						<a href="/blog" class="glass-button glass-neutral">
-							Voir le blog
-						</a>
-
-						<a
-							href={GITHUB_URL}
-							target="_blank"
-							class="glass-button glass-accent"
-						>
-							GitHub
-						</a>
-					</div>
+					<a
+						href={GITHUB_URL}
+						target="_blank"
+						class="glass-button glass-accent">GitHub</a
+					>
 				</div>
 			</section>
 
@@ -164,7 +146,6 @@ try {
 				<h2 class="text-xl font-bold text-accent tracking-tight">
 					Au quotidien :
 				</h2>
-
 				<div class="stack-marquee mt-15">
 					<div class="marquee-row marquee-row-1 mb-5">
 						{
@@ -192,7 +173,7 @@ try {
 				<div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-15">
 					{
 						projects.length > 0 ? (
-							projects.map((repo) => (
+							projects.map((repo: Project) => (
 								<GitHubProject project={repo} />
 							))
 						) : (
@@ -214,92 +195,6 @@ try {
 </html>
 
 <style>
-	.glass-button {
-		position: relative;
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		padding: 0.75rem 1.8rem;
-		border-radius: 0.9rem;
-		font-weight: 500;
-		font-size: 0.95rem;
-		letter-spacing: 0.02em;
-		text-decoration: none;
-		backdrop-filter: blur(14px) saturate(160%);
-		background: rgba(20, 30, 25, 0.25);
-		border: 1px solid rgba(0, 255, 150, 0.25);
-		color: rgb(220, 255, 220);
-		box-shadow:
-			inset 0 0 10px rgba(0, 255, 150, 0.05),
-			0 0 15px rgba(0, 255, 150, 0.08);
-		transition: all 0.35s ease;
-		overflow: hidden;
-		isolation: isolate;
-	}
-
-	.glass-button::before {
-		content: "";
-		position: absolute;
-		inset: 0;
-		background: radial-gradient(
-			circle at top left,
-			rgba(0, 255, 150, 0.08),
-			transparent 70%
-		);
-		opacity: 0;
-		transition: opacity 0.4s ease;
-		z-index: -1;
-	}
-
-	.glass-button:hover::before {
-		opacity: 1;
-	}
-
-	.glass-button:hover {
-		transform: translateY(-3px) scale(1.03);
-		box-shadow:
-			inset 0 0 20px rgba(0, 255, 150, 0.12),
-			0 0 25px rgba(0, 255, 150, 0.25),
-			0 0 40px rgba(0, 255, 150, 0.12);
-	}
-
-	.glass-button:active {
-		transform: scale(0.97);
-		box-shadow:
-			inset 0 0 20px rgba(0, 255, 150, 0.25),
-			0 0 25px rgba(0, 255, 150, 0.3);
-	}
-
-	.glass-accent {
-		color: rgb(0, 255, 150);
-		border-color: rgba(0, 255, 150, 0.45);
-		text-shadow: 0 0 6px rgba(0, 255, 150, 0.4);
-	}
-
-	.glass-accent:hover {
-		color: rgb(220, 255, 220);
-		background: rgba(0, 255, 150, 0.08);
-	}
-
-	.glass-neutral {
-		border-color: rgba(255, 255, 255, 0.1);
-		color: rgba(220, 255, 220, 0.9);
-		background: rgba(15, 25, 20, 0.25);
-	}
-
-	.glass-neutral:hover {
-		border-color: rgba(0, 255, 150, 0.25);
-		color: rgb(0, 255, 150);
-		box-shadow: 0 0 25px rgba(0, 255, 150, 0.2);
-	}
-
-	@media (max-width: 640px) {
-		.glass-button {
-			padding: 0.6rem 1.4rem;
-			font-size: 0.85rem;
-		}
-	}
-
 	.stack-marquee {
 		position: relative;
 		overflow: hidden;
@@ -318,7 +213,6 @@ try {
 			transparent 100%
 		);
 	}
-
 	.marquee-row {
 		display: flex;
 		gap: 1rem;
@@ -328,16 +222,13 @@ try {
 		will-change: transform;
 		padding: 0.3rem 0;
 	}
-
 	.marquee-row-1 {
 		animation: marquee-left 65s linear infinite;
 	}
-
 	.marquee-row-2 {
 		animation: marquee-right 70s linear infinite;
 		opacity: 0.8;
 	}
-
 	@keyframes marquee-left {
 		0% {
 			transform: translateX(0);
@@ -346,7 +237,6 @@ try {
 			transform: translateX(-50%);
 		}
 	}
-
 	@keyframes marquee-right {
 		0% {
 			transform: translateX(-50%);
@@ -355,7 +245,6 @@ try {
 			transform: translateX(0);
 		}
 	}
-
 	.fade {
 		position: absolute;
 		top: 0;
@@ -364,7 +253,6 @@ try {
 		pointer-events: none;
 		z-index: 2;
 	}
-
 	.fade-left {
 		left: 0;
 		background: linear-gradient(
@@ -373,7 +261,6 @@ try {
 			rgba(10, 12, 20, 0)
 		);
 	}
-
 	.fade-right {
 		right: 0;
 		background: linear-gradient(
@@ -382,7 +269,6 @@ try {
 			rgba(10, 12, 20, 0)
 		);
 	}
-
 	@media (max-width: 720px) {
 		.marquee-row-1 {
 			animation-duration: 60s;
