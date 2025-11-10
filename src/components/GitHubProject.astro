@@ -13,7 +13,7 @@ import { Image } from "astro:assets";
     href={project.html_url}
     target="_blank"
     rel="noopener noreferrer"
-    class="project-card"
+    class="project-card group"
 >
     <div class="smoke-layer"></div>
 
@@ -22,8 +22,8 @@ import { Image } from "astro:assets";
             <Image
                 src={project.owner.avatar_url}
                 alt={`${project.owner.login} avatar`}
-                width={56}
-                height={56}
+                width={32}
+                height={32}
                 loading="lazy"
                 decoding="async"
                 class="avatar"
@@ -56,21 +56,29 @@ import { Image } from "astro:assets";
         gap: 0.75rem;
         padding: 1.2rem 1.4rem;
         border-radius: 1rem;
-        border: 1px solid rgba(0, 255, 150, 0.25);
-        background: rgba(10, 20, 15, 0.5);
+        border: 1px solid rgba(var(--accent), 0.2);
+        background: radial-gradient(
+                ellipse at top left,
+                rgba(25, 35, 30, 0.4),
+                rgba(10, 15, 10, 0.2) 70%
+            ),
+            linear-gradient(
+                135deg,
+                rgba(var(--accent), 0.05) 0%,
+                transparent 50%
+            );
         color: rgb(var(--text));
         text-decoration: none;
         overflow: hidden;
-        cursor: pointer;
         isolation: isolate;
-        will-change: transform;
+        backdrop-filter: blur(12px);
         transition:
-            transform 0.35s ease,
-            box-shadow 0.35s ease,
-            border-color 0.35s ease;
+            transform 0.25s ease,
+            border-color 0.25s ease,
+            box-shadow 0.25s ease;
         box-shadow:
-            inset 0 0 12px rgba(0, 255, 150, 0.05),
-            0 0 15px rgba(0, 255, 150, 0.08);
+            inset 0 1px 0 rgba(255, 255, 255, 0.05),
+            0 8px 25px rgba(0, 0, 0, 0.2);
     }
 
     .smoke-layer {
@@ -78,115 +86,110 @@ import { Image } from "astro:assets";
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 22%;
+        height: 30%;
         background: radial-gradient(
-                circle at 40% 100%,
-                rgba(0, 255, 150, 0.15) 0%,
-                transparent 70%
+                ellipse at 40% 100%,
+                rgba(var(--accent), 0.1) 0%,
+                transparent 60%
             ),
             radial-gradient(
-                circle at 70% 100%,
-                rgba(0, 180, 100, 0.12) 0%,
-                transparent 80%
+                ellipse at 70% 100%,
+                rgba(var(--accent), 0.08) 0%,
+                transparent 70%
             );
-        opacity: 0.25;
-        filter: blur(10px);
-        transform: translateY(0);
-        animation: smokeFlow 14s linear infinite alternate;
+        opacity: 0;
+        transition: opacity 0.4s ease;
         z-index: -1;
     }
 
-    @keyframes smokeFlow {
-        0% {
-            transform: translateX(-5%) translateY(2%);
-        }
-        50% {
-            transform: translateX(6%) translateY(-1%);
-        }
-        100% {
-            transform: translateX(-4%) translateY(1%);
-        }
-    }
-
-    .project-card::after {
+    .project-card::before {
         content: "";
         position: absolute;
         inset: 0;
         background: linear-gradient(
-            115deg,
-            transparent 0%,
-            rgba(0, 255, 150, 0.15) 45%,
-            rgba(255, 255, 255, 0.08) 50%,
-            transparent 55%
+            135deg,
+            rgba(var(--accent), 0.1) 0%,
+            transparent 50%
         );
-        mix-blend-mode: screen;
         opacity: 0;
-        transition: opacity 0.6s ease;
-        z-index: 0;
-    }
-    .project-card:hover::after {
-        opacity: 0.35;
+        transition: opacity 0.3s ease;
+        z-index: -1;
     }
 
     .project-card:hover {
-        transform: translateY(-4px) scale(1.015);
-        border-color: rgba(0, 255, 150, 0.4);
+        transform: translateY(-3px);
+        border-color: rgba(var(--accent), 0.4);
         box-shadow:
-            0 0 25px rgba(0, 255, 150, 0.18),
-            inset 0 0 15px rgba(0, 255, 150, 0.08);
+            0 12px 30px rgba(var(--accent), 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .project-card:hover .smoke-layer,
+    .project-card:hover::before {
+        opacity: 1;
     }
 
     .project-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        flex-wrap: wrap;
         gap: 0.6rem;
+        flex-wrap: wrap;
     }
 
     .owner-info {
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.6rem;
+        min-width: 0;
     }
 
     .avatar {
-        width: 1.9rem;
-        height: 1.9rem;
+        width: 2rem;
+        height: 2rem;
         border-radius: 50%;
-        border: 1px solid rgba(0, 255, 150, 0.25);
-        transition: transform 0.3s ease;
+        border: 1px solid rgba(var(--accent), 0.3);
+        flex-shrink: 0;
+        transition: transform 0.2s ease;
     }
+
     .project-card:hover .avatar {
-        transform: scale(1.07);
+        transform: scale(1.1);
     }
 
     .project-name {
         font-weight: 600;
-        letter-spacing: 0.02em;
+        font-size: 1.1rem;
+        letter-spacing: 0.01em;
         color: rgb(var(--text));
-        transition: color 0.3s ease;
+        transition: color 0.2s ease;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
+
     .project-card:hover .project-name {
-        color: rgb(0, 255, 150);
+        color: rgb(var(--accent));
     }
 
     .language-badge {
         font-size: 0.75rem;
-        padding: 0.25rem 0.6rem;
-        border-radius: 0.6rem;
-        border: 1px solid rgba(0, 255, 150, 0.25);
-        color: rgb(0, 255, 150);
-        background: rgba(0, 255, 150, 0.08);
+        padding: 0.3rem 0.7rem;
+        border-radius: 0.75rem;
+        border: 1px solid rgba(var(--accent), 0.3);
+        color: rgb(var(--accent));
+        background: rgba(var(--accent), 0.1);
+        flex-shrink: 0;
+        font-weight: 500;
     }
 
     .project-description {
         font-size: 0.9rem;
-        color: rgba(220, 255, 220, 0.9);
+        color: rgba(220, 255, 220, 0.85);
         line-height: 1.5;
+        display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
-        display: -webkit-box;
         overflow: hidden;
         text-overflow: ellipsis;
     }
@@ -196,20 +199,47 @@ import { Image } from "astro:assets";
         justify-content: space-between;
         font-size: 0.8rem;
         color: rgba(200, 255, 200, 0.7);
+        margin-top: auto;
+    }
+
+    @media (max-width: 640px) {
+        .project-card {
+            padding: 1rem;
+            gap: 0.6rem;
+        }
+
+        .project-header {
+            gap: 0.5rem;
+        }
+
+        .project-name {
+            font-size: 1rem;
+        }
+
+        .project-description {
+            font-size: 0.85rem;
+            -webkit-line-clamp: 2;
+        }
     }
 
     @media (max-width: 480px) {
         .project-card {
-            padding: 1rem;
-            border-color: rgba(0, 255, 150, 0.2);
-            background: rgba(10, 20, 15, 0.4);
-            box-shadow: none;
+            border-color: rgba(var(--accent), 0.15);
         }
 
         .smoke-layer {
-            height: 14%;
-            opacity: 0.15;
-            animation: none;
+            display: none;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .project-card,
+        .avatar {
+            transition: none;
+        }
+
+        .project-card:hover {
+            transform: none;
         }
     }
 </style>
