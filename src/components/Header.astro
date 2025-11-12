@@ -110,9 +110,34 @@ import HeaderLink from "./HeaderLink.astro";
 		top: 0;
 		z-index: 50;
 		padding: 0.75rem 1.5rem;
-		background: rgba(10, 12, 20, 0.85);
-		backdrop-filter: blur(12px);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+		background: rgba(10, 12, 20, 0.75);
+		backdrop-filter: blur(16px) saturate(180%);
+		-webkit-backdrop-filter: blur(16px) saturate(180%);
+		border-bottom: 1px solid rgba(0, 255, 150, 0.2);
+		box-shadow:
+			0 0 25px rgba(0, 255, 150, 0.1),
+			0 4px 20px rgba(0, 255, 150, 0.08);
+	}
+
+	@media (min-width: 769px) {
+		.site-header {
+			animation: header-glow 8s ease-in-out infinite alternate;
+		}
+	}
+
+	@keyframes header-glow {
+		from {
+			box-shadow:
+				0 0 20px rgba(0, 255, 150, 0.1),
+				0 4px 20px rgba(0, 255, 150, 0.08);
+			border-bottom-color: rgba(0, 255, 150, 0.2);
+		}
+		to {
+			box-shadow:
+				0 0 40px rgba(0, 255, 150, 0.15),
+				0 4px 25px rgba(0, 255, 150, 0.12);
+			border-bottom-color: rgba(0, 255, 150, 0.3);
+		}
 	}
 
 	.nav-container {
@@ -142,7 +167,12 @@ import HeaderLink from "./HeaderLink.astro";
 	.brand-title a {
 		color: rgb(var(--text));
 		text-decoration: none;
-		transition: text-shadow 0.2s ease;
+		text-shadow: 0 0 12px rgba(var(--accent), 0.25);
+		transition: text-shadow 0.3s ease;
+	}
+
+	.brand-title a:hover {
+		text-shadow: 0 0 20px rgba(var(--accent), 0.6);
 	}
 
 	.brand-title a:focus-visible {
@@ -160,6 +190,12 @@ import HeaderLink from "./HeaderLink.astro";
 		text-decoration: none;
 		border-radius: 0.25rem;
 		transition: all 0.2s ease;
+		position: relative;
+	}
+
+	.nav-link:hover {
+		color: rgb(var(--accent));
+		text-shadow: 0 0 8px rgba(var(--accent), 0.8);
 	}
 
 	.nav-link:focus-visible {
@@ -172,7 +208,12 @@ import HeaderLink from "./HeaderLink.astro";
 		align-items: center;
 		padding: 0.5rem;
 		border-radius: 0.25rem;
-		transition: color 0.2s ease;
+		transition: all 0.2s ease;
+	}
+
+	.social-link:hover svg {
+		fill: rgb(var(--accent));
+		filter: drop-shadow(0 0 8px rgba(var(--accent), 0.6));
 	}
 
 	.social-link:focus-visible {
@@ -188,6 +229,11 @@ import HeaderLink from "./HeaderLink.astro";
 		color: rgb(var(--text));
 		cursor: pointer;
 		border-radius: 0.25rem;
+		transition: filter 0.2s ease;
+	}
+
+	.nav-toggle:hover {
+		filter: drop-shadow(0 0 8px rgba(var(--accent), 0.6));
 	}
 
 	.nav-toggle:focus-visible {
@@ -202,6 +248,13 @@ import HeaderLink from "./HeaderLink.astro";
 	@media (max-width: 768px) {
 		.site-header {
 			padding: 0.75rem 1rem;
+
+			backdrop-filter: blur(12px) saturate(160%);
+			-webkit-backdrop-filter: blur(12px) saturate(160%);
+			animation: none;
+			box-shadow:
+				0 0 15px rgba(0, 255, 150, 0.05),
+				0 2px 10px rgba(0, 255, 150, 0.05);
 		}
 
 		.nav-container {
@@ -243,6 +296,16 @@ import HeaderLink from "./HeaderLink.astro";
 			text-align: center;
 			padding: 0.75rem;
 		}
+
+		.brand-title a {
+			text-shadow: 0 0 8px rgba(var(--accent), 0.15);
+		}
+	}
+
+	@supports not (backdrop-filter: blur(1px)) {
+		.site-header {
+			background: rgba(10, 12, 20, 0.95);
+		}
 	}
 
 	@media (max-width: 480px) {
@@ -256,13 +319,18 @@ import HeaderLink from "./HeaderLink.astro";
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.site-header {
+			animation: none;
+		}
+
 		.nav-menu {
 			transition: none;
 		}
 
 		.brand-title a,
 		.nav-link,
-		.social-link {
+		.social-link,
+		.nav-toggle {
 			transition: none;
 		}
 	}
