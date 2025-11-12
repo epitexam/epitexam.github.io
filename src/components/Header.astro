@@ -3,32 +3,34 @@ import { GITHUB_URL, SITE_TITLE } from "../consts";
 import HeaderLink from "./HeaderLink.astro";
 ---
 
-<header
-	class="sticky top-0 z-50 bg-[rgba(10,12,20,0.8)] backdrop-blur-md border-b border-white/5 shadow-[0_0_25px_rgba(0,255,150,0.2)]"
->
-	<nav>
-		<div class="nav-left">
-			<h2><a href="/">{SITE_TITLE}</a></h2>
+<header class="site-header">
+	<nav class="nav-container">
+		<div class="nav-section nav-brand">
+			<h2 class="brand-title">
+				<a href="/">{SITE_TITLE}</a>
+			</h2>
 			<button
-				class="menu-toggle"
-				aria-label="Toggle menu"
+				class="nav-toggle"
+				aria-label="Menu navigation"
 				id="menu-button"
 				aria-expanded="false"
+				aria-controls="nav-menu"
 			>
 				<svg
 					viewBox="0 0 24 24"
-					width="28"
-					height="28"
-					fill="none"
-					stroke="currentColor"
-					stroke-width="2"
+					width="24"
+					height="24"
+					aria-hidden="true"
 				>
-					<path d="M3 6h18M3 12h18M3 18h18"></path>
+					<path
+						d="M3 6h18M3 12h18M3 18h18"
+						stroke="currentColor"
+						stroke-width="2"></path>
 				</svg>
 			</button>
 		</div>
 
-		<div class="nav-center" id="menu">
+		<div class="nav-section nav-menu" id="nav-menu">
 			<HeaderLink href="/">Home</HeaderLink>
 			<HeaderLink href="/blog">Blog</HeaderLink>
 			<HeaderLink href="/tools">Tools</HeaderLink>
@@ -37,33 +39,29 @@ import HeaderLink from "./HeaderLink.astro";
 				href={GITHUB_URL}
 				target="_blank"
 				rel="noopener noreferrer"
-				class="mobile-github-link">GitHub</a
+				class="nav-link mobile-only"
 			>
+				GitHub
+			</a>
 		</div>
 
-		<div class="social-links desktop-only">
+		<div class="nav-section nav-social">
 			<a
 				href={GITHUB_URL}
 				target="_blank"
 				rel="noopener noreferrer"
-				aria-label="{SITE_TITLE}'s GitHub"
+				aria-label="GitHub profile"
+				class="social-link"
 			>
-				<svg viewBox="0 0 16 16" width="24" height="24">
+				<svg
+					viewBox="0 0 16 16"
+					width="20"
+					height="20"
+					aria-hidden="true"
+				>
 					<path
 						fill="currentColor"
-						d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 
-						5.47 7.59.4.07.55-.17.55-.38 
-						0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94
-						-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53
-						.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66
-						.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
-						0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12
-						0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 
-						1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 
-						1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 
-						0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 
-						1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 
-						8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+						d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
 					></path>
 				</svg>
 			</a>
@@ -73,202 +71,199 @@ import HeaderLink from "./HeaderLink.astro";
 
 <script>
 	document.addEventListener("DOMContentLoaded", () => {
-		const button = document.getElementById("menu-button");
-		const menu = document.getElementById("menu");
-		if (!button || !menu) return;
+		const toggle = document.getElementById("menu-button");
+		const menu = document.getElementById("nav-menu");
 
-		button.addEventListener("click", () => {
-			const isOpen = menu.classList.contains("open");
-			menu.classList.toggle("open", !isOpen);
-			button.classList.toggle("active", !isOpen);
-			button.setAttribute("aria-expanded", String(!isOpen));
+		if (!toggle || !menu) return;
+
+		const toggleMenu = () => {
+			const isExpanded = toggle.getAttribute("aria-expanded") === "true";
+			toggle.setAttribute("aria-expanded", String(!isExpanded));
+			menu.classList.toggle("is-open", !isExpanded);
+			toggle.classList.toggle("is-active", !isExpanded);
+		};
+
+		toggle.addEventListener("click", toggleMenu);
+
+		document.addEventListener("click", (e) => {
+			const target = e.target as Node;
+			if (
+				!menu.contains(target) &&
+				!toggle.contains(target) &&
+				menu.classList.contains("is-open")
+			) {
+				toggleMenu();
+			}
+		});
+
+		document.addEventListener("keydown", (e) => {
+			if (e.key === "Escape" && menu.classList.contains("is-open")) {
+				toggleMenu();
+			}
 		});
 	});
 </script>
 
 <style>
-	header {
-		margin: 0;
-		padding: 1rem 1.5rem;
+	.site-header {
 		position: sticky;
 		top: 0;
 		z-index: 50;
-		background: rgba(10, 15, 10, 0.55);
-		backdrop-filter: blur(14px) saturate(180%);
-		box-shadow: 0 0 25px rgba(var(--accent), 0.1);
-		animation: ambientGlow 6s ease-in-out infinite alternate;
+		padding: 0.75rem 1.5rem;
+		background: rgba(10, 12, 20, 0.85);
+		backdrop-filter: blur(12px);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 	}
 
-	.header-glow {
-		background: rgba(10, 12, 20, 0.6);
-		backdrop-filter: blur(12px) saturate(160%);
-		border: 1px solid rgba(0, 255, 150, 0.15);
-		box-shadow: 0 4px 20px rgba(0, 255, 150, 0.08);
-		transition:
-			box-shadow 0.3s ease,
-			border-color 0.3s ease;
-	}
-
-	.header-glow.scrolled {
-		border-color: rgba(0, 255, 150, 0.3);
-		box-shadow: 0 6px 25px rgba(0, 255, 150, 0.12);
-	}
-
-	@keyframes ambientGlow {
-		from {
-			box-shadow: 0 0 20px rgba(var(--accent), 0.1);
-		}
-		to {
-			box-shadow: 0 0 40px rgba(var(--accent), 0.2);
-		}
-	}
-
-	/* === NAV LAYOUT === */
-	nav {
+	.nav-container {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: 1.5rem;
-		width: 100%;
+		max-width: 1200px;
+		margin: 0 auto;
 	}
 
-	.nav-left {
+	.nav-section {
 		display: flex;
 		align-items: center;
+	}
+
+	.nav-brand {
 		gap: 1rem;
+		flex-shrink: 0;
 	}
 
-	h2 {
+	.brand-title {
 		margin: 0;
-		font-size: 1.25em;
-		letter-spacing: 0.03em;
-		color: rgb(var(--text));
-		text-shadow: 0 0 12px rgba(var(--accent), 0.25);
-		transition: text-shadow 0.3s ease;
+		font-size: 1.25rem;
 	}
 
-	h2:hover {
-		text-shadow: 0 0 20px rgba(var(--accent), 0.6);
-	}
-
-	.nav-center {
-		display: flex;
-		gap: 1.25rem;
-		transition:
-			max-height 0.3s ease,
-			opacity 0.3s ease;
-	}
-
-	nav a {
-		padding: 0.5em 0.75em;
+	.brand-title a {
 		color: rgb(var(--text));
 		text-decoration: none;
-		font-weight: 500;
-		border: none;
-		transition:
-			color 0.3s ease,
-			text-shadow 0.3s ease;
+		transition: text-shadow 0.2s ease;
 	}
 
-	nav a:hover,
-	nav a.active {
-		color: rgb(var(--accent));
-		text-shadow: 0 0 8px rgba(var(--accent), 0.8);
+	.brand-title a:focus-visible {
+		outline: 2px solid rgb(var(--accent));
+		outline-offset: 2px;
 	}
 
-	/* === SOCIAL ICONS === */
-	.social-links {
+	.nav-menu {
+		gap: 1.5rem;
+	}
+
+	.nav-link {
+		padding: 0.5rem 0.75rem;
+		color: rgb(var(--text));
+		text-decoration: none;
+		border-radius: 0.25rem;
+		transition: all 0.2s ease;
+	}
+
+	.nav-link:focus-visible {
+		outline: 2px solid rgb(var(--accent));
+		outline-offset: 2px;
+	}
+
+	.social-link {
 		display: flex;
 		align-items: center;
+		padding: 0.5rem;
+		border-radius: 0.25rem;
+		transition: color 0.2s ease;
 	}
 
-	.social-links svg {
-		fill: rgb(var(--text));
-		transition:
-			fill 0.3s ease,
-			filter 0.3s ease;
+	.social-link:focus-visible {
+		outline: 2px solid rgb(var(--accent));
+		outline-offset: 2px;
 	}
 
-	.social-links a:hover svg {
-		fill: rgb(var(--accent));
-		filter: drop-shadow(0 0 10px rgba(var(--accent), 0.6));
-	}
-
-	/* === MENU TOGGLE === */
-	.menu-toggle {
+	.nav-toggle {
 		display: none;
 		background: none;
 		border: none;
-		color: rgb(var(--accent));
+		padding: 0.5rem;
+		color: rgb(var(--text));
 		cursor: pointer;
-		transition:
-			transform 0.3s ease,
-			filter 0.3s ease;
+		border-radius: 0.25rem;
 	}
 
-	.menu-toggle:hover {
-		filter: drop-shadow(0 0 8px rgba(var(--accent), 0.6));
+	.nav-toggle:focus-visible {
+		outline: 2px solid rgb(var(--accent));
+		outline-offset: 2px;
 	}
 
-	.menu-toggle.active {
-		transform: rotate(90deg);
-	}
-
-	.mobile-github-link {
+	.mobile-only {
 		display: none;
-		color: rgb(var(--accent)) !important;
 	}
 
-	@media (max-width: 720px) {
-		nav {
-			flex-direction: column;
-			align-items: stretch;
-			gap: 0.5rem;
+	@media (max-width: 768px) {
+		.site-header {
+			padding: 0.75rem 1rem;
 		}
 
-		.nav-left {
-			display: flex;
-			align-items: center;
+		.nav-container {
+			flex-wrap: wrap;
+		}
+
+		.nav-brand {
+			width: 100%;
 			justify-content: space-between;
-			width: 100%;
 		}
 
-		.menu-toggle {
-			display: block;
+		.nav-toggle {
+			display: flex;
 		}
 
-		.nav-center {
+		.nav-menu {
 			width: 100%;
-			overflow: hidden;
 			flex-direction: column;
-			align-items: center;
 			gap: 0.75rem;
 			max-height: 0;
-			opacity: 0;
-			transform: translateY(-10px);
-			transition:
-				max-height 0.4s ease,
-				opacity 0.4s ease,
-				transform 0.4s ease;
+			overflow: hidden;
+			transition: max-height 0.3s ease;
 		}
 
-		.nav-center.open {
-			max-height: 500px;
-			opacity: 1;
-			transform: translateY(0);
+		.nav-menu.is-open {
+			max-height: 300px;
 		}
 
-		.desktop-only {
+		.nav-social {
 			display: none;
 		}
 
-		.mobile-github-link {
+		.mobile-only {
 			display: block;
 		}
 
-		.social-links {
-			margin-top: 0.75rem;
-			justify-content: center;
+		.nav-link {
+			width: 100%;
+			text-align: center;
+			padding: 0.75rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.site-header {
+			padding: 0.5rem 0.75rem;
+		}
+
+		.nav-menu {
+			gap: 0.5rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.nav-menu {
+			transition: none;
+		}
+
+		.brand-title a,
+		.nav-link,
+		.social-link {
+			transition: none;
 		}
 	}
 </style>
