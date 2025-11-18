@@ -243,6 +243,185 @@ a::after {
   }
 }
 
+ul,
+ol {
+  margin: 1.5rem 0;
+  padding-left: 1.5rem;
+}
+
+ul {
+  list-style: none;
+}
+
+ul li {
+  position: relative;
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+}
+
+ul li::before {
+  content: '▸';
+  color: rgb(var(--accent));
+  position: absolute;
+  left: 0;
+  opacity: 0.7;
+  font-weight: bold;
+}
+
+ol {
+  list-style: decimal;
+  color: rgba(var(--text), 0.9);
+}
+
+ol li {
+  margin-bottom: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+li {
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+ul ul,
+ol ol,
+ul ol,
+ol ul {
+  margin: 0.5rem 0 0.5rem 1rem;
+}
+
+ul ul li::before {
+  content: '›';
+  opacity: 0.6;
+}
+
+ol ol {
+  list-style-type: lower-alpha;
+}
+
+ol ol ol {
+  list-style-type: lower-roman;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 2rem 0;
+  background: rgba(8, 12, 18, 0.6);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+table::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(var(--accent), 0.4),
+      transparent);
+}
+
+thead {
+  background: rgba(var(--accent), 0.1);
+  border-bottom: 2px solid rgba(var(--accent), 0.3);
+}
+
+thead th {
+  color: rgb(var(--accent));
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.85em;
+  text-shadow: 0 0 8px rgba(var(--accent), 0.3);
+}
+
+th,
+td {
+  padding: 1rem 1.25rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  line-height: 1.5;
+}
+
+th {
+  font-weight: 600;
+  color: rgba(var(--text), 0.95);
+}
+
+td {
+  color: rgba(var(--text), 0.85);
+  font-weight: 450;
+}
+
+tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+tbody tr:hover {
+  background: rgba(var(--accent), 0.05);
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+tbody tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+tbody tr:nth-child(even):hover {
+  background: rgba(var(--accent), 0.08);
+}
+
+@media (max-width: 768px) {
+  table {
+    margin: 1.5rem 0;
+    border-radius: 0.5rem;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  th,
+  td {
+    padding: 0.75rem 1rem;
+    font-size: 0.9em;
+  }
+
+  thead th {
+    font-size: 0.8em;
+  }
+}
+
+@media (max-width: 480px) {
+  table {
+    margin: 1.25rem -0.5rem;
+    border-radius: 0.375rem;
+  }
+
+  th,
+  td {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.85em;
+  }
+
+  ul,
+  ol {
+    padding-left: 1.25rem;
+  }
+
+  ul li {
+    padding-left: 1rem;
+  }
+}
+
 hr {
   border: none;
   height: 1px;
