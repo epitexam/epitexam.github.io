@@ -1,0 +1,186 @@
+---
+title: 'Portfolio 2025 : Le Guide du Dev Fauché'
+description: 'Comparatif technique d’Astro, Hugo et Eleventy pour un portfolio statique rapide, sécurisé et gratuit. Analyse des performances (LCP < 1 s), de la simplicité de dev, et des options d’hosting (Cloudflare, GitHub Pages, Netlify).'
+pubDate: '2025-11-16'
+heroImage: '../../assets/blog-placeholder-about.jpg'
+draft: false
+tags: ['astro', 'hugo', 'eleventy', 'portfolio', 'performance', 'javascript', 'security', 'hosting']
+---
+
+Un portfolio, c’est la vitrine pour convaincre  des clients et montrer ses skills, mais sans budget, faut être malin. En 2025, un site doit charger en moins d’une seconde, ranker sur Google, et coûter zéro. 
+
+Ce guide compare les outils pour un portfolio rapide, sécurisé, et gratuit, testés sur un mobile entrée / millieu de gamme (Iphone 12). Pour les devs front, freelances, ou designers qui codent, voici comment faire un site qui claque sans se ruiner.
+<br/>
+## Les bases d’un portfolio
+Un portfolio doit être rapide, visible, et tenir dans un budget nul. Le LCP (Largest Contentful Paint) doit être sous 1 seconde pour un score excellent et garder l’audience. Le bundle JavaScript reste sous 5 Ko minifié et gzippé, car un portfolio n’est pas une app lourde. Le build pour 10 pages prend moins de 5 secondes. Le SEO s’appuie sur des balises OpenGraph et schema.org pour briller sur X ou LinkedIn. 
+
+L’accessibilité, c'est non négociable : contraste minimum 4,5:1 pour le texte normal. Pourquoi ? Parce que 27 % des adultes en Europe ont un handicap. Résultat ? Ils sont 12,9 points de pourcentage moins nombreux à utiliser internet tous les jours que les autres.
+Côté sécurité : des headers HTTP blindés et zéro faille ouverte.
+<br/>
+## Astro : Vitesse avec du style
+Astro génère du HTML pur avec du JavaScript uniquement sur les parties interactives, comme un filtre de projets. En 4G throttlée, le LCP descend sous 1 seconde, le bundle JS reste à 3 Ko pour un filtre Svelte, et le build prend environ 2 secondes pour 10 pages. Le déploiement est gratuit sur Cloudflare ou Github Pages avec bande passante illimitée. Exemple de page :
+
+```astro
+// src/pages/index.astro
+<script>
+  import ProjectFilter from '../components/ProjectFilter.svelte';
+  import { getCollection } from 'astro:content';
+  const projects = await getCollection('projects');
+</script>
+<main>
+  <ProjectFilter client:load />
+  {projects.map(p => <article>{p.data.title}</article>)}
+</main>
+```
+
+La faille CVE-2025-61925 (spoofing d’headers) se corrige avec un middleware qui valide l’host. Si les configs Vite ou JavaScript te gonflent, Astro peut rebuter, mais pour un site rapide et stylé, c’est du costaud.
+<br/>
+## Hugo : Rapide comme l’éclair
+Hugo, écrit en Go, crache du HTML pur sans JavaScript sauf si tu en ajoutes. En 4G, le LCP tombe sous 1 seconde, le bundle JS reste à zéro par défaut, et le build prend moins d’une seconde pour 10 pages. Le déploiement se fait gratuitement sur GitHub Pages avec 100 Go de bande passante mensuelle. Exemple :
+
+```html
+<!-- layouts/index.html -->
+{{ range (where .Site.RegularPages "Section" "projects") }}
+  <article>{{ .Title }}</article>
+{{ end }}
+```
+
+Les templates Go demandent un peu d’apprentissage, mais un thème comme Ananke se configure en dix minutes. La sécurité s’ajoute via un fichier `_headers` pour le CSP. Hugo offre la vitesse maximale à budget nul.
+<br/>
+## Eleventy : Simplicité et efficacité
+Eleventy fonctionne en JavaScript avec Markdown ou Nunjucks et livre des performances solides. En 4G, le LCP reste sous 1 seconde avec un filtre statique, zéro JavaScript, et le build prend environ 1 seconde pour 10 pages. Le déploiement est gratuit sur Cloudflare Pages. Exemple :
+
+```
+<!-- index.njk -->
+{% for project in collections.projects | filterByTag(tag) %}
+  <article>{{ project.data.title }}</article>
+{% endfor %}
+```
+
+La configuration dans `.eleventy.js` reste fluide pour un portfolio simple. La sécurité passe par un fichier `_headers` pour le CSP. Eleventy permet de coder vite et bien sans prise de tête.
+<br/>
+## Sécu : OWASP pour blinder le site
+Un portfolio statique reste vulnérable si on bâcle les formulaires. OWASP Top 10 2025 place le contrôle d’accès cassé (A01) en tête, suivi des mauvaises configurations de sécurité (A02) et des failles de supply chain logicielle (A03), puis des injections (A05). Pour un formulaire de contact via Netlify Forms, valide les inputs côté serveur avec une micro-API sur Cloudflare Workers :
+
+```js
+// worker.js
+addEventListener('fetch', event => {
+  event.respondWith(handleRequest(event.request));
+});
+async function handleRequest(request) {
+  const { name, message } = await request.json();
+  if (name.match(/[<>\;]/) || message.match(/[<>\;]/)) {
+    return new Response('Input invalide', { status: 400 });
+  }
+  // Envoie à l’API
+}
+```
+
+Un Content Security Policy bloque les scripts suspects :
+
+```plaintext
+# _headers
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' cdn.trusted.com;
+```
+
+Pour Astro, applique le patch CVE-2025-61925. Échappe les inputs dans les filtres JavaScript pour éviter le DOM-based XSS. Ajoute un token CSRF dans les formulaires sensibles et garde les clés API hors Git dans un `.env`. Ces mesures couvrent les risques essentiels en quelques minutes.
+<br/>
+## Les pièges qui peuvent tout faire capoter
+Les images mal optimisées plombent la vitesse : passe en WebP avec lazy loading et dimensions fixes :
+
+```html
+<img src="projet.webp" loading="lazy" width="800" height="600" alt="Projet X">
+```
+
+Sans OpenGraph, le site reste invisible sur X :
+
+```html
+<meta property="og:title" content="Portfolio Perso">
+<meta property="og:image" content="/og-image.webp">
+```
+
+Teste le contraste avec WAVE et vise au moins 4,5:1 :
+
+```css
+body { color: #333; background: #fff; }
+```
+<br/>
+## Hosting : Netlify, Vercel, GitHub Pages, Cloudflare
+L’hosting gratuit impacte les perfs et les limites.
+
+Netlify offre 100 Go de bande passante et 300 minutes de build par mois, mais les builds traînent. 
+
+Vercel donne 100 Go avec des builds rapides, mais les cold starts ajoutent du délai sur les fonctions serverless. 
+
+GitHub Pages propose 100 Go sans limite de builds, idéal pour la simplicité. 
+
+Cloudflare Pages livre des builds ultra-rapides avec 500 builds par mois et bande passante illimitée, parfait pour le scaling. Tous gèrent HTTPS et CSP via `_headers`.
+
+Cloudflare domine en performance , GitHub Pages en facilité.
+<br/>
+## Choisir en 30 secondes
+Dev front dans l’écosystème JavaScript ? Eleventy ou Astro sur Cloudflare. Freelance qui veut ranker vite ? Hugo sur GitHub Pages.
+<br/>
+## Conclusion : Un site pro sans un rond
+En 2025, un portfolio doit charger vite, ne rien coûter, et rester blindé. Hugo et Eleventy excellent en vitesse et simplicité, Astro ajoute l’interactivité stylée. Cloudflare Pages règne sur l’hosting gratuit. Code un proto, teste, sécurise, et c’est plié. Un portfolio qui claque, sans un centime.
+<br/>
+<br/>
+---
+## Sources & Liens (vérifiés le 17 novembre 2025)
+
+- **Core Web Vitals 2025 – Google**  
+  https://web.dev/articles/vitals  
+  *LCP excellent < 1 s, bon < 2,5 s.*
+
+- **WCAG 2.2 – W3C**  
+  https://www.w3.org/TR/WCAG22/  
+  *Contraste 4,5:1 pour texte normal (AA).*
+
+- **Handicap & accès internet – Eurostat (27 août 2025)**  
+  https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20250827-1  
+  *82,3 % des personnes avec handicap sévère utilisent internet en 2024 ; écart de 12,9 pp vs. sans handicap ; prévalence ~27 % des 16-64 ans.*
+
+- **Astro – Docs officielles & CVE-2025-61925**  
+  https://docs.astro.build  
+  https://nvd.nist.gov/vuln/detail/CVE-2025-61925
+  https://github.com/withastro/astro/security  
+  *Islands architecture, zero JS by default, patch middleware.*
+
+- **Hugo – Benchmarks & GitHub Pages**  
+  https://gohugo.io  
+  https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#limits  
+  *< 1 s pour 10 pages, 100 Go bande passante soft limit.*
+
+- **Eleventy – Docs & Performance**  
+  https://www.11ty.dev  
+  *~1 s build pour petits sites, zero JS possible.*
+
+- **OWASP Top 10 2025 (Release Candidate 1 – 6 nov. 2025)**  
+  https://owasp.org/Top10/  
+  *A01: Broken Access Control, A02: Security Misconfiguration, A03: Software Supply Chain Failures, A05: Injection.*
+
+- **Cloudflare Pages – Limites gratuites**  
+  https://developers.cloudflare.com/pages/platform/limits/  
+  *500 builds/mois, bande passante illimitée.*
+
+- **Netlify – Pricing gratuit**  
+  https://www.netlify.com/pricing/  
+  *100 Go bande passante, 300 min builds/mois.*
+
+- **Vercel – Hobby Plan**  
+  https://vercel.com/pricing  
+  *100 Go bande passante, cold starts serverless.*
+
+- **GitHub Pages – Docs**  
+  https://docs.github.com/en/pages 
+  https://docs.astro.build/en/guides/deploy/github/
+  *100 Go/mois soft, builds illimités.*
+
+- **WebAIM Million 2025 Report**  
+  https://webaim.org/projects/million/  
+  *94,8 % des sites ont au moins une erreur WCAG détectable ; moyenne 51 erreurs/page.*
+
+- **WAVE – Outil d’accessibilité**  
+  https://wave.webaim.org  
+  *Test contraste, ARIA, etc.*
