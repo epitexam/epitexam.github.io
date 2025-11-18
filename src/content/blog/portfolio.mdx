@@ -7,7 +7,7 @@ draft: false
 tags: ['astro', 'hugo', 'eleventy', 'portfolio', 'performance', 'javascript', 'security', 'hosting']
 ---
 
-Un portfolio, c’est la vitrine pour convaincre  des clients et montrer ses skills, mais sans budget, faut être malin. En 2025, un site doit charger en moins d’une seconde, ranker sur Google, et coûter zéro. 
+Un portfolio, c’est la vitrine pour convaincre des clients et montrer ses skills, mais sans budget, faut être malin. En 2025, un site doit charger en moins d’une seconde, ranker sur Google, et coûter zéro. 
 
 Ce guide compare les outils pour un portfolio rapide, sécurisé, et gratuit, testés sur un mobile entrée / millieu de gamme (Iphone 12). Pour les devs front, freelances, ou designers qui codent, voici comment faire un site qui claque sans se ruiner.
 <br/>
@@ -16,9 +16,11 @@ Un portfolio doit être rapide, visible, et tenir dans un budget nul. Le LCP (La
 
 L’accessibilité, c'est non négociable : contraste minimum 4,5:1 pour le texte normal. Pourquoi ? Parce que 27 % des adultes en Europe ont un handicap. Résultat ? Ils sont 12,9 points de pourcentage moins nombreux à utiliser internet tous les jours que les autres.
 Côté sécurité : des headers HTTP blindés et zéro faille ouverte.
+
+Quant au style et à la disposition des éléments, l’utilisateur doit comprendre en un coup d’œil qui tu es, ce que tu fais et si tu es disponible. La page d’accueil doit aller droit au but : pas de surcharge d'animation ou d'elements. On garde les fulgurences visuel et la créativité pour les projets personnels. C'est en tout cas ce que je preche.
 <br/>
 ## Astro : Vitesse avec du style
-Astro génère du HTML pur avec du JavaScript uniquement sur les parties interactives, comme un filtre de projets. En 4G throttlée, le LCP descend sous 1 seconde, le bundle JS reste à 3 Ko pour un filtre Svelte, et le build prend environ 2 secondes pour 10 pages. Le déploiement est gratuit sur Cloudflare ou Github Pages avec bande passante illimitée. Exemple de page :
+Astro délivre du HTML pur avec du JavaScript uniquement sur les parties interactives, comme un filtre de projets. En 4G throttlée, le LCP descend sous 1 seconde, le bundle JS reste à 3 Ko pour un filtre Svelte, et le build prend environ 2 secondes pour 10 pages. Le déploiement est gratuit sur Cloudflare ou Github Pages avec bande passante illimitée. Exemple de page :
 
 ```astro
 // src/pages/index.astro
@@ -33,10 +35,10 @@ Astro génère du HTML pur avec du JavaScript uniquement sur les parties interac
 </main>
 ```
 
-La faille CVE-2025-61925 (spoofing d’headers) se corrige avec un middleware qui valide l’host. Si les configs Vite ou JavaScript te gonflent, Astro peut rebuter, mais pour un site rapide et stylé, c’est du costaud.
+Si les configs Vite ou JavaScript te gonflent, Astro peut rebuter, mais pour un site rapide et stylé, c’est du costaud.
 <br/>
 ## Hugo : Rapide comme l’éclair
-Hugo, écrit en Go, crache du HTML pur sans JavaScript sauf si tu en ajoutes. En 4G, le LCP tombe sous 1 seconde, le bundle JS reste à zéro par défaut, et le build prend moins d’une seconde pour 10 pages. Le déploiement se fait gratuitement sur GitHub Pages avec 100 Go de bande passante mensuelle. Exemple :
+Hugo, écrit en Go, génère du HTML pur sans JavaScript sauf si tu en ajoutes. En 4G, le LCP tombe sous 1 seconde, le bundle JS reste à zéro par défaut, et le build prend moins d’une seconde pour 10 pages. Le déploiement se fait gratuitement sur GitHub Pages. Exemple :
 
 ```html
 <!-- layouts/index.html -->
@@ -45,7 +47,7 @@ Hugo, écrit en Go, crache du HTML pur sans JavaScript sauf si tu en ajoutes. En
 {{ end }}
 ```
 
-Les templates Go demandent un peu d’apprentissage, mais un thème comme Ananke se configure en dix minutes. La sécurité s’ajoute via un fichier `_headers` pour le CSP. Hugo offre la vitesse maximale à budget nul.
+Les templates Go demandent un peu d’apprentissage, mais un thème comme Ananke se configure en dix minutes en passant par git. La sécurité s’ajoute via un fichier `_headers` pour le CSP. Hugo offre la vitesse maximale à budget nul.
 <br/>
 ## Eleventy : Simplicité et efficacité
 Eleventy fonctionne en JavaScript avec Markdown ou Nunjucks et livre des performances solides. En 4G, le LCP reste sous 1 seconde avec un filtre statique, zéro JavaScript, et le build prend environ 1 seconde pour 10 pages. Le déploiement est gratuit sur Cloudflare Pages. Exemple :
@@ -59,32 +61,33 @@ Eleventy fonctionne en JavaScript avec Markdown ou Nunjucks et livre des perform
 
 La configuration dans `.eleventy.js` reste fluide pour un portfolio simple. La sécurité passe par un fichier `_headers` pour le CSP. Eleventy permet de coder vite et bien sans prise de tête.
 <br/>
-## Sécu : OWASP pour blinder le site
-Un portfolio statique reste vulnérable si on bâcle les formulaires. OWASP Top 10 2025 place le contrôle d’accès cassé (A01) en tête, suivi des mauvaises configurations de sécurité (A02) et des failles de supply chain logicielle (A03), puis des injections (A05). Pour un formulaire de contact via Netlify Forms, valide les inputs côté serveur avec une micro-API sur Cloudflare Workers :
+## Sécu de base : Les pièges à éviter sur un statique
+Un portfolio statique est blindé par nature (pas de DB, pas de backend), mais si t'ajoutes des forms ou du JS, tu peux perdre le controle rapidement. Voici ce qu'il faut vérifier: 
+
+- **Configs serveur bancales** : Assure-toi que ton hosting (Cloudflare/Netlify) a des updates auto et pas de ports exposés (genre panels admin oubliés). Un scan rapide avec un tool gratuit comme Nikto te dit si y'a du leak. 
+
+- **Headers HTTP absents** : Sans CSP (bloque les scripts louches) ou HSTS (force HTTPS), t'es vulnérable aux injections CSS/JS ou au sniffing. Ajoute-les via un fichier `_headers` – 5 min chrono. 
+
+- **JS et forms vulnérables** : Si t'as un filtre interactif ou un contact form (Netlify Forms), échappe les inputs pour éviter XSS basique. Exemple pour un form : valide côté serveur avec une regex simple contre < > ;. 
+
+Pour du plus deep (injections, access control), file direct sur OWASP Top 10 – c'est la bible, mais garde ça pour quand ton site grandit.
+
+## Vigilance outils : L'exemple CVE Astro (et pourquoi checker toujours)
+Même avec un générateur comme Astro, Hugo ou Eleventy, une faille dans l'outil peut te plomber si t'es pas à jour. Prends la [CVE-2025-61925](https://nvd.nist.gov/vuln/detail/CVE-2025-61925) sur Astro : découverte fin octobre 2025, c'est un spoofing du header X-Forwarded-Host non validé, qui mène à du SSRF (Server-Side Request Forgery) ou manip d'URL (cache poisoning). Impact modéré pour du statique, mais si t'es en SSR mode, ça peut exposer des données internes. 
+
+Le fix ? Un [middleware](https://docs.astro.build/en/guides/middleware/) qui check l'host, comme ça :
 
 ```js
-// worker.js
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request));
-});
-async function handleRequest(request) {
-  const { name, message } = await request.json();
-  if (name.match(/[<>\;]/) || message.match(/[<>\;]/)) {
-    return new Response('Input invalide', { status: 400 });
+// middleware.js (Astro)
+export function onRequest({ request }, next) {
+  if (!request.headers.get('X-Forwarded-Host')?.includes('ton-site.com')) {
+    return new Response('Host invalide', { status: 403 });
   }
-  // Envoie à l’API
+  return next();
 }
 ```
 
-Un Content Security Policy bloque les scripts suspects :
-
-```plaintext
-# _headers
-/*
-  Content-Security-Policy: default-src 'self'; script-src 'self' cdn.trusted.com;
-```
-
-Pour Astro, applique le patch CVE-2025-61925. Échappe les inputs dans les filtres JavaScript pour éviter le DOM-based XSS. Ajoute un token CSRF dans les formulaires sensibles et garde les clés API hors Git dans un `.env`. Ces mesures couvrent les risques essentiels en quelques minutes.
+Leçon : Avant de déployer, scanne les advisories sur GitHub/NVD pour ton outil (Astro security, Hugo issues). C'est gratuit, ça prend 2 min, et ça évite les surprises. En 2025, avec les updates mensuels, c'est ton job de dev fauché de rester sur le qui-vive.
 <br/>
 ## Les pièges qui peuvent tout faire capoter
 Les images mal optimisées plombent la vitesse : passe en WebP avec lazy loading et dimensions fixes :
@@ -156,7 +159,7 @@ En 2025, un portfolio doit charger vite, ne rien coûter, et rester blindé. Hug
   https://www.11ty.dev  
   *~1 s build pour petits sites, zero JS possible.*
 
-- **OWASP Top 10 2025 (Release Candidate 1 – 6 nov. 2025)**  
+- **OWASP Top 10 2025 (Release Candidate 2025)**  
   https://owasp.org/Top10/  
   *A01: Broken Access Control, A02: Security Misconfiguration, A03: Software Supply Chain Failures, A05: Injection.*
 
