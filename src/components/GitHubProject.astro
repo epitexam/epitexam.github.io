@@ -22,8 +22,8 @@ import { Image } from "astro:assets";
             <Image
                 src={project.owner.avatar_url}
                 alt={`${project.owner.login} avatar`}
-                width={32}
-                height={32}
+                width={36}
+                height={36}
                 loading="lazy"
                 decoding="async"
                 class="avatar"
@@ -33,7 +33,9 @@ import { Image } from "astro:assets";
 
         {
             project.language && (
-                <span class="language-badge">{project.language}</span>
+                <span class="language-badge" data-language={project.language}>
+                    {project.language}
+                </span>
             )
         }
     </header>
@@ -43,8 +45,24 @@ import { Image } from "astro:assets";
     </p>
 
     <footer class="project-footer">
-        <span>⭐ {project.stargazers_count}</span>
-        <span>📅 {new Date(project.pushed_at).toLocaleDateString()}</span>
+        <span class="stat-item stars">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path
+                    d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"
+                ></path>
+            </svg>
+            <span class="stat-value">{project.stargazers_count}</span>
+        </span>
+        <span class="stat-item date">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                <path
+                    d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11zM5 7V6h14v1H5z"
+                ></path>
+            </svg>
+            <span class="stat-value"
+                >{new Date(project.pushed_at).toLocaleDateString()}</span
+            >
+        </span>
     </footer>
 </a>
 
@@ -54,31 +72,22 @@ import { Image } from "astro:assets";
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
-        padding: 1.2rem 1.4rem;
-        border-radius: 1rem;
-        border: 1px solid rgba(var(--accent), 0.2);
-        background: radial-gradient(
-                ellipse at top left,
-                rgba(25, 35, 30, 0.4),
-                rgba(10, 15, 10, 0.2) 70%
-            ),
-            linear-gradient(
-                135deg,
-                rgba(var(--accent), 0.05) 0%,
-                transparent 50%
-            );
+        padding: 1.5rem;
+        border-radius: 1.25rem;
+        border: 1px solid rgba(var(--accent), 0.15);
+        background: rgba(10, 14, 20, 0.95);
         color: rgb(var(--text));
         text-decoration: none;
         overflow: hidden;
         isolation: isolate;
-        backdrop-filter: blur(12px);
         transition:
-            transform 0.25s ease,
-            border-color 0.25s ease,
-            box-shadow 0.25s ease;
+            transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+            border-color 0.3s ease,
+            box-shadow 0.3s ease,
+            background 0.3s ease;
         box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.05),
-            0 8px 25px rgba(0, 0, 0, 0.2);
+            inset 0 1px 0 rgba(255, 255, 255, 0.08),
+            0 8px 25px rgba(0, 0, 0, 0.5);
     }
 
     .smoke-layer {
@@ -86,42 +95,41 @@ import { Image } from "astro:assets";
         bottom: 0;
         left: 0;
         width: 100%;
-        height: 30%;
+        height: 40%;
         background: radial-gradient(
                 ellipse at 40% 100%,
-                rgba(var(--accent), 0.1) 0%,
+                rgba(var(--accent), 0.15) 0%,
                 transparent 60%
             ),
             radial-gradient(
                 ellipse at 70% 100%,
-                rgba(var(--accent), 0.08) 0%,
+                rgba(var(--accent), 0.1) 0%,
                 transparent 70%
             );
         opacity: 0;
-        transition: opacity 0.4s ease;
+        transition: opacity 0.5s ease;
         z-index: -1;
     }
 
     .project-card::before {
         content: "";
         position: absolute;
-        inset: 0;
-        background: linear-gradient(
-            135deg,
-            rgba(var(--accent), 0.1) 0%,
-            transparent 50%
-        );
+        inset: -1px;
+        background: rgba(var(--accent), 0.1);
         opacity: 0;
-        transition: opacity 0.3s ease;
+        transition: opacity 0.4s ease;
         z-index: -1;
+        pointer-events: none;
     }
 
     .project-card:hover {
-        transform: translateY(-3px);
-        border-color: rgba(var(--accent), 0.4);
+        transform: translateY(-5px);
+        border-color: rgba(var(--accent), 0.7);
+        background: rgba(10, 14, 20, 0.9);
         box-shadow:
-            0 12px 30px rgba(var(--accent), 0.15),
-            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            0 12px 35px rgba(0, 0, 0, 0.6),
+            0 0 20px rgba(var(--accent), 0.4),
+            inset 0 1px 0 rgba(255, 255, 255, 0.15);
     }
 
     .project-card:hover .smoke-layer,
@@ -129,117 +137,145 @@ import { Image } from "astro:assets";
         opacity: 1;
     }
 
+    .project-card:hover .project-name {
+        color: rgb(var(--accent));
+        text-shadow: 0 0 10px rgba(var(--accent), 0.5);
+    }
+
     .project-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 0.6rem;
+        gap: 0.8rem;
         flex-wrap: wrap;
     }
 
     .owner-info {
         display: flex;
         align-items: center;
-        gap: 0.6rem;
+        gap: 0.8rem;
         min-width: 0;
     }
 
     .avatar {
-        width: 2rem;
-        height: 2rem;
+        width: 2.25rem;
+        height: 2.25rem;
         border-radius: 50%;
-        border: 1px solid rgba(var(--accent), 0.3);
+        border: 2px solid rgba(var(--accent), 0.4);
         flex-shrink: 0;
-        transition: transform 0.2s ease;
+        transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
 
     .project-card:hover .avatar {
-        transform: scale(1.1);
+        transform: scale(1.15);
+        box-shadow: 0 0 10px rgba(var(--accent), 0.5);
     }
 
     .project-name {
-        font-weight: 600;
-        font-size: 1.1rem;
-        letter-spacing: 0.01em;
+        font-family: "JetBrains Mono", ui-monospace, monospace;
+        font-weight: 700;
+        font-size: 1.25rem;
+        letter-spacing: -0.02em;
         color: rgb(var(--text));
-        transition: color 0.2s ease;
+        transition:
+            color 0.3s ease,
+            text-shadow 0.3s ease;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
     }
 
-    .project-card:hover .project-name {
-        color: rgb(var(--accent));
-    }
-
     .language-badge {
-        font-size: 0.75rem;
-        padding: 0.3rem 0.7rem;
-        border-radius: 0.75rem;
-        border: 1px solid rgba(var(--accent), 0.3);
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+        border-radius: 9999px;
+        border: 1px solid rgba(var(--accent), 0.5);
         color: rgb(var(--accent));
-        background: rgba(var(--accent), 0.1);
+        background: rgba(var(--accent), 0.15);
         flex-shrink: 0;
-        font-weight: 500;
+        font-weight: 600;
+        text-shadow: 0 0 5px rgba(var(--accent), 0.2);
     }
 
     .project-description {
-        font-size: 0.9rem;
-        color: rgba(220, 255, 220, 0.85);
-        line-height: 1.5;
+        font-size: 0.95rem;
+        color: rgba(220, 255, 220, 0.9);
+        line-height: 1.6;
+        margin-top: 0.5rem;
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
+        min-height: calc(0.95rem * 1.6 * 3);
     }
 
     .project-footer {
         display: flex;
         justify-content: space-between;
-        font-size: 0.8rem;
-        color: rgba(200, 255, 200, 0.7);
-        margin-top: auto;
+        font-size: 0.9rem;
+        color: rgba(200, 255, 200, 0.8);
+        margin-top: 1rem;
+        padding-top: 0.5rem;
+        border-top: 1px dashed rgba(var(--text), 0.1);
+    }
+
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-weight: 500;
+    }
+
+    .stat-item svg {
+        color: rgb(var(--accent));
+        opacity: 0.8;
+    }
+
+    .stat-value {
+        color: rgb(var(--text));
+        font-weight: 600;
     }
 
     @media (max-width: 640px) {
         .project-card {
-            padding: 1rem;
-            gap: 0.6rem;
-        }
-
-        .project-header {
-            gap: 0.5rem;
+            padding: 1.25rem;
+            border-radius: 1rem;
         }
 
         .project-name {
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
 
         .project-description {
+            font-size: 0.9rem;
+        }
+
+        .project-footer {
             font-size: 0.85rem;
-            -webkit-line-clamp: 2;
+        }
+
+        .stat-item svg {
+            width: 16px;
+            height: 16px;
         }
     }
 
     @media (max-width: 480px) {
         .project-card {
-            border-color: rgba(var(--accent), 0.15);
-        }
-
-        .smoke-layer {
-            display: none;
+            border-color: rgba(var(--accent), 0.2);
+            padding: 1rem;
         }
     }
 
     @media (prefers-reduced-motion: reduce) {
         .project-card,
         .avatar {
-            transition: none;
+            transition: none !important;
         }
 
         .project-card:hover {
-            transform: none;
+            transform: none !important;
         }
     }
 </style>
