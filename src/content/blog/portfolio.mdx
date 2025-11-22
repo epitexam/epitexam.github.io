@@ -1,7 +1,7 @@
 ---
 title: 'Portfolio 2025 : Le Guide du Dev Fauché'
 description: 'Comparatif technique d’Astro, Hugo et Jekyll pour un portfolio statique rapide, sécurisé et gratuit. Analyse des performances (LCP < 1 s), de la simplicité de dev, et des options d’hosting (Cloudflare, GitHub Pages, Netlify).'
-pubDate: '2025-11-19'
+pubDate: '2025-11-22'
 heroImage: '../../assets/blog-placeholder-about.jpg'
 draft: false
 tags: ['astro', 'hugo', 'jekyll', 'portfolio', 'performance', 'javascript', 'security', 'hosting']
@@ -10,18 +10,14 @@ tags: ['astro', 'hugo', 'jekyll', 'portfolio', 'performance', 'javascript', 'sec
 Un portfolio, c’est la vitrine pour convaincre des clients et montrer ses skills, mais sans budget, faut être malin. En 2025, un site doit charger en moins d’une seconde, ranker sur Google, et coûter zéro. 
 
 Ce guide compare les outils pour un portfolio rapide, sécurisé, et gratuit. Pour les devs front, freelances, ou designers qui codent, voici comment faire un site qui claque sans se ruiner.
-
 <br/>
-
 ## Méthodologie rapide des perfs
 
 - Appareil : iPhone 12 (Brave)  
 - Réseau : 4G lente (Chrome DevTools)  
 - Mesures : moyenne de 3 runs Lighthouse (LCP), taille finale gzippée, temps CLI build  
 - Versions utilisées : Astro `5.15.9`, Hugo `0.152.2`, Jekyll `4.4.1`
-
 <br/>
-
 ## Les bases d’un portfolio
 
 Un portfolio doit être rapide, visible, et tenir dans un budget nul. Le LCP (Largest Contentful Paint) doit être sous 1 seconde pour un score excellent et garder l’audience. Le bundle JavaScript reste sous 5 Ko minifié et gzippé, car un portfolio n’est pas une app lourde. 
@@ -33,9 +29,7 @@ L’accessibilité, c'est non négociable : contraste minimum 4,5:1 pour le text
 Côté sécurité : des headers HTTP blindés et zéro faille ouverte.
 
 Quant au style et à la disposition des éléments, l’utilisateur doit comprendre en un coup d’œil qui tu es, ce que tu fais et si tu es disponible. La page d’accueil doit aller droit au but : pas de surcharge d'animation ou d'elements. On garde les fulgurences visuelles et la créativité pour les projets personnels. C'est en tout cas ce que je prêche.
-
 <br/>
-
 ## Astro : Vitesse avec du style
 
 Astro délivre du HTML pur avec du JavaScript uniquement sur les parties interactives, comme un filtre de projets fait avec Svelte. 
@@ -57,7 +51,6 @@ Le déploiement est gratuit sur Cloudflare ou GitHub Pages avec bande passante i
 
 Si les configs Vite ou JavaScript te gonflent, Astro peut rebuter, mais pour un site rapide et stylé, c’est du costaud.
 <br/>
-
 ## Hugo : Rapide comme l’éclair
 
 Hugo, écrit en Go, génère du HTML pur sans JavaScript sauf si tu en ajoutes.
@@ -72,9 +65,7 @@ Le déploiement se fait gratuitement sur GitHub Pages. Exemple :
 ```
 
 Les templates Go demandent un peu d’apprentissage, mais un thème comme Ananke se configure en dix minutes en passant par git. La sécurité s’ajoute via un fichier `_headers` pour le CSP. Hugo offre la vitesse maximale à budget nul. 
-
 <br/>
-
 ## Jekyll : Le choix simple et natif pour GitHub Pages
 
 Jekyll est le générateur statique “classique”, basé sur Ruby, utilisé depuis plus de 10 ans — mais surtout : **GitHub Pages le supporte nativement**.
@@ -90,20 +81,19 @@ Il utilise Markdown et Liquid pour générer du HTML pur. Exemple :
 ```
 
 C’est parfait pour un portfolio simple : perfs stables, pas de JavaScript ajouté par défaut, et énormément de thèmes existants. L’écosystème évolue lentement, mais pour un site vitrine gratuit, fiable, et facile à maintenir, Jekyll reste une valeur sûre. <br/>
-
+<br/>
 ## Performances réelles
 
-J'ai crée un petit projet de 5 pages avec beaucoup de contenu dans chacune pour pouvoir tester les performances. Voici ce que j'ai pu en tirer.
+J'ai crée un petit projet de 5 pages pour chaque stack avec beaucoup de contenu dans chacune pour pouvoir tester les performances. Voici ce que j'ai pu en tirer.
 
 | Outil      | Temps de build (5 pages) | Bundle JS (min+gz) | LCP moyen (Slow 4G, iPhone 12) | Notes |
 |------------|---------------------------|--------------------|--------------------------------|-------|
-| **Hugo**   | **0,7 s**                 | 0 Ko               | **0,65 s**                     | HTML pur, rien ne bat ça |
-| **Jekyll** | 1,8–2,2 s                 | 0 Ko               | 0,75–0,80 s                    | Build natif GitHub Pages |
-| **Astro**  | 2,1 s                     | 3–8 Ko (filtre)    | 0,82 s                         | JS uniquement où besoin (islands) |
+| **Hugo**   | **0,7 s**                 | 0 Kb               | **1.30s**                     | HTML pur, rien ne bat ça |
+| **Jekyll** | 0.760 s                 | 0 Kb               | 1.29 s                    | Build natif GitHub Pages |
+| **Astro**  | 2,1 s                     | 0-30 Kb     | 1.47 s                         | JS uniquement où besoin (islands) |
 
 Résultat : choisissez selon vos besoins, pas selon des millisecondes que personne ne verra jamais.
 <br/>
-
 ## Sécu de base : Les pièges à éviter sur un statique
 
 Un portfolio statique est blindé par nature (pas de DB, pas de backend), mais si t'ajoutes des forms ou du JS, tu peux perdre le contrôle rapidement. Voici ce qu'il faut vérifier:
@@ -115,7 +105,7 @@ Un portfolio statique est blindé par nature (pas de DB, pas de backend), mais s
 * **JS et forms vulnérables** : Si t'as un filtre interactif ou un contact form (Netlify Forms), échappe les inputs pour éviter un XSS basique. Exemple pour un form : valide côté serveur avec une regex simple contre < > ;.
 
 Pour du plus deep (injections, access control), file direct sur OWASP Top 10 – c'est la bible, mais garde ça pour quand ton site grandit. <br/>
-
+<br/>
 ## Vigilance outils : Exemple CVE Astro
 
 Même les outils clean comme Astro ont leurs emmerdes. Prenez la [CVE-2025-61925](https://nvd.nist.gov/vuln/detail/CVE-2025-61925) : une faille modérée (CVSS 6.1) où Astro reflète le header `X-Forwarded-Host` sans validation dans `Astro.url`, surtout en mode dynamique (SSR/on-demand).
@@ -148,7 +138,7 @@ export function onRequest({ request }, next) {
 ```
 
 Lire les advisories GitHub/NVD prend 2 minutes et évite 90 % des surprises. <br/>
-
+<br/>
 ## Les pièges qui peuvent tout faire capoter
 
 Les images mal optimisées plombent la vitesse : passe en WebP avec lazy loading et dimensions fixes :
@@ -169,9 +159,7 @@ Teste le contraste avec WAVE et vise au moins 4,5:1 :
 ```css
 body { color: #333; background: #fff; }
 ```
-
 <br/>
-
 ## Hosting : Netlify, Vercel, GitHub Pages, Cloudflare
 
 L’hosting gratuit impacte les perfs et les limites.
@@ -185,13 +173,13 @@ L’hosting gratuit impacte les perfs et les limites.
 * Cloudflare Pages livre des builds ultra-rapides avec 500 builds par mois et bande passante illimitée, parfait pour le scaling. Tous gèrent HTTPS et CSP via `_headers`.
 
 Cloudflare domine en performance, GitHub Pages en facilité. <br/>
-
+<br/>
 ## Choisir en 30 secondes
 
 Dev front dans l’écosystème JavaScript ? Astro sur Cloudflare.
 Tu veux un portfolio simple, gratuit et zéro maintenance ? **Jekyll sur GitHub Pages**.
 Tu veux des perfs maximales sans JS ? Hugo sur GitHub Pages. <br/>
-
+<br/>
 ## Conclusion
 
 En 2025, un portfolio doit charger vite, ne rien coûter, et rester blindé.
@@ -202,7 +190,7 @@ Code un proto, teste, sécurise, et c’est plié : un portfolio qui claque, san
 <br/>
 <br/>
 ---
-## Sources & Liens (vérifiés le 17 novembre 2025)
+## Sources & Liens (vérifiés le 22 novembre 2025)
 
 - **Core Web Vitals 2025 – Google**  
   https://web.dev/articles/vitals  
@@ -227,9 +215,9 @@ Code un proto, teste, sécurise, et c’est plié : un portfolio qui claque, san
   https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#limits  
   *< 1 s pour 5 pages, 100 Go bande passante soft limit.*
 
-{/* - **Eleventy – Docs & Performance**  
-  https://www.11ty.dev  
-  *~1 s build pour petits sites, zero JS possible.* */}
+- **Jekyll – Docs & Performance**  
+  https://jekyllrb.com/  
+  *Documentation de jekyll.*
 
 - **OWASP Top 10 2025 (Release Candidate 2025)**  
   https://owasp.org/Top10/  
