@@ -1,0 +1,219 @@
+---
+title: 'Portfolio 2026 : Le Guide du Dev Fauché'
+description: 'Comparatif technique d’Astro, Hugo et Jekyll pour un portfolio statique rapide, sécurisé et gratuit. Analyse des performances (LCP < 1 s), de la simplicité de dev, et des options d’hosting (Cloudflare, GitHub Pages, Netlify).'
+pubDate: '2025-11-22'
+heroImage: '../../assets/pexels-bob-price-252175-764880-hero.webp'
+draft: false
+tags: ['astro', 'hugo', 'jekyll', 'portfolio', 'performance', 'javascript', 'security', 'hosting']
+---
+
+Un portfolio, c’est la vitrine pour convaincre des clients et montrer ses skills, mais sans budget, faut être malin. En 2025, un site doit charger en moins d’une seconde, ranker sur Google, et coûter zéro. 
+
+Ce guide compare les outils pour un portfolio rapide, sécurisé, et gratuit. Pour les devs front, freelances, ou designers qui codent, voici comment faire un site qui claque sans se ruiner.
+<br/>
+## Méthodologie rapide des perfs
+
+- Appareil : iPhone 12 (Brave)  
+- Réseau : 4G lente (Chrome DevTools)  
+- Mesures : moyenne de 3 runs Lighthouse (LCP), taille finale gzippée, temps CLI build  
+- Versions utilisées : Astro `5.15.9`, Hugo `0.152.2`, Jekyll `4.4.1`
+<br/>
+## Les bases d’un portfolio
+
+Un portfolio doit être rapide, visible, et tenir dans un budget nul. Le LCP (Largest Contentful Paint) doit être sous 1 seconde pour un score excellent et garder l’audience. Le bundle JavaScript reste sous 5 Ko minifié et gzippé, car un portfolio n’est pas une app lourde. 
+
+Le build pour 5 pages prend moins de 5 secondes. Le SEO s’appuie sur des balises OpenGraph et schema.org pour briller sur X ou LinkedIn.
+
+<br/>
+## Concernant l’accessibilité
+
+En 2024 dans l’UE, 87,2 % des gens avec handicap ont touché Internet dans l’année contre 95,2 % sans, et l’écart explose à 15+ points quand c’est sévère. Résultat, tu perds potentiellement 10-20 % de tes visiteurs, clients ou recruteurs. Google te sanctionne déjà et des directives européennes comme l’European Accessibility Act pousse pour que les grands acteurs du web s'y attardent un peu, donc plus d’excuses.
+
+Donc on fait propre : contraste 4,5:1 mini, clavier 100 %, focus visible, sémantique nickel, alt texts qui servent à quelque chose, zéro animation qui déclenche des migraines si reduced-motion est activé, et un site qui charge en ` < 1s` même sur une connexion pourrie. 
+
+Page d’accueil : qui je suis, ce que je fais, comment me booker, point. Les effets de fou, on les garde pour les case studies.
+
+Résultat, plus de visites, plus de messages, meilleur SEO, et la satisfaction de ne pas laisser un gros morceau des utilisateurs sur le carreau. Et ça coûte exactement zéro euro de plus quand on choisit la bonne stack dès le départ.
+<br/>
+## Astro : Vitesse avec du style
+
+Astro délivre du HTML pur avec du JavaScript uniquement sur les parties interactives, comme un filtre de projets fait avec Svelte. 
+
+Le déploiement est gratuit sur Cloudflare ou GitHub Pages avec bande passante illimitée. Exemple de page :
+
+```astro
+// src/pages/index.astro
+<script>
+  import ProjectFilter from '../components/ProjectFilter.svelte';
+  import { getCollection } from 'astro:content';
+  const projects = await getCollection('projects');
+</script>
+<main>
+  <ProjectFilter client:load />
+  {projects.map(p => <article>{p.data.title}</article>)}
+</main>
+````
+
+Si les configs Vite ou JavaScript te gonflent, Astro peut rebuter, mais pour un site rapide et stylé, c’est du costaud.
+<br/>
+## Hugo : Rapide comme l’éclair
+
+Hugo, écrit en Go, génère du HTML pur sans JavaScript sauf si tu en ajoutes.
+
+```html
+<!-- layouts/index.html -->
+{{ range (where .Site.RegularPages "Section" "projects") }}
+  <article>{{ .Title }}</article>
+{{ end }}
+```
+
+Les templates Go demandent un peu d’apprentissage, mais un thème comme Ananke se configure en dix minutes en passant par git. La sécurité s’ajoute via un fichier `_headers` pour le CSP. Hugo offre la vitesse maximale à budget nul. 
+<br/>
+## Jekyll : Le choix simple et natif pour GitHub Pages
+
+Jekyll est le générateur statique “classique”, basé sur Ruby, utilisé depuis plus de 10 ans — mais surtout : **GitHub Pages le supporte nativement**.
+Résultat : zéro configuration de build, zéro pipeline, tu pushes sur GitHub compile et déploie automatiquement.
+
+Il utilise Markdown et Liquid pour générer du HTML pur. Exemple :
+
+```liquid
+<!-- index.html -->
+{% for project in site.projects %}
+  <article>{{ project.title }}</article>
+{% endfor %}
+```
+
+C’est parfait pour un portfolio simple : perfs stables, pas de JavaScript ajouté par défaut, et énormément de thèmes existants. L’écosystème évolue lentement, mais pour un site vitrine gratuit, fiable, et facile à maintenir, Jekyll reste une valeur sûre. <br/>
+<br/>
+## Performances réelles
+
+J'ai crée un petit projet de 5 pages pour chaque stack avec beaucoup de contenu dans chacune pour pouvoir tester les performances. Voici ce que j'ai pu en tirer.
+
+| Outil      | Temps de build (5 pages) | Bundle JS (min+gz) | LCP moyen (Slow 4G, iPhone 12) | Notes |
+|------------|---------------------------|--------------------|--------------------------------|-------|
+| **Hugo**   | **0,7 s**                 | 0 Kb               | **1.30s**                     | HTML pur, rien ne bat ça |
+| **Jekyll** | 0.760 s                 | 0 Kb               | 1.29 s                    | Build natif GitHub Pages |
+| **Astro**  | 2,1 s                     | 0-30 Kb     | 1.47 s                         | JS uniquement où besoin (islands) |
+
+Résultat : choisissez selon vos besoins, pas selon des millisecondes que personne ne verra jamais.
+<br/>
+## Sécurité de base : Les pièges à éviter sur un statique
+
+Un portfolio statique est blindé par nature (pas de DB, pas de backend), mais si t'ajoutes des forms ou du JS, tu peux perdre le contrôle rapidement. Voici ce qu'il faut vérifier:
+
+* **Configs serveur bancales** : Assure-toi que ton hosting (Cloudflare/Netlify) a des updates auto et pas de ports exposés (genre panels admin oubliés). Un scan rapide avec un tool gratuit comme Nikto te dit si y'a un leak.
+
+* **Headers HTTP absents** : Sans CSP (bloque les scripts louches) ou HSTS (force HTTPS), tu es vulnérable aux injections CSS/JS ou au sniffing. Ajoute-les via un fichier `_headers` – 5 min chrono.
+
+* **JS et forms vulnérables** : Si t'as un filtre interactif ou un contact form (Netlify Forms), échappe les inputs pour éviter un XSS basique. Exemple pour un form : valide côté serveur avec une regex simple contre < > ;.
+
+Pour du plus deep (injections, access control), file direct sur OWASP Top 10 – c'est la bible, mais garde ça pour quand ton site grandit.
+<br/>
+## Les pièges qui peuvent tout faire capoter
+
+Les images mal optimisées plombent la vitesse : passe en WebP avec lazy loading et dimensions fixes :
+
+```html
+<img src="projet.webp" loading="lazy" width="800" height="600" alt="Projet X">
+```
+
+Sans OpenGraph, le site reste invisible sur X :
+
+```html
+<meta property="og:title" content="Portfolio Perso">
+<meta property="og:image" content="/og-image.webp">
+```
+
+Teste le contraste avec WAVE et vise au moins 4,5:1 :
+
+```css
+body { color: #333; background: #fff; }
+```
+<br/>
+## Hosting : Netlify, Vercel, GitHub Pages, Cloudflare
+
+L’hosting gratuit impacte les perfs et les limites.
+
+* Netlify offre 100 Go de bande passante et 300 minutes de build par mois, mais les builds traînent.
+
+* Vercel donne 100 Go avec des builds rapides, mais les cold starts ajoutent du délai sur les fonctions serverless.
+
+* GitHub Pages propose 100 Go sans limite de builds, idéal pour la simplicité, et compile Jekyll gratuitement.
+
+* Cloudflare Pages livre des builds ultra-rapides avec 500 builds par mois et bande passante illimitée, parfait pour le scaling. Tous gèrent HTTPS et CSP via `_headers`.
+
+Cloudflare domine en performance, GitHub Pages en facilité. <br/>
+<br/>
+## Choisir en 30 secondes
+
+Dev front dans l’écosystème JavaScript ? Astro sur Cloudflare.
+Tu veux un portfolio simple, gratuit et zéro maintenance ? **Jekyll sur GitHub Pages**.
+Tu veux des perfs maximales sans JS ? Hugo sur GitHub Pages. <br/>
+<br/>
+## Conclusion
+
+En 2025, un portfolio doit charger vite, ne rien coûter, et rester blindé.
+Hugo assure la vitesse maximale, Jekyll la simplicité absolue via GitHub Pages, et Astro l’interactivité moderne.
+Cloudflare Pages règne sur l’hosting gratuit.
+
+Code un proto, teste, sécurise, et c’est plié : un portfolio qui claque, sans un centime. 
+<br/>
+<br/>
+---
+## Sources & Liens (vérifiés le 24 novembre 2025)
+
+- **Core Web Vitals 2025 – Google**  
+  https://web.dev/articles/vitals  
+  *LCP excellent < 1 s, bon < 2,5 s.*
+
+- **WCAG 2.2 – W3C**  
+  https://www.w3.org/TR/WCAG22/  
+  *Contraste 4,5:1 pour texte normal (AA).*
+
+- **Handicap & accès internet – Eurostat**  
+  https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Disability_statistics_-_access_to_information_and_communication_technologies
+  *En 2024, 87,2 % des personnes handicapées dans l'UE avaient utilisé Internet au cours des 12 mois précédents, contre 95,2 % des personnes non handicapées.*
+
+- **Astro – Docs officielles & CVE-2025-61925**  
+  https://docs.astro.build  
+  https://nvd.nist.gov/vuln/detail/CVE-2025-61925
+  https://github.com/withastro/astro/security  
+  *Islands architecture, zero JS by default, patch middleware.*
+
+- **Hugo – Benchmarks & GitHub Pages**  
+  https://gohugo.io  
+  https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#limits  
+  *< 1 s pour 5 pages, 100 Go bande passante soft limit.*
+
+- **Jekyll – Docs & Performance**  
+  https://jekyllrb.com/  
+  *Documentation de jekyll.*
+
+- **OWASP Top 10 2025 (Release Candidate 2025)**  
+  https://owasp.org/Top10/  
+  *A01: Broken Access Control, A02: Security Misconfiguration, A03: Software Supply Chain Failures, A05: Injection.*
+
+- **Cloudflare Pages – Limites gratuites**  
+  https://developers.cloudflare.com/pages/platform/limits/  
+  *500 builds/mois, bande passante illimitée.*
+
+- **Netlify – Pricing gratuit**  
+  https://www.netlify.com/pricing/  
+  *100 Go bande passante, 300 min builds/mois.*
+
+- **Vercel – Hobby Plan**  
+  https://vercel.com/pricing  
+  *100 Go bande passante, cold starts serverless.*
+
+- **GitHub Pages – Docs**  
+  https://docs.github.com/en/pages 
+  https://docs.astro.build/en/guides/deploy/github/
+  *100 Go/mois soft, builds illimités.*
+
+- **WebAIM Million 2025 Report**  
+  https://webaim.org/projects/million/  
+  *94,8 % des sites ont au moins une erreur WCAG détectable ; moyenne 51 erreurs/page.*
+
+- **WAVE – Outil d’accessibilité**  
+  https://wave.webaim.org  
+  *Test contraste, ARIA, etc.*
