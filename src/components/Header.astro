@@ -3,39 +3,30 @@ import { GITHUB_URL, SITE_TITLE } from "../consts";
 import HeaderLink from "./HeaderLink.astro";
 ---
 
-<header class="site-header">
-	<div class="header-content">
+<header class="site-header" id="main-header">
+	<div class="header-inner">
 		<div class="header-brand">
 			<h1 class="brand-title">
 				<a href="/">{SITE_TITLE}</a>
 			</h1>
 		</div>
 
-		<nav class="header-nav" id="header-nav">
+		<nav class="header-nav" aria-label="Main navigation">
 			<div class="nav-links">
 				<HeaderLink href="/">Home</HeaderLink>
 				<HeaderLink href="/blog">Blog</HeaderLink>
 				<HeaderLink href="/tools">Tools</HeaderLink>
 				<HeaderLink href="/about">About</HeaderLink>
 			</div>
-
-			<a
-				href={GITHUB_URL}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="nav-link github-mobile"
-			>
-				GitHub
-			</a>
 		</nav>
 
-		<div class="header-actions">
+		<div class="header-right">
 			<a
 				href={GITHUB_URL}
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label="GitHub profile"
-				class="github-desktop"
+				class="github-icon desktop-only"
 			>
 				<svg
 					viewBox="0 0 16 16"
@@ -49,61 +40,102 @@ import HeaderLink from "./HeaderLink.astro";
 					></path>
 				</svg>
 			</a>
-		</div>
 
-		<button
-			class="menu-toggle"
-			aria-label="Toggle navigation menu"
-			id="menu-toggle"
-			aria-expanded="false"
-			aria-controls="header-nav"
-		>
-			<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
-				<path
-					d="M3 6h18M3 12h18M3 18h18"
+			<button
+				class="menu-toggle"
+				aria-label="Toggle navigation menu"
+				id="menu-toggle"
+				aria-expanded="false"
+				aria-controls="mobile-nav"
+			>
+				<svg
+					viewBox="0 0 24 24"
+					width="24"
+					height="24"
 					stroke="currentColor"
-					stroke-width="2"></path>
-			</svg>
-		</button>
+					stroke-width="2"
+					fill="none"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<line x1="3" y1="12" x2="21" y2="12"></line>
+					<line x1="3" y1="6" x2="21" y2="6"></line>
+					<line x1="3" y1="18" x2="21" y2="18"></line>
+				</svg>
+			</button>
+		</div>
 	</div>
+
+	<nav class="mobile-nav" id="mobile-nav" aria-hidden="true">
+		<div class="mobile-nav-content">
+			<HeaderLink href="/">Home</HeaderLink>
+			<HeaderLink href="/blog">Blog</HeaderLink>
+			<HeaderLink href="/tools">Tools</HeaderLink>
+			<HeaderLink href="/about">About</HeaderLink>
+
+			<div class="mobile-separator"></div>
+
+			<a
+				href={GITHUB_URL}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="mobile-github"
+			>
+				<span class="icon">
+					<svg
+						viewBox="0 0 16 16"
+						width="16"
+						height="16"
+						aria-hidden="true"
+					>
+						<path
+							fill="currentColor"
+							d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+						></path>
+					</svg>
+				</span>
+				GitHub
+			</a>
+		</div>
+	</nav>
 </header>
 
 <script>
 	const initHeader = () => {
 		const menuToggle = document.getElementById("menu-toggle");
-		const headerNav = document.getElementById("header-nav");
+		const mobileNav = document.getElementById("mobile-nav");
 
-		if (!menuToggle || !headerNav) return;
+		if (!menuToggle || !mobileNav) return;
 
 		const toggleMenu = () => {
-			const isExpanded =
-				menuToggle.getAttribute("aria-expanded") === "true";
-			menuToggle.setAttribute("aria-expanded", String(!isExpanded));
-			headerNav.classList.toggle("nav-open", !isExpanded);
+			const isOpen = mobileNav.classList.contains("is-open");
+			const newState = !isOpen;
+
+			menuToggle.setAttribute("aria-expanded", String(newState));
+			mobileNav.setAttribute("aria-hidden", String(!newState));
+			mobileNav.classList.toggle("is-open", newState);
+			document.body.style.overflow = newState ? "hidden" : "";
+		};
+
+		const closeMenu = () => {
+			menuToggle.setAttribute("aria-expanded", "false");
+			mobileNav.setAttribute("aria-hidden", "true");
+			mobileNav.classList.remove("is-open");
+			document.body.style.overflow = "";
 		};
 
 		menuToggle.addEventListener("click", toggleMenu);
 
-		const closeMenu = (e: any) => {
-			const target = e.target as Node;
-			if (
-				!headerNav.contains(target) &&
-				target !== menuToggle &&
-				!menuToggle.contains(target) &&
-				headerNav.classList.contains("nav-open")
-			) {
-				toggleMenu();
-			}
-		};
+		mobileNav.querySelectorAll("a").forEach((link) => {
+			link.addEventListener("click", closeMenu);
+		});
 
-		document.addEventListener("click", closeMenu);
-
-		document.addEventListener("keydown", (e) => {
+		window.addEventListener("resize", () => {
 			if (
-				e.key === "Escape" &&
-				headerNav.classList.contains("nav-open")
+				window.innerWidth > 768 &&
+				mobileNav.classList.contains("is-open")
 			) {
-				toggleMenu();
+				closeMenu();
 			}
 		});
 	};
@@ -113,6 +145,7 @@ import HeaderLink from "./HeaderLink.astro";
 	} else {
 		initHeader();
 	}
+	document.addEventListener("astro:page-load", initHeader);
 </script>
 
 <style>
@@ -120,228 +153,249 @@ import HeaderLink from "./HeaderLink.astro";
 		position: sticky;
 		top: 0;
 		z-index: 50;
-		background: rgba(10, 12, 20, 0.85);
-		backdrop-filter: blur(16px) saturate(180%);
-		-webkit-backdrop-filter: blur(16px) saturate(180%);
-		border-bottom: 1px solid rgba(0, 255, 150, 0.2);
-		box-shadow:
-			0 0 25px rgba(0, 255, 150, 0.1),
-			0 4px 20px rgba(0, 255, 150, 0.08);
+		width: 100%;
+		height: 64px;
+		background: rgba(var(--bg), 0.9);
+		backdrop-filter: blur(12px);
+		-webkit-backdrop-filter: blur(12px);
+		border-bottom: 1px solid rgba(var(--accent), 0.15);
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 	}
 
-	.header-content {
+	.header-inner {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		width: 100%;
+		height: 100%;
 		max-width: 1200px;
 		margin: 0 auto;
-		padding: 1rem 1.5rem;
+		padding: 0 1.5rem;
 	}
 
 	.header-brand {
 		display: flex;
 		align-items: center;
-		flex-shrink: 0;
+		justify-content: flex-start;
+		height: 100%;
+		flex: 1;
 	}
 
 	.brand-title {
 		margin: 0;
-		font-size: 1.25rem;
 		line-height: 1;
+		display: flex;
+		align-items: center;
 	}
 
 	.brand-title a {
+		font-family: "JetBrains Mono", monospace;
+		font-weight: 700;
+		font-size: 1.25rem;
 		color: rgb(var(--text));
 		text-decoration: none;
-		text-shadow: 0 0 12px rgba(var(--accent), 0.25);
-		transition: text-shadow 0.3s ease;
+		display: flex;
+		align-items: center;
+		height: 100%;
+		padding: 0.5rem 0.75rem;
+		border-radius: 6px;
+		transition: all 0.2s ease;
 	}
 
 	.brand-title a:hover {
-		text-shadow: 0 0 20px rgba(var(--accent), 0.6);
+		color: rgb(var(--accent));
+		text-shadow: 0 0 8px rgba(var(--accent), 0.4);
+		background: rgba(var(--accent), 0.08);
 	}
 
 	.header-nav {
 		display: flex;
 		align-items: center;
-		gap: 2rem;
+		justify-content: center;
+		height: 100%;
+		flex: 1;
 	}
 
 	.nav-links {
 		display: flex;
-		gap: 1.5rem;
+		align-items: center;
+		gap: 2rem;
+		height: 100%;
 	}
 
-	.nav-link {
-		color: rgb(var(--text));
+	.nav-links :global(a) {
+		display: inline-flex;
+		align-items: center;
+		height: 35px;
+		color: rgba(var(--text), 0.8);
 		text-decoration: none;
-		padding: 0.5rem 0.75rem;
-		border-radius: 0.25rem;
-		transition:
-			color 0.2s ease,
-			text-shadow 0.2s ease;
+		padding: 0 0.5rem;
+		border-radius: 6px;
+		font-size: 1rem;
+		font-weight: 500;
+		transition: all 0.2s ease;
+		position: relative;
 	}
 
-	.nav-link:hover {
+	.nav-links :global(a:hover) {
 		color: rgb(var(--accent));
-		text-shadow: 0 0 8px rgba(var(--accent), 0.8);
+		text-shadow: 0 0 8px rgba(var(--accent), 0.4);
 	}
 
-	.header-actions {
-		display: flex;
-		align-items: center;
+	.nav-links :global(a.active) {
+		color: rgb(var(--accent));
+		font-weight: 600;
 	}
 
-	.github-desktop {
+	.nav-links :global(a.active)::after {
+		content: "";
+		position: absolute;
+		bottom: -4px;
+		left: 0;
+		right: 0;
+		height: 2px;
+		background: rgb(var(--accent));
+		border-radius: 1px;
+	}
+
+	.header-right {
 		display: flex;
 		align-items: center;
+		justify-content: flex-end;
+		height: 100%;
+		flex: 1;
+		gap: 1rem;
+	}
+
+	.github-icon {
+		display: flex;
+		align-items: center;
+		color: rgba(var(--text), 0.8);
 		padding: 0.5rem;
-		border-radius: 0.25rem;
+		border-radius: 6px;
+		transition: all 0.2s ease;
+		height: 36px;
+		width: 36px;
+		justify-content: center;
 	}
 
-	.github-desktop:hover svg {
-		fill: rgb(var(--accent));
-		filter: drop-shadow(0 0 8px rgba(var(--accent), 0.6));
+	.github-icon:hover {
+		color: rgb(var(--accent));
+		filter: drop-shadow(0 0 5px rgba(var(--accent), 0.5));
+		background: rgba(var(--accent), 0.08);
 	}
 
 	.menu-toggle {
 		display: none;
-		background: none;
-		border: none;
+		width: 40px;
+		height: 40px;
+		padding: 0;
+		background: transparent;
+		border: 1px solid rgba(var(--accent), 0.2);
+		border-radius: 6px;
 		cursor: pointer;
-		color: rgb(var(--text));
-		border-radius: 0.5rem;
-		transition: background 0.2s ease;
-		min-width: 44px;
-		min-height: 44px;
-		justify-content: center;
+		color: rgb(var(--accent));
 		align-items: center;
-		padding: 0.75rem;
+		justify-content: center;
+		transition: all 0.2s ease;
 	}
 
 	.menu-toggle:hover {
 		background: rgba(var(--accent), 0.1);
 	}
 
-	.github-mobile {
-		display: none;
+	.mobile-nav {
+		position: fixed;
+		top: 64px;
+		left: 0;
+		width: 100%;
+		height: calc(100vh - 64px);
+		background: rgba(var(--bg), 0.98);
+		backdrop-filter: blur(20px);
+		border-top: 1px solid rgba(var(--accent), 0.1);
+		transform: translateY(-10px);
+		opacity: 0;
+		visibility: hidden;
+		transition: all 0.3s ease;
+		z-index: 40;
+		display: flex;
+		flex-direction: column;
+		overflow-y: auto;
+	}
+
+	.mobile-nav.is-open {
+		transform: translateY(0);
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.mobile-nav-content {
+		padding: 2rem 1.5rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+		max-width: 400px;
+		width: 100%;
+		margin: 0 auto;
+	}
+
+	.mobile-nav :global(a) {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 1.1rem;
+		padding: 1rem;
+		color: rgb(var(--text));
+		text-decoration: none;
+		border: 1px solid rgba(255, 255, 255, 0.05);
+		background: rgba(10, 14, 22, 0.5);
+		border-radius: 6px;
+		transition: all 0.2s ease;
+	}
+
+	.mobile-nav :global(a:hover) {
+		border-color: rgba(var(--accent), 0.4);
+		color: rgb(var(--accent));
+		background: rgba(var(--accent), 0.05);
+	}
+
+	.mobile-nav :global(a.active) {
+		color: rgb(var(--accent));
+		font-weight: 600;
+		border-color: rgba(var(--accent), 0.3);
+		background: rgba(var(--accent), 0.08);
+	}
+
+	.mobile-separator {
+		height: 1px;
+		background: rgba(var(--accent), 0.2);
+		margin: 1rem 0;
+	}
+
+	.mobile-github {
+		gap: 10px;
+		font-weight: 600;
 	}
 
 	@media (max-width: 768px) {
-		.header-content {
-			padding: 0.75rem 1rem;
-			min-height: 3.5rem;
-		}
-
-		.header-brand,
-		.menu-toggle {
-			display: flex;
-			align-items: center;
-			height: 2.5rem;
-		}
-
-		.brand-title {
-			font-size: 1.125rem;
-			display: flex;
-			align-items: center;
-			height: 100%;
-		}
-
-		.header-nav {
-			position: absolute;
-			top: 100%;
-			left: 0;
-			right: 0;
-			background: rgba(10, 12, 20, 0.95);
-			backdrop-filter: blur(20px);
-			border-top: 1px solid rgba(0, 255, 150, 0.1);
-			flex-direction: column;
-			gap: 0;
-			padding: 1rem;
-			transform: translateY(-10px);
-			opacity: 0;
-			visibility: hidden;
-			transition:
-				transform 0.3s ease,
-				opacity 0.3s ease,
-				visibility 0.3s ease;
-		}
-
-		.header-nav.nav-open {
-			transform: translateY(0);
-			opacity: 1;
-			visibility: visible;
-		}
-
-		.nav-links {
-			flex-direction: column;
-			gap: 0.5rem;
-			width: 100%;
-		}
-
-		.nav-link {
-			width: 100%;
-			text-align: center;
-			padding: 0.75rem;
-			min-height: 44px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-
-		.github-mobile {
-			display: flex;
-			width: 100%;
-			text-align: center;
-			padding: 0.75rem;
-			margin-top: 0.5rem;
-			border-top: 1px solid rgba(255, 255, 255, 0.1);
-			min-height: 44px;
-			align-items: center;
-			justify-content: center;
-		}
-
-		.github-desktop {
+		.header-nav,
+		.github-icon {
 			display: none;
 		}
-
 		.menu-toggle {
 			display: flex;
 		}
-
-		.header-nav:not(.nav-open) {
-			display: none;
+		.header-inner {
+			padding: 0 1rem;
 		}
-	}
-
-	@media (max-width: 480px) {
-		.header-content {
-			padding: 0.5rem 0.75rem;
+		.header-brand {
+			flex: none;
 		}
-
-		.brand-title {
-			font-size: 1rem;
+		.brand-title a {
+			font-size: 1.1rem;
 		}
-
-		.menu-toggle {
-			min-width: 40px;
-			min-height: 40px;
-			padding: 0.5rem;
-		}
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.header-nav {
-			transition: none;
-		}
-	}
-
-	@supports not (backdrop-filter: blur(1px)) {
-		.site-header {
-			background: rgba(10, 12, 20, 0.95);
-		}
-		.header-nav {
-			background: rgba(10, 12, 20, 0.98);
+		.header-right {
+			flex: none;
 		}
 	}
 </style>
