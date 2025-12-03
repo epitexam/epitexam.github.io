@@ -184,14 +184,12 @@ h6 {
 
 h1::before,
 h2::before {
-  content: '>';
   color: rgb(var(--accent));
   margin-right: 0.5em;
   opacity: 0.7;
 }
 
 h3::before {
-  content: '>';
   color: rgba(var(--accent), 0.6);
   margin-right: 0.5em;
   opacity: 0.6;
