@@ -1,6 +1,13 @@
 ---
 import { GITHUB_URL, SITE_TITLE } from "../consts";
 import HeaderLink from "./HeaderLink.astro";
+
+const navLinks = [
+	{ href: "/", label: "Home" },
+	{ href: "/blog", label: "Blog" },
+	{ href: "/tools", label: "Tools" },
+	{ href: "/about", label: "About" },
+];
 ---
 
 <header class="site-header" id="main-header">
@@ -13,10 +20,11 @@ import HeaderLink from "./HeaderLink.astro";
 
 		<nav class="header-nav" aria-label="Main navigation">
 			<div class="nav-links">
-				<HeaderLink href="/">Home</HeaderLink>
-				<HeaderLink href="/blog">Blog</HeaderLink>
-				<HeaderLink href="/tools">Tools</HeaderLink>
-				<HeaderLink href="/about">About</HeaderLink>
+				{
+					navLinks.map(({ href, label }) => (
+						<HeaderLink href={href}>{label}</HeaderLink>
+					))
+				}
 			</div>
 		</nav>
 
@@ -33,6 +41,7 @@ import HeaderLink from "./HeaderLink.astro";
 					width="20"
 					height="20"
 					aria-hidden="true"
+					focusable="false"
 				>
 					<path
 						fill="currentColor"
@@ -47,33 +56,43 @@ import HeaderLink from "./HeaderLink.astro";
 				id="menu-toggle"
 				aria-expanded="false"
 				aria-controls="mobile-nav"
+				type="button"
 			>
-				<svg
-					viewBox="0 0 24 24"
-					width="24"
-					height="24"
-					stroke="currentColor"
-					stroke-width="2"
-					fill="none"
-					stroke-linecap="round"
-					stroke-linejoin="round"
-				>
-					<line x1="3" y1="12" x2="21" y2="12"></line>
-					<line x1="3" y1="6" x2="21" y2="6"></line>
-					<line x1="3" y1="18" x2="21" y2="18"></line>
-				</svg>
+				<span class="menu-toggle-icon" aria-hidden="true">
+					<svg
+						viewBox="0 0 24 24"
+						width="24"
+						height="24"
+						stroke="currentColor"
+						stroke-width="2"
+						fill="none"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+					>
+						<line x1="3" y1="12" x2="21" y2="12"></line>
+						<line x1="3" y1="6" x2="21" y2="6"></line>
+						<line x1="3" y1="18" x2="21" y2="18"></line>
+					</svg>
+				</span>
+				<span class="sr-only">Menu</span>
 			</button>
 		</div>
 	</div>
 
-	<nav class="mobile-nav" id="mobile-nav" aria-hidden="true">
+	<nav
+		class="mobile-nav"
+		id="mobile-nav"
+		aria-label="Mobile navigation"
+		aria-hidden="true"
+	>
 		<div class="mobile-nav-content">
-			<HeaderLink href="/">Home</HeaderLink>
-			<HeaderLink href="/blog">Blog</HeaderLink>
-			<HeaderLink href="/tools">Tools</HeaderLink>
-			<HeaderLink href="/about">About</HeaderLink>
+			{
+				navLinks.map(({ href, label }) => (
+					<HeaderLink href={href}>{label}</HeaderLink>
+				))
+			}
 
-			<div class="mobile-separator"></div>
+			<div class="mobile-separator" aria-hidden="true"></div>
 
 			<a
 				href={GITHUB_URL}
@@ -81,12 +100,13 @@ import HeaderLink from "./HeaderLink.astro";
 				rel="noopener noreferrer"
 				class="mobile-github"
 			>
-				<span class="icon">
+				<span class="icon" aria-hidden="true">
 					<svg
 						viewBox="0 0 16 16"
 						width="16"
 						height="16"
 						aria-hidden="true"
+						focusable="false"
 					>
 						<path
 							fill="currentColor"
@@ -101,26 +121,23 @@ import HeaderLink from "./HeaderLink.astro";
 </header>
 
 <script>
-	const initHeader = () => {
+	(() => {
 		const menuToggle = document.getElementById("menu-toggle");
 		const mobileNav = document.getElementById("mobile-nav");
 
 		if (!menuToggle || !mobileNav) return;
 
 		const toggleMenu = () => {
-			const isOpen = mobileNav.classList.contains("is-open");
-			const newState = !isOpen;
-
-			menuToggle.setAttribute("aria-expanded", String(newState));
-			mobileNav.setAttribute("aria-hidden", String(!newState));
-			mobileNav.classList.toggle("is-open", newState);
-			document.body.style.overflow = newState ? "hidden" : "";
+			const isOpen = mobileNav.classList.toggle("is-open");
+			menuToggle.setAttribute("aria-expanded", isOpen.toString());
+			mobileNav.setAttribute("aria-hidden", (!isOpen).toString());
+			document.body.style.overflow = isOpen ? "hidden" : "";
 		};
 
 		const closeMenu = () => {
+			mobileNav.classList.remove("is-open");
 			menuToggle.setAttribute("aria-expanded", "false");
 			mobileNav.setAttribute("aria-hidden", "true");
-			mobileNav.classList.remove("is-open");
 			document.body.style.overflow = "";
 		};
 
@@ -138,14 +155,7 @@ import HeaderLink from "./HeaderLink.astro";
 				closeMenu();
 			}
 		});
-	};
-
-	if (document.readyState === "loading") {
-		document.addEventListener("DOMContentLoaded", initHeader);
-	} else {
-		initHeader();
-	}
-	document.addEventListener("astro:page-load", initHeader);
+	})();
 </script>
 
 <style>
@@ -153,7 +163,6 @@ import HeaderLink from "./HeaderLink.astro";
 		position: sticky;
 		top: 0;
 		z-index: 50;
-		width: 100%;
 		height: 64px;
 		background: rgba(var(--bg), 0.9);
 		backdrop-filter: blur(12px);
@@ -166,40 +175,49 @@ import HeaderLink from "./HeaderLink.astro";
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		width: 100%;
 		height: 100%;
 		max-width: 1200px;
 		margin: 0 auto;
 		padding: 0 1.5rem;
 	}
 
-	.header-brand {
+	.header-brand,
+	.header-nav,
+	.header-right {
+		flex: 1;
+		height: 100%;
 		display: flex;
 		align-items: center;
+	}
+
+	.header-brand {
 		justify-content: flex-start;
-		height: 100%;
-		flex: 1;
+	}
+	.header-nav {
+		justify-content: center;
+	}
+	.header-right {
+		justify-content: flex-end;
+		gap: 1rem;
 	}
 
 	.brand-title {
 		margin: 0;
 		line-height: 1;
-		display: flex;
-		align-items: center;
 	}
 
 	.brand-title a {
-		font-family: "JetBrains Mono", monospace;
-		font-weight: 700;
-		font-size: 1.25rem;
+		font:
+			700 1.25rem "JetBrains Mono",
+			monospace;
 		color: rgb(var(--text));
 		text-decoration: none;
-		display: flex;
-		align-items: center;
-		height: 100%;
 		padding: 0.5rem 0.75rem;
 		border-radius: 6px;
-		transition: all 0.2s ease;
+		transition:
+			color 0.2s ease,
+			text-shadow 0.2s ease,
+			background 0.2s ease;
 	}
 
 	.brand-title a:hover {
@@ -208,18 +226,10 @@ import HeaderLink from "./HeaderLink.astro";
 		background: rgba(var(--accent), 0.08);
 	}
 
-	.header-nav {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		height: 100%;
-		flex: 1;
-	}
-
 	.nav-links {
 		display: flex;
-		align-items: center;
 		gap: 2rem;
+		align-items: center;
 		height: 100%;
 	}
 
@@ -231,9 +241,12 @@ import HeaderLink from "./HeaderLink.astro";
 		text-decoration: none;
 		padding: 0 0.5rem;
 		border-radius: 6px;
-		font-size: 1rem;
-		font-weight: 500;
-		transition: all 0.2s ease;
+		font:
+			500 1rem "JetBrains Mono",
+			monospace;
+		transition:
+			color 0.2s ease,
+			text-shadow 0.2s ease;
 		position: relative;
 	}
 
@@ -258,25 +271,15 @@ import HeaderLink from "./HeaderLink.astro";
 		border-radius: 1px;
 	}
 
-	.header-right {
-		display: flex;
-		align-items: center;
-		justify-content: flex-end;
-		height: 100%;
-		flex: 1;
-		gap: 1rem;
-	}
-
 	.github-icon {
 		display: flex;
 		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
 		color: rgba(var(--text), 0.8);
-		padding: 0.5rem;
 		border-radius: 6px;
 		transition: all 0.2s ease;
-		height: 36px;
-		width: 36px;
-		justify-content: center;
 	}
 
 	.github-icon:hover {
@@ -297,7 +300,7 @@ import HeaderLink from "./HeaderLink.astro";
 		color: rgb(var(--accent));
 		align-items: center;
 		justify-content: center;
-		transition: all 0.2s ease;
+		transition: background 0.2s ease;
 	}
 
 	.menu-toggle:hover {
@@ -318,8 +321,6 @@ import HeaderLink from "./HeaderLink.astro";
 		visibility: hidden;
 		transition: all 0.3s ease;
 		z-index: 40;
-		display: flex;
-		flex-direction: column;
 		overflow-y: auto;
 	}
 
@@ -331,20 +332,21 @@ import HeaderLink from "./HeaderLink.astro";
 
 	.mobile-nav-content {
 		padding: 2rem 1.5rem;
+		max-width: 400px;
+		margin: 0 auto;
 		display: flex;
 		flex-direction: column;
 		gap: 0.75rem;
-		max-width: 400px;
-		width: 100%;
-		margin: 0 auto;
 	}
 
 	.mobile-nav :global(a) {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 1.1rem;
 		padding: 1rem;
+		font:
+			1.1rem "JetBrains Mono",
+			monospace;
 		color: rgb(var(--text));
 		text-decoration: none;
 		border: 1px solid rgba(255, 255, 255, 0.05);
@@ -377,7 +379,25 @@ import HeaderLink from "./HeaderLink.astro";
 		font-weight: 600;
 	}
 
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
 	@media (max-width: 768px) {
+		.header-inner {
+			padding: 0 1rem;
+		}
+		.header-brand {
+			flex: none;
+		}
 		.header-nav,
 		.github-icon {
 			display: none;
@@ -385,17 +405,11 @@ import HeaderLink from "./HeaderLink.astro";
 		.menu-toggle {
 			display: flex;
 		}
-		.header-inner {
-			padding: 0 1rem;
-		}
-		.header-brand {
+		.header-right {
 			flex: none;
 		}
 		.brand-title a {
 			font-size: 1.1rem;
-		}
-		.header-right {
-			flex: none;
 		}
 	}
 </style>
