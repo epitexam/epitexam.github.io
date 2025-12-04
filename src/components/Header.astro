@@ -204,6 +204,8 @@ const navLinks = [
 	.brand-title {
 		margin: 0;
 		line-height: 1;
+		display: flex;
+		align-items: center;
 	}
 
 	.brand-title a {
@@ -216,14 +218,12 @@ const navLinks = [
 		border-radius: 6px;
 		transition:
 			color 0.2s ease,
-			text-shadow 0.2s ease,
-			background 0.2s ease;
+			text-shadow 0.2s ease;
 	}
 
 	.brand-title a:hover {
 		color: rgb(var(--accent));
 		text-shadow: 0 0 8px rgba(var(--accent), 0.4);
-		background: rgba(var(--accent), 0.08);
 	}
 
 	.nav-links {
@@ -236,10 +236,10 @@ const navLinks = [
 	.nav-links :global(a) {
 		display: inline-flex;
 		align-items: center;
-		height: 35px;
+		height: auto;
 		color: rgba(var(--text), 0.8);
 		text-decoration: none;
-		padding: 0 0.5rem;
+		padding: 0.5rem 0.5rem;
 		border-radius: 6px;
 		font:
 			500 1rem "JetBrains Mono",
@@ -263,9 +263,9 @@ const navLinks = [
 	.nav-links :global(a.active)::after {
 		content: "";
 		position: absolute;
-		bottom: -4px;
-		left: 0;
-		right: 0;
+		bottom: 4px;
+		left: 0.5rem;
+		right: 0.5rem;
 		height: 2px;
 		background: rgb(var(--accent));
 		border-radius: 1px;
@@ -278,14 +278,12 @@ const navLinks = [
 		width: 36px;
 		height: 36px;
 		color: rgba(var(--text), 0.8);
-		border-radius: 6px;
 		transition: all 0.2s ease;
 	}
 
 	.github-icon:hover {
 		color: rgb(var(--accent));
 		filter: drop-shadow(0 0 5px rgba(var(--accent), 0.5));
-		background: rgba(var(--accent), 0.08);
 	}
 
 	.menu-toggle {
@@ -358,14 +356,11 @@ const navLinks = [
 	.mobile-nav :global(a:hover) {
 		border-color: rgba(var(--accent), 0.4);
 		color: rgb(var(--accent));
-		background: rgba(var(--accent), 0.05);
 	}
 
 	.mobile-nav :global(a.active) {
 		color: rgb(var(--accent));
 		font-weight: 600;
-		border-color: rgba(var(--accent), 0.3);
-		background: rgba(var(--accent), 0.08);
 	}
 
 	.mobile-separator {
