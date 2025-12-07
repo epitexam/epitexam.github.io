@@ -1,13 +1,13 @@
 ---
 title: 'Portfolio 2026 : Le Guide du Dev Fauché'
 description: 'Comparatif technique d’Astro, Hugo et Jekyll pour un portfolio statique rapide, sécurisé et gratuit. Analyse des performances (LCP < 1 s), de la simplicité de dev, et des options d’hosting (Cloudflare, GitHub Pages, Netlify).'
-pubDate: '2025-11-22'
+pubDate: '2025-12-06'
 heroImage: '../../assets/road.webp'
 draft: false
 tags: ['astro', 'hugo', 'jekyll', 'portfolio', 'performance', 'javascript', 'security', 'hosting']
 ---
 
-Un portfolio, c’est la vitrine pour convaincre des clients. Mais sans budget, il faut être malin. En 2025, l'exigence est brutale : un site doit s'afficher instantanément (LCP < 2.5s en conditions réelles), être accessible à 100 % (loi européenne oblige), et coûter zéro euro en hébergement.
+Un portfolio, c’est la vitrine pour convaincre des clients. Mais sans budget, il faut être malin. En 2026, l'exigence est brutale : un site doit s'afficher instantanément (LCP < 2.5s en conditions réelles), être accessible à 100 % (loi européenne oblige), et coûter zéro euro en hébergement.
 
 Ce guide compare Astro, Hugo et Jekyll avec une contrainte forte : performance maximale sur réseau pourri (Slow 4G). Spoiler : le "vieux" Jekyll a encore de la ressource.
 <br/>
@@ -117,40 +117,40 @@ Un portfolio statique est blindé par nature (pas de DB, pas de backend), mais s
 
 * **JS et forms vulnérables** : Si t'as un filtre interactif ou un contact form (Netlify Forms), échappe les inputs pour éviter un XSS basique. Exemple pour un form : valide côté serveur avec une regex simple contre < > ;.
 
-Pour du plus deep (injections, access control), file direct sur OWASP Top 10 – c'est la bible, mais garde ça pour quand ton site grandit.
+Pour du plus deep (injections, access control), file direct sur OWASP Top 10, c'est la bible, mais garde ça pour quand ton site grandit.
 <br/>
-## Vigilance outils : Exemple CVE Astro
+## Vigilance outils : Exemples de CVEs dans les frameworks modernes
 
-Même les outils clean comme Astro ont leurs emmerdes. Prenez la [CVE-2025-61925](https://nvd.nist.gov/vuln/detail/CVE-2025-61925) : une faille modérée (CVSS 6.1) où Astro reflète le header `X-Forwarded-Host` sans validation dans `Astro.url`, surtout en mode dynamique (SSR/on-demand).
+Même les outils solides comme Astro ou React peuvent présenter des vulnérabilités,elles sont souvent patchées rapidement par les communautés open-source.
 
-> "Astro reflects the value in `X-Forwarded-Host` in output when using `Astro.url` without any validation." (Advisory officiel)
+On ne vas pas ici rentrer en détail de la cybersécurité ou vous présenter des bouts de code à la va-vite ( bien qu'il se peut que vous soyez parfois contraint de le faire ).
+L'essentiel est de restez vigilant avec des mises à jour régulières.
 
-**Impact réel ?**
+Prenons la [CVE-2025-61925](https://nvd.nist.gov/vuln/detail/CVE-2025-61925) pour Astro (CVSS 6.5, moyenne) : réflexion non validée de l'en-tête `X-Forwarded-Host` dans `Astro.url`, risquant une manipulation d'URL en mode dynamique (SSR) derrière un proxy comme Cloudflare.
 
-* Zéro risque sur un site **statique pur** (SSG).
-* En SSR derrière un cache (Cloudflare, etc.) : spoofing possible → cache poisoning ou phishing.
+> "Astro reflects the value in `X-Forwarded-Host` in output when using `Astro.url` without any validation." (Advisory GitHub)
 
-**Repro rapide (pour tester) :**
+**Impact pour un portfolio ?**  
+- Aucun risque en statique pur (SSG).  
+- En dynamique avec cache : spoofing possible, menant à phishing ou contamination du cache.
 
-```bash
-curl -H "X-Forwarded-Host: www.evil.com" -H "Host: www.example.com" https://ton-site.com
-```
+**Fix :** Mise à jour vers Astro ≥ 5.14.2 via `npm update`.
 
-**Fix :** upgrade Astro ≥ 5.14.2 ou ajoute un middleware :
+Autre exemple : [vulnérabilité critique (CVSS 10.0) dans React Server Components](https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components), annoncée le 3 décembre 2025. Elle permet une exécution de code à distance via une requête HTTP malicieuse, touchant React 19.0-19.2.0 et des frameworks comme Next.js.
 
-```js
-// middleware.js
-export function onRequest({ request }, next) {
-  const forwarded = request.headers.get('X-Forwarded-Host');
-  const host = request.headers.get('Host');
-  if (forwarded && forwarded !== host) {
-    return new Response('Host invalide', { status: 403 });
-  }
-  return next();
-}
-```
+**Impact ?**  
+- Exécution de code serveur possible si Server Components activés.  
+- Pour un portfolio Astro avec React (islands) : risques accrus avec du JS ajouté.
 
-Lire les advisories GitHub/NVD prend 2 minutes et évite 90 % des surprises.
+**Fix :** Mise à jour immédiate vers versions patchées ; hébergeurs comme Vercel offrent des mitigations temporaires.
+
+**Conseils généraux :**  
+- **Suivez les advisories :** Abonnez-vous à GitHub Security Alerts et consultez NVD ou blogs officiels (2 min/semaine).  
+- **Updates auto :** Utilisez Dependabot pour patches ; rebuild/redeploy pour sites statiques.  
+- **Bonnes pratiques :** Limitez JS (islands Astro), validez inputs/headers, ajoutez CSP/HSTS. Testez avec OWASP ZAP.  
+- **Pour budgets serrés :** Privilégiez statique (Hugo/Jekyll) sans runtime JS.
+
+En résumé, les CVEs sont courantes en dev web, mais une veille légère et des updates régulières protègent sans effort majeur. Vérifiez changelogs avant déploiement si vous intégrez React ou libs.
 <br/>
 ## Hosting : Netlify, Vercel, GitHub Pages, Cloudflare
 
@@ -201,7 +201,7 @@ Code un proto, teste, sécurise, et c’est plié : un portfolio qui claque, san
 <br/>
 <br/>
 ---
-## Sources & Liens (vérifiés le 24 novembre 2025)
+## Sources & Liens (vérifiés le 6 Décembre 2025)
 
 - **Core Web Vitals 2025 – Google**  
   https://web.dev/articles/vitals  
@@ -214,6 +214,10 @@ Code un proto, teste, sécurise, et c’est plié : un portfolio qui claque, san
 - **Handicap & accès internet – Eurostat**  
   https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Disability_statistics_-_access_to_information_and_communication_technologies
   *En 2024, 87,2 % des personnes handicapées dans l'UE avaient utilisé Internet au cours des 12 mois précédents, contre 95,2 % des personnes non handicapées.*
+
+- **Vulnerability in React Server Components & CVE-2025-55182**  
+  https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components
+  https://www.cve.org/CVERecord?id=CVE-2025-55182
 
 - **Astro – Docs officielles & CVE-2025-61925**  
   https://docs.astro.build  
