@@ -86,27 +86,6 @@ Il utilise Markdown et Liquid pour générer du HTML pur. Exemple :
 
 C’est parfait pour un portfolio simple : perfs stables, pas de JavaScript ajouté par défaut, et énormément de thèmes existants. L’écosystème évolue lentement, mais pour un site vitrine gratuit, fiable, et facile à maintenir, Jekyll reste une valeur sûre.
 <br/>
-
-{/* Revoir completement, cette partie, les test ne sont pas assez serieux. */}
-## Méthodologie rapide des perfs
-
-- Appareil : iPhone 12 (Brave)  
-- Réseau : 4G lente (Chrome DevTools)  
-- Mesures : moyenne de 3 runs Lighthouse (LCP), taille finale gzippée, temps CLI build  
-- Versions utilisées : Astro `5.15.9`, Hugo `0.152.2`, Jekyll `4.4.1`
-<br/>
-## Performances réelles
-
-J'ai crée un petit projet de 5 pages pour chaque stack avec beaucoup de contenu dans chacune pour pouvoir tester les performances. Voici ce que j'ai pu en tirer.
-
-| Outil      | Temps de build (5 pages)  | Bundle JS (min+gz) | LCP moyen (Slow 4G, iPhone 12) | Notes |
-|------------|---------------------------|--------------------|--------------------------------|-------|
-| **Hugo**   | **0,7 s**                 | 0 Kb               | **1.30s**                      | HTML pur, rien ne bat ça |
-| **Jekyll** | 0.760 s                   | 0 Kb               | 1.29 s                         | Build natif GitHub Pages |
-| **Astro**  | 2,1 s                     | 0-30 Kb            | 1.47 s                         | JS uniquement où besoin (islands) |
-
-Résultat : choisissez selon vos besoins, pas selon des millisecondes que personne ne verra jamais.
-<br/>
 ## Sécurité de base : Les pièges à éviter sur un statique
 
 Un portfolio statique est blindé par nature (pas de DB, pas de backend), mais si t'ajoutes des forms ou du JS, tu peux perdre le contrôle rapidement. Voici ce qu'il faut vérifier:
