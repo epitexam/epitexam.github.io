@@ -1,0 +1,134 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+const success = Astro.url.searchParams.get("success") === "true";
+---
+
+<!doctype html>
+<html lang="fr">
+    <head>
+        <BaseHead
+            title={`${SITE_TITLE} - Contact`}
+            description={SITE_DESCRIPTION}
+        />
+    </head>
+    <body
+        class="flex flex-col min-h-screen bg-[rgb(var(--bg))] text-[rgb(var(--text))] font-mono"
+    >
+        <Header />
+
+        <main
+            class="flex flex-col items-center text-center animate-fadeIn max-w-xl w-full mx-auto p-6"
+        >
+            <h1 class="glow-text text-3xl font-bold mb-4">Contactez-moi</h1>
+            <p class="mb-6 text-[rgba(var(--text),0.9)]">
+                Si vous avez un projet, une question ou souhaitez juste dire
+                bonjour, envoyez-moi un message. Je vous répondrai dès que
+                possible.
+            </p>
+
+            {
+                success && (
+                    <p class="mb-6 text-[rgb(var(--accent))] font-semibold">
+                        Merci ! Votre message a été envoyé.
+                    </p>
+                )
+            }
+
+            <form
+                action="https://formspree.io/f/xovgkrbn"
+                method="POST"
+                class="flex flex-col gap-4 w-full"
+                id="contactForm"
+            >
+                <input
+                    type="hidden"
+                    name="_next"
+                    value={`${Astro.url.origin}/contact?success=true`}
+                />
+
+                <input
+                    type="text"
+                    name="_gotcha"
+                    style="display:none"
+                    tabindex="-1"
+                    autocomplete="off"
+                />
+
+                <label class="flex flex-col w-full text-left">
+                    Votre email :
+                    <input
+                        type="email"
+                        name="email"
+                        required
+                        placeholder="exemple@domaine.com"
+                        class="mt-1 p-2 rounded border border-[rgba(var(--accent),0.25)] bg-[rgba(0,0,0,0.25)] focus:outline-none focus:border-[rgb(var(--accent))] focus:shadow-[0_0_15px_rgba(var(--accent),0.6)] transition-all"
+                    />
+                </label>
+
+                <label class="flex flex-col w-full text-left">
+                    Votre message :
+                    <textarea
+                        name="message"
+                        required
+                        rows="6"
+                        placeholder="Écrivez votre message ici..."
+                        class="mt-1 p-2 rounded border border-[rgba(var(--accent),0.25)] bg-[rgba(0,0,0,0.25)] focus:outline-none focus:border-[rgb(var(--accent))] focus:shadow-[0_0_15px_rgba(var(--accent),0.6)] transition-all resize-none"
+                    ></textarea>
+                </label>
+
+                <button
+                    type="submit"
+                    id="submitButton"
+                    class="mt-2 border border-[rgb(var(--accent))] text-[rgb(var(--accent))] rounded px-4 py-2 font-semibold hover:bg-[rgba(var(--accent),0.1)] hover:shadow-[0_0_20px_rgba(var(--accent),0.6)] transition-all cursor-pointer"
+                >
+                    Envoyer
+                </button>
+            </form>
+        </main>
+
+        <Footer />
+
+        <script>
+            const form = document.getElementById("contactForm");
+
+            if (form) {
+                form.addEventListener("submit", (e) => {
+                    const emailInput = form.querySelector<HTMLInputElement>(
+                        'input[name="email"]',
+                    );
+                    const messageInput =
+                        form.querySelector<HTMLTextAreaElement>(
+                            'textarea[name="message"]',
+                        );
+                    const submitButton = form.querySelector<HTMLButtonElement>(
+                        'button[type="submit"]',
+                    );
+
+                    if (!emailInput || !messageInput || !submitButton) return;
+
+                    const email = emailInput.value.trim();
+                    const message = messageInput.value.trim();
+
+                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                    if (!email || !message) {
+                        e.preventDefault();
+                        alert("Merci de remplir tous les champs.");
+                        return;
+                    }
+
+                    if (!emailPattern.test(email)) {
+                        e.preventDefault();
+                        alert("Adresse email invalide.");
+                        return;
+                    }
+                    submitButton.disabled = true;
+                    submitButton.textContent = "Envoi en cours...";
+                });
+            }
+        </script>
+    </body>
+</html>
