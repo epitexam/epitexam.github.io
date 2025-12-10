@@ -43,7 +43,12 @@ const success = Astro.url.searchParams.get("success") === "true";
                 class="flex flex-col gap-4 w-full"
                 id="contactForm"
             >
-                <!-- Honeypot anti-spam -->
+                <input
+                    type="hidden"
+                    name="_next"
+                    value={`${Astro.url.origin}/contact?success=true`}
+                />
+
                 <input
                     type="text"
                     name="_gotcha"
@@ -76,6 +81,7 @@ const success = Astro.url.searchParams.get("success") === "true";
 
                 <button
                     type="submit"
+                    id="submitButton"
                     class="mt-2 border border-[rgb(var(--accent))] text-[rgb(var(--accent))] rounded px-4 py-2 font-semibold hover:bg-[rgba(var(--accent),0.1)] hover:shadow-[0_0_20px_rgba(var(--accent),0.6)] transition-all cursor-pointer"
                 >
                     Envoyer
@@ -97,11 +103,16 @@ const success = Astro.url.searchParams.get("success") === "true";
                         form.querySelector<HTMLTextAreaElement>(
                             'textarea[name="message"]',
                         );
+                    const submitButton = form.querySelector<HTMLButtonElement>(
+                        'button[type="submit"]',
+                    );
 
-                    if (!emailInput || !messageInput) return;
+                    if (!emailInput || !messageInput || !submitButton) return;
 
                     const email = emailInput.value.trim();
                     const message = messageInput.value.trim();
+
+                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
                     if (!email || !message) {
                         e.preventDefault();
@@ -109,11 +120,13 @@ const success = Astro.url.searchParams.get("success") === "true";
                         return;
                     }
 
-                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                     if (!emailPattern.test(email)) {
                         e.preventDefault();
                         alert("Adresse email invalide.");
+                        return;
                     }
+                    submitButton.disabled = true;
+                    submitButton.textContent = "Envoi en cours...";
                 });
             }
         </script>
