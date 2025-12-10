@@ -15,24 +15,44 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 	<head>
 		<BaseHead title={title} description={description} />
 		<style>
+			.hero-background {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 65vh;
+				overflow: hidden;
+				z-index: -1;
+				pointer-events: none;
+			}
+
+			.hero-background img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				mask-image: linear-gradient(
+					to bottom,
+					black 0%,
+					black 30%,
+					transparent 100%
+				);
+				-webkit-mask-image: linear-gradient(
+					to bottom,
+					black 0%,
+					black 30%,
+					transparent 100%
+				);
+
+				filter: brightness(0.7) blur(0px);
+				opacity: 0.8;
+				transition: opacity 0.5s ease;
+			}
+
 			main {
 				width: 100%;
-				max-width: 100%;
-				margin: 0;
-				padding: 0 1em;
-			}
-			.hero-image {
-				width: 100%;
-				text-align: center;
-				margin: 2em 0;
-			}
-			.hero-image img {
-				display: block;
-				margin: 0 auto;
-				max-width: 100%;
-				height: auto;
-				border-radius: 12px;
-				box-shadow: var(--box-shadow);
+				margin-top: 35vh;
+				margin-bottom: 0;
+				position: relative;
 			}
 
 			.prose {
@@ -45,22 +65,28 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 			}
 
 			.title {
-				margin-bottom: 1.5em;
+				margin-bottom: 2em;
 				padding: 1em 0;
 				text-align: center;
+				text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
 			}
 			.title h1 {
 				margin: 0 0 0.5em 0;
 				color: rgb(var(--text));
+				font-size: 3em;
+				line-height: 1.1;
 			}
 			.date {
 				margin-bottom: 0.5em;
-				color: rgba(var(--text), 0.7);
-				font-size: 0.95em;
+				color: rgba(var(--text), 0.9);
+				font-size: 1.1em;
+				font-weight: 500;
+				text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
 			}
 			.last-updated-on {
 				font-style: italic;
-				color: rgba(var(--text), 0.6);
+				font-size: 0.8em;
+				color: rgba(var(--text), 0.8);
 			}
 			hr {
 				border: none;
@@ -68,32 +94,46 @@ const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
 				background: linear-gradient(
 					to right,
 					transparent,
-					rgba(var(--accent), 0.3),
+					rgba(var(--accent), 0.5),
 					transparent
 				);
-				margin: 1.5em auto;
-				max-width: 200px;
+				margin: 2em auto;
+				max-width: 150px;
+			}
+
+			@media (max-width: 768px) {
+				.hero-background {
+					height: 50vh;
+				}
+				main {
+					margin-top: 25vh;
+				}
+				.title h1 {
+					font-size: 2em;
+				}
 			}
 		</style>
 	</head>
 
 	<body>
 		<Header />
+
+		{
+			heroImage && (
+				<div class="hero-background animate-fadeIn">
+					<Image
+						width={1920}
+						height={1080}
+						src={heroImage}
+						alt=""
+						loading="eager"
+					/>
+				</div>
+			)
+		}
+
 		<main class="animate-fadeIn">
 			<article>
-				<div class="hero-image">
-					{
-						heroImage && (
-							<Image
-								width={1020}
-								height={510}
-								src={heroImage}
-								alt=""
-								loading="eager"
-							/>
-						)
-					}
-				</div>
 				<div class="prose">
 					<div class="title">
 						<div class="date">
