@@ -3,85 +3,47 @@ import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+const success = Astro.url.searchParams.get("success") === "true";
 ---
 
 <!doctype html>
 <html lang="fr">
     <head>
         <BaseHead
-            title={`Contact — ${SITE_TITLE}`}
-            description="Me contacter pour discuter, collaborer ou réagir à un article."
+            title={`${SITE_TITLE} - Contact`}
+            description={SITE_DESCRIPTION}
         />
     </head>
-
     <body
         class="flex flex-col min-h-screen bg-[rgb(var(--bg))] text-[rgb(var(--text))] font-mono"
     >
         <Header />
 
-        <main class="animate-fadeIn">
-            <section class="max-w-2xl">
-                <h1 class="glow-text">Contact</h1>
+        <main
+            class="flex flex-col items-center text-center animate-fadeIn max-w-xl w-full mx-auto p-6"
+        >
+            <h1 class="glow-text text-3xl font-bold mb-4">Contactez-moi</h1>
+            <p class="mb-6 text-[rgba(var(--text),0.9)]">
+                Si vous avez un projet, une question ou souhaitez juste dire
+                bonjour, envoyez-moi un message. Je vous répondrai dès que
+                possible.
+            </p>
 
-                <p>
-                    Une question sur un projet, une réaction à un article du
-                    blog, ou simplement envie d’échanger autour du développement
-                    et de la création ? N’hésitez pas à me laisser un message.
-                </p>
-
-                <p>Je lis tout et je réponds dès que possible.</p>
-            </section>
+            {
+                success && (
+                    <p class="mb-6 text-[rgb(var(--accent))] font-semibold">
+                        Merci ! Votre message a été envoyé.
+                    </p>
+                )
+            }
 
             <form
                 action="https://formspree.io/f/xovgkrbn"
                 method="POST"
-                class="mt-10 flex flex-col gap-6 max-w-xl"
+                class="flex flex-col gap-4 w-full"
+                id="contactForm"
             >
-                <label class="flex flex-col gap-2">
-                    <span class="text-[rgb(var(--accent))] font-semibold"
-                        >Email</span
-                    >
-                    <input
-                        type="email"
-                        name="email"
-                        required
-                        placeholder="email@example.com"
-                        class="px-4 py-2 bg-black/20 border border-[rgba(0,255,150,0.25)] rounded-md
-                   focus:outline-none focus:border-[rgb(var(--accent))]
-                   focus:shadow-[var(--glow)] placeholder:text-white/40"
-                    />
-                </label>
-
-                <label class="flex flex-col gap-2">
-                    <span class="text-[rgb(var(--accent))] font-semibold"
-                        >Sujet</span
-                    >
-                    <input
-                        type="text"
-                        name="sujet"
-                        placeholder="Projet, collaboration, question…"
-                        class="px-4 py-2 bg-black/20 border border-[rgba(0,255,150,0.25)] rounded-md
-                   focus:outline-none focus:border-[rgb(var(--accent))]
-                   focus:shadow-[var(--glow)] placeholder:text-white/40"
-                    />
-                </label>
-
-                <label class="flex flex-col gap-2">
-                    <span class="text-[rgb(var(--accent))] font-semibold"
-                        >Message</span
-                    >
-                    <textarea
-                        name="message"
-                        rows="6"
-                        required
-                        placeholder="Écrivez votre message ici..."
-                        class="px-4 py-2 bg-black/20 border border-[rgba(0,255,150,0.25)] rounded-md
-                   focus:outline-none focus:border-[rgb(var(--accent))]
-                   focus:shadow-[var(--glow)] placeholder:text-white/40"
-                    ></textarea>
-                </label>
-
-
+                <!-- Honeypot anti-spam -->
                 <input
                     type="text"
                     name="_gotcha"
@@ -90,11 +52,31 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
                     autocomplete="off"
                 />
 
+                <label class="flex flex-col w-full text-left">
+                    Votre email :
+                    <input
+                        type="email"
+                        name="email"
+                        required
+                        placeholder="exemple@domaine.com"
+                        class="mt-1 p-2 rounded border border-[rgba(var(--accent),0.25)] bg-[rgba(0,0,0,0.25)] focus:outline-none focus:border-[rgb(var(--accent))] focus:shadow-[0_0_15px_rgba(var(--accent),0.6)] transition-all"
+                    />
+                </label>
+
+                <label class="flex flex-col w-full text-left">
+                    Votre message :
+                    <textarea
+                        name="message"
+                        required
+                        rows="6"
+                        placeholder="Écrivez votre message ici..."
+                        class="mt-1 p-2 rounded border border-[rgba(var(--accent),0.25)] bg-[rgba(0,0,0,0.25)] focus:outline-none focus:border-[rgb(var(--accent))] focus:shadow-[0_0_15px_rgba(var(--accent),0.6)] transition-all resize-none"
+                    ></textarea>
+                </label>
+
                 <button
                     type="submit"
-                    class="mt-4 px-6 py-3 border border-[rgb(var(--accent))] text-[rgb(var(--accent))]
-                 font-semibold rounded-md transition
-                 hover:bg-[rgba(0,255,150,0.1)] hover:shadow-[var(--glow)]"
+                    class="mt-2 border border-[rgb(var(--accent))] text-[rgb(var(--accent))] rounded px-4 py-2 font-semibold hover:bg-[rgba(var(--accent),0.1)] hover:shadow-[0_0_20px_rgba(var(--accent),0.6)] transition-all cursor-pointer"
                 >
                     Envoyer
                 </button>
@@ -102,5 +84,38 @@ import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
         </main>
 
         <Footer />
+
+        <script>
+            const form = document.getElementById("contactForm");
+
+            if (form) {
+                form.addEventListener("submit", (e) => {
+                    const emailInput = form.querySelector<HTMLInputElement>(
+                        'input[name="email"]',
+                    );
+                    const messageInput =
+                        form.querySelector<HTMLTextAreaElement>(
+                            'textarea[name="message"]',
+                        );
+
+                    if (!emailInput || !messageInput) return;
+
+                    const email = emailInput.value.trim();
+                    const message = messageInput.value.trim();
+
+                    if (!email || !message) {
+                        e.preventDefault();
+                        alert("Merci de remplir tous les champs.");
+                        return;
+                    }
+
+                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailPattern.test(email)) {
+                        e.preventDefault();
+                        alert("Adresse email invalide.");
+                    }
+                });
+            }
+        </script>
     </body>
 </html>
