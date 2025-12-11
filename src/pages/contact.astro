@@ -3,6 +3,7 @@ import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+
 const success = Astro.url.searchParams.get("success") === "true";
 ---
 
@@ -31,9 +32,9 @@ const success = Astro.url.searchParams.get("success") === "true";
 
             {
                 success && (
-                    <p class="mb-6 text-[rgb(var(--accent))] font-semibold">
-                        Merci ! Votre message a été envoyé.
-                    </p>
+                    <div class="mb-6 p-4 border border-[rgb(var(--accent))] bg-[rgba(var(--accent),0.1)] rounded text-[rgb(var(--accent))] font-semibold animate-pulse">
+                        Merci ! Votre message a bien été envoyé.
+                    </div>
                 )
             }
 
@@ -46,7 +47,13 @@ const success = Astro.url.searchParams.get("success") === "true";
                 <input
                     type="hidden"
                     name="_next"
-                    value={`${Astro.url.origin}/contact?success=true`}
+                    value={`${Astro.url.origin}${Astro.url.pathname}?success=true`}
+                />
+
+                <input
+                    type="hidden"
+                    name="_subject"
+                    value={`Nouveau message de contact - ${SITE_TITLE}`}
                 />
 
                 <input
@@ -64,7 +71,7 @@ const success = Astro.url.searchParams.get("success") === "true";
                         name="email"
                         required
                         placeholder="exemple@domaine.com"
-                        class="mt-1 p-2 rounded border border-[rgba(var(--accent),0.25)] bg-[rgba(0,0,0,0.25)] focus:outline-none focus:border-[rgb(var(--accent))] focus:shadow-[0_0_15px_rgba(var(--accent),0.6)] transition-all"
+                        class="mt-1 p-2 rounded border border-[rgba(var(--accent),0.25)] bg-[rgba(0,0,0,0.25)] focus:outline-none focus:border-[rgb(var(--accent))] focus:shadow-[0_0_15px_rgba(var(--accent),0.6)] invalid:border-red-500 invalid:text-red-500 transition-all"
                     />
                 </label>
 
@@ -75,14 +82,13 @@ const success = Astro.url.searchParams.get("success") === "true";
                         required
                         rows="6"
                         placeholder="Écrivez votre message ici..."
-                        class="mt-1 p-2 rounded border border-[rgba(var(--accent),0.25)] bg-[rgba(0,0,0,0.25)] focus:outline-none focus:border-[rgb(var(--accent))] focus:shadow-[0_0_15px_rgba(var(--accent),0.6)] transition-all resize-none"
+                        class="mt-1 p-2 rounded border border-[rgba(var(--accent),0.25)] bg-[rgba(0,0,0,0.25)] focus:outline-none focus:border-[rgb(var(--accent))] focus:shadow-[0_0_15px_rgba(var(--accent),0.6)] transition-all resize-y min-h-[150px]"
                     ></textarea>
                 </label>
 
                 <button
                     type="submit"
-                    id="submitButton"
-                    class="mt-2 border border-[rgb(var(--accent))] text-[rgb(var(--accent))] rounded px-4 py-2 font-semibold hover:bg-[rgba(var(--accent),0.1)] hover:shadow-[0_0_20px_rgba(var(--accent),0.6)] transition-all cursor-pointer"
+                    class="mt-2 border border-[rgb(var(--accent))] text-[rgb(var(--accent))] rounded px-4 py-2 font-semibold hover:bg-[rgba(var(--accent),0.1)] hover:shadow-[0_0_20px_rgba(var(--accent),0.6)] disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
                 >
                     Envoyer
                 </button>
@@ -92,41 +98,20 @@ const success = Astro.url.searchParams.get("success") === "true";
         <Footer />
 
         <script>
-            const form = document.getElementById("contactForm");
+            const form = document.getElementById(
+                "contactForm",
+            ) as HTMLFormElement;
 
             if (form) {
                 form.addEventListener("submit", (e) => {
-                    const emailInput = form.querySelector<HTMLInputElement>(
-                        'input[name="email"]',
-                    );
-                    const messageInput =
-                        form.querySelector<HTMLTextAreaElement>(
-                            'textarea[name="message"]',
-                        );
                     const submitButton = form.querySelector<HTMLButtonElement>(
                         'button[type="submit"]',
                     );
-
-                    if (!emailInput || !messageInput || !submitButton) return;
-
-                    const email = emailInput.value.trim();
-                    const message = messageInput.value.trim();
-
-                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-                    if (!email || !message) {
-                        e.preventDefault();
-                        alert("Merci de remplir tous les champs.");
-                        return;
+                    if (submitButton) {
+                        submitButton.disabled = true;
+                        submitButton.textContent = "Envoi en cours...";
+                        submitButton.classList.add("animate-pulse");
                     }
-
-                    if (!emailPattern.test(email)) {
-                        e.preventDefault();
-                        alert("Adresse email invalide.");
-                        return;
-                    }
-                    submitButton.disabled = true;
-                    submitButton.textContent = "Envoi en cours...";
                 });
             }
         </script>
