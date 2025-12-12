@@ -1,0 +1,343 @@
+---
+title: 'Portfolio 2026 : Le Guide du Dev Fauché'
+description: 'Apprends à créer un portfolio gratuit, rapide et efficace en 2026. Guide pratique pour devs juniors : choisir son générateur statique (Astro, Hugo ou Jekyll), hébergement gratuit, sécurité de base, accessibilité et astuces pour se démarquer sur le marché de l’emploi.'
+pubDate: '2025-12-12'
+heroImage: '../../assets/bob-price.webp'
+draft: false
+tags: ['portfolio', 'dev junior', 'astro', 'hugo', 'jekyll', 'gratuit', 'hébergement', 'performance', 'accessibilité', 'sécurité']
+---
+
+Bienvenue sur le champ de bataille de l’emploi tech en 2026. Entre l'éclatement de la bulle covid et l’IA qui filtre automatiquement les candidatures, les postes juniors sont plus difficiles à atteindre. 
+
+Ton portfolio n’est pas juste un site web : c’est ton armure, ton bouclier et ton épée pour convaincre recruteurs et clients.
+
+Bonne nouvelle : tu n’as pas besoin de vider ton porte-monnaie pour ça. 
+
+Avec un peu de stratégie, un design clair, tu peux créer un portfolio rapide, lisible et qui frappe fort, même en étant fauché.
+
+<br/>
+## Les bases d’un portfolio
+<br/>
+### 1.1 Objectif du portfolio.
+<br/>
+À l’origine, le portfolio, c’était l’arme secrète des artistes : graphistes, UI/UX designers, motion designers, illustrateurs, photographes… bref, toutes les personnes qui impressionnent visuellement avant même d’ouvrir la bouche. 
+
+Et puis, petit à petit, les devs se sont retrouvé dans la mêlée.
+
+Le portfolio est devenu l'extension de son CV et la pratique s'est généralisé à tous les milieux. L’objectif est clair : prouver que tu sais faire ce que tu dis savoir faire.
+<br/>
+### 1.2 Contenu minimal indispensable.
+<br/>
+
+Bonne nouvelle : un portfolio n’a pas besoin de 14 pages et d’un menu animé en 3D (À part, si tu t'appelles [Bruno Simon](https://bruno-simon.com/)).
+
+Quelques sections bien pensées suffisent largement. 
+
+L'essentiel c'est :
+
+- Une page d’accueil qui dit qui tu es et ce que tu fais. 
+
+- Une page À propos un peu plus personnelle, mais pas trop (pas besoin de raconter ton parcours depuis la maternelle).
+
+- Une page Projets claire, avec tes réalisations, tes technos, une capture et quelques lignes d’explication.
+
+- Eventuellement une page Contact, même si un simple lien mail + LinkedIn peut faire le job.
+
+### 1.3 Performance et vitesse.
+<br/>
+Même si ton site ne fait que quelques pages, la vitesse reste essentielle.
+
+En 2026, si une page met plus de 2 secondes à charger, l’utilisateur disparaît plus vite qu'un stagiaire un vendredi à 17h. 
+
+Il se peut que le recruteur qui ouvre ton site entre deux réunions soit sur mobile et en 4G.
+
+Évite le JavaScript inutile, optimise tes images en WebP, active le lazy loading.
+
+```html
+<img src="projet.webp" alt="Projet X" width="800" height="600" loading="lazy">
+```
+Pas besoin de magie ou d'outil payant. Les meilleurs gains coûtent 0 € et te donnent un site qui charge vite partout.
+
+<br/>
+### 1.4 Accessibilité de base.
+<br/>
+L’accessibilité n’est pas réservée aux grosses plateformes : c’est nécessaire meme pour les petits projets. 
+
+Contrastes lisibles, navigation au clavier, alt text utiles, structure sémantique propre… ce sont des bonnes pratiques qui ne coûtent rien et qui montrent que tu es un dev qui pense aux utilisateurs, tous les utilisateurs.
+
+<br/>
+### 1.5 Visibilité et SEO léger.
+<br/>
+
+Tu n’as pas besoin d’être un gourou du SEO pour qu’on te trouve. 
+
+Quelques bonnes pratiques suffisent : 
+- Une meta description claire, des titres propres sur chaque page. 
+- Des balises OpenGraph pour éviter que ton lien ressemble à un écran gris quand tu le postes sur LinkedIn ou un serveur Discord.
+
+<br/>
+## Choisir ton outil de création
+<br/>
+### 2.1 Les critères vraiment importants
+<br/>
+Avant de choisir un générateur, pose-toi les bonnes questions : combien de pages ton portfolio va contenir, combien d’interactivité tu veux ajouter, et combien de maintenance tu es prêt à assumer.
+
+Regarde aussi la facilité de déploiement gratuit (Cloudflare, GitHub Pages), le temps de build, la quantité de JavaScript produite et la possibilité d’intégrer un mini-projet interactif sans transformer ton site en fusée SpaceX.
+
+En résumé : pense long terme, simplicité, et efficacité.
+
+<br/>
+### 2.2 Astro : moderne, modulable, et ultra fun
+<br/>
+
+Astro génère du HTML pur par défaut et n’envoie du JavaScript que pour les composants interactifs (les “islands”).
+
+```astro
+---
+// src/pages/index.astro
+// Tout ce qui est ici s'exécute au build (Serveur)
+import ProjectFilter from '../components/ProjectFilter.svelte';
+import { getCollection } from 'astro:content';
+
+const projects = await getCollection('projects');
+---
+
+<main>
+  <ProjectFilter client:load />
+
+  {projects.map((p) => (
+    <article>
+      <h2>{p.data.title}</h2>
+    </article>
+  ))}
+</main>
+```
+
+Ça fonctionne avec React, Svelte, Vue… ou sans framework du tout.
+
+Astro brille particulièrement pour les portfolios un peu stylés, avec transitions propres, composants réutilisables et Markdown intégré (un peu comme le mien non ?).
+
+La contrepartie : tu touches forcément un peu au JavaScript et à la config (installer Tailwind, MDX, etc.). Ce n’est pas sorcier, mais ce n’est pas “plug-and-play”.
+
+Si tu veux un site moderne, Astro est un excellent choix.
+
+<br/>
+### 2.3 Hugo : minimal, ultra rapide, zéro stress
+<br/>
+Hugo, c’est le champion du build le plus rapide du marché. Les pages sortent quasi instantanément, même quand ton site devient massif.
+
+Il produit du HTML statique pur, sauf si tu ajoutes toi-même du JS. Pas d’écosystème compliqué, pas de dépendances exotiques.
+
+```html
+<!-- layouts/index.html -->
+{{ range (where .Site.RegularPages "Section" "projects") }}
+  <article>{{ .Title }}</article>
+{{ end }}
+```
+Les templates Go demandent un petit temps d’adaptation, mais une fois compris, c’est clair et stable.
+
+Et oui, certains thèmes peuvent vite alourdir le dossier ou complexifier l’installation. Je suis déjà passé par là.
+
+Hugo est parfait si tu veux un portfolio rapide, robuste et simple à maintenir, sans plonger dans l’univers JavaScript.
+
+<br/>
+### 2.4 Jekyll : le choix simple et natif des débutants
+<br/>
+
+Jekyll est moins hype mais d’une fiabilité exemplaire. 
+
+Il tourne depuis plus de 10 ans, utilise Markdown + Liquid, et surtout : GitHub Pages le compile nativement, gratuitement, sans pipeline ni configuration.
+
+```liquid
+<!-- index.html -->
+{% for project in site.projects %}
+  <article>{{ project.title }}</article>
+{% endfor %}
+```
+
+Tu pushes, GitHub génère, ton site est en ligne.
+
+C’est le choix parfait si ton objectif est d’avoir un portfolio propre et fonctionnel sans t’encombrer de tooling moderne.
+
+C'est souvent le choix préféré des plus gros techos sur [Hacker News](https://news.ycombinator.com/).
+<br/>
+### 2.5 Quel outil pour quel type de junior ?
+
+- Tu viens du front, tu aimes React ou Svelte -> Astro. Parfait pour mélanger simplicité et modernité.
+
+- Tu veux un portfolio le plus rapide possible -> Hugo. Moins de JS = moins de problèmes.
+
+- Tu veux zéro maintenance et zéro configuration -> Jekyll. Le plus pragmatique des trois.
+
+- Si vraiment, tu te sens de créer quelque chose de complètement original et que tu n'as pas peur de le maintenir dans la durée, tu peux partir sur du React, Vue, etc...
+
+<br/>
+### 2.6 Et les autres solutions
+<br/>
+Il existe évidemment d’autres outils pour créer un site, mais ils ne sont pas tous adaptés à un portfolio léger, gratuit et simple à maintenir.
+
+- WordPress : puissant, complet, mais nécessite une base de données, un hébergement, des mises à jour régulières et une sécurité plus fragile. Beaucoup trop lourd pour un simple portfolio.
+
+- Eleventy (11ty) : super performant, très flexible, mais son côté “tout en configuration” le rend moins accessible pour un dev junior. Une bonne option si tu aimes bidouiller, moins si tu veux aller vite.
+
+- Next.js, Gatsby, SvelteKit, Nuxt : excellents frameworks… pour faire des applications, pas des portfolios. Trop lourds, trop complexes, trop de JavaScript pour ce dont tu as besoin.
+<br/>
+## Hébergement gratuit pour ton portfolio
+<br/>
+Comparatif rapide des meilleures options (2025-2026)
+| Hébergement                          | Points forts                                              | Limites / Attention                                      | Free tier (déc. 2025)                                                                 | Idéal pour…                              |
+|--------------------------------------|-----------------------------------------------------------|----------------------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------|
+| [**GitHub Pages**](https://pages.github.com/)         | Simple, Jekyll natif, SSL gratuit, domaine custom        | Peu de plugins/server-side, 1 Go stockage/site           | 100 % gratuit – 100 Go bande passante/mois (soft limit) – 1 Go stockage/site         | Sites statiques, blogs Jekyll, docs      |
+| [**Cloudflare Pages**](https://pages.cloudflare.com/) | CDN mondial ultra-rapide, Preview déployments             | Fonctions avancées (Workers KV, D1…) payantes           | Gratuit à vie – Bande passante illimitée – 500 builds/mois – Workers 100 k req/jour   | Astro, Hugo, Next.js, sites pro          |
+| [**Netlify**](https://www.netlify.com/)               | Déploiement ultra-simple, formulaires & fonctions natives| Quotas plus stricts qu’avant                             | Gratuit – 100 Go bande passante/mois – 300 crédits/mois (~300 min builds)             | Débutants, JAMstack, sites avec formulaires |
+| [**Vercel**](https://vercel.com/)                     | Optimisé Next.js & frameworks, Preview + Analytics       | Cold starts fonctions, limites Hobby rapides            | Gratuit (Hobby) – 100 Go bande passante/mois – 6 000 min fonctions/mois               | Next.js, React, SvelteKit, Nuxt          |
+| [**Firebase Hosting**](https://firebase.google.com/products/hosting) | CDN Google, SSL, rollback instantané              | Nécessite CLI + projet Google Cloud                      | Spark plan gratuit – 10 Go bande passante/mois – 1 Go stockage                       | SPA, PWA, apps Firebase                  |
+| [**Surge.sh**](https://surge.sh/)                     | 1 commande (`surge`), zéro config                         | Pas de CI/CD ni formulaires natifs                       | Gratuit illimité (domaine .surge.sh ou custom)                                        | Prototypes, démos ultra-rapides          |
+| [**Neocities**](https://neocities.org/)               | [Ambiance rétro Geocities](https://spyware.neocities.org/articles/), communauté fun                 | 1 Go stockage max, pas de CI/CD                          | Gratuit – 1 Go stockage – ~200 Go bande passante/mois                                | Sites perso fun, portfolios rétro        |
+
+<br/>
+## Sécurité simple et efficace
+<br/>
+### 4.1 Les failles classiques d’un site statique
+
+| Failles courantes       | Exemple concret                    | Comment éviter                    |
+| ----------------------- | ---------------------------------- | --------------------------------- |
+| Mauvaise config         | Headers manquants, HTTPS non forcé | Activer HSTS / HTTPS              |
+| Fichiers exposés        | `/backup.zip`, `/admin/`           | Supprimer / déplacer hors racine  |
+| Spam sur formulaires    | Bots qui envoient du junk          | Honeypot, validation serveur      |
+| XSS basique             | Valeurs non échappées dans du JS   | Échapper toutes les entrées       |
+| Dépendances vulnérables | Version obsolète d'un plugin / lib | Mise à jour régulière, Dependabot |
+
+### 4.2 Headers de sécurité essentiels
+
+| Header                 | Ce qu’il bloque            | Exemple                   |
+| ---------------------- | -------------------------- | ------------------------- |
+| **CSP**                | Scripts non autorisés, XSS | `script-src 'self'`       |
+| **X-Frame-Options**    | Clickjacking               | `DENY`                    |
+| **Referrer-Policy**    | Fuite d’URL sensibles      | `strict-origin`           |
+| **Permissions-Policy** | API abusives               | Désactiver caméra, géoloc |
+| **Cache-Control**      | Versions périmées          | `max-age=31536000`        |
+
+### 4.3 JavaScript & formulaires : risques et bonnes pratiques
+
+| Risque                       | Exemple                   | Solution rapide                   |
+| ---------------------------- | ------------------------- | --------------------------------- |
+| Surface d’attaque trop large | Trop de JS, libs inutiles | Réduire, minifier, supprimer      |
+| XSS client                   | `innerHTML` non sécurisé  | Utiliser `.textContent`           |
+| Formulaire exploitable       | Pas de validation         | Valider côté serveur              |
+| Données sensibles exposées   | Clé API dans JS           | Variables d'environnement / proxy |
+| Injection simple             | Champs non filtrés        | Nettoyer + valider les inputs     |
+
+<br/>
+###  4.4 Vigilance outils : Exemples de CVEs dans les frameworks modernes
+<br/>
+
+Même les outils solides comme Astro ou React peuvent présenter des vulnérabilités, elles sont souvent patchées rapidement par les communautés open-source.
+
+On ne va pas ici rentrer en détail de la cybersécurité ou présenter des bouts de code à la va-vite ( bien qu'il soit parfois nécessaire de le faire. ).
+
+L'essentiel est de restez vigilant avec des mises à jour régulières.
+
+Prenons la [CVE-2025-61925](https://nvd.nist.gov/vuln/detail/CVE-2025-61925) pour Astro (CVSS 6.5, moyenne) : réflexion non validée de l'en-tête `X-Forwarded-Host` dans `Astro.url`, risquant une manipulation d'URL en mode dynamique (SSR) derrière un proxy comme Cloudflare.
+
+```text
+> "Astro reflects the value in `X-Forwarded-Host` in output when using `Astro.url` without any validation." (Advisory GitHub)
+```
+
+**Impact pour un portfolio ?**  
+- Aucun risque en statique pur (SSG).  
+- En dynamique avec cache : spoofing possible, menant à phishing ou contamination du cache.
+
+**Fix :** Mise à jour vers Astro ≥ 5.14.2 via `npm update`.
+
+Autre exemple : 
+
+[Vulnérabilité critique (CVSS 10.0) dans React Server Components](https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components), annoncée le 3 décembre 2025. 
+
+Elle permet une exécution de code à distance via une requête HTTP malicieuse, touchant React 19.0-19.2.0 et des frameworks comme Next.js.
+
+**Impact ?**  
+- Exécution de code serveur possible si Server Components activés.  
+- Pour un portfolio Astro avec React (islands) : risques accrus avec du JS ajouté.
+
+**Fix :** Mise à jour immédiate vers versions patchées ; hébergeurs comme Vercel offrent des mitigations temporaires.
+
+**Conseils généraux :**  
+- **Suivez les advisories :** Abonnez-vous à GitHub Security Alerts et consultez NVD ou blogs officiels (2 min/semaine).  
+- **Updates auto :** Utilisez Dependabot pour patches ; rebuild/redeploy pour sites statiques.  
+- **Bonnes pratiques :** Limitez JS (islands Astro), validez inputs/headers, ajoutez CSP/HSTS. Testez avec OWASP ZAP.  
+- **Pour budgets serrés :** Privilégiez statique (Hugo/Jekyll) sans runtime JS.
+
+En résumé, les CVEs sont courantes en dev web, mais une veille légère et des updates régulières protègent sans effort majeur.
+<br/>
+
+## Conclusion
+
+Ton portfolio est enfin prêt : rapide, propre, gratuit et blindé.
+
+Ce qui compte vraiment, ce n’est pas la quantité de frameworks ou de plugins que tu utilises, mais ce que ton travail raconte sur toi et tes compétences.
+
+Même dans un marché du dev chamboulé par l’IA et l’automatisation, un portfolio bien fait reste ton arme secrète pour sortir du lot et montrer que tu sais te battre pour tes projets.
+<br/>
+<hr />
+## Sources & Liens (vérifiés le 12 Décembre 2025)
+
+- **Core Web Vitals 2025 – Google**  
+  https://web.dev/articles/vitals  
+  *LCP excellent < 1 s, bon < 2,5 s.*
+
+- **WCAG 2.2 – W3C**  
+  https://www.w3.org/TR/WCAG22/  
+  *Contraste 4,5:1 pour texte normal (AA).*
+
+- **Handicap & accès internet – Eurostat**  
+  https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Disability_statistics_-_access_to_information_and_communication_technologies
+  *En 2024, 87,2 % des personnes handicapées dans l'UE avaient utilisé Internet au cours des 12 mois précédents, contre 95,2 % des personnes non handicapées.*
+
+- **Vulnerability in React Server Components & CVE-2025-55182**  
+  https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components
+  https://www.cve.org/CVERecord?id=CVE-2025-55182
+
+- **Astro – Docs officielles & CVE-2025-61925**  
+  https://docs.astro.build  
+  https://nvd.nist.gov/vuln/detail/CVE-2025-61925
+  https://github.com/withastro/astro/security  
+  *Islands architecture, zero JS by default, patch middleware.*
+
+- **Hugo – Benchmarks & GitHub Pages**  
+  https://gohugo.io  
+  https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#limits  
+  *< 1 s pour 5 pages, 100 Go bande passante soft limit.*
+
+- **Jekyll – Docs & Performance**  
+  https://jekyllrb.com/  
+  *Documentation de jekyll.*
+
+- **OWASP Top 10 2025 (Release Candidate 2025)**  
+  https://owasp.org/Top10/  
+  *A01: Broken Access Control, A02: Security Misconfiguration, A03: Software Supply Chain Failures, A05: Injection.*
+
+- **Cloudflare Pages – Limites gratuites**  
+  https://developers.cloudflare.com/pages/platform/limits/  
+  *500 builds/mois, bande passante illimitée.*
+
+- **Netlify – Pricing gratuit**  
+  https://www.netlify.com/pricing/  
+  *100 Go bande passante, 300 min builds/mois.*
+
+- **Vercel – Hobby Plan**  
+  https://vercel.com/pricing  
+  *100 Go bande passante, cold starts serverless.*
+
+- **GitHub Pages – Docs**  
+  https://docs.github.com/en/pages 
+  https://docs.astro.build/en/guides/deploy/github/
+  *100 Go/mois soft, builds illimités.*
+
+- **WebAIM Million 2025 Report**  
+  https://webaim.org/projects/million/  
+  *94,8 % des sites ont au moins une erreur WCAG détectable ; moyenne 51 erreurs/page.*
+
+- **WAVE – Outil d’accessibilité**  
+  https://wave.webaim.org  
+  *Test contraste, ARIA, etc.*
