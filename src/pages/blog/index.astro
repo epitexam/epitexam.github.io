@@ -13,11 +13,10 @@ const posts = (await getCollection("blog")).sort(
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="fr">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 		<style>
-			/* === Centrage global de la page === */
 			body {
 				display: flex;
 				flex-direction: column;
@@ -33,9 +32,8 @@ const posts = (await getCollection("blog")).sort(
 				width: 100%;
 				margin: auto;
 				padding: 0 1.5rem;
-				text-align: center; /* <= Centre le texte global */
 			}
-			/* === Styles pour les cartes de blog === */
+
 			ul {
 				display: flex;
 				flex-wrap: wrap;
@@ -43,9 +41,14 @@ const posts = (await getCollection("blog")).sort(
 				list-style-type: none;
 				margin: 0;
 				padding: 0;
-				justify-content: center; /* <= Centre la grille */
+				justify-content: center;
 				width: 100%;
 			}
+
+			ul li::before {
+				content: none !important;
+			}
+
 			ul li {
 				width: calc(50% - 1rem);
 				text-align: center;
@@ -54,23 +57,39 @@ const posts = (await getCollection("blog")).sort(
 				text-decoration: none;
 				transition: 0.2s ease;
 			}
-			ul li:first-child {
+
+			.image-container {
+				aspect-ratio: 2 / 1;
 				width: 100%;
-				margin-bottom: 1.5rem;
-			}
-			ul li:first-child img {
-				width: 100%;
-				border-radius: 12px;
-				margin-top: 10px;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
+				overflow: hidden;
+				position: relative;
 				margin-bottom: 0.75rem;
 				border-radius: 10px;
 				border: 1px solid rgba(255, 255, 255, 0.05);
 			}
+
+			.image-container img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				object-position: center;
+				border-radius: inherit;
+			}
+
+			ul li:first-child {
+				width: 100%;
+				margin-bottom: 1.5rem;
+			}
+
+			ul li:first-child .image-container {
+				border-radius: 12px;
+				margin-top: 10px;
+			}
+
+			ul li:first-child .title {
+				font-size: 2.369rem;
+			}
+
 			ul li a {
 				display: block;
 				color: inherit;
@@ -90,10 +109,12 @@ const posts = (await getCollection("blog")).sort(
 			ul li a:hover .date {
 				color: rgb(var(--accent));
 			}
-			ul li a:hover img {
+			ul li a:hover .image-container {
 				box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
 				transform: translateY(-2px);
+				border-color: rgba(var(--accent), 0.5);
 			}
+
 			@media (max-width: 720px) {
 				ul {
 					gap: 1rem;
@@ -108,6 +129,9 @@ const posts = (await getCollection("blog")).sort(
 				ul li:first-child .title {
 					font-size: 1.8em;
 				}
+				.image-container {
+					aspect-ratio: 16 / 9;
+				}
 			}
 		</style>
 	</head>
@@ -121,12 +145,14 @@ const posts = (await getCollection("blog")).sort(
 							<li>
 								<a href={`/blog/${post.id}/`}>
 									{post.data.heroImage && (
-										<Image
-											width={720}
-											height={360}
-											src={post.data.heroImage}
-											alt=""
-										/>
+										<div class="image-container">
+											<Image
+												width={960}
+												height={480}
+												src={post.data.heroImage}
+												alt={`Image de couverture pour l'article ${post.data.title}`}
+											/>
+										</div>
 									)}
 									<h4 class="title">{post.data.title}</h4>
 									<p class="date">
