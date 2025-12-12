@@ -4,53 +4,10 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import TechStack from "../components/TechStack.astro";
 import GitHubProject from "../components/GitHubProject.astro";
-import { SITE_DESCRIPTION, SITE_TITLE, GITHUB_URL } from "../consts";
+import { SITE_DESCRIPTION, SITE_TITLE, GITHUB_URL, TECH_STACK } from "../consts";
 import { Image } from "astro:assets";
 import profile from "../assets/profile.webp";
 import type { Project } from "../types/github";
-
-const TECH_STACK = [
-	"ElectronJS",
-	"Tauri",
-	"React",
-	"Next.js",
-	"Preact",
-	"Astro",
-	"TailwindCSS",
-	"Typescript",
-	"Javascript",
-	"Redux",
-	"Jest",
-	"Cypress",
-	"Lua",
-	"Node.js",
-	"Nest",
-	"Fastify",
-	"Elysia",
-	"Express.js",
-	"Bun",
-	"Python",
-	"C",
-	"C++",
-	"Godot",
-	"Postgres",
-	"MongoDB",
-	"MariaDB",
-	"Prisma",
-	"Redis",
-	"Docker",
-	"Podman",
-	"Linux",
-	"Windows 💀",
-	"Debian",
-	"Ubuntu",
-	"Fedora",
-	"Arch linux",
-	"Asm 6502 / x64",
-	"Arduino",
-	"Raspberry",
-	"ESP32",
-] as const;
 
 let projects: Project[] = [];
 if (import.meta.env.SSR) {
