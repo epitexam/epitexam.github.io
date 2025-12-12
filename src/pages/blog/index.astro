@@ -24,113 +24,95 @@ const posts = (await getCollection("blog")).sort(
 			}
 			main {
 				flex-grow: 1;
+				width: 100%;
+				max-width: 960px;
+				margin: 0 auto;
+				padding: 2rem 1.5rem !important;
+				box-sizing: border-box;
+			}
+			.blog-grid {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 2.5rem 2rem;
+				width: 100%;
+				margin: 0;
+				padding: 0;
+			}
+
+			.blog-card {
+				width: 100%;
 				display: flex;
 				flex-direction: column;
 				align-items: center;
-				justify-content: center;
-				max-width: 960px;
-				width: 100%;
-				margin: auto;
-				padding: 0 1.5rem;
-			}
-
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-				justify-content: center;
-				width: 100%;
-			}
-
-			ul li::before {
-				content: none !important;
-			}
-
-			ul li {
-				width: calc(50% - 1rem);
 				text-align: center;
-			}
-			ul li * {
 				text-decoration: none;
-				transition: 0.2s ease;
+				color: inherit;
+			}
+
+			.blog-card.featured {
+				grid-column: 1 / -1;
+				margin-bottom: 1rem;
 			}
 
 			.image-container {
 				aspect-ratio: 2 / 1;
 				width: 100%;
 				overflow: hidden;
-				position: relative;
-				margin-bottom: 0.75rem;
-				border-radius: 10px;
-				border: 1px solid rgba(255, 255, 255, 0.05);
+				border-radius: 12px;
+				border: 1px solid rgba(255, 255, 255, 0.1);
+				margin-bottom: 1rem;
+				background: rgba(255, 255, 255, 0.02);
 			}
 
 			.image-container img {
 				width: 100%;
 				height: 100%;
 				object-fit: cover;
-				object-position: center;
-				border-radius: inherit;
+				transition: transform 0.4s ease;
 			}
 
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1.5rem;
-			}
-
-			ul li:first-child .image-container {
-				border-radius: 12px;
-				margin-top: 10px;
-			}
-
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-
-			ul li a {
-				display: block;
-				color: inherit;
-			}
 			.title {
 				margin: 0;
 				color: rgb(var(--text));
 				line-height: 1.2;
 				font-weight: 600;
-			}
-			.date {
-				margin: 0.4em 0 0;
-				color: rgba(var(--text), 0.65);
-				font-size: 0.95em;
-			}
-			ul li a:hover .title,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul li a:hover .image-container {
-				box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
-				transform: translateY(-2px);
-				border-color: rgba(var(--accent), 0.5);
+				font-size: 1.25rem;
 			}
 
-			@media (max-width: 720px) {
-				ul {
-					gap: 1rem;
+			.featured .title {
+				font-size: clamp(1.8rem, 5vw, 2.5rem);
+			}
+
+			.date {
+				margin: 0.5rem 0 0;
+				color: rgba(var(--text), 0.6);
+				font-size: 0.9rem;
+			}
+
+			.blog-card:hover .title {
+				color: rgb(var(--accent));
+			}
+
+			.blog-card:hover img {
+				transform: scale(1.03);
+			}
+
+			@media (max-width: 768px) {
+				.blog-grid {
+					grid-template-columns: 1fr;
+					gap: 3rem;
 				}
-				ul li {
-					width: 100%;
-					text-align: center;
+
+				main {
+					padding: 1.5rem 1rem !important;
 				}
-				ul li:first-child {
-					margin-bottom: 1rem;
-				}
-				ul li:first-child .title {
-					font-size: 1.8em;
-				}
+
 				.image-container {
 					aspect-ratio: 16 / 9;
+				}
+
+				.featured .title {
+					font-size: 1.6rem;
 				}
 			}
 		</style>
@@ -139,32 +121,34 @@ const posts = (await getCollection("blog")).sort(
 		<Header />
 		<main>
 			<section>
-				<ul>
+				<div class="blog-grid">
 					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<div class="image-container">
-											<Image
-												width={960}
-												height={480}
-												src={post.data.heroImage}
-												alt={`Image de couverture pour l'article ${post.data.title}`}
-											/>
-										</div>
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate
-											date={post.data.pubDate}
+						posts.map((post, index) => (
+							<a
+								href={`/blog/${post.id}/`}
+								class={`blog-card ${index === 0 ? "featured" : ""}`}
+							>
+								{post.data.heroImage && (
+									<div class="image-container">
+										<Image
+											width={index === 0 ? 960 : 480}
+											height={index === 0 ? 480 : 240}
+											src={post.data.heroImage}
+											alt=""
+											loading={
+												index === 0 ? "eager" : "lazy"
+											}
 										/>
-									</p>
-								</a>
-							</li>
+									</div>
+								)}
+								<h4 class="title">{post.data.title}</h4>
+								<p class="date">
+									<FormattedDate date={post.data.pubDate} />
+								</p>
+							</a>
 						))
 					}
-				</ul>
+				</div>
 			</section>
 		</main>
 		<Footer />
