@@ -49,7 +49,7 @@ Même si ton site ne fait que quelques pages, la vitesse reste essentielle.
 
 En 2026, si une page met plus de 2 secondes à charger, l’utilisateur disparaît plus vite qu'un stagiaire un vendredi à 17h. 
 
-Il se peut que recruteur qui ouvre ton site entre deux réunions, souvent sur mobile et en 4G.
+Il se peut que le recruteur qui ouvre ton site entre deux réunions soit sur mobile et en 4G.
 
 Évite le JavaScript inutile, optimise tes images en WebP, active le lazy loading.
 
@@ -71,7 +71,9 @@ Contrastes lisibles, navigation au clavier, alt text utiles, structure sémantiq
 
 Tu n’as pas besoin d’être un gourou du SEO pour qu’on te trouve. 
 
-Quelques bonnes pratiques suffisent : une meta description claire, des titres propres sur chaque page, et des balises OpenGraph pour éviter que ton lien ressemble à un écran gris quand tu le postes sur LinkedIn ou un serveur Discord.
+Quelques bonnes pratiques suffisent : 
+- Une meta description claire, des titres propres sur chaque page. 
+- Des balises OpenGraph pour éviter que ton lien ressemble à un écran gris quand tu le postes sur LinkedIn ou un serveur Discord.
 
 <br/>
 ## Choisir ton outil de création
@@ -113,7 +115,7 @@ const projects = await getCollection('projects');
 
 Ça fonctionne avec React, Svelte, Vue… ou sans framework du tout.
 
-Astro brille particulièrement pour les portfolios un peu stylés, avec transitions propres, composants réutilisables et Markdown intégré.
+Astro brille particulièrement pour les portfolios un peu stylés, avec transitions propres, composants réutilisables et Markdown intégré (un peu comme le mien non ?).
 
 La contrepartie : tu touches forcément un peu au JavaScript et à la config (installer Tailwind, MDX, etc.). Ce n’est pas sorcier, mais ce n’est pas “plug-and-play”.
 
@@ -238,7 +240,9 @@ L'essentiel est de restez vigilant avec des mises à jour régulières.
 
 Prenons la [CVE-2025-61925](https://nvd.nist.gov/vuln/detail/CVE-2025-61925) pour Astro (CVSS 6.5, moyenne) : réflexion non validée de l'en-tête `X-Forwarded-Host` dans `Astro.url`, risquant une manipulation d'URL en mode dynamique (SSR) derrière un proxy comme Cloudflare.
 
+```text
 > "Astro reflects the value in `X-Forwarded-Host` in output when using `Astro.url` without any validation." (Advisory GitHub)
+```
 
 **Impact pour un portfolio ?**  
 - Aucun risque en statique pur (SSG).  
@@ -246,7 +250,11 @@ Prenons la [CVE-2025-61925](https://nvd.nist.gov/vuln/detail/CVE-2025-61925) pou
 
 **Fix :** Mise à jour vers Astro ≥ 5.14.2 via `npm update`.
 
-Autre exemple : [vulnérabilité critique (CVSS 10.0) dans React Server Components](https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components), annoncée le 3 décembre 2025. Elle permet une exécution de code à distance via une requête HTTP malicieuse, touchant React 19.0-19.2.0 et des frameworks comme Next.js.
+Autre exemple : 
+
+[Vulnérabilité critique (CVSS 10.0) dans React Server Components](https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components), annoncée le 3 décembre 2025. 
+
+Elle permet une exécution de code à distance via une requête HTTP malicieuse, touchant React 19.0-19.2.0 et des frameworks comme Next.js.
 
 **Impact ?**  
 - Exécution de code serveur possible si Server Components activés.  
