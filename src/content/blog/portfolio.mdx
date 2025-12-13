@@ -229,49 +229,40 @@ Comparatif rapide des meilleures options (2025-2026)
 | Injection simple             | Champs non filtrés        | Nettoyer + valider les inputs     |
 
 <br/>
-###  4.4 Vigilance outils : Exemples de CVEs dans les frameworks modernes
+### 4.4 Vigilance outils : Exemples de CVEs dans les frameworks modernes
 <br/>
 
 Même les outils solides comme Astro ou React peuvent présenter des vulnérabilités, elles sont souvent patchées rapidement par les communautés open-source.
 
-On ne va pas ici rentrer en détail de la cybersécurité ou présenter des bouts de code à la va-vite ( bien qu'il soit parfois nécessaire de le faire. ).
+On ne va pas ici rentrer en détail de la cybersécurité ou présenter des bouts de code à la va-vite ( bien qu’il soit parfois nécessaire de le faire. ).
 
-L'essentiel est de restez vigilant avec des mises à jour régulières.
+L’essentiel est de restez vigilant avec des mises à jour régulières.
+<br/>
+| Élément                | Vulnérabilité Astro                                                                 | Vulnérabilité React RSC                                                                 |
+|:-----------------------|:------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------|
+| **Référence**          | [CVE-2025-61925](https://nvd.nist.gov/vuln/detail/CVE-2025-61925)                   | [CVE-2025-55182](https://nvd.nist.gov/vuln/detail/CVE-2025-55182) ([Annonce critique](https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components)) |
+| **Score CVSS**         | 6.5 (Moyenne)                                                                       | **10.0 (Critique)**                                                                     |
+| **Description**        | Réflexion non validée de l'en-tête `X-Forwarded-Host`, permettant une manipulation d'URL en mode SSR derrière un proxy. | Exécution de code à distance via une requête HTTP malicieuse sur les Server Components. |
+| **Versions concernées**| Versions antérieures à Astro 5.14.3                                                 | React 19.0.0, 19.1.0, 19.1.1, 19.2.0, et frameworks comme react-router, waku, @parcel/rsc. (Next.js a un CVE séparé : CVE-2025-66478)                                      |
+| **Impact potentiel**   | Spoofing, phishing, contamination de cache (uniquement en mode dynamique avec cache). Aucun risque en SSG. | **Exécution de code serveur.** Risque accru dans les "islands" React d'Astro si intégration SSR affectée.           |
+| **Correctif**          | `npm update` pour Astro ≥ 5.14.3                                                    | Mise à jour immédiate vers 19.0.1, 19.1.2 ou 19.2.1. Mesures d'atténuation proposées par les hébergeurs (Vercel, etc.). |
+<br/>
+*Note : L'objectif ici est de sensibiliser, non de fournir une analyse exhaustive de cybersécurité.*
 
-Prenons la [CVE-2025-61925](https://nvd.nist.gov/vuln/detail/CVE-2025-61925) pour Astro (CVSS 6.5, moyenne) : réflexion non validée de l'en-tête `X-Forwarded-Host` dans `Astro.url`, risquant une manipulation d'URL en mode dynamique (SSR) derrière un proxy comme Cloudflare.
+<br/>
+### 4.5 Conseils généraux :
+<br/>
 
-```text
-> "Astro reflects the value in `X-Forwarded-Host` in output when using `Astro.url` without any validation." (Advisory GitHub)
-```
-
-**Impact pour un portfolio ?**  
-- Aucun risque en statique pur (SSG).  
-- En dynamique avec cache : spoofing possible, menant à phishing ou contamination du cache.
-
-**Fix :** Mise à jour vers Astro ≥ 5.14.2 via `npm update`.
-
-Autre exemple : 
-
-[Vulnérabilité critique (CVSS 10.0) dans React Server Components](https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components), annoncée le 3 décembre 2025. 
-
-Elle permet une exécution de code à distance via une requête HTTP malicieuse, touchant React 19.0-19.2.0 et des frameworks comme Next.js.
-
-**Impact ?**  
-- Exécution de code serveur possible si Server Components activés.  
-- Pour un portfolio Astro avec React (islands) : risques accrus avec du JS ajouté.
-
-**Fix :** Mise à jour immédiate vers versions patchées ; hébergeurs comme Vercel offrent des mitigations temporaires.
-
-**Conseils généraux :**  
 - **Suivez les advisories :** Abonnez-vous à GitHub Security Alerts et consultez NVD ou blogs officiels (2 min/semaine).  
 - **Updates auto :** Utilisez Dependabot pour patches ; rebuild/redeploy pour sites statiques.  
 - **Bonnes pratiques :** Limitez JS (islands Astro), validez inputs/headers, ajoutez CSP/HSTS. Testez avec OWASP ZAP.  
 - **Pour budgets serrés :** Privilégiez statique (Hugo/Jekyll) sans runtime JS.
 
 En résumé, les CVEs sont courantes en dev web, mais une veille légère et des updates régulières protègent sans effort majeur.
-<br/>
 
+<br/>
 ## Conclusion
+<br/>
 
 Ton portfolio est enfin prêt : rapide, propre, gratuit et blindé.
 
