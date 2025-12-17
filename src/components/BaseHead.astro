@@ -15,6 +15,8 @@ interface Props {
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const { title, description, image = FallbackImage } = Astro.props;
+
+const imageURL = new URL(image.src, Astro.site);
 ---
 
 <!-- Global Metadata -->
@@ -30,13 +32,12 @@ const { title, description, image = FallbackImage } = Astro.props;
 />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Font preloads -->
-<!-- <link rel="preload" href="/fonts/atkinson-regular.woff" as="font" type="font/woff" crossorigin />
-<link rel="preload" href="/fonts/atkinson-bold.woff" as="font" type="font/woff" crossorigin /> -->
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+<link rel="dns-prefetch" href="//fonts.googleapis.com">
+<link rel="dns-prefetch" href="//fonts.gstatic.com">
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
@@ -45,17 +46,29 @@ const { title, description, image = FallbackImage } = Astro.props;
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
+<meta name="theme-color" content="rgb(10,12,20)" />
+<meta name="keywords" content="blog, portfolio, astro, javascript, typescript, web, développeur" />
+<meta name="author" content="Epitexam" />
+<meta name="color-scheme" content="dark light" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image.src, Astro.site)} />
+<meta property="og:image" content={imageURL} />
+<meta property="og:image:height" content={String(image.height)} />
+<meta property="og:image:type" content={image.format ? `image/${image.format}` : 'image/webp'} />
+<meta property="og:locale" content="fr_FR" />
+<meta property="og:site_name" content={SITE_TITLE} />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
 <meta property="twitter:url" content={Astro.url} />
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={new URL(image.src, Astro.site)} />
+<meta property="twitter:image" content={imageURL} />
+
+<meta property="og:image:alt" content={description} />
+<meta name="twitter:image:alt" content={description} />
