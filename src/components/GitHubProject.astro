@@ -1,6 +1,6 @@
 ---
 import type { Project } from "../types/github";
-
+import profile from "../assets/mini-profile.webp";
 export interface Props {
     project: Project;
 }
@@ -20,7 +20,7 @@ import { Image } from "astro:assets";
     <header class="project-header">
         <div class="owner-info">
             <Image
-                src={project.owner.avatar_url}
+                src={profile}
                 alt={`${project.owner.login} avatar`}
                 width={36}
                 height={36}
