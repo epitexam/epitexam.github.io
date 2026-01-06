@@ -2,8 +2,9 @@
 // You can import this data from anywhere in your site by using the `import` keyword.
 
 export const SITE_TITLE = 'Epitexam';
-export const SITE_DESCRIPTION = 'A blog about programming, technology, and life.';
+export const SITE_DESCRIPTION = 'Mon carnet de bord : entre lignes de code et vie de tous les jours.';
 export const GITHUB_URL = 'https://github.com/epitexam';
+export const ALT_DESCRIPTION = "Scène emblématique du film Ghost in the Shell montrant la construction d'un corps cybernétique, avec les sections du visage et du crâne s'emboîtant sur une structure robotique."
 
 export const SECTIONS : { title: string, tools: { icon: string, name: string, description: string }[] }[] = [
     {
