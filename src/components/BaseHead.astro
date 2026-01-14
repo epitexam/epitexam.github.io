@@ -10,11 +10,17 @@ interface Props {
 	title: string;
 	description: string;
 	image?: ImageMetadata;
+	ImageDescription?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = FallbackImage } = Astro.props;
+const {
+	title,
+	description,
+	image = FallbackImage,
+	ImageDescription = ALT_DESCRIPTION,
+} = Astro.props;
 
 const imageURL = new URL(image.src, Astro.site);
 ---
@@ -79,5 +85,5 @@ const imageURL = new URL(image.src, Astro.site);
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={imageURL} />
 
-<meta property="og:image:alt" content={ALT_DESCRIPTION} />
-<meta name="twitter:image:alt" content={ALT_DESCRIPTION} />
+<meta property="og:image:alt" content={ImageDescription} />
+<meta name="twitter:image:alt" content={ImageDescription} />
