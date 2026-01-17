@@ -2,7 +2,7 @@
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
-import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import { SITE_TITLE } from "../consts";
 
 const success = Astro.url.searchParams.get("success") === "true";
 ---
@@ -12,9 +12,10 @@ const success = Astro.url.searchParams.get("success") === "true";
     <head>
         <BaseHead
             title={`${SITE_TITLE} - Contact`}
-            description={SITE_DESCRIPTION}
+            description="Contactez-moi pour discuter de vos projets, collaborations ou questions. Envoyez votre message directement via ce formulaire sécurisé."
         />
     </head>
+
     <body
         class="flex flex-col min-h-screen bg-[rgb(var(--bg))] text-[rgb(var(--text))] font-mono"
     >
@@ -24,6 +25,7 @@ const success = Astro.url.searchParams.get("success") === "true";
             class="flex flex-col items-center text-center animate-fadeIn max-w-xl w-full mx-auto p-6"
         >
             <h1 class="glow-text text-3xl font-bold mb-4">Contactez-moi</h1>
+
             <p class="mb-6 text-[rgba(var(--text),0.9)]">
                 Si vous avez un projet, une question ou souhaitez juste dire
                 bonjour, envoyez-moi un message. Je vous répondrai dès que
@@ -38,11 +40,19 @@ const success = Astro.url.searchParams.get("success") === "true";
                 )
             }
 
+            <div
+                id="errorMessage"
+                role="alert"
+                class="hidden mb-6 p-4 border border-red-500 bg-[rgba(239,68,68,0.1)] rounded text-red-500 font-semibold"
+            >
+            </div>
+
             <form
+                id="contactForm"
                 action="https://formspree.io/f/xovgkrbn"
                 method="POST"
                 class="flex flex-col gap-4 w-full"
-                id="contactForm"
+                autocomplete="on"
             >
                 <input
                     type="hidden"
@@ -56,13 +66,22 @@ const success = Astro.url.searchParams.get("success") === "true";
                     value={`Nouveau message de contact - ${SITE_TITLE}`}
                 />
 
-                <input
-                    type="text"
-                    name="_gotcha"
-                    style="display:none"
-                    tabindex="-1"
-                    autocomplete="off"
-                />
+                <div
+                    class="honeypot"
+                    style="display:none!important;"
+                    aria-hidden="true"
+                >
+                    <label for="website">Ne remplissez pas ce champ</label>
+                    <input
+                        type="text"
+                        id="website"
+                        name="website"
+                        tabindex="-1"
+                        autocomplete="off"
+                    />
+                </div>
+
+                <input type="hidden" id="formTimestamp" />
 
                 <label class="flex flex-col w-full text-left">
                     Votre email :
@@ -71,8 +90,14 @@ const success = Astro.url.searchParams.get("success") === "true";
                         name="email"
                         required
                         placeholder="exemple@domaine.com"
-                        class="mt-1 p-2 rounded border border-[rgba(var(--accent),0.25)] bg-[rgba(0,0,0,0.25)] focus:outline-none focus:border-[rgb(var(--accent))] focus:shadow-[0_0_15px_rgba(var(--accent),0.6)] invalid:border-red-500 invalid:text-red-500 transition-all"
+                        class="mt-1 p-2 rounded border border-[rgba(var(--accent),0.25)] bg-[rgba(0,0,0,0.25)] focus:outline-none focus:border-[rgb(var(--accent))] focus:shadow-[0_0_15px_rgba(var(--accent),0.6)] transition-all"
+                        autocomplete="email"
+                        minlength="5"
+                        maxlength="320"
                     />
+                    <span class="text-xs text-[rgba(var(--text),0.6)] mt-1">
+                        Votre email ne sera jamais partagé
+                    </span>
                 </label>
 
                 <label class="flex flex-col w-full text-left">
@@ -83,37 +108,134 @@ const success = Astro.url.searchParams.get("success") === "true";
                         rows="6"
                         placeholder="Écrivez votre message ici..."
                         class="mt-1 p-2 rounded border border-[rgba(var(--accent),0.25)] bg-[rgba(0,0,0,0.25)] focus:outline-none focus:border-[rgb(var(--accent))] focus:shadow-[0_0_15px_rgba(var(--accent),0.6)] transition-all resize-y min-h-[150px]"
-                    ></textarea>
+                        minlength="10"
+                        maxlength="2000"
+                        spellcheck="true"></textarea>
+                    <span class="text-xs text-[rgba(var(--text),0.6)] mt-1">
+                        Maximum 2000 caractères
+                    </span>
                 </label>
 
+                <div
+                    class="text-center text-sm text-[rgba(var(--text),0.7)] mb-2"
+                >
+                    <input
+                        type="checkbox"
+                        id="privacy"
+                        name="privacy"
+                        required
+                        class="mr-2"
+                    />
+                    <label for="privacy">
+                        J'accepte que mes données soient utilisées uniquement
+                        pour répondre à mon message
+                    </label>
+                </div>
+
                 <button
+                    id="submitBtn"
                     type="submit"
                     class="mt-2 border border-[rgb(var(--accent))] text-[rgb(var(--accent))] rounded px-4 py-2 font-semibold hover:bg-[rgba(var(--accent),0.1)] hover:shadow-[0_0_20px_rgba(var(--accent),0.6)] disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
                 >
                     Envoyer
                 </button>
+
+                <p class="text-xs text-[rgba(var(--text),0.5)] mt-4">
+                    Les informations transmises via ce formulaire sont traitées
+                    par Formspree afin de permettre l’envoi et la réception des
+                    messages.
+                </p>
             </form>
         </main>
 
         <Footer />
 
         <script>
-            const form = document.getElementById(
-                "contactForm",
-            ) as HTMLFormElement;
+            function showError(message: string) {
+                const errorDiv = document.getElementById("errorMessage");
+                if (!errorDiv) return;
 
-            if (form) {
-                form.addEventListener("submit", (e) => {
-                    const submitButton = form.querySelector<HTMLButtonElement>(
-                        'button[type="submit"]',
-                    );
-                    if (submitButton) {
-                        submitButton.disabled = true;
-                        submitButton.textContent = "Envoi en cours...";
-                        submitButton.classList.add("animate-pulse");
-                    }
+                errorDiv.textContent = message;
+                errorDiv.classList.remove("hidden");
+                errorDiv.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
                 });
+
+                setTimeout(() => {
+                    errorDiv.classList.add("hidden");
+                }, 5000);
             }
+
+            document.addEventListener("DOMContentLoaded", () => {
+                const form = document.getElementById("contactForm");
+                const submitBtn = document.getElementById("submitBtn");
+                const timestampInput = document.getElementById("formTimestamp");
+
+                if (!(form instanceof HTMLFormElement)) return;
+                if (!(submitBtn instanceof HTMLButtonElement)) return;
+                if (!(timestampInput instanceof HTMLInputElement)) return;
+
+                timestampInput.value = Date.now().toString();
+                let isSubmitting = false;
+
+                form.addEventListener("submit", (e) => {
+                    const honeypot = form.querySelector(
+                        'input[name="website"]',
+                    );
+                    const privacy = form.querySelector('input[name="privacy"]');
+
+                    if (
+                        honeypot instanceof HTMLInputElement &&
+                        honeypot.value.trim() !== ""
+                    ) {
+                        e.preventDefault();
+                        return;
+                    }
+
+                    if (
+                        !(privacy instanceof HTMLInputElement) ||
+                        !privacy.checked
+                    ) {
+                        e.preventDefault();
+                        showError(
+                            "Veuillez accepter la politique de confidentialité.",
+                        );
+                        return;
+                    }
+
+                    const now = Date.now();
+                    const previous = Number(timestampInput.value);
+                    const diff = now - previous;
+
+                    if (diff < 2000) {
+                        e.preventDefault();
+                        showError(
+                            "Veuillez patienter un instant avant d’envoyer le formulaire.",
+                        );
+                        return;
+                    }
+
+                    if (isSubmitting) {
+                        e.preventDefault();
+                        return;
+                    }
+
+                    isSubmitting = true;
+                    timestampInput.value = now.toString();
+
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = "Envoi en cours...";
+                    submitBtn.classList.add("animate-pulse");
+                });
+
+                window.addEventListener("pageshow", () => {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Envoyer";
+                    submitBtn.classList.remove("animate-pulse");
+                    isSubmitting = false;
+                });
+            });
         </script>
     </body>
 </html>
