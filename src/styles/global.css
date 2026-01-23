@@ -20,9 +20,9 @@
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
 
-  --font-body: 'Inter', system-ui, sans-serif;
-  --font-title: 'Space Grotesk', sans-serif;
-  --font-code: 'JetBrains Mono', monospace;
+  --font-body: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+  --font-title: "Space Grotesk", var(--font-body);
+  --font-code: "JetBrains Mono", "Fira Code", monospace;
 }
 
 /* ================= RESET ================= */
@@ -91,6 +91,10 @@ main:not(.no-global-style) {
 }
 
 /* ================= TYPOGRAPHY ================= */
+
+@font-face {
+  font-display: swap;
+}
 
 :where(h1, h2, h3, h4, h5, h6) {
   margin: 0 0 0.75rem;
