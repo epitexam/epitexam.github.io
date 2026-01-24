@@ -8,226 +8,171 @@ export interface Props {
 const { icon, name, description } = Astro.props;
 ---
 
-<div class="tool-card animate-fadeIn group">
-  <div class="tool-glow"></div>
-
+<div class="tool-card group">
+  <div class="scanline"></div>
+  
   <div class="tool-inner">
-    <div class="tool-icon">
-      {icon}
+    <div class="tool-icon-container">
+      <span class="tool-icon-text">{icon}</span>
     </div>
 
     <div class="tool-content">
-      <h3 class="tool-title group-hover:text-[rgb(var(--accent))]">{name}</h3>
+      <h3 class="tool-title">{name}</h3>
       <p class="tool-description">{description}</p>
     </div>
   </div>
-
-  <div class="tool-reflection"></div>
 </div>
 
 <style>
   .tool-card {
     position: relative;
-    display: block;
     width: 100%;
-    border-radius: 1rem;
-    border: 1px solid rgba(var(--accent), 0.2);
-    background: radial-gradient(
-        ellipse at top left,
-        rgba(25, 35, 30, 0.35),
-        rgba(10, 15, 10, 0.15) 70%
-      ),
-      linear-gradient(135deg, rgba(var(--accent), 0.05) 0%, transparent 50%);
-    padding: 1rem;
-    cursor: pointer;
+    padding: 1.25rem;
+    background: linear-gradient(
+      145deg, 
+      rgba(var(--bg), 1) 0%, 
+      rgba(var(--accent), 0.08) 100%
+    );
+    border: 1px solid rgba(var(--accent), 0.15);
+    border-radius: var(--radius-md);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     overflow: hidden;
-    transition:
-      transform 0.2s ease,
-      border-color 0.2s ease;
     isolation: isolate;
-    margin: 0 auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   }
 
-  @media (min-width: 769px) {
-    .tool-card {
-      padding: clamp(1rem, 4vw, 1.5rem);
-      backdrop-filter: blur(14px) saturate(160%);
-    }
-
-    .tool-card::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(var(--accent), 0.05),
-        transparent
-      );
-      transition: left 0.6s ease;
-      z-index: -1;
-    }
-
-    .tool-card:hover::before {
-      left: 100%;
-    }
+  .tool-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(var(--accent), 0.4);
+    box-shadow: 0 10px 30px -10px rgba(var(--accent), 0.3);
   }
 
-  @media (hover: hover) and (min-width: 769px) {
-    .tool-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(var(--accent), 0.4);
-      box-shadow:
-        0 10px 30px rgba(var(--accent), 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    }
+  .scanline {
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(var(--accent), 0.08),
+      transparent
+    );
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .tool-card:hover .scanline {
+    animation: scan 2.5s linear infinite;
+  }
+
+  @keyframes scan {
+    from { top: -100%; }
+    to { top: 100%; }
   }
 
   .tool-inner {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
+    align-items: flex-start;
+    text-align: left;
+    gap: 1.25rem;
+    z-index: 3;
+    position: relative;
   }
 
-  @media (min-width: 641px) {
-    .tool-inner {
-      flex-direction: row;
-      align-items: flex-start;
-    }
-  }
-
-  .tool-icon {
+  .tool-icon-container {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 0.6rem;
-    font-size: 1rem;
-    color: rgb(var(--accent));
-    background: radial-gradient(
-        circle at top left,
-        rgba(var(--accent), 0.15),
-        rgba(var(--accent), 0.05)
-      ),
-      conic-gradient(from 0deg, rgba(var(--accent), 0.1) 0%, transparent 50%);
+    width: 3rem;
+    height: 3rem;
+    min-width: 3rem; 
+    min-height: 3rem;
+    
+    background: rgba(var(--bg), 0.8);
     border: 1px solid rgba(var(--accent), 0.3);
-    transition: all 0.3s ease;
+    border-radius: var(--radius-sm);
     flex-shrink: 0;
-    position: relative;
+    transition: all 0.3s ease;
     overflow: hidden;
   }
 
-  @media (min-width: 769px) {
-    .tool-icon {
-      width: clamp(2.5rem, 8vw, 3.25rem);
-      height: clamp(2.5rem, 8vw, 3.25rem);
-      font-size: clamp(1rem, 4vw, 1.3rem);
-    }
-
-    .tool-icon::before {
-      content: "";
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(
-        transparent,
-        rgba(var(--accent), 0.1),
-        transparent 30%
-      );
-      animation: rotate 4s linear infinite;
-    }
+  .tool-icon-text {
+    font-size: 1.25rem; 
+    line-height: 1;
+    display: block;
+    text-align: center;
+    max-width: 100%;
+    max-height: 100%;
   }
 
-  @media (hover: hover) and (min-width: 769px) {
-    .tool-card:hover .tool-icon {
-      transform: scale(1.05);
-      box-shadow:
-        0 0 20px rgba(var(--accent), 0.3),
-        inset 0 0 10px rgba(var(--accent), 0.1);
-    }
+  .tool-card:hover .tool-icon-container {
+    border-color: rgb(var(--accent));
+    box-shadow: 0 0 15px rgba(var(--accent), 0.3);
+    transform: scale(1.05) rotate(-3deg);
   }
 
   .tool-content {
-    text-align: center;
-    position: relative;
-  }
-
-  @media (min-width: 641px) {
-    .tool-content {
-      text-align: left;
-    }
+    flex: 1;
+    min-width: 0;
   }
 
   .tool-title {
-    font-weight: 700;
-    font-size: 1rem;
-    line-height: 1.3;
+    margin: 0 0 0.35rem 0 !important;
+    font-family: var(--font-title);
+    font-size: 1.1rem !important;
     color: rgb(var(--text));
-    transition: color 0.2s ease;
-    position: relative;
-    display: inline-block;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
   }
 
-  @media (min-width: 769px) {
-    .tool-title {
-      font-size: clamp(1rem, 2.5vw, 1.2rem);
-    }
-
-    .tool-title::after {
-      content: "";
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: rgb(var(--accent));
-      transition: width 0.3s ease;
-    }
-  }
-
-  @media (hover: hover) and (min-width: 769px) {
-    .tool-card:hover .tool-title {
-      color: rgb(var(--accent));
-    }
-
-    .tool-card:hover .tool-title::after {
-      width: 100%;
-    }
+  .tool-card:hover .tool-title {
+    color: rgb(var(--accent));
   }
 
   .tool-description {
-    color: rgba(200, 230, 200, 0.8);
-    font-size: 0.85rem;
-    line-height: 1.6;
-    transition: color 0.2s ease;
+    margin: 0 !important;
+    font-size: 0.9rem !important;
+    line-height: 1.5 !important;
+    color: rgba(var(--text), 0.6);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
-  @media (min-width: 769px) {
+  @media (max-width: 640px) {
+    .tool-card {
+      padding: 1rem;
+    }
+    
+    .tool-inner {
+      gap: 1rem;
+    }
+
+    .tool-icon-container {
+      width: 2.5rem;
+      height: 2.5rem;
+      min-width: 2.5rem;
+      min-height: 2.5rem;
+    }
+
+    .tool-icon-text {
+      font-size: 1rem;
+    }
+
+    .tool-title {
+      font-size: 1rem !important;
+    }
+
     .tool-description {
-      font-size: clamp(0.85rem, 2.2vw, 0.95rem);
+      font-size: 0.85rem !important;
     }
   }
 
-  @media (hover: hover) and (min-width: 769px) {
-    .tool-card:hover .tool-description {
-      color: rgba(220, 255, 220, 0.95);
-    }
-  }
-
-  @keyframes rotate {
-    from {
-      transform: rotate(0deg);
-    }
-
-    to {
-      transform: rotate(360deg);
-    }
+  @media (prefers-reduced-motion: reduce) {
+    .tool-card:hover .scanline { animation: none; }
+    .tool-card, .tool-icon-container { transition: none !important; }
   }
 </style>

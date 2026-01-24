@@ -1,41 +1,35 @@
 ---
 import { GITHUB_URL, SITE_TITLE } from "../consts";
-
 const today = new Date();
 ---
 
-<footer
-	class="py-8 px-4 sm:px-6 lg:px-8 border-t border-[rgba(255,255,255,0.05)] bg-[rgba(var(--bg), 0.9)] text-center text-sm relative z-10"
->
-	<div class="max-w-4xl mx-auto">
-		<div class="flex flex-col items-center space-y-4">
-			<p class="text-text/75">
-				&copy; {today.getFullYear()}
-				<span
-					class="text-text font-semibold hover:text-accent transition-colors duration-300"
-				>
-					{SITE_TITLE}
-				</span>. All rights reserved.
-			</p>
+<footer class="footer">
+	<div class="footer-container">
+		<div class="footer-divider"></div>
 
-			<div class="flex justify-center gap-6">
+		<div class="footer-content">
+			<div class="copyright">
+				<span class="copyright-symbol">&copy;</span>
+				{today.getFullYear()}
+				<span class="site-name">{SITE_TITLE}</span>
+				<span class="reserved">. All rights reserved.</span>
+			</div>
+
+			<div class="social-links">
 				<a
 					href={GITHUB_URL}
 					target="_blank"
 					rel="noopener noreferrer"
-					class="text-text/70 hover:text-accent transition-colors duration-300 transform hover:scale-110"
-					aria-label={`Visiter la page GitHub de ${SITE_TITLE}`}
+					class="social-icon"
+					aria-label={`Visiter le GitHub de ${SITE_TITLE}`}
 				>
-					<span class="sr-only">{SITE_TITLE}'s GitHub</span>
 					<svg
 						viewBox="0 0 16 16"
-						aria-hidden="true"
-						width="28"
-						height="28"
-						astro-icon="social/github"
+						width="24"
+						height="24"
+						fill="currentColor"
 					>
 						<path
-							fill="currentColor"
 							d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
 						></path>
 					</svg>
@@ -44,3 +38,108 @@ const today = new Date();
 		</div>
 	</div>
 </footer>
+
+<style>
+	.footer {
+		width: 100%;
+		padding: 4rem 1.5rem 3rem;
+		background: transparent;
+		margin-top: auto;
+	}
+
+	.footer-container {
+		max-width: 1200px;
+		margin: 0 auto;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2rem;
+	}
+
+	.footer-divider {
+		width: 60px;
+		height: 1px;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			rgb(var(--accent)),
+			transparent
+		);
+		opacity: 0.3;
+	}
+
+	.footer-content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.5rem;
+	}
+
+	.copyright {
+		font-family: var(--font-title);
+		font-size: 0.8rem;
+		letter-spacing: 0.05em;
+		color: rgba(var(--text), 0.5);
+		text-transform: uppercase;
+	}
+
+	.copyright-symbol {
+		color: rgb(var(--accent));
+	}
+
+	.site-name {
+		color: rgb(var(--text));
+		font-weight: 700;
+		transition: color 0.3s ease;
+	}
+
+	.footer:hover .site-name {
+		color: rgb(var(--accent));
+	}
+
+	.social-links {
+		display: flex;
+		gap: 1.5rem;
+	}
+
+	.social-icon {
+		color: rgba(var(--text), 0.4);
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.social-icon:hover {
+		color: rgb(var(--accent));
+		transform: translateY(-3px);
+		filter: drop-shadow(0 0 8px rgba(var(--accent), 0.4));
+	}
+
+	@media (max-width: 640px) {
+		.footer {
+			padding: 3rem 1rem 2rem;
+		}
+
+		.copyright {
+			font-size: 0.7rem;
+			display: flex;
+			flex-direction: column;
+			gap: 0.25rem;
+			text-align: center;
+		}
+
+		.reserved {
+			opacity: 0.7;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.social-icon {
+			transition: none;
+		}
+		.social-icon:hover {
+			transform: none;
+		}
+	}
+</style>
