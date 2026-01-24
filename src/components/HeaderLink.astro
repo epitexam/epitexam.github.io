@@ -6,28 +6,110 @@ interface Props extends HTMLAttributes<"a"> {
 }
 
 const { href, class: className, ...attrs } = Astro.props;
-const currentPath = Astro.url.pathname;
-const isActive = currentPath === href || currentPath.startsWith(href + "/");
+const { pathname } = Astro.url;
+const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href);
 ---
 
 <a
 	href={href}
-	class={className}
+	class:list={[className, { active: isActive }]}
 	aria-current={isActive ? "page" : undefined}
 	{...attrs}
 >
-	<slot />
+	<span
+		class="content"
+		data-text={isActive ? `> ${Astro.slots.render("default")}` : undefined}
+	>
+		<slot />
+	</span>
 </a>
 
 <style>
 	a {
-		display: inline-block;
 		text-decoration: none;
-		color: inherit;
+		color: rgba(var(--text), 0.5);
+		font-family: var(--font-title);
+		font-size: 0.9rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		position: relative;
+		transition: color 0.1s steps(2);
 	}
 
-	a[aria-current="page"] {
-		color: rgb(var(--accent));
-		font-weight: 600;
+	a::after {
+		display: none !important;
+	}
+	a:hover {
+		text-shadow: none !important;
+	}
+
+	@media (min-width: 769px) {
+		a:hover {
+			color: rgb(var(--accent));
+		}
+
+		a:hover .content::before {
+			content: attr(data-text);
+			position: absolute;
+			left: 0;
+			text-shadow:
+				2px 0 red,
+				-2px 0 blue;
+			opacity: 0.5;
+			clip-path: inset(45% 0 44% 0);
+			animation: glitch 0.3s infinite;
+		}
+
+		a.active {
+			color: rgb(var(--accent));
+			font-weight: 700;
+		}
+
+		a.active::before {
+			content: "[";
+			margin-right: 0.4rem;
+			color: rgb(var(--accent));
+			opacity: 0.8;
+		}
+
+		a.active::after {
+			display: inline-block !important;
+			content: "]";
+			position: static;
+			width: auto;
+			height: auto;
+			background: none;
+			transform: none;
+			margin-left: 0.4rem;
+			color: rgb(var(--accent));
+			opacity: 0.8;
+		}
+	}
+
+	@media (max-width: 768px) {
+		a.active {
+			color: rgb(var(--accent));
+		}
+	}
+
+	@keyframes glitch {
+		0% {
+			transform: translate(0);
+		}
+		20% {
+			transform: translate(-2px, 2px);
+		}
+		40% {
+			transform: translate(-2px, -2px);
+		}
+		60% {
+			transform: translate(2px, 2px);
+		}
+		80% {
+			transform: translate(2px, -2px);
+		}
+		100% {
+			transform: translate(0);
+		}
 	}
 </style>
