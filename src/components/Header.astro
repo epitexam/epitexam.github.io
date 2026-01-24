@@ -82,27 +82,29 @@ const navLinks = [
 	});
 
 	window.addEventListener("resize", () => {
-		if (window.innerWidth > 768) {
-			menu?.classList.remove("is-active");
-		}
+		if (window.innerWidth > 768) menu?.classList.remove("is-active");
 	});
 </script>
 
 <style>
 	.site-header {
-		position: sticky;
+		position: fixed;
 		top: 0;
-		z-index: 100;
+		left: 0;
+		width: 100%;
+		z-index: 1000;
 		height: 60px;
 		background: rgb(var(--bg));
-		border-bottom: 1px solid rgba(var(--accent), 0.1);
+		border-bottom: 1px solid rgba(var(--accent), 0.15);
+		display: flex;
+		align-items: center;
 	}
 
 	.header-inner {
+		width: 100%;
 		max-width: var(--max-width);
 		margin: 0 auto;
-		height: 100%;
-		padding: 0 2rem;
+		padding: 0 1.5rem;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -113,7 +115,6 @@ const navLinks = [
 		font-weight: 700;
 		color: rgb(var(--text));
 		text-decoration: none !important;
-		text-shadow: none !important;
 	}
 	.brand-link::after {
 		display: none !important;
@@ -132,14 +133,9 @@ const navLinks = [
 
 	.social-link {
 		color: rgba(var(--text), 0.5);
-		text-decoration: none !important;
-	}
-	.social-link::after {
-		display: none !important;
 	}
 	.social-link:hover {
 		color: rgb(var(--accent));
-		text-shadow: none !important;
 	}
 
 	.menu-toggle {
@@ -160,7 +156,7 @@ const navLinks = [
 		width: 100%;
 		background: rgb(var(--bg));
 		border-bottom: 1px solid rgba(var(--accent), 0.2);
-		z-index: 99;
+		z-index: 999;
 	}
 
 	.mobile-menu.is-active {
@@ -176,11 +172,6 @@ const navLinks = [
 	.mobile-link {
 		padding: 1rem 2rem;
 		font-size: 1rem;
-		border-left: 3px solid transparent;
-	}
-	.mobile-link.active {
-		background: rgba(var(--accent), 0.05);
-		border-left-color: rgb(var(--accent));
 	}
 
 	@media (max-width: 768px) {
@@ -189,11 +180,6 @@ const navLinks = [
 		}
 		.menu-toggle {
 			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
-		.header-inner {
-			padding: 0 1rem;
 		}
 	}
 </style>

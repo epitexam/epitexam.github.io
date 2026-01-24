@@ -19,15 +19,13 @@ if (import.meta.env.SSR) {
 	try {
 		const token = import.meta.env.TOKEN_GITHUB;
 		const username = SITE_TITLE.toLowerCase().replace(/\s+/g, "");
-
 		const response = await fetch(
 			`https://api.github.com/users/${username}/repos?sort=pushed&per_page=6`,
 			{
 				headers: token ? { Authorization: `token ${token}` } : {},
-				signal: AbortSignal.timeout(5000),
+				signal: AbortSignal.timeout(3000),
 			},
 		);
-
 		if (response.ok) {
 			const repos = (await response.json()) as Project[];
 			projects = repos.slice(0, 6);
@@ -37,7 +35,6 @@ if (import.meta.env.SSR) {
 		projects = [];
 	}
 }
-
 const lastUpdate = new Date().toLocaleDateString("fr-FR");
 ---
 
@@ -47,10 +44,12 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
 
-	<body class="min-h-screen flex flex-col animate-fadeIn">
+	<body
+		class="min-h-screen flex flex-col bg-[rgb(var(--bg))] overflow-x-hidden"
+	>
 		<Header />
 
-		<main>
+		<main class="animate-fastIn">
 			<section class="text-center space-y-8" id="hero">
 				<div class="flex flex-col items-center gap-6">
 					<Image
@@ -59,6 +58,7 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 						width={80}
 						height={80}
 						loading="eager"
+						fetchpriority="high"
 						class="rounded-full border border-accent-20 shadow-glow"
 					/>
 
@@ -68,7 +68,7 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 								>{SITE_TITLE}</span
 							> 👋
 						</h1>
-						<p class="max-w-2xl mx-auto">
+						<p class="max-w-2xl mx-auto opacity-80">
 							Développeur passionné par l'embarqué, le web et les
 							systèmes connectés. Spécialisé en Full-stack, IoT et
 							bas niveau.
@@ -82,9 +82,8 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 						</div>
 						<span
 							class="text-accent font-medium tracking-wider uppercase"
+							>Disponible pour de nouveaux projets</span
 						>
-							Disponible pour de nouveaux projets
-						</span>
 					</div>
 				</div>
 
@@ -94,23 +93,34 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 						href={GITHUB_URL}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="btn-terminal accent"
+						class="btn-terminal accent">GitHub</a
 					>
-						Explorer GitHub
-					</a>
 				</div>
 			</section>
 
-			<section id="tech-stack" class="py-12">
+			<section id="tech-stack" class="py-12 section-optimized">
 				<h2 class="text-center mb-8">Stack Technique</h2>
-				<div class="stack-marquee" role="marquee">
-					<div class="marquee-track">
-						{TECH_STACK.map((tech) => <TechStack tech={tech} />)}
+				<div class="marquee-container">
+					<div class="marquee-content">
+						<div class="marquee-track">
+							{
+								TECH_STACK.map((tech) => (
+									<TechStack tech={tech} />
+								))
+							}
+						</div>
+						<div class="marquee-track" aria-hidden="true">
+							{
+								TECH_STACK.map((tech) => (
+									<TechStack tech={tech} />
+								))
+							}
+						</div>
 					</div>
 				</div>
 			</section>
 
-			<section id="projects" class="space-y-8">
+			<section id="projects" class="space-y-8 section-optimized">
 				<h2>Projets récents</h2>
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 					{
@@ -119,25 +129,18 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 								<GitHubProject project={repo} />
 							))
 						) : (
-							<div class="col-span-full text-center py-12 border border-dashed border-accent-20 rounded-lg">
-								<p class="text-sm opacity-60">
-									Aucun projet public trouvé.
-								</p>
-								<a href={GITHUB_URL} class="text-accent">
-									Voir le profil GitHub
-								</a>
+							<div class="col-span-full text-center py-12 border border-dashed border-accent-20 rounded-lg opacity-60">
+								<p>Aucun projet trouvé.</p>
 							</div>
 						)
 					}
 				</div>
 			</section>
 
-			<footer class="mt-16 pt-8 border-t border-accent-10 text-center">
-				<p class="text-xs opacity-40">
-					Système mis à jour le <time
-						datetime={new Date().toISOString()}>{lastUpdate}</time
-					>
-				</p>
+			<footer
+				class="mt-16 py-8 border-t border-accent-10 text-center opacity-40"
+			>
+				<p class="text-xs">Système mis à jour le {lastUpdate}</p>
 			</footer>
 		</main>
 
@@ -146,34 +149,32 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 </html>
 
 <style>
-	.btn-terminal {
-		display: inline-block;
-		padding: 0.75rem 1.5rem;
-		border: 1px solid rgba(var(--accent), 0.3);
-		font-family: var(--font-title);
-		font-size: 0.85rem;
-		text-transform: lowercase;
-		transition: all 0.3s ease;
-		border-radius: var(--radius-sm);
+	main {
+		padding-top: 80px;
+		flex: 1;
 	}
 
-	.btn-terminal:hover {
-		background: rgba(var(--accent), 0.05);
-		box-shadow: var(--glow);
-		border-color: rgb(var(--accent));
+	.animate-fastIn {
+		animation: fadeIn 0.3s ease-out forwards;
+	}
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+			transform: translateY(5px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
 	}
 
-	.btn-terminal.accent {
-		background: rgba(var(--accent), 0.1);
-		border-color: rgb(var(--accent));
-	}
-
-	.shadow-glow {
-		box-shadow: 0 0 20px rgba(var(--accent), 0.15);
-	}
-
-	.stack-marquee {
+	.marquee-container {
 		position: relative;
+		width: 100vw;
+		left: 50%;
+		right: 50%;
+		margin-left: -50vw;
+		margin-right: -50vw;
 		overflow: hidden;
 		mask-image: linear-gradient(
 			to right,
@@ -190,14 +191,17 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 			transparent
 		);
 	}
-
+	.marquee-content {
+		display: flex;
+		width: max-content;
+		animation: scroll 100s linear infinite;
+		will-change: transform;
+	}
 	.marquee-track {
 		display: flex;
-		gap: 2rem;
-		width: max-content;
-		animation: scroll 150s linear infinite;
+		gap: 3rem;
+		padding-right: 3rem;
 	}
-
 	@keyframes scroll {
 		from {
 			transform: translateX(0);
@@ -207,11 +211,35 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 		}
 	}
 
-	@media (prefers-reduced-motion: reduce) {
-		.marquee-track {
-			animation: none;
-			flex-wrap: wrap;
-			justify-content: center;
+	.btn-terminal {
+		display: inline-block;
+		padding: 0.75rem 1.5rem;
+		border: 1px solid rgba(var(--accent), 0.3);
+		font-family: var(--font-title);
+		font-size: 0.85rem;
+		border-radius: var(--radius-sm);
+		transition: all 0.2s ease;
+	}
+	.btn-terminal:hover {
+		background: rgba(var(--accent), 0.05);
+		box-shadow: var(--glow);
+		border-color: rgb(var(--accent));
+	}
+	.btn-terminal.accent {
+		background: rgba(var(--accent), 0.1);
+		border-color: rgb(var(--accent));
+	}
+	.shadow-glow {
+		box-shadow: 0 0 20px rgba(var(--accent), 0.15);
+	}
+
+	@media (max-width: 768px) {
+		.marquee-container {
+			mask-image: none;
+			-webkit-mask-image: none;
+		}
+		main {
+			padding-top: 70px;
 		}
 	}
 </style>
