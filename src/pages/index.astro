@@ -23,7 +23,7 @@ if (import.meta.env.SSR) {
 			`https://api.github.com/users/${username}/repos?sort=pushed&per_page=6`,
 			{
 				headers: token ? { Authorization: `token ${token}` } : {},
-				signal: AbortSignal.timeout(3000),
+				signal: AbortSignal.timeout(5000),
 			},
 		);
 		if (response.ok) {
@@ -31,7 +31,6 @@ if (import.meta.env.SSR) {
 			projects = repos.slice(0, 6);
 		}
 	} catch (error) {
-		console.warn("Failed to fetch GitHub projects:", error);
 		projects = [];
 	}
 }
@@ -49,12 +48,12 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 	>
 		<Header />
 
-		<main class="animate-fastIn">
-			<section class="text-center space-y-8" id="hero">
+		<main class="animate-fastIn container-limited">
+			<section class="text-center space-y-8 pt-12" id="hero">
 				<div class="flex flex-col items-center gap-6">
 					<Image
 						src={profile}
-						alt={`Avatar de ${SITE_TITLE}`}
+						alt={`Avatar`}
 						width={80}
 						height={80}
 						loading="eager"
@@ -62,45 +61,52 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 						class="rounded-full border border-accent-20 shadow-glow"
 					/>
 
-					<div class="space-y-2">
-						<h1>
+					<div class="space-y-3">
+						<h1 class="leading-tight">
 							Ici <span class="text-accent glow-text"
 								>{SITE_TITLE}</span
 							> 👋
 						</h1>
-						<p class="max-w-2xl mx-auto opacity-80">
+						<p class="max-w-2xl mx-auto opacity-80 leading-relaxed">
 							Développeur passionné par l'embarqué, le web et les
 							systèmes connectés. Spécialisé en Full-stack, IoT et
 							bas niveau.
 						</p>
 					</div>
 
-					<div class="flex items-center gap-2 text-xs" role="status">
+					<div
+						class="flex items-center gap-2 text-[14px]"
+						role="status"
+					>
 						<div
-							class="w-2 h-2 rounded-full bg-accent animate-pulse"
+							class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"
 						>
 						</div>
 						<span
-							class="text-accent font-medium tracking-wider uppercase"
-							>Disponible pour de nouveaux projets</span
-						>
+							class="text-accent font-mono tracking-widest uppercase"
+							>Disponible pour de nouveaux projets
+						</span>
 					</div>
 				</div>
 
 				<div class="flex flex-wrap justify-center gap-4">
-					<a href="/blog" class="btn-terminal">Consulter le blog</a>
+					<a href="/blog" class="btn-terminal">./blog</a>
 					<a
 						href={GITHUB_URL}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="btn-terminal accent">GitHub</a
+						class="btn-terminal accent">./github</a
 					>
 				</div>
 			</section>
 
-			<section id="tech-stack" class="py-12 section-optimized">
-				<h2 class="text-center mb-8">Stack Technique</h2>
-				<div class="marquee-container">
+			<section id="tech-stack" class="py-16">
+				<h2
+					class="text-center mb-10 text-xs opacity-50 uppercase tracking-[0.3em]"
+				>
+					Stack Technique
+				</h2>
+				<div class="marquee-wrapper">
 					<div class="marquee-content">
 						<div class="marquee-track">
 							{
@@ -120,8 +126,8 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 				</div>
 			</section>
 
-			<section id="projects" class="space-y-8 section-optimized">
-				<h2>Projets récents</h2>
+			<section id="projects" class="space-y-8 pb-12">
+				<h2 class="text-xl">Projets récents</h2>
 				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 					{
 						projects.length > 0 ? (
@@ -129,8 +135,10 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 								<GitHubProject project={repo} />
 							))
 						) : (
-							<div class="col-span-full text-center py-12 border border-dashed border-accent-20 rounded-lg opacity-60">
-								<p>Aucun projet trouvé.</p>
+							<div class="col-span-full text-center py-12 border border-dashed border-accent-10 rounded-lg opacity-40">
+								<p class="text-sm">
+									En attente de données GitHub...
+								</p>
 							</div>
 						)
 					}
@@ -138,9 +146,9 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 			</section>
 
 			<footer
-				class="mt-16 py-8 border-t border-accent-10 text-center opacity-40"
+				class="mt-auto py-8 border-t border-accent-10 text-center opacity-30"
 			>
-				<p class="text-xs">Système mis à jour le {lastUpdate}</p>
+				<p class="text-[10px] font-mono">MAJ: {lastUpdate}</p>
 			</footer>
 		</main>
 
@@ -149,18 +157,21 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 </html>
 
 <style>
-	main {
-		padding-top: 80px;
+	.container-limited {
+		max-width: 960px;
+		margin: 0 auto;
+		padding: 80px 1.5rem 0 1.5rem;
 		flex: 1;
 	}
 
 	.animate-fastIn {
-		animation: fadeIn 0.3s ease-out forwards;
+		animation: fadeIn 0.4s ease-out forwards;
 	}
+
 	@keyframes fadeIn {
 		from {
 			opacity: 0;
-			transform: translateY(5px);
+			transform: translateY(10px);
 		}
 		to {
 			opacity: 1;
@@ -168,40 +179,39 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 		}
 	}
 
-	.marquee-container {
+	.marquee-wrapper {
 		position: relative;
-		width: 100vw;
-		left: 50%;
-		right: 50%;
-		margin-left: -50vw;
-		margin-right: -50vw;
+		width: 100%;
 		overflow: hidden;
 		mask-image: linear-gradient(
 			to right,
 			transparent,
-			black 15%,
-			black 85%,
+			black 10%,
+			black 90%,
 			transparent
 		);
 		-webkit-mask-image: linear-gradient(
 			to right,
 			transparent,
-			black 15%,
-			black 85%,
+			black 10%,
+			black 90%,
 			transparent
 		);
 	}
+
 	.marquee-content {
 		display: flex;
 		width: max-content;
-		animation: scroll 100s linear infinite;
+		animation: scroll 90s linear infinite;
 		will-change: transform;
 	}
+
 	.marquee-track {
 		display: flex;
 		gap: 3rem;
 		padding-right: 3rem;
 	}
+
 	@keyframes scroll {
 		from {
 			transform: translateX(0);
@@ -211,35 +221,46 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 		}
 	}
 
+	.marquee-wrapper:hover .marquee-content {
+		animation-play-state: paused;
+	}
+
 	.btn-terminal {
 		display: inline-block;
-		padding: 0.75rem 1.5rem;
-		border: 1px solid rgba(var(--accent), 0.3);
-		font-family: var(--font-title);
-		font-size: 0.85rem;
-		border-radius: var(--radius-sm);
+		padding: 0.6rem 1.2rem;
+		border: 1px solid rgba(var(--accent), 0.2);
+		font-family: var(--font-mono, monospace);
+		font-size: 1.1rem;
+		border-radius: 4px;
 		transition: all 0.2s ease;
+		text-decoration: none !important;
 	}
+
 	.btn-terminal:hover {
 		background: rgba(var(--accent), 0.05);
-		box-shadow: var(--glow);
 		border-color: rgb(var(--accent));
+		box-shadow: 0 0 15px rgba(var(--accent), 0.1);
 	}
+
 	.btn-terminal.accent {
 		background: rgba(var(--accent), 0.1);
-		border-color: rgb(var(--accent));
+		border-color: rgba(var(--accent), 0.4);
 	}
+
 	.shadow-glow {
 		box-shadow: 0 0 20px rgba(var(--accent), 0.15);
 	}
 
 	@media (max-width: 768px) {
-		.marquee-container {
+		.container-limited {
+			padding-top: 70px;
+		}
+		.marquee-wrapper {
 			mask-image: none;
 			-webkit-mask-image: none;
 		}
-		main {
-			padding-top: 70px;
+		.marquee-content {
+			animation-duration: 65s;
 		}
 	}
 </style>
