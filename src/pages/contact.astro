@@ -16,203 +16,209 @@ const success = Astro.url.searchParams.get("success") === "true";
         />
     </head>
 
-    <body
-        class="flex flex-col min-h-screen bg-[rgb(var(--bg))] text-[rgb(var(--text))] font-mono"
-    >
+    <body class="flex flex-col min-h-screen bg-[rgb(var(--bg))] text-[rgb(var(--text))] font-mono selection:bg-[rgba(var(--accent),0.3)]">
         <Header />
 
-        <main
-            class="flex flex-col items-center text-center animate-fadeIn max-w-xl w-full mx-auto p-6"
-        >
-            <h1 class="glow-text text-3xl font-bold mb-4">Contactez-moi</h1>
+        <main class="flex-grow flex flex-col items-center justify-center p-6 animate-fadeIn">
+            <div class="max-w-xl w-full">
+                <header class="text-center mb-10">
+                    <h1 class="glow-text text-4xl font-bold mb-4 tracking-tighter">Contactez-moi</h1>
+                    <p class="text-[rgba(var(--text),0.7)] leading-relaxed">
+                        Si vous avez un projet, une question ou souhaitez juste dire
+                        bonjour, envoyez-moi un message. Je vous répondrai dès que
+                        possible.
+                    </p>
+                </header>
 
-            <p class="mb-6 text-[rgba(var(--text),0.9)]">
-                Si vous avez un projet, une question ou souhaitez juste dire
-                bonjour, envoyez-moi un message. Je vous répondrai dès que
-                possible.
-            </p>
-
-            {
-                success && (
-                    <div class="mb-6 p-4 border border-[rgb(var(--accent))] bg-[rgba(var(--accent),0.1)] rounded text-[rgb(var(--accent))] font-semibold animate-pulse">
-                        Merci ! Votre message a bien été envoyé.
+                {success && (
+                    <div class="mb-8 p-4 border border-[rgb(var(--accent))] bg-[rgba(var(--accent),0.05)] rounded-lg text-[rgb(var(--accent))] font-medium text-center animate-bounce">
+                        ✨ Merci ! Votre message a bien été envoyé.
                     </div>
-                )
-            }
+                )}
 
-            <div
-                id="errorMessage"
-                role="alert"
-                class="hidden mb-6 p-4 border border-red-500 bg-[rgba(239,68,68,0.1)] rounded text-red-500 font-semibold"
-            >
+                <div id="errorMessage" role="alert" class="hidden mb-8 p-4 border border-red-500/50 bg-red-500/10 rounded-lg text-red-400 font-medium text-center"></div>
+
+                <div class="form-container">
+                    <form
+                        id="contactForm"
+                        action="https://formspree.io/f/xovgkrbn"
+                        method="POST"
+                        class="flex flex-col gap-6"
+                        autocomplete="on"
+                    >
+                        <input type="hidden" name="_next" value={`${Astro.url.origin}${Astro.url.pathname}?success=true`} />
+                        <input type="hidden" name="_subject" value={`Nouveau message de contact - ${SITE_TITLE}`} />
+                        <div style="display:none!important;" aria-hidden="true">
+                            <input type="text" name="website" tabindex="-1" autocomplete="off" />
+                        </div>
+                        <input type="hidden" id="formTimestamp" />
+
+                        <div class="input-group">
+                            <label for="email" class="label-text">Votre email</label>
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                required
+                                placeholder="nom@domaine.com"
+                                class="input-field"
+                                autocomplete="email"
+                            />
+                            <span class="sub-label">Votre email ne sera jamais partagé</span>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="message" class="label-text">Votre message</label>
+                            <textarea
+                                id="message"
+                                name="message"
+                                required
+                                rows="5"
+                                placeholder="Écrivez votre message ici..."
+                                class="input-field resize-none"
+                                spellcheck="true"></textarea>
+                            <div class="flex justify-between items-center mt-1">
+                                <span class="sub-label text-[rgb(var(--accent))] opacity-70">Markdown supporté</span>
+                                <span class="sub-label">Max 2000 caractères</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-3 p-3 bg-[rgba(var(--accent),0.03)] rounded border border-[rgba(var(--accent),0.1)]">
+                            <input
+                                type="checkbox"
+                                id="privacy"
+                                name="privacy"
+                                required
+                                class="mt-1 accent-[rgb(var(--accent))]"
+                            />
+                            <label for="privacy" class="text-xs text-[rgba(var(--text),0.7)] cursor-pointer">
+                                J'accepte que mes données soient utilisées uniquement pour répondre à mon message
+                            </label>
+                        </div>
+
+                        <button id="submitBtn" type="submit" class="submit-button">
+                            <span>Envoyer le message</span>
+                        </button>
+
+                        <p class="text-[10px] text-center text-[rgba(var(--text),0.4)] uppercase tracking-widest">
+                            Powered by Formspree
+                        </p>
+                    </form>
+                </div>
             </div>
-
-            <form
-                id="contactForm"
-                action="https://formspree.io/f/xovgkrbn"
-                method="POST"
-                class="flex flex-col gap-4 w-full"
-                autocomplete="on"
-            >
-                <input
-                    type="hidden"
-                    name="_next"
-                    value={`${Astro.url.origin}${Astro.url.pathname}?success=true`}
-                />
-
-                <input
-                    type="hidden"
-                    name="_subject"
-                    value={`Nouveau message de contact - ${SITE_TITLE}`}
-                />
-
-                <div
-                    class="honeypot"
-                    style="display:none!important;"
-                    aria-hidden="true"
-                >
-                    <label for="website">Ne remplissez pas ce champ</label>
-                    <input
-                        type="text"
-                        id="website"
-                        name="website"
-                        tabindex="-1"
-                        autocomplete="off"
-                    />
-                </div>
-
-                <input type="hidden" id="formTimestamp" />
-
-                <label class="flex flex-col w-full text-left">
-                    Votre email :
-                    <input
-                        type="email"
-                        name="email"
-                        required
-                        placeholder="exemple@domaine.com"
-                        class="mt-1 p-2 rounded border border-[rgba(var(--accent),0.25)] bg-[rgba(0,0,0,0.25)] focus:outline-none focus:border-[rgb(var(--accent))] focus:shadow-[0_0_15px_rgba(var(--accent),0.6)] transition-all"
-                        autocomplete="email"
-                        minlength="5"
-                        maxlength="320"
-                    />
-                    <span class="text-xs text-[rgba(var(--text),0.6)] mt-1">
-                        Votre email ne sera jamais partagé
-                    </span>
-                </label>
-
-                <label class="flex flex-col w-full text-left">
-                    Votre message :
-                    <textarea
-                        name="message"
-                        required
-                        rows="6"
-                        placeholder="Écrivez votre message ici..."
-                        class="mt-1 p-2 rounded border border-[rgba(var(--accent),0.25)] bg-[rgba(0,0,0,0.25)] focus:outline-none focus:border-[rgb(var(--accent))] focus:shadow-[0_0_15px_rgba(var(--accent),0.6)] transition-all resize-y min-h-[150px]"
-                        minlength="10"
-                        maxlength="2000"
-                        spellcheck="true"></textarea>
-                    <span class="text-xs text-[rgba(var(--text),0.6)] mt-1">
-                        Maximum 2000 caractères
-                    </span>
-                </label>
-
-                <div
-                    class="text-center text-sm text-[rgba(var(--text),0.7)] mb-2"
-                >
-                    <input
-                        type="checkbox"
-                        id="privacy"
-                        name="privacy"
-                        required
-                        class="mr-2"
-                    />
-                    <label for="privacy">
-                        J'accepte que mes données soient utilisées uniquement
-                        pour répondre à mon message
-                    </label>
-                </div>
-
-                <button
-                    id="submitBtn"
-                    type="submit"
-                    class="mt-2 border border-[rgb(var(--accent))] text-[rgb(var(--accent))] rounded px-4 py-2 font-semibold hover:bg-[rgba(var(--accent),0.1)] hover:shadow-[0_0_20px_rgba(var(--accent),0.6)] disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
-                >
-                    Envoyer
-                </button>
-
-                <p class="text-xs text-[rgba(var(--text),0.5)] mt-4">
-                    Les informations transmises via ce formulaire sont traitées
-                    par Formspree afin de permettre l’envoi et la réception des
-                    messages.
-                </p>
-            </form>
         </main>
 
         <Footer />
+
+        <style>
+            .form-container {
+                background: linear-gradient(145deg, rgba(var(--bg), 0.8) 0%, rgba(var(--accent), 0.03) 100%);
+                border: 1px solid rgba(var(--accent), 0.15);
+                border-radius: var(--radius-md);
+                padding: 2rem;
+                box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.5);
+            }
+
+            .input-group {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .label-text {
+                font-family: var(--font-title);
+                font-size: 0.85rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                color: rgb(var(--accent));
+            }
+
+            .input-field {
+                background: rgba(var(--bg), 0.5);
+                border: 1px solid rgba(var(--accent), 0.2);
+                border-radius: var(--radius-sm);
+                padding: 0.75rem;
+                color: rgb(var(--text));
+                transition: all 0.2s ease;
+            }
+
+            .input-field:focus {
+                outline: none;
+                border-color: rgb(var(--accent));
+                background: rgba(var(--accent), 0.05);
+                box-shadow: 0 0 0 3px rgba(var(--accent), 0.1);
+            }
+
+            .sub-label {
+                font-size: 0.7rem;
+                color: rgba(var(--text), 0.5);
+            }
+
+            .submit-button {
+                background: rgb(var(--accent));
+                color: rgb(var(--bg));
+                padding: 0.8rem;
+                border-radius: var(--radius-sm);
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                cursor: pointer;
+                border: none;
+                transition: all 0.3s ease;
+            }
+
+            .submit-button:hover:not(:disabled) {
+                filter: brightness(1.2);
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(var(--accent), 0.4);
+            }
+
+            .submit-button:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            @media (max-width: 640px) {
+                .form-container {
+                    padding: 1.5rem;
+                    border: none;
+                    background: transparent;
+                    box-shadow: none;
+                }
+            }
+        </style>
 
         <script>
             function showError(message: string) {
                 const errorDiv = document.getElementById("errorMessage");
                 if (!errorDiv) return;
-
                 errorDiv.textContent = message;
                 errorDiv.classList.remove("hidden");
-                errorDiv.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center",
-                });
-
-                setTimeout(() => {
-                    errorDiv.classList.add("hidden");
-                }, 5000);
+                errorDiv.scrollIntoView({ behavior: "smooth", block: "center" });
+                setTimeout(() => errorDiv.classList.add("hidden"), 5000);
             }
 
             document.addEventListener("DOMContentLoaded", () => {
-                const form = document.getElementById("contactForm");
-                const submitBtn = document.getElementById("submitBtn");
-                const timestampInput = document.getElementById("formTimestamp");
+                const form = document.getElementById("contactForm") as HTMLFormElement;
+                const submitBtn = document.getElementById("submitBtn") as HTMLButtonElement;
+                const timestampInput = document.getElementById("formTimestamp") as HTMLInputElement;
 
-                if (!(form instanceof HTMLFormElement)) return;
-                if (!(submitBtn instanceof HTMLButtonElement)) return;
-                if (!(timestampInput instanceof HTMLInputElement)) return;
+                if (!form || !submitBtn || !timestampInput) return;
 
                 timestampInput.value = Date.now().toString();
                 let isSubmitting = false;
 
                 form.addEventListener("submit", (e) => {
-                    const honeypot = form.querySelector(
-                        'input[name="website"]',
-                    );
-                    const privacy = form.querySelector('input[name="privacy"]');
-
-                    if (
-                        honeypot instanceof HTMLInputElement &&
-                        honeypot.value.trim() !== ""
-                    ) {
+                    const honeypot = form.querySelector('input[name="website"]') as HTMLInputElement;
+                    if (honeypot?.value.trim() !== "") {
                         e.preventDefault();
                         return;
                     }
 
-                    if (
-                        !(privacy instanceof HTMLInputElement) ||
-                        !privacy.checked
-                    ) {
-                        e.preventDefault();
-                        showError(
-                            "Veuillez accepter la politique de confidentialité.",
-                        );
-                        return;
-                    }
-
-                    const now = Date.now();
-                    const previous = Number(timestampInput.value);
-                    const diff = now - previous;
-
+                    const diff = Date.now() - Number(timestampInput.value);
                     if (diff < 2000) {
                         e.preventDefault();
-                        showError(
-                            "Veuillez patienter un instant avant d’envoyer le formulaire.",
-                        );
+                        showError("Veuillez patienter un instant avant d’envoyer.");
                         return;
                     }
 
@@ -222,18 +228,8 @@ const success = Astro.url.searchParams.get("success") === "true";
                     }
 
                     isSubmitting = true;
-                    timestampInput.value = now.toString();
-
                     submitBtn.disabled = true;
-                    submitBtn.textContent = "Envoi en cours...";
-                    submitBtn.classList.add("animate-pulse");
-                });
-
-                window.addEventListener("pageshow", () => {
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = "Envoyer";
-                    submitBtn.classList.remove("animate-pulse");
-                    isSubmitting = false;
+                    submitBtn.innerHTML = "<span>Transmission...</span>";
                 });
             });
         </script>

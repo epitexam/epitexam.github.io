@@ -4,7 +4,12 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import TechStack from "../components/TechStack.astro";
 import GitHubProject from "../components/GitHubProject.astro";
-import { SITE_DESCRIPTION, SITE_TITLE, GITHUB_URL, TECH_STACK } from "../consts";
+import {
+	SITE_DESCRIPTION,
+	SITE_TITLE,
+	GITHUB_URL,
+	TECH_STACK,
+} from "../consts";
 import { Image } from "astro:assets";
 import profile from "../assets/profile.webp";
 import type { Project } from "../types/github";
@@ -36,146 +41,90 @@ if (import.meta.env.SSR) {
 const lastUpdate = new Date().toLocaleDateString("fr-FR");
 ---
 
+<!doctype html>
 <html lang="fr">
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
 
-	<body class="min-h-screen flex flex-col">
+	<body class="min-h-screen flex flex-col animate-fadeIn">
 		<Header />
 
-		<main
-			class="flex-grow px-4 sm:px-6 md:px-8 py-8 sm:py-12 max-w-5xl mx-auto space-y-12 sm:space-y-16"
-		>
-			<section class="text-center space-y-4 sm:space-y-6" id="hero">
-				<div class="flex flex-col items-center gap-3 sm:gap-4">
+		<main>
+			<section class="text-center space-y-8" id="hero">
+				<div class="flex flex-col items-center gap-6">
 					<Image
 						src={profile}
 						alt={`Avatar de ${SITE_TITLE}`}
-						width={64}
-						height={64}
+						width={80}
+						height={80}
 						loading="eager"
-						fetchpriority="high"
-						class="rounded-full border border-accent/30 hover:border-accent/50 transition-colors"
-						format="webp"
+						class="rounded-full border border-accent-20 shadow-glow"
 					/>
-					<h1
-						class="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight"
-					>
-						Ici <span class="text-accent glow-text"
-							>{SITE_TITLE} !</span
-						> 👋
-					</h1>
-					<p
-						class="text-base sm:text-lg text-text/80 max-w-2xl mx-auto leading-relaxed"
-					>
-						Développeur passionné par l'embarqué, le web et les
-						systèmes connectés.
-					</p>
-					<p
-						class="text-xs sm:text-sm text-text/60"
-						aria-label="Spécialités"
-					>
-						Full-stack / IoT / Bas niveau • 🇫🇷
-					</p>
-					<div
-						class="flex items-center gap-2 text-xs"
-						role="status"
-						aria-label="Statut de disponibilité"
-					>
+
+					<div class="space-y-2">
+						<h1>
+							Ici <span class="text-accent glow-text"
+								>{SITE_TITLE}</span
+							> 👋
+						</h1>
+						<p class="max-w-2xl mx-auto">
+							Développeur passionné par l'embarqué, le web et les
+							systèmes connectés. Spécialisé en Full-stack, IoT et
+							bas niveau.
+						</p>
+					</div>
+
+					<div class="flex items-center gap-2 text-xs" role="status">
 						<div
-							class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-green-400"
-							aria-hidden="true"
+							class="w-2 h-2 rounded-full bg-accent animate-pulse"
 						>
 						</div>
-						<span class="text-green-400 font-medium"
-							>Disponible pour de nouveaux projets</span
+						<span
+							class="text-accent font-medium tracking-wider uppercase"
 						>
+							Disponible pour de nouveaux projets
+						</span>
 					</div>
 				</div>
 
-				<div
-					class="flex flex-wrap justify-center gap-3 sm:gap-4 mt-4 sm:mt-6"
-				>
-					<a
-						href="/blog"
-						class="btn btn-neutral min-h-[44px] px-6 flex items-center"
-						aria-label="Voir les articles du blog"
-					>
-						Le blog
-					</a>
+				<div class="flex flex-wrap justify-center gap-4">
+					<a href="/blog" class="btn-terminal">Consulter le blog</a>
 					<a
 						href={GITHUB_URL}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="btn btn-accent min-h-[44px] px-6 flex items-center"
-						aria-label="Visiter le profil GitHub"
+						class="btn-terminal accent"
 					>
-						GitHub
+						Explorer GitHub
 					</a>
 				</div>
 			</section>
 
-			<section
-				class="text-center space-y-4 sm:space-y-6 py-4 sm:py-8"
-				id="tech-stack"
-				aria-labelledby="tech-stack-title"
-			>
-				<h2
-					id="tech-stack-title"
-					class="text-lg sm:text-xl font-bold text-accent tracking-tight"
-				>
-					Au quotidien :
-				</h2>
-				<div
-					class="stack-marquee mt-8 sm:mt-12"
-					role="marquee"
-					aria-label="Liste des technologies utilisées"
-				>
+			<section id="tech-stack" class="py-12">
+				<h2 class="text-center mb-8">Stack Technique</h2>
+				<div class="stack-marquee" role="marquee">
 					<div class="marquee-track">
-						{
-							TECH_STACK.map((tech, index) => (
-								<TechStack tech={tech} />
-							))
-						}
+						{TECH_STACK.map((tech) => <TechStack tech={tech} />)}
 					</div>
 				</div>
 			</section>
 
-			<section
-				class="space-y-4 sm:space-y-6"
-				id="projects"
-				aria-labelledby="projects-title"
-			>
-				<h2
-					id="projects-title"
-					class="text-lg sm:text-xl font-bold text-accent tracking-tight"
-				>
-					Mes derniers projets :
-				</h2>
-				<div
-					class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-8 sm:mt-12"
-				>
+			<section id="projects" class="space-y-8">
+				<h2>Projets récents</h2>
+				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 					{
 						projects.length > 0 ? (
 							projects.map((repo: Project) => (
 								<GitHubProject project={repo} />
 							))
 						) : (
-							<div
-								class="col-span-full text-center py-8"
-								role="status"
-							>
-								<p class="text-sm text-text/60 mb-4">
-									Aucun projet public trouvé sur GitHub.
+							<div class="col-span-full text-center py-12 border border-dashed border-accent-20 rounded-lg">
+								<p class="text-sm opacity-60">
+									Aucun projet public trouvé.
 								</p>
-								<a
-									href={GITHUB_URL}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="btn btn-outline text-xs"
-								>
-									Voir GitHub
+								<a href={GITHUB_URL} class="text-accent">
+									Voir le profil GitHub
 								</a>
 							</div>
 						)
@@ -183,12 +132,9 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 				</div>
 			</section>
 
-			<footer class="text-center pt-8 border-t border-text/10">
-				<p
-					class="text-xs text-text/50"
-					aria-label="Dernière mise à jour"
-				>
-					Dernière mise à jour : <time
+			<footer class="mt-16 pt-8 border-t border-accent-10 text-center">
+				<p class="text-xs opacity-40">
+					Système mis à jour le <time
 						datetime={new Date().toISOString()}>{lastUpdate}</time
 					>
 				</p>
@@ -200,108 +146,72 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 </html>
 
 <style>
+	.btn-terminal {
+		display: inline-block;
+		padding: 0.75rem 1.5rem;
+		border: 1px solid rgba(var(--accent), 0.3);
+		font-family: var(--font-title);
+		font-size: 0.85rem;
+		text-transform: lowercase;
+		transition: all 0.3s ease;
+		border-radius: var(--radius-sm);
+	}
+
+	.btn-terminal:hover {
+		background: rgba(var(--accent), 0.05);
+		box-shadow: var(--glow);
+		border-color: rgb(var(--accent));
+	}
+
+	.btn-terminal.accent {
+		background: rgba(var(--accent), 0.1);
+		border-color: rgb(var(--accent));
+	}
+
+	.shadow-glow {
+		box-shadow: 0 0 20px rgba(var(--accent), 0.15);
+	}
+
 	.stack-marquee {
 		position: relative;
 		overflow: hidden;
 		mask-image: linear-gradient(
 			to right,
-			transparent 0%,
-			black 8%,
-			black 92%,
-			transparent 100%
+			transparent,
+			black 15%,
+			black 85%,
+			transparent
 		);
 		-webkit-mask-image: linear-gradient(
 			to right,
-			transparent 0%,
-			black 8%,
-			black 92%,
-			transparent 100%
+			transparent,
+			black 15%,
+			black 85%,
+			transparent
 		);
 	}
 
 	.marquee-track {
 		display: flex;
-		gap: 1rem;
-		white-space: nowrap;
+		gap: 2rem;
 		width: max-content;
-		animation: marquee-scroll 180s linear infinite;
-		padding: 0.5rem 0;
-		will-change: transform;
+		animation: scroll 150s linear infinite;
 	}
 
-	@keyframes marquee-scroll {
-		0% {
+	@keyframes scroll {
+		from {
 			transform: translateX(0);
 		}
-		100% {
+		to {
 			transform: translateX(-50%);
-		}
-	}
-
-	@media (max-width: 640px) {
-		.marquee-track {
-			gap: 0.75rem;
-			animation-duration: 120s;
-			padding: 0.375rem 0;
-		}
-
-		.stack-marquee {
-			mask-image: linear-gradient(
-				to right,
-				transparent 0%,
-				black 4%,
-				black 96%,
-				transparent 100%
-			);
-			-webkit-mask-image: linear-gradient(
-				to right,
-				transparent 0%,
-				black 4%,
-				black 96%,
-				transparent 100%
-			);
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		.marquee-track {
 			animation: none;
-			justify-content: center;
-			width: 100%;
-			flex-wrap: wrap;
-			gap: 0.75rem;
-		}
-
-		.stack-marquee {
-			mask-image: none;
-			-webkit-mask-image: none;
-			overflow: visible;
-		}
-	}
-
-	@media (max-width: 360px) {
-		.marquee-track {
-			animation: none;
 			flex-wrap: wrap;
 			justify-content: center;
-			width: 100%;
-		}
-
-		.stack-marquee {
-			mask-image: none;
-			-webkit-mask-image: none;
-		}
-	}
-
-	@media (prefers-color-scheme: dark) {
-		.stack-marquee {
-			mask-image: linear-gradient(
-				to right,
-				transparent 0%,
-				rgb(10, 12, 20) 8%,
-				rgb(10, 12, 20) 92%,
-				transparent 100%
-			);
 		}
 	}
 </style>
