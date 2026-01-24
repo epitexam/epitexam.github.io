@@ -19,10 +19,9 @@
   --max-width: 960px;
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
-
-  --font-body: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
-  --font-title: "Space Grotesk", var(--font-body);
-  --font-code: "JetBrains Mono", "Fira Code", monospace;
+  --font-body: "Inter", -apple-system, sans-serif;
+  --font-title: "Space Mono", monospace;
+  --font-code: "JetBrains Mono", monospace;
 }
 
 /* ================= RESET ================= */
@@ -43,11 +42,11 @@ body {
   min-width: 280px;
   overflow-x: hidden;
   background: rgb(var(--bg));
-  color: rgb(var(--text));
   font-family: var(--font-body);
-  font-size: 18px;
-  letter-spacing: -0.01em;
-  line-height: 1.5;
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: -0.011em;
+  color: rgba(var(--text), 0.95);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeSpeed;
 }
@@ -99,16 +98,15 @@ main:not(.no-global-style) {
 :where(h1, h2, h3, h4, h5, h6) {
   margin: 0 0 0.75rem;
   color: rgb(var(--text));
-  font-weight: 600;
-  line-height: 1.3;
   word-break: break-word;
   font-family: var(--font-title);
-  letter-spacing: -0.02em;
+  font-weight: 700;
+  letter-spacing: -0.03em;
 }
 
 h1 {
-  font-size: clamp(1.5rem, 6vw, 2.5rem);
-  font-weight: 700;
+  font-size: clamp(2rem, 8vw, 3rem);
+  padding-bottom: 0.5rem;
 }
 
 h2 {
@@ -135,7 +133,10 @@ h6 {
 }
 
 p {
-  margin-bottom: 1.2rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+  color: rgba(var(--text), 0.85);
+  font-size: 1.1rem
 }
 
 /* ================= LINKS ================= */
