@@ -5,9 +5,10 @@ import { Image } from "astro:assets";
 
 export interface Props {
     project: Project;
+    eager?: boolean;
 }
 
-const { project } = Astro.props;
+const { project, eager = false } = Astro.props;
 
 const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
     month: "short",
@@ -26,7 +27,16 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
 
     <header class="project-header">
         <div class="owner-info">
-            <Image src={profile} alt="" width={32} height={32} class="avatar" />
+            <Image
+                src={profile}
+                alt=''
+                width={32}
+                height={32}
+                class="avatar"
+                loading={eager ? "eager" : "lazy"}
+                fetchpriority={eager ? "high" : "auto"}
+            />
+
             <h3 class="project-name">{project.name}</h3>
         </div>
 
