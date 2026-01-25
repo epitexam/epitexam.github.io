@@ -84,7 +84,8 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 						</div>
 						<span
 							class="text-accent font-mono tracking-widest uppercase"
-							>Disponible pour de nouveaux projets
+						>
+							Disponible pour de nouveaux projets
 						</span>
 					</div>
 				</div>
@@ -183,18 +184,18 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 		position: relative;
 		width: 100%;
 		overflow: hidden;
-		mask-image: linear-gradient(
-			to right,
-			transparent,
-			black 10%,
-			black 90%,
-			transparent
-		);
 		-webkit-mask-image: linear-gradient(
 			to right,
 			transparent,
-			black 10%,
-			black 90%,
+			black 15%,
+			black 85%,
+			transparent
+		);
+		mask-image: linear-gradient(
+			to right,
+			transparent,
+			black 15%,
+			black 85%,
 			transparent
 		);
 	}
@@ -202,14 +203,21 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 	.marquee-content {
 		display: flex;
 		width: max-content;
-		animation: scroll 115s linear infinite;
+		flex-wrap: nowrap;
+		animation: scroll 195s linear infinite;
 		will-change: transform;
+		transform: translateZ(0);
 	}
 
 	.marquee-track {
 		display: flex;
+		flex-shrink: 0;
 		gap: 3rem;
 		padding-right: 3rem;
+	}
+
+	.marquee-track > * {
+		flex-shrink: 0;
 	}
 
 	@keyframes scroll {
