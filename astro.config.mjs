@@ -12,12 +12,14 @@ export default defineConfig({
 	integrations: [mdx(), sitemap(),],
 	vite: {
 		plugins: [tailwindcss()],
-		build:{
-			chunkSizeWarningLimit:500
+		build: {
+			chunkSizeWarningLimit: 500,
+			minify: "esbuild",
+			cssMinify: true,
 		}
 	},
 	build: {
-		inlineStylesheets: "always",
+		inlineStylesheets: "auto",
 		assets: '_assets',
 	},
 	prefetch: {
