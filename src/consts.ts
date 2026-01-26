@@ -37,7 +37,7 @@ export const SECTIONS : { title: string, tools: { icon: string, name: string, de
             {
                 icon: "Go",
                 name: "Go",
-                description: "Pour de sombres projets fait maison.",
+                description: "Acuellement sur des side-projets microservices, j’apprends encore et j’expérimente activement le langage Go.",
             },
             {
                 icon: "Py",
