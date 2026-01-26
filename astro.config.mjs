@@ -22,10 +22,5 @@ export default defineConfig({
 		defaultStrategy: "hover"
 	},
 	compressHTML: true,
-	image: {
-		service: {
-			entrypoint: "astro:assets/services/sharp"
-		}
-	}
 
 });
