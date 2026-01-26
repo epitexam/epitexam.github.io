@@ -22,6 +22,8 @@
   --font-body: "Inter", -apple-system, sans-serif;
   --font-title: "Space Mono", monospace;
   --font-code: "JetBrains Mono", monospace;
+
+  --header-height: 80px;
 }
 
 /* ================= RESET ================= */
@@ -80,13 +82,35 @@ body {
 
 /* ================= LAYOUT ================= */
 
-main:not(.no-global-style) {
+:root {
+  --header-height: 60px;
+  --max-width: 960px;
+}
+
+main {
+  width: 100%;
   max-width: var(--max-width);
-  margin: auto;
-  padding: 4rem 2rem;
+  margin: 0 auto;
   position: relative;
-  z-index: 1;
+  padding-top: calc(var(--header-height) + 2rem) !important;
+  padding-bottom: 4rem !important;
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
   border-left: 1px solid rgba(var(--accent), 0.05);
+}
+
+@media (max-width: 768px) {
+  main {
+    padding-top: calc(var(--header-height) + 1rem) !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    border-left: none !important;
+  }
 }
 
 /* ================= TYPOGRAPHY ================= */
