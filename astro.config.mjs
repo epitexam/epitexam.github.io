@@ -12,6 +12,9 @@ export default defineConfig({
 	integrations: [mdx(), sitemap(),],
 	vite: {
 		plugins: [tailwindcss()],
+		build:{
+			chunkSizeWarningLimit:500
+		}
 	},
 	build: {
 		inlineStylesheets: "always",
