@@ -11,7 +11,13 @@ export default defineConfig({
 	integrations: [
 		mdx(),
 		sitemap(),
-		compress()
+		compress({
+			CSS: false,
+			HTML: true,
+			Image: true,
+			JavaScript: true,
+			SVG: true
+		})
 	],
 
 	vite: {
@@ -19,7 +25,7 @@ export default defineConfig({
 
 		build: {
 			minify: "esbuild",
-			cssMinify: true,
+			cssMinify: "lightningcss",
 			chunkSizeWarningLimit: 500,
 
 			rollupOptions: {
