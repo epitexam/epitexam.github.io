@@ -40,7 +40,7 @@ export default defineConfig({
 	},
 
 	prefetch: {
-		defaultStrategy: "viewport"
+		defaultStrategy: "hover"
 	},
 
 	compressHTML: true,
