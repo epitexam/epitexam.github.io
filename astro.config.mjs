@@ -13,7 +13,19 @@ export default defineConfig({
 	vite: {
 		plugins: [tailwindcss()],
 	},
-	build:{
-		inlineStylesheets:"always"
+	build: {
+		inlineStylesheets: "always",
+		assets: '_assets',
+	},
+	prefetch: {
+		prefetchAll: true,
+		defaultStrategy: "hover"
+	},
+	compressHTML: true,
+	image: {
+		service: {
+			entrypoint: "astro:assets/services/sharp"
+		}
 	}
+
 });
