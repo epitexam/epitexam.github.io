@@ -6,7 +6,7 @@ export const SITE_DESCRIPTION = 'Mon carnet de bord : entre lignes de code et vi
 export const GITHUB_URL = 'https://github.com/epitexam';
 export const ALT_DESCRIPTION = "Scène emblématique du film Ghost in the Shell montrant la construction d'un corps cybernétique, avec les sections du visage et du crâne s'emboîtant sur une structure robotique."
 
-export const SECTIONS : { title: string, tools: { icon: string, name: string, description: string }[] }[] = [
+export const SECTIONS: { title: string, tools: { icon: string, name: string, description: string }[] }[] = [
     {
         title: "Langages informatiques",
         tools: [
@@ -172,45 +172,25 @@ export const SECTIONS : { title: string, tools: { icon: string, name: string, de
     },
 ];
 
-export const TECH_STACK: string[] = [
-    "ElectronJS",
-    "Tauri",
-    "React",
-    "Next.js",
-    "Preact",
-    "Astro",
-    "TailwindCSS",
-    "Typescript",
-    "Javascript",
-    "Redux",
-    "Jest",
-    "Cypress",
-    "Lua",
-    "Node.js",
-    "Nest",
-    "Fastify",
-    "Elysia",
-    "Express.js",
-    "Bun",
-    "Python",
-    "C",
-    "C++",
-    "Godot",
-    "Postgres",
-    "MongoDB",
-    "MariaDB",
-    "Prisma",
-    "Redis",
-    "Docker",
-    "Podman",
-    "Linux",
-    "Windows 💀",
-    "Debian",
-    "Ubuntu",
-    "Fedora",
-    "Arch linux",
-    "Asm 6502 / x64",
-    "Arduino",
-    "Raspberry",
-    "ESP32",
-] as const;
+export const TECH_CATEGORIES = [
+    {
+        label: "Web",
+        items: [
+            "Typescript",
+            "Javascript",
+            "React",
+            "Next.js",
+            "Astro",
+            "Node.js",
+            "Bun"
+        ],
+    },
+    {
+        label: "Bas Niveau & IoT",
+        items: ["C", "C++", "Asm", "Arduino", "ESP32", "Raspberry"],
+    },
+    {
+        label: "Infrastructure",
+        items: ["Docker", "Linux", "Python", "Postgres"],
+    },
+];

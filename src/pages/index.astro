@@ -8,17 +8,18 @@ import {
 	SITE_DESCRIPTION,
 	SITE_TITLE,
 	GITHUB_URL,
-	TECH_STACK,
+	TECH_CATEGORIES,
 } from "../consts";
 import { Image } from "astro:assets";
 import profile from "../assets/profile.webp";
 import type { Project } from "../types/github";
 
+const username = SITE_TITLE.toLowerCase().replace(/\s+/g, "");
 let projects: Project[] = [];
+
 if (import.meta.env.SSR) {
 	try {
 		const token = import.meta.env.TOKEN_GITHUB;
-		const username = SITE_TITLE.toLowerCase().replace(/\s+/g, "");
 		const response = await fetch(
 			`https://api.github.com/users/${username}/repos?sort=pushed&per_page=6`,
 			{
@@ -27,14 +28,12 @@ if (import.meta.env.SSR) {
 			},
 		);
 		if (response.ok) {
-			const repos = (await response.json()) as Project[];
-			projects = repos.slice(0, 6);
+			projects = (await response.json()) as Project[];
 		}
 	} catch (error) {
 		projects = [];
 	}
 }
-const lastUpdate = new Date().toLocaleDateString("fr-FR");
 ---
 
 <!doctype html>
@@ -43,117 +42,96 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
 
-	<body
-		class="min-h-screen flex flex-col bg-[rgb(var(--bg))] overflow-x-hidden"
-	>
+	<body class="bg-[rgb(var(--bg))]">
 		<Header />
 
-		<main class="animate-fastIn container-limited">
-			<section class="text-center space-y-8 pt-12" id="hero">
-				<div class="flex flex-col items-center gap-6">
+		<main class="stable-layout animate-fadeIn">
+			<section class="hero-v">
+				<div class="avatar-container">
 					<Image
 						src={profile}
-						alt={`Avatar`}
-						width={80}
-						height={80}
+						alt=""
+						width={90}
+						height={90}
+						class="avatar-img"
 						loading="eager"
-						fetchpriority="high"
-						class="rounded-full border border-accent-20 shadow-glow"
 					/>
-
-					<div class="space-y-3">
-						<h1 class="leading-tight">
-							Ici <span class="text-accent glow-text"
-								>{SITE_TITLE}</span
-							> 👋
-						</h1>
-						<p class="max-w-2xl mx-auto opacity-80 leading-relaxed">
-							Développeur passionné par l'embarqué, le web et les
-							systèmes connectés. Spécialisé en Full-stack, IoT et
-							bas niveau.
-						</p>
-					</div>
-
-					<div
-						class="flex items-center gap-2 text-[14px]"
-						role="status"
-					>
-						<div
-							class="w-1.5 h-1.5 rounded-full bg-accent animate-pulse"
-						>
-						</div>
-						<span
-							class="text-accent font-mono tracking-widest uppercase"
-						>
-							Disponible pour de nouveaux projets
-						</span>
-					</div>
+					<span class="profile-handle">@{SITE_TITLE}</span>
 				</div>
 
-				<div class="flex flex-wrap justify-center gap-4">
-					<a href="/blog" class="btn-terminal">./blog</a>
+				<h1 class="hero-title">Développeur Web Full-Stack</h1>
+
+				<p class="hero-description">
+					Développeur passionné par l'embarqué, le web et les systèmes
+					connectés. Spécialisé en Full-stack, IoT et bas niveau.
+				</p>
+
+				<div class="cta-group">
 					<a
 						href={GITHUB_URL}
 						target="_blank"
-						rel="noopener noreferrer"
-						class="btn-terminal accent">./github</a
+						class="btn-pill btn-solid">GitHub</a
+					>
+					<a href="/blog" class="btn-pill btn-outline"
+						>Blog technique</a
 					>
 				</div>
-			</section>
 
-			<section id="tech-stack" class="py-16">
-				<h2
-					class="text-center mb-10 text-xs opacity-50 uppercase tracking-[0.3em]"
-				>
-					Stack Technique
-				</h2>
-				<div class="marquee-wrapper">
-					<div class="marquee-content">
-						<div class="marquee-track">
-							{
-								TECH_STACK.map((tech) => (
-									<TechStack tech={tech} />
-								))
-							}
-						</div>
-						<div class="marquee-track" aria-hidden="true">
-							{
-								TECH_STACK.map((tech) => (
-									<TechStack tech={tech} />
-								))
-							}
-						</div>
-					</div>
+				<div class="hash-list">
+					<span>#WebDevelopment</span>
+					<span>#LowLevel</span>
+					<span>#EmbeddedSystems</span>
+					<span>#Backend</span>
+					<span>#DevOps</span>
 				</div>
 			</section>
 
-			<section id="projects" class="space-y-8 pb-12">
-				<h2 class="text-xl">Projets récents</h2>
-				<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+			<section class="stack-v">
+				<div class="section-divider">
+					<div class="line"></div>
+					<span class="label">Expertise technique</span>
+					<div class="line"></div>
+				</div>
+
+				<div class="stack-rows">
+					{
+						TECH_CATEGORIES.map((cat) => (
+							<div class="stack-row">
+								<span class="row-label">{cat.label}</span>
+								<div class="row-items">
+									{cat.items.map((t) => (
+										<TechStack tech={t} />
+									))}
+								</div>
+							</div>
+						))
+					}
+				</div>
+			</section>
+
+			<section class="projects-v">
+				<div class="projects-header">
+					<div class="icon-indicator"></div>
+					<h2>Mes projets</h2>
+				</div>
+
+				<div class="projects-grid">
 					{
 						projects.length > 0 ? (
-							projects.map((repo: Project, index: number) => (
-								<GitHubProject
-									project={repo}
-									eager={index < 4}
-								/>
+							projects.map((repo, i) => (
+								<GitHubProject project={repo} eager={i < 2} />
 							))
 						) : (
-							<div class="col-span-full text-center py-12 border border-dashed border-accent-10 rounded-lg opacity-40">
-								<p class="text-sm">
-									En attente de données GitHub...
-								</p>
+							<div class="projects-fallback">
+								<p>Impossible de charger les projets GitHub.</p>
+								<a href={GITHUB_URL}>
+									Voir sur GitHub directement →
+								</a>
 							</div>
 						)
 					}
 				</div>
 			</section>
-
-			<footer
-				class="mt-auto py-8 border-t border-accent-10 text-center opacity-30"
-			>
-				<p class="text-[10px] font-mono">MAJ: {lastUpdate}</p>
-			</footer>
 		</main>
 
 		<Footer />
@@ -161,114 +139,183 @@ const lastUpdate = new Date().toLocaleDateString("fr-FR");
 </html>
 
 <style>
-	.container-limited {
+	.stable-layout {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
 		max-width: 960px;
 		margin: 0 auto;
-		padding: 80px 1.5rem 0 1.5rem;
-		flex: 1;
+		border-left: none !important;
+		box-sizing: border-box;
 	}
 
-	.animate-fastIn {
-		animation: fadeIn 0.4s ease-out forwards;
-	}
-
-	@keyframes fadeIn {
-		from {
-			opacity: 0;
-			transform: translateY(10px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	.marquee-wrapper {
-		position: relative;
+	section {
 		width: 100%;
-		overflow: hidden;
-		-webkit-mask-image: linear-gradient(
-			to right,
-			transparent,
-			black 15%,
-			black 85%,
-			transparent
-		);
-		mask-image: linear-gradient(
-			to right,
-			transparent,
-			black 15%,
-			black 85%,
-			transparent
-		);
-	}
-
-	.marquee-content {
 		display: flex;
-		width: max-content;
-		flex-wrap: nowrap;
-		animation: scroll 195s linear infinite;
-		will-change: transform;
-		transform: translateZ(0);
+		flex-direction: column;
+		align-items: center;
+		margin-bottom: 4rem;
 	}
 
-	.marquee-track {
+	.avatar-container {
 		display: flex;
-		flex-shrink: 0;
-		gap: 3rem;
-		padding-right: 3rem;
+		flex-direction: column;
+		align-items: center;
+		margin-bottom: 2rem;
 	}
 
-	.marquee-track > * {
-		flex-shrink: 0;
+	.avatar-img {
+		border-radius: 50%;
+		border: 2px solid rgba(var(--accent), 0.2);
+		margin-bottom: 0.5rem;
 	}
 
-	@keyframes scroll {
-		from {
-			transform: translateX(0);
-		}
-		to {
-			transform: translateX(-50%);
-		}
+	.profile-handle {
+		font-family: var(--font-title);
+		font-size: 0.8rem;
+		opacity: 0.4;
 	}
 
-	.marquee-wrapper:hover .marquee-content {
-		animation-play-state: paused;
+	.hero-title {
+		text-align: center;
+		font-size: clamp(2rem, 6vw, 3.5rem);
+		line-height: 1.1;
+		margin-bottom: 1.5rem;
+		max-width: 900px;
+		font-weight: 800;
 	}
 
-	.btn-terminal {
-		display: inline-block;
-		padding: 0.6rem 1.2rem;
-		border: 1px solid rgba(var(--accent), 0.2);
-		font-family: var(--font-mono, monospace);
+	.hero-description {
+		text-align: center;
+		max-width: 700px;
 		font-size: 1.1rem;
-		border-radius: 4px;
-		transition: all 0.2s ease;
-		text-decoration: none !important;
+		opacity: 0.7;
+		margin-bottom: 2.5rem;
 	}
 
-	.btn-terminal:hover {
-		background: rgba(var(--accent), 0.05);
-		border-color: rgb(var(--accent));
-		box-shadow: 0 0 15px rgba(var(--accent), 0.1);
+	.cta-group {
+		display: flex;
+		gap: 1rem;
+		margin-bottom: 3rem;
 	}
 
-	.btn-terminal.accent {
+	.hash-list {
+		display: flex;
+		gap: 1.5rem;
+		font-family: var(--font-title);
+		font-size: 0.8rem;
+		opacity: 0.2;
+	}
+
+	.section-divider {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		gap: 1.5rem;
+		margin-bottom: 3rem;
+	}
+	.line {
+		flex: 1;
+		height: 1px;
 		background: rgba(var(--accent), 0.1);
-		border-color: rgba(var(--accent), 0.4);
+	}
+	.label {
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		opacity: 0.4;
+		letter-spacing: 0.2em;
+		white-space: nowrap;
 	}
 
-	.shadow-glow {
-		box-shadow: 0 0 20px rgba(var(--accent), 0.15);
+	.stack-rows {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+	.stack-row {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.75rem;
+	}
+	.row-label {
+		font-size: 0.65rem;
+		opacity: 0.3;
+		text-transform: uppercase;
+	}
+	.row-items {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.25rem;
+	}
+
+	.projects-header {
+		text-align: center;
+		margin-bottom: 3rem;
+	}
+	.icon-indicator {
+		width: 30px;
+		height: 2px;
+		background: rgb(var(--accent));
+		margin: 0 auto 1rem;
+	}
+
+	.projects-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1.5rem;
+		width: 100%;
+	}
+
+	.projects-fallback {
+		grid-column: span 2;
+		padding: 3rem;
+		border: 1px dashed rgba(var(--accent), 0.1);
+		border-radius: 8px;
+		text-align: center;
+		opacity: 0.5;
+	}
+
+	.btn-pill {
+		padding: 0.8rem 2.5rem;
+		border-radius: 50px;
+		font-family: var(--font-title);
+		font-weight: 700;
+		font-size: 0.9rem;
+		text-decoration: none !important;
+		transition: transform 0.2s ease;
+	}
+	.btn-solid {
+		background: rgb(var(--text));
+		color: rgb(var(--bg));
+	}
+	.btn-outline {
+		border: 1px solid rgba(var(--text), 0.2);
+		color: rgb(var(--text));
+	}
+	.btn-pill:hover {
+		transform: translateY(-2px);
 	}
 
 	@media (max-width: 768px) {
-		.container-limited {
-			padding-top: 70px;
+		.projects-grid {
+			grid-template-columns: 1fr;
 		}
-		.marquee-wrapper {
-			mask-image: none;
-			-webkit-mask-image: none;
+		.hero-title {
+			font-size: 2.2rem;
+		}
+		.cta-group {
+			flex-direction: column;
+			width: 100%;
+		}
+		.btn-pill {
+			text-align: center;
+		}
+		.hash-list {
+			display: none;
 		}
 	}
 </style>
