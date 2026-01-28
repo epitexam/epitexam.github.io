@@ -11,6 +11,7 @@ export interface Props {
 }
 
 const { title, tools } = Astro.props;
+const isOddNumber = tools.length % 2 !== 0;
 ---
 
 <section class="mb-24 w-full flex flex-col items-center">
@@ -23,9 +24,11 @@ const { title, tools } = Astro.props;
     <div
         class:list={[
             "mt-5",
-            "grid gap-6 w-full max-w-4xl justify-items-center",
-            "md:grid-cols-1", // 1 colonne sur tablette et moins
-            "lg:grid-cols-2"  // 2 colonnes à partir du desktop
+            "grid gap-6 w-full max-w-4xl",
+            "md:grid-cols-1",
+            "lg:grid-cols-2",
+            isOddNumber &&
+                "lg:[&>*:last-child]:col-span-2 lg:[&>*:last-child]:max-w-md lg:[&>*:last-child]:mx-auto",
         ]}
     >
         {tools.map((tool) => <ToolCard {...tool} />)}
