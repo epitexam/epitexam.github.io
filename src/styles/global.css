@@ -24,6 +24,8 @@
   --font-code: "JetBrains Mono", monospace;
 
   --header-height: 80px;
+  --animation-duration: 0.6s;
+  --stagger-delay: 0.08s;
 }
 
 /* ================= RESET ================= */
@@ -128,6 +130,29 @@ main {
   letter-spacing: -0.03em;
 }
 
+@media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
+  h1 {
+    animation: slideInFromLeft var(--animation-duration) cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  h2 {
+    animation: slideInFromLeft var(--animation-duration) cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation-delay: calc(var(--stagger-delay) * 1);
+  }
+
+  h3 {
+    animation: fadeInUp var(--animation-duration) cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation-delay: calc(var(--stagger-delay) * 2);
+  }
+
+  h4,
+  h5,
+  h6 {
+    animation: fadeInUp var(--animation-duration) cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation-delay: calc(var(--stagger-delay) * 3);
+  }
+}
+
 h1 {
   font-size: clamp(2rem, 8vw, 3rem);
   padding-bottom: 0.5rem;
@@ -160,7 +185,14 @@ p {
   margin-bottom: 1.5rem;
   line-height: 1.7;
   color: rgba(var(--text), 0.85);
-  font-size: 1.1rem
+  font-size: 1.1rem;
+}
+
+@media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
+  p {
+    animation: fadeIn var(--animation-duration) cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation-delay: calc(var(--stagger-delay) * 4);
+  }
 }
 
 /* ================= LINKS ================= */
@@ -218,6 +250,36 @@ ul li::before {
   opacity: .7;
 }
 
+@media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
+  li {
+    animation: fadeInSlideRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  li:nth-child(1) {
+    animation-delay: calc(var(--stagger-delay) * 5);
+  }
+
+  li:nth-child(2) {
+    animation-delay: calc(var(--stagger-delay) * 5.5);
+  }
+
+  li:nth-child(3) {
+    animation-delay: calc(var(--stagger-delay) * 6);
+  }
+
+  li:nth-child(4) {
+    animation-delay: calc(var(--stagger-delay) * 6.5);
+  }
+
+  li:nth-child(5) {
+    animation-delay: calc(var(--stagger-delay) * 7);
+  }
+
+  li:nth-child(n+6) {
+    animation-delay: calc(var(--stagger-delay) * 7.5);
+  }
+}
+
 li {
   line-height: 1.6;
 }
@@ -236,6 +298,13 @@ li {
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-soft);
   border: 1px solid rgba(var(--accent), 0.1);
+}
+
+@media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
+  .table-wrapper {
+    animation: scaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation-delay: calc(var(--stagger-delay) * 6);
+  }
 }
 
 table {
@@ -263,6 +332,16 @@ thead th {
 
 tbody tr:hover {
   background: rgba(var(--accent), 0.02);
+}
+
+@media (min-width: 769px) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+  tbody tr {
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  tbody tr:hover {
+    transform: translateX(4px);
+  }
 }
 
 /* ================= MEDIA ================= */
@@ -296,6 +375,17 @@ code {
   border-radius: var(--radius-sm);
 }
 
+@media (min-width: 769px) and (prefers-reduced-motion: no-preference) and (hover: hover) {
+  code {
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  code:hover {
+    background: rgba(var(--accent), 0.1);
+    color: rgb(var(--text));
+  }
+}
+
 pre {
   margin: 2rem 0;
   padding: 1.5rem;
@@ -304,6 +394,13 @@ pre {
   border-radius: var(--radius-md);
   overflow-x: auto;
   box-shadow: var(--shadow-strong);
+}
+
+@media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
+  pre {
+    animation: slideInFromBottom 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation-delay: calc(var(--stagger-delay) * 5);
+  }
 }
 
 pre code {
@@ -337,7 +434,7 @@ pre,
   animation: fadeIn .6s ease forwards;
 }
 
-/* ================= ANIMATION ================= */
+/* ================= ANIMATIONS ================= */
 
 @keyframes fadeIn {
   from {
@@ -348,6 +445,66 @@ pre,
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInSlideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
@@ -424,6 +581,7 @@ pre,
   *::before,
   *::after {
     animation-duration: .01ms !important;
+    animation-delay: 0s !important;
     transition-duration: .01ms !important;
   }
 
