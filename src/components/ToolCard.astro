@@ -3,12 +3,23 @@ export interface Props {
   icon: string;
   name: string;
   description: string;
+  link?: string;
 }
 
-const { icon, name, description } = Astro.props;
+const { icon, name, description, link } = Astro.props;
+
+const CardTag = link ? "a" : "div";
+const cardProps = link
+  ? {
+      href: link,
+      target: "_blank",
+      rel: "noopener noreferrer",
+      "aria-label": `En savoir plus sur ${name} (s'ouvre dans un nouvel onglet)`,
+    }
+  : {};
 ---
 
-<div class="tool-card group">
+<CardTag class="tool-card group" {...cardProps}>
   <div class="scanline"></div>
   <div class="tool-inner">
     <div class="tool-icon-container">
@@ -16,11 +27,20 @@ const { icon, name, description } = Astro.props;
     </div>
 
     <div class="tool-content">
-      <h3 class="tool-title">{name}</h3>
+      <h3 class="tool-title">
+        {name}
+        {
+          link && (
+            <span class="external-link-icon" aria-hidden="true">
+              ↗
+            </span>
+          )
+        }
+      </h3>
       <p class="tool-description">{description}</p>
     </div>
   </div>
-</div>
+</CardTag>
 
 <style>
   .tool-card {
@@ -41,12 +61,27 @@ const { icon, name, description } = Astro.props;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  a.tool-card {
+    cursor: pointer;
+  }
+
+  a.tool-card:focus-visible {
+    outline: 2px solid rgb(var(--accent));
+    outline-offset: 2px;
   }
 
   .tool-card:hover {
     transform: translateY(-3px);
     border-color: rgba(var(--accent), 0.4);
     box-shadow: 0 10px 30px -10px rgba(var(--accent), 0.3);
+  }
+
+  a.tool-card:hover {
+    box-shadow: 0 12px 40px -10px rgba(var(--accent), 0.4);
   }
 
   .scanline {
@@ -129,6 +164,22 @@ const { icon, name, description } = Astro.props;
     color: rgb(var(--text));
     letter-spacing: -0.01em;
     line-height: 1.2;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .external-link-icon {
+    font-size: 0.9rem;
+    opacity: 0;
+    transform: translateY(2px) translateX(-4px);
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    color: rgb(var(--accent));
+  }
+
+  a.tool-card:hover .external-link-icon {
+    opacity: 1;
+    transform: translateY(-2px) translateX(0);
   }
 
   .tool-card:hover .tool-title {
@@ -142,6 +193,10 @@ const { icon, name, description } = Astro.props;
     color: rgba(var(--text), 0.6);
     word-wrap: break-word;
     white-space: normal;
+  }
+
+  a.tool-card:hover .tool-description {
+    color: rgba(var(--text), 0.75);
   }
 
   @media (max-width: 640px) {
@@ -171,6 +226,10 @@ const { icon, name, description } = Astro.props;
     .tool-description {
       font-size: 0.85rem !important;
     }
+
+    .external-link-icon {
+      font-size: 0.8rem;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -178,7 +237,8 @@ const { icon, name, description } = Astro.props;
       animation: none;
     }
     .tool-card,
-    .tool-icon-container {
+    .tool-icon-container,
+    .external-link-icon {
       transition: none !important;
     }
   }
