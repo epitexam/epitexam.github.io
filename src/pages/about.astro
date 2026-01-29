@@ -11,13 +11,15 @@ const education = [
 		period: "2023 - 2025",
 		title: "BTS CIEL IR",
 		subtitle: "Cybersécurité, Informatique et Réseaux",
-		description: "Formation technique axée sur les systèmes, réseaux et sécurité informatique. Après une interruption dans un cursus ingénieur, j'ai choisi de me recentrer sur une formation professionnalisante tout en continuant à développer mes compétences via mes expériences pro.",
+		description:
+			"Formation technique axée sur les systèmes, réseaux et sécurité informatique. Après une interruption dans un cursus ingénieur, j'ai choisi de me recentrer sur une formation professionnalisante tout en continuant à développer mes compétences via mes expériences pro.",
 	},
 	{
 		period: "2020 - 2022",
 		title: "Cursus Ingénieur (interrompu)",
 		subtitle: "Software Engineer Web / Mobile",
-		description: "2 ans d'un cursus bac+5 orienté développement web et mobile. Interruption pour contraintes personnelles, mais ces années m'ont permis d'acquérir des bases solides en architecture logicielle et bonnes pratiques.",
+		description:
+			"2 ans d'un cursus bac+5 orienté développement web et mobile. Interruption pour contraintes personnelles, mais ces années m'ont permis d'acquérir des bases solides en architecture logicielle et bonnes pratiques.",
 	},
 ];
 
@@ -25,26 +27,126 @@ const experiences = [
 	{
 		period: "2024 - 2025",
 		title: "Développeur Full-Stack Freelance",
-		description: "Audit et refonte technique de SaaS avec dette technique majeure. Optimisation des performances (-40% de temps de chargement), mise en place de CI/CD et documentation technique exhaustive.",
+		description:
+			"Audit et refonte technique de SaaS avec dette technique majeure. Optimisation des performances (-40% de temps de chargement), mise en place de CI/CD et documentation technique exhaustive.",
 		tags: ["Bun", "TypeScript", "PostgreSQL", "Redis", "React"],
 	},
 	{
 		period: "2023 - 2024",
 		title: "Développeur Full-Stack Freelance",
-		description: "Développement d'une plateforme e-learning pour développeurs avec approche SSR. Déploiement sur 3 marchés européens avec support i18n complet.",
+		description:
+			"Développement d'une plateforme e-learning pour développeurs avec approche SSR. Déploiement sur 3 marchés européens avec support i18n complet.",
 		tags: ["AdonisJS", "React", "InertiaJS", "PostgreSQL"],
 	},
 	{
 		period: "2022",
 		title: "Développeur Full-Stack",
-		description: "Développement d'API REST sécurisée et refonte frontend React avec optimisation des performances (-30% de temps de chargement). Application desktop Electron pour gestion d'imprimantes en mode hors-ligne.",
+		description:
+			"Développement d'API REST sécurisée et refonte frontend React avec optimisation des performances (-30% de temps de chargement). Application desktop Electron pour gestion d'imprimantes en mode hors-ligne.",
 		tags: ["Node.js", "Express", "React", "Electron"],
 	},
 	{
 		period: "2020",
 		title: "Développeur Full-Stack",
-		description: "API Express pour gestion sécurisée de données sensibles avec authentification JWT. Application desktop Electron pour usage hors-ligne.",
+		description:
+			"API Express pour gestion sécurisée de données sensibles avec authentification JWT. Application desktop Electron pour usage hors-ligne.",
 		tags: ["Express", "ElectronJS", "PostgreSQL"],
+	},
+];
+
+const expertise = [
+	{
+		icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+		</svg>`,
+		title: "Backend & Architecture",
+		description:
+			"APIs REST robustes avec Node.js, Bun et Go. Architecture hexagonale, DDD et micro-services.",
+	},
+	{
+		icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+			<path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="2"/>
+		</svg>`,
+		title: "Frontend Moderne",
+		description:
+			"Interfaces performantes avec React, Next.js et Svelte. UX fluide et optimisée.",
+	},
+	{
+		icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" stroke="currentColor" stroke-width="2"/>
+			<polyline points="13 2 13 9 20 9" stroke="currentColor" stroke-width="2"/>
+			<line x1="8" y1="13" x2="16" y2="13" stroke="currentColor" stroke-width="2"/>
+			<line x1="8" y1="17" x2="16" y2="17" stroke="currentColor" stroke-width="2"/>
+		</svg>`,
+		title: "Data & Performance",
+		description:
+			"PostgreSQL, MongoDB, optimisation SQL et stratégies de cache Redis.",
+	},
+	{
+		icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+			<path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+		</svg>`,
+		title: "DevOps & Production",
+		description:
+			"Docker, CI/CD, Nginx, Linux. Infrastructure as Code et déploiements automatisés.",
+	},
+	{
+		icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+			<path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" stroke="currentColor" stroke-width="2"/>
+			<circle cx="9" cy="11" r="1" fill="currentColor"/>
+			<circle cx="15" cy="11" r="1" fill="currentColor"/>
+		</svg>`,
+		title: "IoT & Embarqué",
+		description:
+			"ESP32, Zigbee, Home Assistant. Communication I²C et systèmes embarqués en C.",
+	},
+	{
+		icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/>
+			<path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2"/>
+			<circle cx="12" cy="16" r="1" fill="currentColor"/>
+		</svg>`,
+		title: "Sécurité & Qualité",
+		description:
+			"JWT, contrôle d'accès, audit de code et bonnes pratiques de développement.",
+	},
+];
+
+const philosophy = [
+	{
+		icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+			<circle cx="12" cy="12" r="3" fill="currentColor"/>
+			<path d="M12 2v4m0 12v4M2 12h4m12 0h4" stroke="currentColor" stroke-width="2"/>
+		</svg>`,
+		title: "Performance avant tout",
+		text: "Le code doit être rapide et optimisé. J'analyse chaque requête, chaque rendu, pour éliminer les goulots d'étranglement et garantir une expérience fluide.",
+	},
+	{
+		icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z" stroke="currentColor" stroke-width="2"/>
+		</svg>`,
+		title: "Architecture solide",
+		text: "Un bon code est un code maintenable. J'applique les principes SOLID, la séparation des responsabilités et les patterns éprouvés pour construire des systèmes durables.",
+	},
+	{
+		icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+			<path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+		</svg>`,
+		title: "Pragmatisme technique",
+		text: "Choisir la bonne technologie pour le bon problème. Pas de sur-engineering, juste des solutions efficaces qui répondent aux besoins réels.",
+	},
+	{
+		icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+		</svg>`,
+		title: "Apprentissage continu",
+		text: "La tech évolue vite. Je reste à jour avec les nouvelles pratiques, j'expérimente avec de nouveaux outils et je contribue à l'open source quand je peux.",
 	},
 ];
 ---
@@ -52,256 +154,186 @@ const experiences = [
 <!doctype html>
 <html lang="fr">
 	<head>
-		<BaseHead title={`À propos - ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+		<BaseHead
+			title={`À propos - ${SITE_TITLE}`}
+			description={SITE_DESCRIPTION}
+		/>
 	</head>
 
 	<body class="bg-[rgb(var(--bg))]">
 		<Header />
 
-		<main class="about-layout">
-			<section class="about-hero">
-				<div class="hero-content">
+		<main class="about-main">
+			<section class="hero-section">
+				<a
+					href={GITHUB_URL}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="hero-avatar-link"
+				>
 					<Image
 						src={profile}
 						alt="Photo de profil"
-						width={140}
-						height={140}
+						width={100}
+						height={100}
 						class="hero-avatar"
 						loading="eager"
 					/>
-					<h1 class="hero-title">
-						Développeur Full-Stack<br />
-						<span class="hero-accent">TypeScript & Systèmes</span>
-					</h1>
+				</a>
+				<h1 class="hero-title">
+					Développeur FullStack<br />
+					<span class="accent-text">TypeScript & Systèmes</span>
+				</h1>
+			</section>
+
+			<section class="intro-section">
+				<p>
+					Développeur Full-Stack avec <strong
+						>3 ans d'expérience</strong
+					>, je me spécialise dans la création de solutions web
+					robustes et optimisées. Mon expertise couvre l'ensemble du
+					cycle de développement, du backend scalable aux interfaces
+					utilisateur modernes.
+				</p>
+				<p>
+					Passionné par l'<strong>architecture logicielle</strong> et la
+					<strong>performance</strong>, j'aime résoudre des problèmes
+					techniques complexes et construire des systèmes qui tiennent
+					la charge en production.
+				</p>
+				<p>
+					Au-delà du web, je m'intéresse également à l'<strong
+						>embarqué</strong
+					> et aux <strong>systèmes connectés</strong> (ESP32, Zigbee, Home
+					Assistant), cherchant toujours à comprendre comment matériel et
+					logiciel s'articulent.
+				</p>
+			</section>
+
+			<section class="section">
+				<h2 class="section-title">Expertise</h2>
+				<div class="expertise-grid">
+					{
+						expertise.map((item) => (
+							<div class="expertise-item">
+								<div
+									class="expertise-icon"
+									set:html={item.icon}
+								/>
+								<div class="expertise-content">
+									<h3>{item.title}</h3>
+									<p>{item.description}</p>
+								</div>
+							</div>
+						))
+					}
 				</div>
 			</section>
 
-			<section class="content-section">
-				<div class="section-content">
-					<h2 class="section-title">Qui suis-je ?</h2>
-					<div class="text-content">
-						<p>
-							Développeur Full-Stack avec <strong>3 ans d'expérience</strong>, je me spécialise dans la création de solutions web robustes et optimisées. Mon expertise couvre l'ensemble du cycle de développement, du backend scalable aux interfaces utilisateur modernes.
-						</p>
-						<p>
-							Passionné par l'<strong>architecture logicielle</strong> et la <strong>performance</strong>, j'aime résoudre des problèmes techniques complexes et construire des systèmes qui tiennent la charge en production.
-						</p>
-						<p>
-							Au-delà du web, je m'intéresse également à l'<strong>embarqué</strong> et aux <strong>systèmes connectés</strong> (ESP32, Zigbee, Home Assistant), cherchant toujours à comprendre comment matériel et logiciel s'articulent.
-						</p>
+			<section class="section">
+				<h2 class="section-title">Parcours</h2>
+
+				<div class="journey-block">
+					<h3 class="journey-subtitle">Formation</h3>
+					<div class="journey-list">
+						{
+							education.map((item) => (
+								<div class="journey-item">
+									<div class="journey-header">
+										<span class="journey-period">
+											{item.period}
+										</span>
+										<h4 class="journey-title">
+											{item.title}
+										</h4>
+									</div>
+									{item.subtitle && (
+										<p class="journey-subtitle-text">
+											{item.subtitle}
+										</p>
+									)}
+									<p class="journey-desc">
+										{item.description}
+									</p>
+								</div>
+							))
+						}
 					</div>
 				</div>
-			</section>
 
-			<section class="content-section timeline-section">
-				<div class="section-content">
-					<h2 class="section-title">Mon parcours</h2>
-					
-					<div class="subsection">
-						<h3 class="subsection-title">Formation</h3>
-						<div class="timeline">
-							{education.map((edu) => (
-								<div class="timeline-item">
-									<div class="timeline-marker"></div>
-									<div class="timeline-content">
-										<div class="timeline-date">{edu.period}</div>
-										<h4>{edu.title}</h4>
-										{edu.subtitle && <p class="timeline-subtitle">{edu.subtitle}</p>}
-										<p>{edu.description}</p>
+				<div class="journey-block">
+					<h3 class="journey-subtitle">Expériences</h3>
+					<div class="journey-list">
+						{
+							experiences.map((item) => (
+								<div class="journey-item">
+									<div class="journey-header">
+										<span class="journey-period">
+											{item.period}
+										</span>
+										<h4 class="journey-title">
+											{item.title}
+										</h4>
+									</div>
+									<p class="journey-desc">
+										{item.description}
+									</p>
+									<div class="journey-tags">
+										{item.tags.map((tag) => (
+											<span class="tag">{tag}</span>
+										))}
 									</div>
 								</div>
-							))}
-						</div>
-					</div>
-
-					<div class="subsection">
-						<h3 class="subsection-title">Expériences professionnelles</h3>
-						<div class="timeline">
-							{experiences.map((exp) => (
-								<div class="timeline-item">
-									<div class="timeline-marker"></div>
-									<div class="timeline-content">
-										<div class="timeline-date">{exp.period}</div>
-										<h4>{exp.title}</h4>
-										<p>{exp.description}</p>
-										<div class="tech-tags">
-											{exp.tags.map((tag) => <span>{tag}</span>)}
-										</div>
-									</div>
-								</div>
-							))}
-						</div>
+							))
+						}
 					</div>
 				</div>
 			</section>
 
-			<section class="content-section">
-				<div class="section-content">
-					<h2 class="section-title">Domaines d'expertise</h2>
-					
-					<div class="expertise-grid">
-						<div class="expertise-card">
-							<div class="expertise-icon">
-								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-								</svg>
+			<section class="section">
+				<h2 class="section-title">Philosophie</h2>
+				<div class="philosophy-grid">
+					{
+						philosophy.map((item) => (
+							<div class="philosophy-item">
+								<div
+									class="philosophy-icon"
+									set:html={item.icon}
+								/>
+								<h3>{item.title}</h3>
+								<p>{item.text}</p>
 							</div>
-							<h3>Backend & Architecture</h3>
-							<p>
-								Conception d'APIs REST robustes et scalables avec Node.js, Bun et Go. Architecture hexagonale, DDD et micro-services pour des systèmes maintenables.
-							</p>
-						</div>
-
-						<div class="expertise-card">
-							<div class="expertise-icon">
-								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
-									<path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="2"/>
-								</svg>
-							</div>
-							<h3>Frontend Moderne</h3>
-							<p>
-								Interfaces utilisateur performantes avec React, Next.js et Svelte. Optimisation des performances et expérience utilisateur fluide.
-							</p>
-						</div>
-
-						<div class="expertise-card">
-							<div class="expertise-icon">
-								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" stroke="currentColor" stroke-width="2"/>
-									<polyline points="13 2 13 9 20 9" stroke="currentColor" stroke-width="2"/>
-									<line x1="8" y1="13" x2="16" y2="13" stroke="currentColor" stroke-width="2"/>
-									<line x1="8" y1="17" x2="16" y2="17" stroke="currentColor" stroke-width="2"/>
-								</svg>
-							</div>
-							<h3>Data & Performance</h3>
-							<p>
-								Modélisation de bases de données (PostgreSQL, MongoDB), optimisation de requêtes SQL et stratégies de cache (Redis) pour des applications rapides.
-							</p>
-						</div>
-
-						<div class="expertise-card">
-							<div class="expertise-icon">
-								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-									<path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-								</svg>
-							</div>
-							<h3>DevOps & Production</h3>
-							<p>
-								Déploiement avec Docker, CI/CD (GitHub Actions), configuration serveur (Nginx, Linux). Infrastructure as Code pour des environnements reproductibles.
-							</p>
-						</div>
-
-						<div class="expertise-card">
-							<div class="expertise-icon">
-								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
-									<path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" stroke="currentColor" stroke-width="2"/>
-									<circle cx="9" cy="11" r="1" fill="currentColor"/>
-									<circle cx="15" cy="11" r="1" fill="currentColor"/>
-								</svg>
-							</div>
-							<h3>IoT & Embarqué</h3>
-							<p>
-								Développement sur ESP32, protocoles Zigbee, intégration Home Assistant. Communication I²C avec capteurs et systèmes embarqués en C.
-							</p>
-						</div>
-
-						<div class="expertise-card">
-							<div class="expertise-icon">
-								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/>
-									<path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2"/>
-									<circle cx="12" cy="16" r="1" fill="currentColor"/>
-								</svg>
-							</div>
-							<h3>Sécurité & Qualité</h3>
-							<p>
-								Authentification JWT, contrôle d'accès granulaire, audit de code et mise en conformité sécuritaire. Code review et bonnes pratiques.
-							</p>
-						</div>
-					</div>
+						))
+					}
 				</div>
 			</section>
 
-			<section class="content-section philosophy-section">
-				<div class="section-content">
-					<h2 class="section-title">Ma philosophie</h2>
-					
-					<div class="philosophy-grid">
-						<div class="philosophy-item">
-							<div class="philosophy-icon">
-								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
-									<circle cx="12" cy="12" r="3" fill="currentColor"/>
-									<path d="M12 2v4m0 12v4M2 12h4m12 0h4" stroke="currentColor" stroke-width="2"/>
-								</svg>
-							</div>
-							<h3>Performance avant tout</h3>
-							<p>
-								Le code doit être rapide et optimisé. J'analyse chaque requête, chaque rendu, pour éliminer les goulots d'étranglement et garantir une expérience fluide.
-							</p>
-						</div>
-
-						<div class="philosophy-item">
-							<div class="philosophy-icon">
-								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z" stroke="currentColor" stroke-width="2"/>
-								</svg>
-							</div>
-							<h3>Architecture solide</h3>
-							<p>
-								Un bon code est un code maintenable. J'applique les principes SOLID, la séparation des responsabilités et les patterns éprouvés pour construire des systèmes durables.
-							</p>
-						</div>
-
-						<div class="philosophy-item">
-							<div class="philosophy-icon">
-								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-									<path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-								</svg>
-							</div>
-							<h3>Pragmatisme technique</h3>
-							<p>
-								Choisir la bonne technologie pour le bon problème. Pas de sur-engineering, juste des solutions efficaces qui répondent aux besoins réels.
-							</p>
-						</div>
-
-						<div class="philosophy-item">
-							<div class="philosophy-icon">
-								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-									<path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-								</svg>
-							</div>
-							<h3>Apprentissage continu</h3>
-							<p>
-								La tech évolue vite. Je reste à jour avec les nouvelles pratiques, j'expérimente avec de nouveaux outils et je contribue à l'open source quand je peux.
-							</p>
-						</div>
-					</div>
+			<section class="section interests-section">
+				<h2 class="section-title">Au-delà du code</h2>
+				<div class="interests-content">
+					<p>
+						Passionné de <strong>jeux vidéo</strong> et de <strong
+							>game design</strong
+						>, j'aime analyser les mécaniques et comprendre comment
+						créer des expériences engageantes. Cet intérêt influence
+						ma manière de concevoir des interfaces utilisateur.
+					</p>
+					<p>
+						Je m'intéresse également à l'<strong>émulation</strong> et
+						à la <strong>rétro informatique ( Atari 2600 )</strong> —
+						comprendre comment fonctionnaient les anciennes machines m'aide
+						à mieux appréhender les contraintes hardware et l'optimisation
+						bas niveau.
+					</p>
+					<p>
+						Grand utilisateur de projets <strong>open source</strong
+						>, j'en mesure toute l'importance pour l'écosystème
+						tech. Même si je n'ai pas encore eu l'occasion de voir
+						une PR mergée, je contribue à ma manière en partageant
+						mes découvertes techniques sur ce blog.
+					</p>
 				</div>
 			</section>
-
-			<section class="content-section">
-				<div class="section-content">
-					<h2 class="section-title">Au-delà du code</h2>
-					<div class="text-content">
-						<p>
-							Passionné de <strong>jeux vidéo</strong> et de <strong>game design</strong>, j'aime analyser les mécaniques et comprendre comment créer des expériences engageantes. Cet intérêt influence ma manière de concevoir des interfaces utilisateur.
-						</p>
-						<p>
-							Je m'intéresse également à l'<strong>émulation</strong> et à la <strong>rétro-informatique</strong> — comprendre comment fonctionnaient les anciennes machines m'aide à mieux appréhender les contraintes hardware et l'optimisation bas niveau.
-						</p>
-						<p>
-							Grand utilisateur de projets <strong>open source</strong>, j'en mesure toute l'importance pour l'écosystème tech. Même si je n'ai pas encore eu l'occasion de voir une PR mergée, je contribue à ma manière en partageant mes découvertes techniques sur ce blog.
-						</p>
-					</div>
-				</div>
-			</section>
-
 		</main>
 
 		<Footer />
@@ -309,9 +341,9 @@ const experiences = [
 </html>
 
 <style>
-	.about-layout {
+	.about-main {
 		width: 100%;
-		max-width: 1200px;
+		max-width: 900px;
 		margin: 0 auto;
 		padding: 0 1.5rem;
 		border-left: none !important;
@@ -319,373 +351,332 @@ const experiences = [
 
 	/* ========== HERO ========== */
 
-	.about-hero {
-		padding: 4rem 0 5rem;
+	.hero-section {
 		text-align: center;
+		padding: 3rem 0 4rem;
 	}
 
-	.hero-content {
-		max-width: 800px;
-		margin: 0 auto;
+	.hero-avatar-link {
+		display: inline-block;
+		margin-bottom: 1.5rem;
+		transition: transform 0.3s ease;
+	}
+
+	.hero-avatar-link:hover {
+		transform: scale(1.05);
+	}
+
+	.hero-avatar-link:focus-visible {
+		outline: 2px solid rgb(var(--accent));
+		outline-offset: 4px;
+		border-radius: 50%;
 	}
 
 	.hero-avatar {
-		width: 140px;
-		height: 140px;
+		width: 100px;
+		height: 100px;
 		border-radius: 50%;
-		border: 4px solid rgba(var(--accent), 0.3);
-		margin: 0 auto 2rem;
-		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+		border: 2px solid rgba(var(--accent), 0.3);
+		background: none !important;
 		display: block;
 	}
 
 	.hero-title {
-		font-size: clamp(2.5rem, 6vw, 3.5rem);
-		font-weight: 800;
-		line-height: 1.1;
-		margin-bottom: 1.5rem;
+		font-size: clamp(2rem, 5vw, 3rem);
+		font-weight: 700;
+		line-height: 1.2;
+		margin: 0;
 		letter-spacing: -0.02em;
 	}
 
-	.hero-accent {
-		background: linear-gradient(135deg, rgb(var(--accent)), rgba(var(--accent), 0.6));
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
+	.accent-text {
+		color: rgb(var(--accent));
 	}
 
-	.hero-tagline {
-		font-size: 1.2rem;
+	/* ========== INTRO ========== */
+
+	.intro-section {
+		margin-bottom: 5rem;
+		font-size: 1.05rem;
 		line-height: 1.8;
-		color: rgba(var(--text), 0.7);
-		margin-bottom: 0;
+		color: rgba(var(--text), 0.85);
+	}
+
+	.intro-section p {
+		margin-bottom: 1.5rem;
+	}
+
+	.intro-section strong {
+		color: rgb(var(--text));
+		font-weight: 600;
 	}
 
 	/* ========== SECTIONS ========== */
 
-	.content-section {
-		margin-bottom: 6rem;
-	}
-
-	.section-content {
-		max-width: 900px;
-		margin: 0 auto;
+	.section {
+		margin-bottom: 5rem;
 	}
 
 	.section-title {
-		font-size: clamp(2rem, 4vw, 2.5rem);
+		font-size: clamp(1.8rem, 4vw, 2.2rem);
 		font-weight: 700;
 		margin-bottom: 2.5rem;
-		text-align: center;
+		color: rgb(var(--text));
 		letter-spacing: -0.02em;
 		position: relative;
-		padding-bottom: 1rem;
+		padding-bottom: 0.75rem;
 	}
 
 	.section-title::after {
 		content: "";
 		position: absolute;
 		bottom: 0;
-		left: 50%;
-		transform: translateX(-50%);
-		width: 60px;
-		height: 3px;
-		background: linear-gradient(90deg, transparent, rgb(var(--accent)), transparent);
+		left: 0;
+		width: 50px;
+		height: 2px;
+		background: rgb(var(--accent));
 	}
 
-	.text-content {
-		font-size: 1.1rem;
-		line-height: 1.8;
-		color: rgba(var(--text), 0.85);
+	/* ========== EXPERTISE ========== */
+
+	.expertise-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 1.25rem;
 	}
 
-	.text-content p {
-		margin-bottom: 1.5rem;
+	.expertise-item {
+		display: flex;
+		gap: 1rem;
+		padding: 1.5rem;
+		background: linear-gradient(
+			145deg,
+			rgba(var(--bg), 1),
+			rgba(var(--accent), 0.02)
+		);
+		border: 1px solid rgba(var(--accent), 0.1);
+		border-radius: 8px;
+		transition: all 0.3s ease;
 	}
 
-	.text-content strong {
+	.expertise-item:hover {
+		border-color: rgba(var(--accent), 0.3);
+		transform: translateY(-2px);
+		box-shadow: 0 4px 16px rgba(var(--accent), 0.1);
+	}
+
+	.expertise-icon {
+		width: 32px;
+		height: 32px;
+		flex-shrink: 0;
 		color: rgb(var(--accent));
+		opacity: 0.8;
+	}
+
+	.expertise-icon :global(svg) {
+		width: 100%;
+		height: 100%;
+	}
+
+	.expertise-content h3 {
+		font-size: 1rem;
 		font-weight: 600;
+		margin: 0 0 0.35rem 0;
+		color: rgb(var(--text));
 	}
 
-	/* ========== TIMELINE ========== */
-
-	.timeline-section {
-		padding: 4rem 0;
-		margin-bottom: 6rem;
+	.expertise-content p {
+		font-size: 0.9rem;
+		line-height: 1.6;
+		color: rgba(var(--text), 0.65);
+		margin: 0;
 	}
 
-	.subsection {
-		margin-bottom: 4rem;
+	/* ========== PARCOURS ========== */
+
+	.journey-block {
+		margin-bottom: 3rem;
 	}
 
-	.subsection:last-child {
+	.journey-block:last-child {
 		margin-bottom: 0;
 	}
 
-	.subsection-title {
-		font-size: 1.5rem;
-		font-weight: 700;
+	.journey-subtitle {
+		font-size: 1.2rem;
+		font-weight: 600;
 		color: rgb(var(--accent));
-		margin-bottom: 2rem;
-		text-align: center;
+		margin-bottom: 1.5rem;
 		letter-spacing: -0.01em;
 	}
 
-	.timeline {
-		position: relative;
-		padding-left: 2rem;
+	.journey-list {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
 	}
 
-	.timeline::before {
-		content: "";
-		position: absolute;
-		left: 0;
-		top: 0;
-		bottom: 0;
-		width: 2px;
-		background: linear-gradient(to bottom, 
-			transparent,
-			rgba(var(--accent), 0.3) 10%,
-			rgba(var(--accent), 0.3) 90%,
-			transparent
-		);
+	.journey-item {
+		padding-left: 1rem;
+		border-left: 2px solid rgba(var(--accent), 0.15);
+		transition: border-color 0.3s ease;
 	}
 
-	.timeline-item {
-		position: relative;
-		margin-bottom: 3rem;
-		padding-left: 2rem;
+	.journey-item:hover {
+		border-left-color: rgba(var(--accent), 0.4);
 	}
 
-	.timeline-item:last-child {
-		margin-bottom: 0;
+	.journey-header {
+		display: flex;
+		align-items: baseline;
+		gap: 1rem;
+		margin-bottom: 0.5rem;
+		flex-wrap: wrap;
 	}
 
-	.timeline-marker {
-		position: absolute;
-		left: -2rem;
-		top: 0.5rem;
-		width: 12px;
-		height: 12px;
-		background: rgb(var(--accent));
-		border-radius: 50%;
-		border: 3px solid rgb(var(--bg));
-		box-shadow: 0 0 0 2px rgba(var(--accent), 0.2);
-	}
-
-	.timeline-date {
-		font-size: 0.9rem;
+	.journey-period {
+		font-size: 0.85rem;
 		color: rgba(var(--text), 0.5);
 		font-family: var(--font-title);
-		margin-bottom: 0.5rem;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		font-weight: 500;
+		flex-shrink: 0;
 	}
 
-	.timeline-content h3 {
-		font-size: 1.3rem;
-		font-weight: 700;
-		margin-bottom: 0.75rem;
+	.journey-title {
+		font-size: 1.1rem;
+		font-weight: 600;
 		color: rgb(var(--text));
+		margin: 0;
 	}
 
-	.timeline-content h4 {
-		font-size: 1.2rem;
-		font-weight: 700;
-		margin-bottom: 0.5rem;
-		color: rgb(var(--text));
-	}
-
-	.timeline-subtitle {
-		font-size: 0.95rem;
+	.journey-subtitle-text {
+		font-size: 0.9rem;
 		color: rgba(var(--text), 0.6);
 		font-style: italic;
-		margin-bottom: 0.75rem !important;
+		margin: 0 0 0.5rem 0;
 	}
 
-	.timeline-content p {
-		font-size: 1.05rem;
+	.journey-desc {
+		font-size: 0.95rem;
 		line-height: 1.7;
 		color: rgba(var(--text), 0.75);
-		margin-bottom: 1rem;
+		margin: 0 0 1rem 0;
 	}
 
-	.tech-tags {
+	.journey-tags {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 0.5rem;
 	}
 
-	.tech-tags span {
-		padding: 0.35rem 0.85rem;
-		background: rgba(var(--accent), 0.1);
-		border: 1px solid rgba(var(--accent), 0.2);
-		border-radius: 20px;
-		font-size: 0.85rem;
-		font-family: var(--font-title);
-		color: rgba(var(--text), 0.8);
-	}
-
-	/* ========== EXPERTISE GRID ========== */
-
-	.expertise-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-		gap: 1.5rem;
-	}
-
-	.expertise-card {
-		padding: 2rem;
-		background: linear-gradient(145deg, rgba(var(--bg), 1), rgba(var(--accent), 0.03));
+	.tag {
+		padding: 0.25rem 0.75rem;
+		background: rgba(var(--accent), 0.08);
 		border: 1px solid rgba(var(--accent), 0.15);
 		border-radius: 12px;
-		transition: all 0.3s ease;
-	}
-
-	.expertise-card:hover {
-		transform: translateY(-4px);
-		border-color: rgba(var(--accent), 0.3);
-		box-shadow: 0 8px 24px rgba(var(--accent), 0.15);
-	}
-
-	.expertise-icon {
-		width: 48px;
-		height: 48px;
-		margin-bottom: 1.5rem;
-		color: rgb(var(--accent));
-		transition: transform 0.3s ease, color 0.3s ease;
-	}
-
-	.expertise-icon svg {
-		width: 100%;
-		height: 100%;
-		display: block;
-	}
-
-	.expertise-card:hover .expertise-icon {
-		transform: scale(1.1);
-		color: rgba(var(--accent), 0.8);
-	}
-
-	.expertise-card h3 {
-		font-size: 1.2rem;
-		font-weight: 700;
-		margin-bottom: 0.75rem;
-		color: rgb(var(--text));
-	}
-
-	.expertise-card p {
-		font-size: 0.95rem;
-		line-height: 1.6;
+		font-size: 0.8rem;
+		font-family: var(--font-title);
 		color: rgba(var(--text), 0.7);
-		margin: 0;
 	}
 
-	/* ========== PHILOSOPHY ========== */
-
-	.philosophy-section {
-		padding: 4rem 0;
-		margin-bottom: 6rem;
-	}
+	/* ========== PHILOSOPHIE ========== */
 
 	.philosophy-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 		gap: 2rem;
 	}
 
 	.philosophy-item {
 		display: flex;
 		flex-direction: column;
-		align-items: flex-start;
 	}
 
 	.philosophy-icon {
-		width: 40px;
-		height: 40px;
-		margin-bottom: 1.25rem;
+		width: 36px;
+		height: 36px;
 		color: rgb(var(--accent));
-		opacity: 0.8;
+		opacity: 0.7;
+		margin-bottom: 1rem;
 	}
 
-	.philosophy-icon svg {
+	.philosophy-icon :global(svg) {
 		width: 100%;
 		height: 100%;
-		display: block;
 	}
 
 	.philosophy-item h3 {
-		font-size: 1.15rem;
-		font-weight: 700;
-		margin-bottom: 0.75rem;
+		font-size: 1.05rem;
+		font-weight: 600;
+		margin: 0 0 0.5rem 0;
 		color: rgb(var(--text));
 	}
 
 	.philosophy-item p {
-		font-size: 1rem;
+		font-size: 0.95rem;
 		line-height: 1.7;
-		color: rgba(var(--text), 0.75);
+		color: rgba(var(--text), 0.7);
 		margin: 0;
+	}
+
+	/* ========== INTERETS ========== */
+
+	.interests-content {
+		font-size: 1.05rem;
+		line-height: 1.8;
+		color: rgba(var(--text), 0.8);
+	}
+
+	.interests-content p {
+		margin-bottom: 1.5rem;
+	}
+
+	.interests-content strong {
+		color: rgb(var(--text));
+		font-weight: 600;
 	}
 
 	/* ========== RESPONSIVE ========== */
 
 	@media (max-width: 768px) {
-		.about-layout {
+		.about-main {
 			padding: 0 1rem;
 		}
 
-		.about-hero {
+		.hero-section {
 			padding: 2rem 0 3rem;
 		}
 
-		.hero-avatar {
-			width: 110px;
-			height: 110px;
+		.intro-section,
+		.section {
+			margin-bottom: 3rem;
 		}
 
-		.hero-tagline br {
-			display: none;
+		.expertise-grid {
+			grid-template-columns: 1fr;
 		}
 
-		.content-section {
-			margin-bottom: 4rem;
-		}
-
-		.timeline-section,
-		.philosophy-section {
-			padding: 3rem 0;
-		}
-
-		.timeline {
-			padding-left: 1.5rem;
-		}
-
-		.timeline-marker {
-			left: -1.5rem;
-		}
-
-		.timeline-item {
-			padding-left: 1.5rem;
-		}
-
-		.expertise-grid,
 		.philosophy-grid {
 			grid-template-columns: 1fr;
+			gap: 1.5rem;
+		}
+
+		.journey-header {
+			flex-direction: column;
+			gap: 0.25rem;
 		}
 	}
 
 	/* ========== ACCESSIBILITY ========== */
 
 	@media (prefers-reduced-motion: reduce) {
-		.expertise-card,
-		.expertise-icon {
+		.hero-avatar-link,
+		.expertise-item {
 			transition: none !important;
 		}
 
-		.expertise-card:hover,
-		.expertise-icon:hover {
+		.hero-avatar-link:hover,
+		.expertise-item:hover {
 			transform: none !important;
 		}
 	}
