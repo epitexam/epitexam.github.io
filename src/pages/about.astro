@@ -1,34 +1,692 @@
 ---
-import AboutHeroImage from "../assets/ghostintheshelllow.webp";
-import { GITHUB_URL } from "../consts";
-import Layout from "../layouts/BlogPost.astro";
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION, GITHUB_URL } from "../consts";
+import { Image } from "astro:assets";
+import profile from "../assets/profile.webp";
+
+const education = [
+	{
+		period: "2023 - 2025",
+		title: "BTS CIEL IR",
+		subtitle: "Cybersécurité, Informatique et Réseaux",
+		description: "Formation technique axée sur les systèmes, réseaux et sécurité informatique. Après une interruption dans un cursus ingénieur, j'ai choisi de me recentrer sur une formation professionnalisante tout en continuant à développer mes compétences via mes expériences pro.",
+	},
+	{
+		period: "2020 - 2022",
+		title: "Cursus Ingénieur (interrompu)",
+		subtitle: "Software Engineer Web / Mobile",
+		description: "2 ans d'un cursus bac+5 orienté développement web et mobile. Interruption pour contraintes personnelles, mais ces années m'ont permis d'acquérir des bases solides en architecture logicielle et bonnes pratiques.",
+	},
+];
+
+const experiences = [
+	{
+		period: "2024 - 2025",
+		title: "Développeur Full-Stack Freelance",
+		description: "Audit et refonte technique de SaaS avec dette technique majeure. Optimisation des performances (-40% de temps de chargement), mise en place de CI/CD et documentation technique exhaustive.",
+		tags: ["Bun", "TypeScript", "PostgreSQL", "Redis", "React"],
+	},
+	{
+		period: "2023 - 2024",
+		title: "Développeur Full-Stack Freelance",
+		description: "Développement d'une plateforme e-learning pour développeurs avec approche SSR. Déploiement sur 3 marchés européens avec support i18n complet.",
+		tags: ["AdonisJS", "React", "InertiaJS", "PostgreSQL"],
+	},
+	{
+		period: "2022",
+		title: "Développeur Full-Stack",
+		description: "Développement d'API REST sécurisée et refonte frontend React avec optimisation des performances (-30% de temps de chargement). Application desktop Electron pour gestion d'imprimantes en mode hors-ligne.",
+		tags: ["Node.js", "Express", "React", "Electron"],
+	},
+	{
+		period: "2020",
+		title: "Développeur Full-Stack",
+		description: "API Express pour gestion sécurisée de données sensibles avec authentification JWT. Application desktop Electron pour usage hors-ligne.",
+		tags: ["Express", "ElectronJS", "PostgreSQL"],
+	},
+];
 ---
 
-<Layout
-	title="À propos"
-	description="About the website and its author"
-	pubDate={new Date("2025-10-15")}
-	heroImage={AboutHeroImage}
->
-	<div class="text-center space-y-6">
-		<p>
-			Ce site est un espace personnel dédié au développement web, à l’embarqué
-			et à la domotique. On y retrouve des projets allant du code bas niveau
-			sur microcontrôleurs à des applications web modernes.
-		</p>
+<!doctype html>
+<html lang="fr">
+	<head>
+		<BaseHead title={`À propos - ${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+	</head>
 
-		<p>
-			Formé à l’informatique et passionné par la création technique, je
-			m’intéresse autant aux systèmes connectés qu’à l’architecture
-			logicielle. J’aime comprendre comment les technologies s’articulent
-			entre matériel et logiciel pour créer des solutions concrètes.
-		</p>
+	<body class="bg-[rgb(var(--bg))]">
+		<Header />
 
-		<p>
-			Sur ce site, je partage mes projets, mes essais techniques et quelques
-			réflexions autour du code, de l’efficacité et de la sécurité. Vous
-			pouvez explorer mes travaux plus en détail sur
-			<a href={GITHUB_URL} class="text-accent hover:underline">GitHub</a>.
-		</p>
-	</div>
-</Layout>
+		<main class="about-layout">
+			<section class="about-hero">
+				<div class="hero-content">
+					<Image
+						src={profile}
+						alt="Photo de profil"
+						width={140}
+						height={140}
+						class="hero-avatar"
+						loading="eager"
+					/>
+					<h1 class="hero-title">
+						Développeur Full-Stack<br />
+						<span class="hero-accent">TypeScript & Systèmes</span>
+					</h1>
+				</div>
+			</section>
+
+			<section class="content-section">
+				<div class="section-content">
+					<h2 class="section-title">Qui suis-je ?</h2>
+					<div class="text-content">
+						<p>
+							Développeur Full-Stack avec <strong>3 ans d'expérience</strong>, je me spécialise dans la création de solutions web robustes et optimisées. Mon expertise couvre l'ensemble du cycle de développement, du backend scalable aux interfaces utilisateur modernes.
+						</p>
+						<p>
+							Passionné par l'<strong>architecture logicielle</strong> et la <strong>performance</strong>, j'aime résoudre des problèmes techniques complexes et construire des systèmes qui tiennent la charge en production.
+						</p>
+						<p>
+							Au-delà du web, je m'intéresse également à l'<strong>embarqué</strong> et aux <strong>systèmes connectés</strong> (ESP32, Zigbee, Home Assistant), cherchant toujours à comprendre comment matériel et logiciel s'articulent.
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="content-section timeline-section">
+				<div class="section-content">
+					<h2 class="section-title">Mon parcours</h2>
+					
+					<div class="subsection">
+						<h3 class="subsection-title">Formation</h3>
+						<div class="timeline">
+							{education.map((edu) => (
+								<div class="timeline-item">
+									<div class="timeline-marker"></div>
+									<div class="timeline-content">
+										<div class="timeline-date">{edu.period}</div>
+										<h4>{edu.title}</h4>
+										{edu.subtitle && <p class="timeline-subtitle">{edu.subtitle}</p>}
+										<p>{edu.description}</p>
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
+
+					<div class="subsection">
+						<h3 class="subsection-title">Expériences professionnelles</h3>
+						<div class="timeline">
+							{experiences.map((exp) => (
+								<div class="timeline-item">
+									<div class="timeline-marker"></div>
+									<div class="timeline-content">
+										<div class="timeline-date">{exp.period}</div>
+										<h4>{exp.title}</h4>
+										<p>{exp.description}</p>
+										<div class="tech-tags">
+											{exp.tags.map((tag) => <span>{tag}</span>)}
+										</div>
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="content-section">
+				<div class="section-content">
+					<h2 class="section-title">Domaines d'expertise</h2>
+					
+					<div class="expertise-grid">
+						<div class="expertise-card">
+							<div class="expertise-icon">
+								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+								</svg>
+							</div>
+							<h3>Backend & Architecture</h3>
+							<p>
+								Conception d'APIs REST robustes et scalables avec Node.js, Bun et Go. Architecture hexagonale, DDD et micro-services pour des systèmes maintenables.
+							</p>
+						</div>
+
+						<div class="expertise-card">
+							<div class="expertise-icon">
+								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/>
+									<path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="2"/>
+								</svg>
+							</div>
+							<h3>Frontend Moderne</h3>
+							<p>
+								Interfaces utilisateur performantes avec React, Next.js et Svelte. Optimisation des performances et expérience utilisateur fluide.
+							</p>
+						</div>
+
+						<div class="expertise-card">
+							<div class="expertise-icon">
+								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" stroke="currentColor" stroke-width="2"/>
+									<polyline points="13 2 13 9 20 9" stroke="currentColor" stroke-width="2"/>
+									<line x1="8" y1="13" x2="16" y2="13" stroke="currentColor" stroke-width="2"/>
+									<line x1="8" y1="17" x2="16" y2="17" stroke="currentColor" stroke-width="2"/>
+								</svg>
+							</div>
+							<h3>Data & Performance</h3>
+							<p>
+								Modélisation de bases de données (PostgreSQL, MongoDB), optimisation de requêtes SQL et stratégies de cache (Redis) pour des applications rapides.
+							</p>
+						</div>
+
+						<div class="expertise-card">
+							<div class="expertise-icon">
+								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+									<path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+								</svg>
+							</div>
+							<h3>DevOps & Production</h3>
+							<p>
+								Déploiement avec Docker, CI/CD (GitHub Actions), configuration serveur (Nginx, Linux). Infrastructure as Code pour des environnements reproductibles.
+							</p>
+						</div>
+
+						<div class="expertise-card">
+							<div class="expertise-icon">
+								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
+									<path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" stroke="currentColor" stroke-width="2"/>
+									<circle cx="9" cy="11" r="1" fill="currentColor"/>
+									<circle cx="15" cy="11" r="1" fill="currentColor"/>
+								</svg>
+							</div>
+							<h3>IoT & Embarqué</h3>
+							<p>
+								Développement sur ESP32, protocoles Zigbee, intégration Home Assistant. Communication I²C avec capteurs et systèmes embarqués en C.
+							</p>
+						</div>
+
+						<div class="expertise-card">
+							<div class="expertise-icon">
+								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/>
+									<path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2"/>
+									<circle cx="12" cy="16" r="1" fill="currentColor"/>
+								</svg>
+							</div>
+							<h3>Sécurité & Qualité</h3>
+							<p>
+								Authentification JWT, contrôle d'accès granulaire, audit de code et mise en conformité sécuritaire. Code review et bonnes pratiques.
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="content-section philosophy-section">
+				<div class="section-content">
+					<h2 class="section-title">Ma philosophie</h2>
+					
+					<div class="philosophy-grid">
+						<div class="philosophy-item">
+							<div class="philosophy-icon">
+								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+									<circle cx="12" cy="12" r="3" fill="currentColor"/>
+									<path d="M12 2v4m0 12v4M2 12h4m12 0h4" stroke="currentColor" stroke-width="2"/>
+								</svg>
+							</div>
+							<h3>Performance avant tout</h3>
+							<p>
+								Le code doit être rapide et optimisé. J'analyse chaque requête, chaque rendu, pour éliminer les goulots d'étranglement et garantir une expérience fluide.
+							</p>
+						</div>
+
+						<div class="philosophy-item">
+							<div class="philosophy-icon">
+								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z" stroke="currentColor" stroke-width="2"/>
+								</svg>
+							</div>
+							<h3>Architecture solide</h3>
+							<p>
+								Un bon code est un code maintenable. J'applique les principes SOLID, la séparation des responsabilités et les patterns éprouvés pour construire des systèmes durables.
+							</p>
+						</div>
+
+						<div class="philosophy-item">
+							<div class="philosophy-icon">
+								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M12 2L2 7l10 5 10-5-10-5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+									<path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+								</svg>
+							</div>
+							<h3>Pragmatisme technique</h3>
+							<p>
+								Choisir la bonne technologie pour le bon problème. Pas de sur-engineering, juste des solutions efficaces qui répondent aux besoins réels.
+							</p>
+						</div>
+
+						<div class="philosophy-item">
+							<div class="philosophy-icon">
+								<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+									<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+									<path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+								</svg>
+							</div>
+							<h3>Apprentissage continu</h3>
+							<p>
+								La tech évolue vite. Je reste à jour avec les nouvelles pratiques, j'expérimente avec de nouveaux outils et je contribue à l'open source quand je peux.
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="content-section">
+				<div class="section-content">
+					<h2 class="section-title">Au-delà du code</h2>
+					<div class="text-content">
+						<p>
+							Passionné de <strong>jeux vidéo</strong> et de <strong>game design</strong>, j'aime analyser les mécaniques et comprendre comment créer des expériences engageantes. Cet intérêt influence ma manière de concevoir des interfaces utilisateur.
+						</p>
+						<p>
+							Je m'intéresse également à l'<strong>émulation</strong> et à la <strong>rétro-informatique</strong> — comprendre comment fonctionnaient les anciennes machines m'aide à mieux appréhender les contraintes hardware et l'optimisation bas niveau.
+						</p>
+						<p>
+							Grand utilisateur de projets <strong>open source</strong>, j'en mesure toute l'importance pour l'écosystème tech. Même si je n'ai pas encore eu l'occasion de voir une PR mergée, je contribue à ma manière en partageant mes découvertes techniques sur ce blog.
+						</p>
+					</div>
+				</div>
+			</section>
+
+		</main>
+
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.about-layout {
+		width: 100%;
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 0 1.5rem;
+		border-left: none !important;
+	}
+
+	/* ========== HERO ========== */
+
+	.about-hero {
+		padding: 4rem 0 5rem;
+		text-align: center;
+	}
+
+	.hero-content {
+		max-width: 800px;
+		margin: 0 auto;
+	}
+
+	.hero-avatar {
+		width: 140px;
+		height: 140px;
+		border-radius: 50%;
+		border: 4px solid rgba(var(--accent), 0.3);
+		margin: 0 auto 2rem;
+		box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+		display: block;
+	}
+
+	.hero-title {
+		font-size: clamp(2.5rem, 6vw, 3.5rem);
+		font-weight: 800;
+		line-height: 1.1;
+		margin-bottom: 1.5rem;
+		letter-spacing: -0.02em;
+	}
+
+	.hero-accent {
+		background: linear-gradient(135deg, rgb(var(--accent)), rgba(var(--accent), 0.6));
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.hero-tagline {
+		font-size: 1.2rem;
+		line-height: 1.8;
+		color: rgba(var(--text), 0.7);
+		margin-bottom: 0;
+	}
+
+	/* ========== SECTIONS ========== */
+
+	.content-section {
+		margin-bottom: 6rem;
+	}
+
+	.section-content {
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+	.section-title {
+		font-size: clamp(2rem, 4vw, 2.5rem);
+		font-weight: 700;
+		margin-bottom: 2.5rem;
+		text-align: center;
+		letter-spacing: -0.02em;
+		position: relative;
+		padding-bottom: 1rem;
+	}
+
+	.section-title::after {
+		content: "";
+		position: absolute;
+		bottom: 0;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 60px;
+		height: 3px;
+		background: linear-gradient(90deg, transparent, rgb(var(--accent)), transparent);
+	}
+
+	.text-content {
+		font-size: 1.1rem;
+		line-height: 1.8;
+		color: rgba(var(--text), 0.85);
+	}
+
+	.text-content p {
+		margin-bottom: 1.5rem;
+	}
+
+	.text-content strong {
+		color: rgb(var(--accent));
+		font-weight: 600;
+	}
+
+	/* ========== TIMELINE ========== */
+
+	.timeline-section {
+		padding: 4rem 0;
+		margin-bottom: 6rem;
+	}
+
+	.subsection {
+		margin-bottom: 4rem;
+	}
+
+	.subsection:last-child {
+		margin-bottom: 0;
+	}
+
+	.subsection-title {
+		font-size: 1.5rem;
+		font-weight: 700;
+		color: rgb(var(--accent));
+		margin-bottom: 2rem;
+		text-align: center;
+		letter-spacing: -0.01em;
+	}
+
+	.timeline {
+		position: relative;
+		padding-left: 2rem;
+	}
+
+	.timeline::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		width: 2px;
+		background: linear-gradient(to bottom, 
+			transparent,
+			rgba(var(--accent), 0.3) 10%,
+			rgba(var(--accent), 0.3) 90%,
+			transparent
+		);
+	}
+
+	.timeline-item {
+		position: relative;
+		margin-bottom: 3rem;
+		padding-left: 2rem;
+	}
+
+	.timeline-item:last-child {
+		margin-bottom: 0;
+	}
+
+	.timeline-marker {
+		position: absolute;
+		left: -2rem;
+		top: 0.5rem;
+		width: 12px;
+		height: 12px;
+		background: rgb(var(--accent));
+		border-radius: 50%;
+		border: 3px solid rgb(var(--bg));
+		box-shadow: 0 0 0 2px rgba(var(--accent), 0.2);
+	}
+
+	.timeline-date {
+		font-size: 0.9rem;
+		color: rgba(var(--text), 0.5);
+		font-family: var(--font-title);
+		margin-bottom: 0.5rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.timeline-content h3 {
+		font-size: 1.3rem;
+		font-weight: 700;
+		margin-bottom: 0.75rem;
+		color: rgb(var(--text));
+	}
+
+	.timeline-content h4 {
+		font-size: 1.2rem;
+		font-weight: 700;
+		margin-bottom: 0.5rem;
+		color: rgb(var(--text));
+	}
+
+	.timeline-subtitle {
+		font-size: 0.95rem;
+		color: rgba(var(--text), 0.6);
+		font-style: italic;
+		margin-bottom: 0.75rem !important;
+	}
+
+	.timeline-content p {
+		font-size: 1.05rem;
+		line-height: 1.7;
+		color: rgba(var(--text), 0.75);
+		margin-bottom: 1rem;
+	}
+
+	.tech-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.tech-tags span {
+		padding: 0.35rem 0.85rem;
+		background: rgba(var(--accent), 0.1);
+		border: 1px solid rgba(var(--accent), 0.2);
+		border-radius: 20px;
+		font-size: 0.85rem;
+		font-family: var(--font-title);
+		color: rgba(var(--text), 0.8);
+	}
+
+	/* ========== EXPERTISE GRID ========== */
+
+	.expertise-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 1.5rem;
+	}
+
+	.expertise-card {
+		padding: 2rem;
+		background: linear-gradient(145deg, rgba(var(--bg), 1), rgba(var(--accent), 0.03));
+		border: 1px solid rgba(var(--accent), 0.15);
+		border-radius: 12px;
+		transition: all 0.3s ease;
+	}
+
+	.expertise-card:hover {
+		transform: translateY(-4px);
+		border-color: rgba(var(--accent), 0.3);
+		box-shadow: 0 8px 24px rgba(var(--accent), 0.15);
+	}
+
+	.expertise-icon {
+		width: 48px;
+		height: 48px;
+		margin-bottom: 1.5rem;
+		color: rgb(var(--accent));
+		transition: transform 0.3s ease, color 0.3s ease;
+	}
+
+	.expertise-icon svg {
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+
+	.expertise-card:hover .expertise-icon {
+		transform: scale(1.1);
+		color: rgba(var(--accent), 0.8);
+	}
+
+	.expertise-card h3 {
+		font-size: 1.2rem;
+		font-weight: 700;
+		margin-bottom: 0.75rem;
+		color: rgb(var(--text));
+	}
+
+	.expertise-card p {
+		font-size: 0.95rem;
+		line-height: 1.6;
+		color: rgba(var(--text), 0.7);
+		margin: 0;
+	}
+
+	/* ========== PHILOSOPHY ========== */
+
+	.philosophy-section {
+		padding: 4rem 0;
+		margin-bottom: 6rem;
+	}
+
+	.philosophy-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 2rem;
+	}
+
+	.philosophy-item {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.philosophy-icon {
+		width: 40px;
+		height: 40px;
+		margin-bottom: 1.25rem;
+		color: rgb(var(--accent));
+		opacity: 0.8;
+	}
+
+	.philosophy-icon svg {
+		width: 100%;
+		height: 100%;
+		display: block;
+	}
+
+	.philosophy-item h3 {
+		font-size: 1.15rem;
+		font-weight: 700;
+		margin-bottom: 0.75rem;
+		color: rgb(var(--text));
+	}
+
+	.philosophy-item p {
+		font-size: 1rem;
+		line-height: 1.7;
+		color: rgba(var(--text), 0.75);
+		margin: 0;
+	}
+
+	/* ========== RESPONSIVE ========== */
+
+	@media (max-width: 768px) {
+		.about-layout {
+			padding: 0 1rem;
+		}
+
+		.about-hero {
+			padding: 2rem 0 3rem;
+		}
+
+		.hero-avatar {
+			width: 110px;
+			height: 110px;
+		}
+
+		.hero-tagline br {
+			display: none;
+		}
+
+		.content-section {
+			margin-bottom: 4rem;
+		}
+
+		.timeline-section,
+		.philosophy-section {
+			padding: 3rem 0;
+		}
+
+		.timeline {
+			padding-left: 1.5rem;
+		}
+
+		.timeline-marker {
+			left: -1.5rem;
+		}
+
+		.timeline-item {
+			padding-left: 1.5rem;
+		}
+
+		.expertise-grid,
+		.philosophy-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	/* ========== ACCESSIBILITY ========== */
+
+	@media (prefers-reduced-motion: reduce) {
+		.expertise-card,
+		.expertise-icon {
+			transition: none !important;
+		}
+
+		.expertise-card:hover,
+		.expertise-icon:hover {
+			transform: none !important;
+		}
+	}
+</style>
