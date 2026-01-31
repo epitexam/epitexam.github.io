@@ -1,0 +1,641 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+    rank: number;
+    title: string;
+    slug: string;
+
+    image: string;
+    imageAlt: string;
+
+    developer: string;
+    publisher?: string;
+    engine?: string;
+
+    releaseDate: string;
+    genre: string;
+
+    platforms: string[];
+    storeUrl?: string;
+
+    playtime?: string;
+
+    description: string;
+    summary: string;
+
+    pros: string[];
+    cons: string[];
+
+    linux: string;
+    rankingReason: string;
+
+    tags?: string[];
+}
+
+const game = Astro.props;
+const isTopOne = game.rank === 1;
+---
+
+<article
+    class:list={["game-card", { "top-one": isTopOne }]}
+    itemscope
+    itemtype="https://schema.org/VideoGame"
+    id={game.slug}
+>
+    <div class="rank-badge">
+        <span class="rank-number">#{game.rank}</span>
+        {isTopOne && <span class="crown-icon">👑</span>}
+    </div>
+
+    <header class="game-header">
+        {
+            isTopOne && (
+                <div class="top-one-badge">
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                            fill="currentColor"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linejoin="round"
+                        />
+                    </svg>
+                    <span>Coup de cœur 2025</span>
+                </div>
+            )
+        }
+        <h2 class="game-title" itemprop="name">{game.title}</h2>
+        <p class="game-description" itemprop="description">
+            {game.description}
+        </p>
+    </header>
+
+    <figure class="game-image">
+        <Image
+            src={game.image}
+            alt={game.imageAlt}
+            width={1200}
+            height={600}
+            loading="lazy"
+            class="game-img"
+        />
+    </figure>
+
+    <section class="game-meta">
+        <div class="meta-grid">
+            <div class="meta-item">
+                <span class="meta-label">Développeur</span>
+                <span class="meta-value" itemprop="author"
+                    >{game.developer}</span
+                >
+            </div>
+
+            {
+                game.publisher && (
+                    <div class="meta-item">
+                        <span class="meta-label">Éditeur</span>
+                        <span class="meta-value">{game.publisher}</span>
+                    </div>
+                )
+            }
+
+            <div class="meta-item">
+                <span class="meta-label">Sortie</span>
+                <time
+                    class="meta-value"
+                    itemprop="datePublished"
+                    datetime={game.releaseDate}
+                >
+                    {
+                        new Date(game.releaseDate).toLocaleDateString("fr-FR", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                        })
+                    }
+                </time>
+            </div>
+
+            <div class="meta-item">
+                <span class="meta-label">Genre</span>
+                <span class="meta-value" itemprop="genre">{game.genre}</span>
+            </div>
+
+            <div class="meta-item">
+                <span class="meta-label">Plateformes</span>
+                <span class="meta-value">{game.platforms.join(", ")}</span>
+            </div>
+
+            {
+                game.engine && (
+                    <div class="meta-item">
+                        <span class="meta-label">Moteur</span>
+                        <span class="meta-value">{game.engine}</span>
+                    </div>
+                )
+            }
+
+            {
+                game.playtime && (
+                    <div class="meta-item">
+                        <span class="meta-label">Temps de jeu</span>
+                        <span class="meta-value">{game.playtime}</span>
+                    </div>
+                )
+            }
+
+            {
+                game.storeUrl && (
+                    <div class="meta-item meta-link">
+                        <span class="meta-label">Boutique</span>
+                        <a
+                            href={game.storeUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="steam-link"
+                        >
+                            Voir sur Steam →
+                        </a>
+                    </div>
+                )
+            }
+        </div>
+    </section>
+
+    <section class="game-content">
+        <div class="content-block">
+            <h3>En quelques mots</h3>
+            <p>{game.summary}</p>
+        </div>
+
+        <div class="content-columns">
+            <div class="content-block">
+                <h3>Points forts</h3>
+                <ul class="pros-list">
+                    {
+                        game.pros.map((pro) => (
+                            <li>
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        d="M20 6L9 17l-5-5"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                </svg>
+                                <span>{pro}</span>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+
+            <div class="content-block">
+                <h3>Points faibles</h3>
+                <ul class="cons-list">
+                    {
+                        game.cons.map((con) => (
+                            <li>
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <path
+                                        d="M18 6L6 18M6 6l12 12"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                </svg>
+                                <span>{con}</span>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-block">
+            <h3>Expérience Linux</h3>
+            <p>{game.linux}</p>
+        </div>
+
+        <div class="content-block highlight-block">
+            <h3>Pourquoi ce classement</h3>
+            <p>{game.rankingReason}</p>
+        </div>
+    </section>
+
+    {
+        game.tags && (
+            <footer class="game-footer">
+                <div class="game-tags">
+                    {game.tags.map((tag) => (
+                        <span class="tag">#{tag}</span>
+                    ))}
+                </div>
+            </footer>
+        )
+    }
+</article>
+
+<style>
+    /* ========== CARD CONTAINER ========== */
+
+    .game-card {
+        position: relative;
+        margin: 0 0 5rem 0;
+        padding: 2.5rem;
+        background: linear-gradient(
+            145deg,
+            rgba(var(--bg), 1),
+            rgba(var(--accent), 0.02)
+        );
+        border: 1px solid rgba(var(--accent), 0.15);
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .game-card:hover {
+        border-color: rgba(var(--accent), 0.3);
+        box-shadow: 0 8px 32px rgba(var(--accent), 0.1);
+    }
+
+    .game-card.top-one {
+        border: 2px solid rgba(var(--accent), 0.4);
+        background: linear-gradient(
+            145deg,
+            rgba(var(--bg), 1),
+            rgba(var(--accent), 0.05)
+        );
+        box-shadow: 0 4px 24px rgba(var(--accent), 0.15);
+    }
+
+    .game-card.top-one:hover {
+        border-color: rgba(var(--accent), 0.6);
+        box-shadow: 0 12px 40px rgba(var(--accent), 0.25);
+    }
+
+    /* ========== RANK BADGE ========== */
+
+    .rank-badge {
+        position: absolute;
+        top: -1rem;
+        left: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1.25rem;
+        background: rgba(var(--bg), 0.95);
+        border: 2px solid rgba(var(--accent), 0.3);
+        border-radius: 50px;
+        backdrop-filter: blur(10px);
+    }
+
+    .rank-number {
+        font-family: var(--font-title);
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: rgb(var(--accent));
+    }
+
+    .crown-icon {
+        font-size: 1.2rem;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-4px);
+        }
+    }
+
+    /* ========== TOP ONE BADGE ========== */
+
+    .top-one-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        margin-bottom: 1rem;
+        background: rgba(var(--accent), 0.1);
+        border: 1px solid rgba(var(--accent), 0.3);
+        border-radius: 50px;
+        font-family: var(--font-title);
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: rgb(var(--accent));
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .top-one-badge svg {
+        width: 16px;
+        height: 16px;
+        color: rgb(var(--accent));
+    }
+
+    /* ========== HEADER ========== */
+
+    .game-header {
+        margin-bottom: 2rem;
+    }
+
+    .game-title {
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        font-weight: 800;
+        margin: 0 0 1rem 0;
+        color: rgb(var(--text));
+        letter-spacing: -0.02em;
+        line-height: 1.2;
+    }
+
+    .game-description {
+        font-size: 1.1rem;
+        line-height: 1.7;
+        color: rgba(var(--text), 0.75);
+        margin: 0;
+        max-width: 800px;
+    }
+
+    /* ========== IMAGE ========== */
+
+    .game-image {
+        margin: 0 0 2.5rem 0;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        border: 1px solid rgba(var(--accent), 0.15);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .game-img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.3s ease;
+        border: none !important;
+        border-radius: 0 !important;
+        background: none !important;
+        box-shadow: none !important;
+    }
+
+    .game-card:hover .game-img {
+        transform: scale(1.02);
+    }
+
+    /* ========== META GRID ========== */
+
+    .game-meta {
+        margin-bottom: 2.5rem;
+    }
+
+    .meta-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.25rem;
+        padding: 1.5rem;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(var(--accent), 0.1);
+        border-radius: var(--radius-md);
+    }
+
+    .meta-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+    }
+
+    .meta-label {
+        font-family: var(--font-title);
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: rgba(var(--accent), 0.8);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .meta-value {
+        font-size: 0.95rem;
+        color: rgba(var(--text), 0.85);
+        line-height: 1.5;
+    }
+
+    .steam-link {
+        font-size: 0.95rem;
+        color: rgb(var(--accent));
+        font-weight: 500;
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+
+    .steam-link:hover {
+        color: rgba(var(--accent), 0.8);
+    }
+
+    /* ========== CONTENT ========== */
+
+    .game-content {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .content-block h3 {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin: 0 0 1rem 0;
+        color: rgb(var(--text));
+        letter-spacing: -0.01em;
+    }
+
+    .content-block p {
+        font-size: 1.05rem;
+        line-height: 1.7;
+        color: rgba(var(--text), 0.8);
+        margin: 0;
+    }
+
+    .content-columns {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+    }
+
+    /* ========== LISTS ========== */
+
+    .pros-list,
+    .cons-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .pros-list li,
+    .cons-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0;
+        margin: 0;
+    }
+
+    .pros-list li::before,
+    .cons-list li::before {
+        display: none;
+    }
+
+    .pros-list svg,
+    .cons-list svg {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+        margin-top: 0.2rem;
+    }
+
+    .pros-list svg {
+        color: rgb(var(--accent));
+    }
+
+    .cons-list svg {
+        color: rgba(var(--text), 0.4);
+    }
+
+    .pros-list span,
+    .cons-list span {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: rgba(var(--text), 0.8);
+    }
+
+    /* ========== HIGHLIGHT BLOCK ========== */
+
+    .highlight-block {
+        padding: 1.5rem;
+        background: rgba(var(--accent), 0.05);
+        border-left: 3px solid rgba(var(--accent), 0.5);
+        border-radius: var(--radius-sm);
+    }
+
+    .highlight-block h3 {
+        color: rgb(var(--accent));
+    }
+
+    /* ========== FOOTER & TAGS ========== */
+
+    .game-footer {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(var(--accent), 0.1);
+    }
+
+    .game-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .tag {
+        padding: 0.35rem 0.85rem;
+        font-family: var(--font-title);
+        font-size: 0.8rem;
+        background: rgba(var(--accent), 0.08);
+        border: 1px solid rgba(var(--accent), 0.15);
+        border-radius: 12px;
+        color: rgba(var(--text), 0.7);
+    }
+
+    /* ========== RESPONSIVE ========== */
+
+    @media (max-width: 768px) {
+        .game-card {
+            padding: 1.5rem;
+            margin: 0 0 3rem 0;
+        }
+
+        .rank-badge {
+            left: 1rem;
+            padding: 0.4rem 1rem;
+        }
+
+        .rank-number {
+            font-size: 1rem;
+        }
+
+        .game-title {
+            font-size: 1.8rem;
+        }
+
+        .game-description {
+            font-size: 1rem;
+        }
+
+        .meta-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            padding: 1.25rem;
+        }
+
+        .content-columns {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .highlight-block {
+            padding: 1.25rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .game-card {
+            padding: 1.25rem;
+        }
+
+        .top-one-badge {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.85rem;
+        }
+
+        .top-one-badge svg {
+            width: 14px;
+            height: 14px;
+        }
+    }
+
+    /* ========== ACCESSIBILITY ========== */
+
+    @media (prefers-reduced-motion: reduce) {
+        .game-card,
+        .game-img,
+        .steam-link {
+            transition: none !important;
+        }
+
+        .game-card:hover .game-img {
+            transform: none !important;
+        }
+
+        .crown-icon {
+            animation: none !important;
+        }
+    }
+</style>
