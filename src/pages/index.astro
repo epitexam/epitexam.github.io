@@ -62,7 +62,7 @@ const latestPost = posts[0];
 					>
 						<Image
 							src={profile}
-							alt="Photo de profil"
+							alt="Icone de profil github"
 							width={120}
 							height={120}
 							class="avatar-img"
@@ -182,7 +182,7 @@ const latestPost = posts[0];
 					{
 						projects.length > 0 ? (
 							projects.map((repo, i) => (
-								<GitHubProject project={repo} eager={i < 2} />
+								<GitHubProject project={repo} eager={false} />
 							))
 						) : (
 							<div class="projects-fallback">
