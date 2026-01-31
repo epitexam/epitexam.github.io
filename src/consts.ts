@@ -269,7 +269,7 @@ export const GAMES: Game[] = [
         imageAlt: "Exploration planétaire dans No Man's Sky",
         developer: "Hello Games",
         publisher: "Hello Games",
-        engine: "Voxel Engine (Propriétaire)",
+        engine: "Havoc",
         releaseDate: "2016-08-12",
         genre: "Open World / Survival / Exploration",
         platforms: ["PC", "PS4", "PS5", "Xbox", "Switch", "Mac"],
