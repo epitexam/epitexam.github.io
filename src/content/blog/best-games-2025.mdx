@@ -1,0 +1,174 @@
+---
+title: "Enfin ! L’incroyable année du gaming sous Linux"
+description: 'Retour sur une année de gaming sous Linux : Proton, Steam Deck et mon Top 5 personnel des jeux marquants de 2025.'
+pubDate: '2026-01-27'
+heroImage: '../../assets/steve.webp'
+heroImageDescription: 'Illustration abstraite de structures géométriques bleutées et vertes, semblables à des cadres flottants, s’entrelançant sur un fond sombre pour évoquer un univers technologique et futuriste.'
+draft: false
+tags: ['gaming', 'passion', 'culture-numérique', '2025', 'top-5', 'inspiration', 'valve', 'linux', 'open-source', 'steam', 'proton']
+---
+
+import GameRank from "../../components/GameCard.astro"
+import { GAMES } from "../../consts";
+
+Janvier 2026, l’heure est au bilan. En jetant un œil à ma rétrospective Steam, un graphique a fini de confirmer ce que je pensais : pour la première fois, près de la moitié de mon temps de jeu s’est déroulée sous Linux.
+
+Il y a encore quelques années, jouer sur Linux tenait du défi technique. Aujourd’hui, grâce à l’impulsion de [Valve](https://www.valvesoftware.com/en/) et à la maturité de technologies comme Proton, Wine ou Wayland, cette barrière a quasiment disparu. Même la diffusion en direct est devenue une banalité.
+
+C’est un véritable vent de fraîcheur face à un Windows 11 de plus en plus pesant, entre publicités intégrées, choix techniques discutables comme l’utilisation de frameworks web pour le menu Démarrer, causant des lenteurs inutile et une orientation « IA omniprésente » qui semble parfois oublier l’utilisateur au profit de ses propres algorithmes.
+
+
+<br/>
+## 1. Jouer sous Linux en 2025
+<br/>
+
+<br/>
+### 1.1 Pourquoi Linux ?
+<br/>
+
+Comme beaucoup, j’ai commencé sur Windows. Ma configuration actuelle date de 2018–2019 et n’a que peu évolué depuis. Et au vu des dernières tendances du marché des composants, je ne suis pas près de la renouveler.
+
+<br/>
+| Composant        | Modèle / Détails                         |
+| ---------------- | ---------------------------------------- |
+| Processeur (CPU) | AMD Ryzen 7 3700X (8 cœurs / 16 threads) |
+| Carte mère       | ASUS ROG STRIX B550-F GAMING WIFI II     |
+| Mémoire (RAM)    | 16 Go DDR4                               |
+| Carte graphique  | NVIDIA GeForce RTX 3070 (8 Go GDDR6)     |
+<br/>
+
+Voir ce matériel être fortement sollicité simplement pour afficher un bureau vide me dérangeait. Sans même parler des questions de télémétrie et de respect de la vie privée.
+
+J’ai découvert Linux il y a un peu plus de huit ans, avec [Debian](https://www.debian.org/) et GNOME 3. À l’époque, [WSL](https://learn.microsoft.com/en-us/windows/wsl/) commençait à se démocratiser, et le jeu sous Linux restait encore marginal.
+
+Jouer était possible, mais l’écart de performances avec Windows était réel. Je faisais donc beaucoup d’allers-retours en dual boot.
+
+À cette période, chaque achat demandait réflexion :
+
+* Est-ce un jeu service ?
+* Le studio prend-il en compte les utilisateurs Linux ?
+* Quelle est sa position du studio vis-à-vis de l’open source ?
+* Est-il bien référencé sur [ProtonDB](https://www.protondb.com/) ?
+* D’autres joueurs Linux ont-ils déjà testé le jeu ?
+* Existe-t-il des solutions communautaires ?
+* Un portage est-il envisagé ?
+
+Aujourd’hui, je joue principalement sous [Arch Linux](https://archlinux.org/). J’aurais pu rester sur [Fedora](https://www.fedoraproject.org/) ou [Ubuntu](https://ubuntu.com/download/desktop), mais j’ai rencontré par le passé des soucis avec les dépots de pilotes NVIDIA, et je ne suis pas fan des paquets Snap.
+
+Avec Arch, je garde un contrôle total sur mon système. Les mises à jour arrivent vite, je sais ce qui est installé. Et oui, par flemme, j’utilise parfois [archinstall](https://wiki.archlinux.org/title/Archinstall), mais je suis aussi passé par l’installation manuelle, [Arch Wiki ](https://wiki.archlinux.org/title/Main_page) à l’appui.
+
+C'est une configuration logicielle parfaite pour du matériel vieillissant.
+
+
+<br/>
+### 1.2 L’écosystème gaming moderne
+<br/>
+
+Il y a encore cinq ans, jouer sous Linux relevait souvent du parcours du combattant. Installer un jeu, vérifier sa compatibilité, ajuster des bibliothèques, lancer des commandes de pré-lancement et croiser les doigts… Tout demandait du temps et un minimum de connaissances techniques.
+
+En 2025, cette époque semble révolue. Aujourd’hui, une immense majorité des jeux disponibles sur Steam fonctionnent sous Linux, souvent sans aucune manipulation particulière. Pour beaucoup d’entre eux, la différence avec Windows est devenue imperceptible.
+
+Cette transformation repose sur plusieurs évolutions majeures, portées à la fois par [Valve](https://www.valvesoftware.com/en/), par la communauté open source et par les differents acteurs du monde du jeu video.
+
+
+<br/>
+#### Proton : la pièce maîtresse
+<br/>
+
+Au cœur de cette révolution : **[Proton](https://github.com/ValveSoftware/Proton)**. La couche de compatibilité développée par Valve. Son objectif est simple : permettre aux jeux Windows de fonctionner sous Linux sans que le joueur n’ait à s’en soucier.
+
+Avec ses évolutions successives, notamment autour de 2025, Proton a atteint un niveau de maturité impressionnant. Basé sur [Wine](https://www.winehq.org/) et enrichi par des technologies comme [DXVK](https://github.com/doitsujin/dxvk) et [VKD3D](https://github.com/HansKristian-Work/vkd3d-proton), il prend en charge la majorité des moteurs et des API graphiques modernes.
+
+Concrètement, ca signifie qu’un jeu peut souvent être installé, lancé et utilisé exactement comme sous Windows.
+
+Les versions communautaires, comme [Proton-GE](https://github.com/GloriousEggroll/proton-ge-custom), complètent ce travail en proposant des correctifs rapides pour les titres les plus récents ou les cas particuliers.
+
+<br/>
+#### Le Steam Deck et la démocratisation de Linux
+<br/>
+
+Le succès du [Steam Deck](https://store.steampowered.com/steamdeck) a marqué un tournant décisif. En proposant une console portable basée sur Linux, Valve a démontré qu’un système libre pouvait offrir une expérience aussi fluide et accessible qu’une console traditionnelle.
+
+Cette réussite a entraîné d’autres constructeurs dans son sillage. En 2025, certains appareils portables arrivent désormais avec [SteamOS](https://store.steampowered.com/steamos/) préinstallé. Ramenant toujours plus d'utilisateurs.
+
+Le message est clair : Linux n’est plus réservé aux passionnés, c'est une plateforme grand public crédible pour le jeu vidéo.
+
+
+<br/>
+#### Pilotes graphiques et rôle du matériel
+<br/>
+
+L’évolution des pilotes graphiques a également joué un rôle central.
+
+Du côté d’AMD, le choix historique de l’open source porte pleinement ses fruits. Les pilotes intégrés à [Mesa](https://mesa3d.org/) bénéficient à la fois du travail communautaire et des investissements de Valve.
+
+Chez [NVIDIA](https://www.nvidia.com/en-us/drivers/unix/), la situation s’améliore progressivement. Les pilotes propriétaires sont plus stables qu’autrefois, notamment sous [Wayland](https://wayland.freedesktop.org/), et les efforts autour de pilotes open source commencent à porter leurs fruits. 
+
+Néanmoins, l’expérience reste parfois moins fluide que chez AMD, ce qui explique pourquoi ce dernier reste aujourd’hui le choix privilégié sous Linux.
+
+
+<br/>
+#### La question longtemps bloquante des anti-cheats
+<br/>
+
+Pendant longtemps, les systèmes anti-triche ont constitué le principal frein au jeu sous Linux. De nombreux titres multijoueurs refusaient purement et simplement de fonctionner (No-comment pour Riot Games).
+
+Ces dernières années, la situation a nettement évolué. Les principaux acteurs du secteur ont progressivement ouvert leurs solutions à Linux, rendant compatibles un nombre croissant de jeux en ligne.
+
+Ca ne veut pas dire que tout fonctionne parfaitement. Certains titres populaires restent indisponibles, souvent par choix des éditeurs. Mais on est passé d’une poignée de jeux compatibles à plusieurs centaines.
+
+
+<br/>
+#### Des distributions pensées pour le jeu
+<br/>
+
+Parallèlement, de nouvelles distributions spécialisées ont vu le jour.
+
+Des projets comme [Bazzite](https://bazzite.gg/), [Nobara](https://nobaraproject.org/) ou [Pop!_OS](https://system76.com/pop/) ( mon preféré ! ) proposent aujourd’hui des environnements optimisés pour le gaming, avec Steam préinstallé, des réglages graphiques adaptés et une configuration simplifiée.
+
+
+<br/>
+#### Un écosystème mature, sans être parfait
+<br/>
+
+Malgré ces progrès, tout n’est pas encore idéal.
+
+Certains jeux en ligne refusent toujours Linux. Les pilotes NVIDIA peuvent encore poser problème dans des configurations spécifiques. Et le grand public reste souvent peu informé de ces avancées du fait des monopoles.
+
+<br/>
+### 1.3 Merci à la communauté
+<br/>
+
+Si jouer sous Linux est aussi confortable aujourd’hui, ce n’est pas un hasard.
+
+Derrière chaque avancée, il y a des développeurs, des mainteneurs, des testeurs et des passionnés qui donnent de leur temps. Des plateformes comme [ProtonDB](https://www.protondb.com/), des forums, des subreddits, des dépôts GitHub ou des guides communautaires m’ont souvent permis de débloquer une situation en quelques minutes.
+
+J’irais presque jusqu’à dire que l’essor de l’IA nous a été bénéfique, dans un sens, car il a poussé les constructeurs hardware à investir davantage dans les drivers, qu’ils soient propriétaires ou open source.  
+
+On ne se sent jamais vraiment seul face à un problème. Il y a presque toujours quelqu’un qui est passé par là avant vous, et qui a pris le temps de partager sa solution.
+
+C’est sans doute ce qui me plaît le plus dans cet écosystème : cette entraide permanente, discrète, mais essentielle.
+
+<br/>
+# Mon top jeux de 2025
+<br/>
+
+> Ce n’est pas un classement universel, c’est mon année.
+
+<br/>
+<br/>
+{[...GAMES]
+  .sort((a, b) => b.rank - a.rank)
+  .map((game) => (
+    <GameRank {...game} />
+))}
+
+<br/>
+## Conclusion
+<br/>
+
+2025 aura été une année marquante pour le gaming sous Linux. Les avancées techniques ont rapproché l’expérience Linux de celle de Windows, tout en offrant un système respectueux de la machine et de l’utilisateur.
+
+L’Europe quant à elle reste trop discrète dans l’infrastructure du gaming, au-delà des studios. Il faut plus d’open source et éduquer les consommateurs pour soutenir des alternatives durables.
+
+**Merci à tous les développeurs, testeurs et passionnés : sans vous, jouer sous Linux ne serait pas ce plaisir quotidien.**
