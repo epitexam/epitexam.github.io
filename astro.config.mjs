@@ -15,11 +15,11 @@ export default defineConfig({
 
 	integrations: [
 		mdx({
-
 			optimize: true,
+			remarkPlugins: [],
+			rehypePlugins: [],
 		}),
 		sitemap({
-
 			changefreq: 'weekly',
 			priority: 0.7,
 			lastmod: new Date(),
@@ -27,8 +27,18 @@ export default defineConfig({
 	],
 
 	image: {
-		service: { entrypoint: 'astro/assets/services/sharp' },
-		domains: [],
+		service: {
+			entrypoint: 'astro/assets/services/sharp',
+		},
+		domains: [
+			'shared.fastly.steamstatic.com',
+		],
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: '**.steamstatic.com',
+			},
+		],
 	},
 
 	vite: {
@@ -36,20 +46,47 @@ export default defineConfig({
 		build: {
 			cssMinify: "lightningcss",
 			cssCodeSplit: true,
-			chunkSizeWarningLimit: 600,
+			minify: 'esbuild',
+			target: 'esnext',
+			chunkSizeWarningLimit: 500,
 			rollupOptions: {
 				output: {
 					manualChunks(id) {
-						if (id.includes("node_modules")) return "vendor";
-					}
+						if (id.includes("node_modules")) {
+							return "vendor";
+						}
+
+						if (id.includes("assets/")) {
+							return "assets";
+						}
+					},
+					entryFileNames: 'entry.[hash].js',
+					chunkFileNames: 'chunks/[name].[hash].js',
+					assetFileNames: 'assets/[name].[hash][extname]',
 				}
 			}
-		}
+		},
 	},
 
 	prefetch: {
-		defaultStrategy: "hover"
+		prefetchAll: true,
+		defaultStrategy: 'viewport',
 	},
 
 	compressHTML: true,
+
+	markdown: {
+		shikiConfig: {
+			theme: 'github-dark',
+			wrap: false,
+		},
+	},
+
+	server: {
+		headers: {
+			'X-Content-Type-Options': 'nosniff',
+			'X-Frame-Options': 'DENY',
+			'X-XSS-Protection': '1; mode=block',
+		},
+	},
 });
