@@ -63,6 +63,7 @@ const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href);
 		a.active {
 			color: rgb(var(--accent));
 			font-weight: 700;
+			pointer-events: none;
 		}
 
 		a.active::before {
