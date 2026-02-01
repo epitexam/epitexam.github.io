@@ -8,11 +8,12 @@ interface Props extends HTMLAttributes<"a"> {
 const { href, class: className, ...attrs } = Astro.props;
 const { pathname } = Astro.url;
 const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href);
+const isExact = pathname === href || pathname === href + "/";
 ---
 
 <a
 	href={href}
-	class:list={[className, { active: isActive }]}
+	class:list={[className, { active: isActive, exact: isExact }]}
 	aria-current={isActive ? "page" : undefined}
 	{...attrs}
 >
@@ -64,6 +65,11 @@ const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href);
 			color: rgb(var(--accent));
 			font-weight: 700;
 			pointer-events: none;
+		}
+
+		a.active:not(.exact) {
+			pointer-events: auto;
+			cursor: pointer;
 		}
 
 		a.active::before {
