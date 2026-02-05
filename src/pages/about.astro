@@ -5,6 +5,7 @@ import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION, GITHUB_URL } from "../consts";
 import { Image } from "astro:assets";
 import profile from "../assets/profile.webp";
+import Avatar from "../components/Avatar.astro";
 
 const education = [
 	{
@@ -165,21 +166,7 @@ const philosophy = [
 
 		<main class="about-main">
 			<section class="hero-section">
-				<a
-					href={GITHUB_URL}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="hero-avatar-link"
-				>
-					<Image
-						src={profile}
-						alt="Icone de profil github"
-						width={100}
-						height={100}
-						class="hero-avatar"
-						loading="eager"
-					/>
-				</a>
+				<Avatar/>
 				<h1 class="hero-title">
 					Développeur FullStack<br />
 					<span class="accent-text">TypeScript & Systèmes</span>
@@ -350,36 +337,6 @@ const philosophy = [
 	}
 
 	/* ========== HERO ========== */
-
-	.hero-section {
-		text-align: center;
-		padding: 3rem 0 4rem;
-	}
-
-	.hero-avatar-link {
-		display: inline-block;
-		margin-bottom: 1.5rem;
-		transition: transform 0.3s ease;
-	}
-
-	.hero-avatar-link:hover {
-		transform: scale(1.05);
-	}
-
-	.hero-avatar-link:focus-visible {
-		outline: 2px solid rgb(var(--accent));
-		outline-offset: 4px;
-		border-radius: 50%;
-	}
-
-	.hero-avatar {
-		width: 100px;
-		height: 100px;
-		border-radius: 50%;
-		border: 2px solid rgba(var(--accent), 0.3);
-		background: none !important;
-		display: block;
-	}
 
 	.hero-title {
 		font-size: clamp(2rem, 5vw, 3rem);
@@ -643,10 +600,6 @@ const philosophy = [
 			padding: 0 1rem;
 		}
 
-		.hero-section {
-			padding: 2rem 0 3rem;
-		}
-
 		.intro-section,
 		.section {
 			margin-bottom: 3rem;
@@ -670,12 +623,10 @@ const philosophy = [
 	/* ========== ACCESSIBILITY ========== */
 
 	@media (prefers-reduced-motion: reduce) {
-		.hero-avatar-link,
 		.expertise-item {
 			transition: none !important;
 		}
 
-		.hero-avatar-link:hover,
 		.expertise-item:hover {
 			transform: none !important;
 		}

@@ -102,8 +102,6 @@ main {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-
-  border-left: 1px solid rgba(var(--accent), 0.05);
 }
 
 @media (max-width: 768px) {
@@ -211,7 +209,6 @@ a::after {
   bottom: -2px;
   width: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--accent-80), transparent);
   transform: translateX(-50%);
   transition: width .3s ease;
 }

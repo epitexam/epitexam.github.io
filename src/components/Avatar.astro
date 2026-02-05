@@ -1,0 +1,102 @@
+---
+import { Image } from "astro:assets";
+import profile from "../assets/profile.webp";
+import { GITHUB_URL, SITE_TITLE } from "../consts";
+
+interface Props {}
+---
+
+<div class="avatar-container">
+    <a
+        href={GITHUB_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="avatar-link"
+        aria-label="Voir mon profil GitHub"
+    >
+        <Image
+            src={profile}
+            alt="Icone de profil github"
+            width={120}
+            height={120}
+            class="avatar-img"
+            loading="eager"
+            fetchpriority="high"
+        />
+    </a>
+    <span class="profile-handle">@{SITE_TITLE}</span>
+</div>
+
+<style>
+    .avatar-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .avatar-link {
+        position: relative;
+        display: block;
+        margin-bottom: 0.75rem;
+        transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        border-radius: 50%;
+    }
+
+    .avatar-link::after {
+        content: "";
+        position: absolute;
+        inset: -4px;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        transition: border-color 0.3s ease;
+    }
+
+    .avatar-link:hover {
+        transform: scale(1.05);
+    }
+
+    .avatar-link:focus-visible {
+        outline: 2px solid rgb(var(--accent));
+        outline-offset: 4px;
+    }
+
+    .avatar-img {
+        display: block;
+        border-radius: 50%;
+        border: 3px solid rgba(var(--accent), 0.2) !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        transition:
+            border-color 0.3s ease,
+            box-shadow 0.3s ease;
+        background: none !important;
+    }
+
+    .avatar-link:hover .avatar-img {
+        border-color: rgba(var(--accent), 0.5) !important;
+        box-shadow: 0 12px 32px rgba(var(--accent), 0.2);
+    }
+
+    .profile-handle {
+        font-family: var(--font-title);
+        font-size: 0.9rem;
+        color: rgba(var(--text), 0.5);
+        letter-spacing: 0.05em;
+        font-weight: 500;
+    }
+
+    @media (max-width: 480px) {
+        .avatar-img {
+            width: 100px;
+            height: 100px;
+        }
+
+        section {
+            margin-bottom: 3rem;
+        }
+
+        .projects-v {
+            margin-top: 1rem;
+        }
+    }
+</style>
