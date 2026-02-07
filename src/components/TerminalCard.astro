@@ -1,0 +1,240 @@
+---
+interface Props {
+	filename?: string;
+	content: string[];
+}
+
+const { filename = "about.md", content = [] } = Astro.props;
+const user = "guest";
+const machine = "epitexam.io";
+const command = "cat -n";
+---
+
+<div class="terminal-card">
+	<div class="terminal-header">
+		<div class="dots">
+			<span class="dot red"></span>
+			<span class="dot yellow"></span>
+			<span class="dot green"></span>
+		</div>
+		<span class="terminal-title">{user}@{machine}: ~</span>
+	</div>
+
+	<div class="terminal-body">
+		<div class="prompt-line">
+			<span class="prompt-content">
+				<span class="user">{user}@{machine}</span><span class="sep"
+					>:</span
+				><span class="path">~</span><span class="symbol">$</span>
+			</span>
+			<span class="command">{command} {filename}</span>
+		</div>
+
+		<div class="file-content">
+			{
+				content.map((text) => (
+					<div class="line">
+						<span class="line-text">{text || "\u00A0"}</span>
+					</div>
+				))
+			}
+		</div>
+
+		<div class="prompt-line last-prompt">
+			<span class="prompt-content">
+				<span class="user">{user}@{machine}</span><span class="sep"
+					>:</span
+				><span class="path">~</span><span class="symbol">$</span>
+			</span>
+			<span class="cursor"></span>
+		</div>
+	</div>
+</div>
+
+<style>
+	.terminal-card {
+		background: rgba(13, 16, 23, 0.95);
+		border: 1px solid var(--accent-10);
+		border-radius: var(--radius-md);
+		box-shadow: var(--shadow-strong);
+		font-family: var(--font-code);
+		width: 100%;
+		margin: 2rem 0;
+		overflow: hidden;
+		container-type: inline-size;
+		animation: terminalEntry 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+		transform-origin: center top;
+		will-change: transform, opacity;
+	}
+
+	@keyframes terminalEntry {
+		0% {
+			opacity: 0;
+			transform: translateY(20px) scale(0.98);
+			filter: brightness(2);
+		}
+		100% {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+			filter: brightness(1);
+		}
+	}
+
+	.terminal-body {
+		padding: 1.25rem;
+		counter-reset: line;
+		animation: contentFadeIn 0.5s ease-out 0.4s backwards;
+	}
+
+	@keyframes contentFadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	.terminal-header {
+		display: flex;
+		align-items: center;
+		padding: 10px 16px;
+		background: rgba(255, 255, 255, 0.03);
+		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+	}
+
+	.dots {
+		display: flex;
+		gap: 7px;
+	}
+	.dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+	}
+	.dot.red {
+		background: #ff5f56;
+	}
+	.dot.yellow {
+		background: #ffbd2e;
+	}
+	.dot.green {
+		background: #27c93f;
+	}
+
+	.terminal-title {
+		flex: 1;
+		text-align: center;
+		font-size: 0.7rem;
+		color: rgba(var(--text), 0.3);
+		margin-right: 35px;
+	}
+
+	.prompt-line {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin-bottom: 8px;
+		font-size: 0.9rem;
+	}
+
+	.user {
+		color: rgb(var(--accent));
+		opacity: 0.9;
+		font-weight: 600;
+	}
+	.sep {
+		color: rgba(var(--text), 0.4);
+	}
+	.path {
+		color: #5fafff;
+	}
+	.symbol {
+		color: rgba(var(--text), 0.6);
+	}
+	.command {
+		color: rgba(var(--text), 1);
+	}
+
+	.file-content {
+		margin-bottom: 12px;
+	}
+
+	.line {
+		display: flex;
+		line-height: 1.6;
+		padding-left: 3rem;
+		position: relative;
+	}
+
+	.line::before {
+		counter-increment: line;
+		content: counter(line);
+		position: absolute;
+		left: 0;
+		width: 2rem;
+		text-align: right;
+		color: rgba(var(--text), 0.15);
+		font-size: 0.75rem;
+		user-select: none;
+		padding-top: 1px;
+	}
+
+	.line-text {
+		color: rgba(var(--text), 0.85);
+		white-space: pre-wrap;
+		word-break: break-word;
+		font-size: 0.95rem;
+	}
+
+	.last-prompt {
+		margin-top: 16px;
+	}
+	.cursor {
+		display: inline-block;
+		width: 8px;
+		height: 1.1em;
+		background: rgb(var(--accent));
+		box-shadow: var(--glow);
+		animation: blink 1.2s step-end infinite;
+		vertical-align: middle;
+	}
+
+	@keyframes blink {
+		0%,
+		100% {
+			opacity: 1;
+		}
+		50% {
+			opacity: 0;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.terminal-body {
+			padding: 1rem;
+		}
+		.line {
+			padding-left: 2.2rem;
+		}
+		.line::before {
+			width: 1.5rem;
+			font-size: 0.65rem;
+		}
+		.line-text,
+		.prompt-line {
+			font-size: 0.85rem;
+		}
+		.terminal-title {
+			display: none;
+		}
+	}
+	@media (max-width: 400px) {
+		.line {
+			padding-left: 0;
+		}
+		.line::before {
+			display: none;
+		}
+	}
+</style>
