@@ -5,6 +5,7 @@ import Footer from "../components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import Avatar from "../components/Avatar.astro";
 import TerminalCard from "../components/TerminalCard.astro";
+import ToolCard from "../components/ToolCard.astro";
 
 const education = [
 	{
@@ -139,16 +140,11 @@ const aboutMe = [
 				<div class="expertise-grid">
 					{
 						expertise.map((item) => (
-							<div class="expertise-item">
-								<div
-									class="expertise-icon"
-									set:html={item.icon}
-								/>
-								<div class="expertise-content">
-									<h3>{item.title}</h3>
-									<p>{item.description}</p>
-								</div>
-							</div>
+							<ToolCard
+								icon={item.title[0]}
+								name={item.title}
+								description={item.description}
+							/>
 						))
 					}
 				</div>
@@ -297,47 +293,6 @@ const aboutMe = [
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 		gap: 1.5rem;
-	}
-
-	.expertise-item {
-		display: flex;
-		gap: 1rem;
-		padding: 1.25rem;
-		background: rgba(var(--accent), 0.03);
-		border: 1px solid rgba(var(--accent), 0.1);
-		border-radius: 12px;
-		transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-	}
-
-	.expertise-item:hover {
-		border-color: rgba(var(--accent), 0.4);
-		background: rgba(var(--accent), 0.06);
-		transform: translateY(-4px);
-		box-shadow: 0 10px 20px -10px rgba(var(--accent), 0.2);
-	}
-
-	.expertise-icon {
-		width: 28px;
-		height: 28px;
-		flex-shrink: 0;
-		color: rgb(var(--accent));
-		transition: transform 0.3s ease;
-	}
-
-	.expertise-item:hover .expertise-icon {
-		transform: scale(1.1) rotate(5deg);
-	}
-
-	.expertise-content h3 {
-		font-size: 1rem;
-		margin: 0 0 0.5rem 0;
-	}
-
-	.expertise-content p {
-		font-size: 0.9rem;
-		line-height: 1.5;
-		color: rgba(var(--text), 0.7);
-		margin: 0;
 	}
 
 	/* ========== PARCOURS ========== */
