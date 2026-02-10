@@ -2,119 +2,17 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import {
+	SITE_TITLE,
+	SITE_DESCRIPTION,
+	ABOUT_ME,
+	EXPERTISE,
+	EDUCATION,
+} from "../consts";
 import Avatar from "../components/Avatar.astro";
 import TerminalCard from "../components/TerminalCard.astro";
-import ToolCard from "../components/ToolCard.astro";
-
-const education = [
-	{
-		period: "2023 - 2025",
-		title: "BTS CIEL IR",
-		subtitle: "Cybersécurité, Informatique et Réseaux",
-		description:
-			"Formation technique axée sur les systèmes, réseaux et sécurité informatique. Après une interruption dans un cursus ingénieur, j'ai choisi de me recentrer sur une formation professionnalisante tout en continuant à développer mes compétences via mes expériences pro.",
-	},
-	{
-		period: "2020 - 2022",
-		title: "Cursus Ingénieur (interrompu)",
-		subtitle: "Software Engineer Web / Mobile",
-		description:
-			"2 ans d'un cursus bac+5 orienté développement web et mobile. Interruption pour contraintes personnelles, mais ces années m'ont permis d'acquérir des bases solides en architecture logicielle et bonnes pratiques.",
-	},
-];
-
-const experiences = [
-	{
-		period: "2024 - 2025",
-		title: "Développeur Full-Stack Freelance",
-		description:
-			"Audit et refonte technique de SaaS avec dette technique majeure. Optimisation des performances (-40% de temps de chargement), mise en place de CI/CD et documentation technique exhaustive.",
-		tags: ["Bun", "TypeScript", "PostgreSQL", "Redis", "React"],
-	},
-	{
-		period: "2023 - 2024",
-		title: "Développeur Full-Stack Freelance",
-		description:
-			"Développement d'une plateforme e-learning pour développeurs avec approche SSR. Déploiement sur 3 marchés européens avec support i18n complet.",
-		tags: ["AdonisJS", "React", "InertiaJS", "PostgreSQL"],
-	},
-	{
-		period: "2022",
-		title: "Développeur Full-Stack",
-		description:
-			"Développement d'API REST sécurisée et refonte frontend React avec optimisation des performances (-30% de temps de chargement). Application desktop Electron pour gestion d'imprimantes en mode hors-ligne.",
-		tags: ["Node.js", "Express", "React", "Electron"],
-	},
-	{
-		period: "2020",
-		title: "Développeur Full-Stack",
-		description:
-			"API Express pour gestion sécurisée de données sensibles avec authentification JWT. Application desktop Electron pour usage hors-ligne.",
-		tags: ["Express", "ElectronJS", "PostgreSQL"],
-	},
-];
-
-const expertise = [
-	{
-		icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
-		title: "Backend & Architecture",
-		description:
-			"APIs REST robustes avec Node.js, Bun et Go. Architecture hexagonale, DDD et micro-services.",
-	},
-	{
-		icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="2"/></svg>`,
-		title: "Frontend Moderne",
-		description:
-			"Interfaces performantes avec React, Next.js et Svelte. UX fluide et optimisée.",
-	},
-	{
-		icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" stroke="currentColor" stroke-width="2"/><polyline points="13 2 13 9 20 9" stroke="currentColor" stroke-width="2"/><line x1="8" y1="13" x2="16" y2="13" stroke="currentColor" stroke-width="2"/><line x1="8" y1="17" x2="16" y2="17" stroke="currentColor" stroke-width="2"/></svg>`,
-		title: "Data & Performance",
-		description:
-			"PostgreSQL, MongoDB, optimisation SQL et stratégies de cache Redis.",
-	},
-	{
-		icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
-		title: "DevOps & Production",
-		description:
-			"Docker, CI/CD, Nginx, Linux. Infrastructure as Code et déploiements automatisés.",
-	},
-	{
-		icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="7" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="11" r="1" fill="currentColor"/><circle cx="15" cy="11" r="1" fill="currentColor"/></svg>`,
-		title: "IoT & Embarqué",
-		description:
-			"ESP32, Zigbee, Home Assistant. Communication I²C et systèmes embarqués en C.",
-	},
-	{
-		icon: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="11" width="18" height="11" rx="2" stroke="currentColor" stroke-width="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>`,
-		title: "Sécurité & Qualité",
-		description:
-			"JWT, contrôle d'accès, audit de code et bonnes pratiques de développement.",
-	},
-];
-
-const aboutMe = [
-	"DÉVELOPPEUR FULL-STACK",
-	"----------------------",
-	"Avec 3 ans d'expérience, je me spécialise dans la création",
-	"de solutions web robustes et optimisées.",
-	"",
-	"Mon expertise couvre l'ensemble du cycle de développement,",
-	"du backend scalable aux interfaces utilisateur modernes.",
-	"",
-	"ARCHITECTURE & PERFORMANCE",
-	"--------------------------",
-	"Passionné par l'architecture logicielle, j'aime résoudre",
-	"des problèmes techniques complexes et construire des",
-	"systèmes qui tiennent la charge en production.",
-	"",
-	"HARDWARE & IOT",
-	"--------------",
-	"Je m'intéresse également à l'embarqué et aux systèmes",
-	"connectés (ESP32, Zigbee, Home Assistant), cherchant à",
-	"comprendre comment matériel et logiciel s'articulent.",
-];
+import ToolSection from "../components/ToolSection.astro";
+import { EXPERIENCES } from "../consts";
 ---
 
 <!doctype html>
@@ -132,22 +30,20 @@ const aboutMe = [
 		<main class="about-container">
 			<section class="hero-center">
 				<Avatar />
-				<TerminalCard filename="presentation.md" content={aboutMe} />
+				<TerminalCard filename="presentation.md" content={ABOUT_ME} />
 			</section>
 
 			<section class="section">
 				<h2 class="section-title">Expertise</h2>
-				<div class="expertise-grid">
-					{
-						expertise.map((item) => (
-							<ToolCard
-								icon={item.title[0]}
-								name={item.title}
-								description={item.description}
-							/>
-						))
-					}
-				</div>
+
+				<ToolSection
+					title=""
+					tools={EXPERTISE.map((item) => ({
+						icon: item.title[0],
+						name: item.title,
+						description: item.description,
+					}))}
+				/>
 			</section>
 
 			<section class="section">
@@ -156,7 +52,7 @@ const aboutMe = [
 					<h3 class="journey-subtitle">Formation</h3>
 					<div class="journey-list">
 						{
-							education.map((item) => (
+							EDUCATION.map((item) => (
 								<div class="journey-item">
 									<div class="journey-header">
 										<span class="journey-period">
@@ -184,7 +80,7 @@ const aboutMe = [
 					<h3 class="journey-subtitle">Expériences</h3>
 					<div class="journey-list">
 						{
-							experiences.map((item) => (
+							EXPERIENCES.map((item) => (
 								<div class="journey-item">
 									<div class="journey-header">
 										<span class="journey-period">
@@ -288,13 +184,6 @@ const aboutMe = [
 		width: 120px;
 	}
 
-	/* ========== EXPERTISE ========== */
-	.expertise-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-		gap: 1.5rem;
-	}
-
 	/* ========== PARCOURS ========== */
 	.journey-block {
 		margin-bottom: 3rem;
@@ -387,9 +276,7 @@ const aboutMe = [
 			gap: 3.5rem;
 			padding-top: 2rem;
 		}
-		.expertise-grid {
-			grid-template-columns: 1fr;
-		}
+
 		.journey-header {
 			flex-direction: column;
 			gap: 0.25rem;

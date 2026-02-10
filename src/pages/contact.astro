@@ -22,7 +22,7 @@ const success = Astro.url.searchParams.get("success") === "true";
         <Header />
 
         <main
-            class="flex-grow flex flex-col items-center justify-center animate-fadeIn"
+            class="grow flex flex-col items-center justify-center animate-fadeIn"
         >
             <div class="max-w-xl w-full">
                 <header class="text-center mb-10">
@@ -35,8 +35,8 @@ const success = Astro.url.searchParams.get("success") === "true";
 
                 {
                     success && (
-                        <div class="mb-8 p-4 border border-[rgb(var(--accent))] bg-[rgba(var(--accent),0.05)] rounded-lg text-[rgb(var(--accent))] font-medium text-center animate-bounce">
-                            ✨ Merci ! Votre message a bien été envoyé.
+                        <div class="mb-8 p-4 border border-green-500/50 bg-green-500/10 rounded-lg text-green-400 font-medium text-center animate-bounce">
+                            Merci ! Votre message a bien été envoyé.
                         </div>
                     )
                 }
@@ -66,6 +66,7 @@ const success = Astro.url.searchParams.get("success") === "true";
                             name="_subject"
                             value={`Nouveau message de contact - ${SITE_TITLE}`}
                         />
+
                         <div style="display:none!important;" aria-hidden="true">
                             <input
                                 type="text"
@@ -74,7 +75,6 @@ const success = Astro.url.searchParams.get("success") === "true";
                                 autocomplete="off"
                             />
                         </div>
-                        <input type="hidden" id="formTimestamp" />
 
                         <div class="input-group">
                             <label for="email" class="label-text"
@@ -105,14 +105,17 @@ const success = Astro.url.searchParams.get("success") === "true";
                                 rows="5"
                                 placeholder="Écrivez votre message ici..."
                                 class="input-field resize-none"
+                                minlength="20"
+                                maxlength="2000"
                                 spellcheck="true"></textarea>
                             <div class="flex justify-between items-center mt-1">
                                 <span
                                     class="sub-label text-[rgb(var(--accent))] opacity-70"
                                     >Markdown supporté</span
                                 >
-                                <span class="sub-label"
-                                    >Max 2000 caractères</span
+                                <span id="charCount" class="sub-label"
+                                    ><span id="charCountValue">0</span>/2000
+                                    caractères</span
                                 >
                             </div>
                         </div>
@@ -141,7 +144,10 @@ const success = Astro.url.searchParams.get("success") === "true";
                             type="submit"
                             class="submit-button"
                         >
-                            <span>Envoyer le message</span>
+                            <span id="submitText">Envoyer le message</span>
+                            <span id="submitSpinner" class="hidden ml-2"
+                                >...</span
+                            >
                         </button>
 
                         <p
@@ -216,6 +222,9 @@ const success = Astro.url.searchParams.get("success") === "true";
                 cursor: pointer;
                 border: none;
                 transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
 
             .submit-button:hover:not(:disabled) {
@@ -224,61 +233,84 @@ const success = Astro.url.searchParams.get("success") === "true";
                 box-shadow: 0 5px 15px rgba(var(--accent), 0.3);
             }
 
+            .submit-button:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+                transform: none !important;
+                box-shadow: none !important;
+            }
+
             @media (max-width: 640px) {
                 .form-container {
-                    padding: 0;
-                    border: none;
-                    background: transparent;
-                    box-shadow: none;
+                    padding: 1rem;
                 }
             }
         </style>
 
-        <script>
-            function showError(message: string) {
+        <script is:inline>
+            function updateCharCount() {
+                const textarea = document.getElementById("message");
+                const charCountValue =
+                    document.getElementById("charCountValue");
+
+                if (!textarea || !charCountValue) return;
+
+                const length = textarea.value.length;
+                charCountValue.textContent = length;
+
+                if (length > 0 && length < 20) {
+                    charCountValue.classList.add("text-red-500");
+                } else {
+                    charCountValue.classList.remove("text-red-500");
+                }
+            }
+
+            function showError(message) {
                 const errorDiv = document.getElementById("errorMessage");
                 if (!errorDiv) return;
                 errorDiv.textContent = message;
                 errorDiv.classList.remove("hidden");
-                errorDiv.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center",
-                });
                 setTimeout(() => errorDiv.classList.add("hidden"), 5000);
             }
 
             document.addEventListener("DOMContentLoaded", () => {
-                const form = document.getElementById(
-                    "contactForm",
-                ) as HTMLFormElement;
-                const submitBtn = document.getElementById(
-                    "submitBtn",
-                ) as HTMLButtonElement;
-                const timestampInput = document.getElementById(
-                    "formTimestamp",
-                ) as HTMLInputElement;
+                const form = document.getElementById("contactForm");
+                const messageTextarea = document.getElementById("message");
 
-                if (!form || !submitBtn || !timestampInput) return;
-                timestampInput.value = Date.now().toString();
+                if (!form || !messageTextarea) return;
 
-                form.addEventListener("submit", (e) => {
-                    const honeypot = form.querySelector(
+                messageTextarea.addEventListener("input", updateCharCount);
+                updateCharCount();
+
+                form.addEventListener("submit", function (e) {
+                    const honeypot = this.querySelector(
                         'input[name="website"]',
-                    ) as HTMLInputElement;
-                    if (honeypot?.value.trim() !== "") {
+                    );
+
+                    if (honeypot && honeypot.value.trim() !== "") {
                         e.preventDefault();
                         return;
                     }
-                    const diff = Date.now() - Number(timestampInput.value);
-                    if (diff < 2000) {
+
+                    if (messageTextarea.value.trim().length < 20) {
                         e.preventDefault();
                         showError(
-                            "Veuillez patienter un instant avant d’envoyer.",
+                            "Le message doit contenir au moins 20 caractères.",
                         );
+                        messageTextarea.focus();
                         return;
                     }
-                    submitBtn.disabled = true;
-                    submitBtn.innerHTML = "<span>Transmission...</span>";
+
+                    const submitBtn = document.getElementById("submitBtn");
+                    const submitText = document.getElementById("submitText");
+                    const submitSpinner =
+                        document.getElementById("submitSpinner");
+
+                    if (submitBtn && submitText && submitSpinner) {
+                        submitBtn.disabled = true;
+                        submitText.textContent = "Envoi en cours...";
+                        submitSpinner.classList.remove("hidden");
+                    }
                 });
             });
         </script>
