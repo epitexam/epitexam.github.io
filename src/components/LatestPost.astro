@@ -1,5 +1,4 @@
 ---
-// components/LatestPost.astro
 import { Image } from "astro:assets";
 
 export interface Props {
@@ -91,26 +90,6 @@ const { post } = Astro.props;
             </span>
         </div>
     </a>
-
-    <div class="blog-footer">
-        <a href="/blog" class="view-all-link">
-            Voir tous les articles
-            <svg
-                class="arrow-icon"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16"
-                fill="none"
-            >
-                <path
-                    d="M3.5 8H12.5M12.5 8L8.5 4M12.5 8L8.5 12"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"></path>
-            </svg>
-        </a>
-    </div>
 </article>
 
 <style>
@@ -346,45 +325,6 @@ const { post } = Astro.props;
         transform: translateX(4px);
     }
 
-    /* ========== BLOG FOOTER ========== */
-    .blog-footer {
-        width: 100%;
-        text-align: center;
-        padding-top: 2.5rem;
-        margin-top: 1.5rem;
-        border-top: 1px solid rgba(var(--accent), 0.08);
-    }
-
-    .view-all-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.75rem;
-        color: rgba(var(--text), 0.7);
-        font-family: var(--font-title);
-        font-size: 0.95rem;
-        font-weight: 500;
-        text-decoration: none !important;
-        transition: all 0.3s ease;
-        padding: 0.85rem 1.75rem;
-        border-radius: 8px;
-        background: rgba(var(--accent), 0.02);
-        border: 1px solid rgba(var(--accent), 0.05);
-    }
-
-    .view-all-link:hover {
-        color: rgb(var(--accent));
-        background: rgba(var(--accent), 0.05);
-        border-color: rgba(var(--accent), 0.15);
-        transform: translateY(-1px);
-        box-shadow:
-            0 4px 12px rgba(0, 0, 0, 0.2),
-            0 0 0 1px rgba(var(--accent), 0.1);
-    }
-
-    .view-all-link:hover .arrow-icon {
-        transform: translateX(4px);
-    }
-
     /* ========== RESPONSIVE ========== */
     @media (max-width: 768px) {
         .latest-post-container {
@@ -420,16 +360,6 @@ const { post } = Astro.props;
         }
 
         .read-more {
-            font-size: 0.9rem;
-        }
-
-        .blog-footer {
-            padding-top: 2rem;
-            margin-top: 1rem;
-        }
-
-        .view-all-link {
-            padding: 0.75rem 1.5rem;
             font-size: 0.9rem;
         }
     }
@@ -489,7 +419,6 @@ const { post } = Astro.props;
         .post-card,
         .post-image,
         .arrow-icon,
-        .view-all-link,
         .read-more,
         .post-title {
             transition: none !important;
@@ -526,11 +455,6 @@ const { post } = Astro.props;
 
         .post-description {
             color: rgba(10, 12, 20, 0.75);
-        }
-
-        .view-all-link {
-            background: rgba(var(--accent), 0.05);
-            border-color: rgba(var(--accent), 0.1);
         }
     }
 </style>

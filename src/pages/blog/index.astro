@@ -81,7 +81,6 @@ const EAGER_LIMIT = 3;
 		display: flex;
 		flex-direction: column;
 		min-height: 100vh;
-		padding-top: var(--header-height, 80px);
 	}
 
 	main {
@@ -160,10 +159,6 @@ const EAGER_LIMIT = 3;
 	}
 
 	@media (max-width: 768px) {
-		body {
-			padding-top: var(--header-height, 70px);
-		}
-
 		.blog-grid {
 			grid-template-columns: 1fr;
 			gap: 3.5rem;
