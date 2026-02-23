@@ -10,20 +10,18 @@ export default defineConfig({
 	build: {
 		format: 'directory',
 		assets: '_assets',
-		inlineStylesheets: 'auto',
+		inlineStylesheets: 'always',
 	},
 
 	integrations: [
 		mdx({
 			optimize: true,
-			remarkPlugins: [],
-			rehypePlugins: [],
 		}),
 		sitemap({
 			changefreq: 'weekly',
 			priority: 0.7,
 			lastmod: new Date(),
-		})
+		}),
 	],
 
 	image: {
@@ -55,22 +53,18 @@ export default defineConfig({
 						if (id.includes("node_modules")) {
 							return "vendor";
 						}
-
-						if (id.includes("assets/")) {
-							return "assets";
-						}
 					},
 					entryFileNames: 'entry.[hash].js',
 					chunkFileNames: 'chunks/[name].[hash].js',
 					assetFileNames: 'assets/[name].[hash][extname]',
-				}
-			}
+				},
+			},
 		},
 	},
 
 	prefetch: {
 		prefetchAll: true,
-		defaultStrategy: 'viewport',
+		defaultStrategy: 'hover',
 	},
 
 	compressHTML: true,

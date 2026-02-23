@@ -255,6 +255,10 @@ const isTopOne = game.rank === 1;
 <style>
     /* ========== CARD CONTAINER ========== */
 
+    li::before {
+        content: none !important;
+    }
+
     .game-card {
         position: relative;
         margin: 0 0 5rem 0;
@@ -266,7 +270,9 @@ const isTopOne = game.rank === 1;
         );
         border: 1px solid rgba(var(--accent), 0.15);
         border-radius: 12px;
-        transition: all 0.3s ease;
+        transition:
+            border-color 0.3s ease,
+            box-shadow 0.3s ease;
     }
 
     .game-card:hover {
@@ -371,7 +377,6 @@ const isTopOne = game.rank === 1;
         font-size: 1.1rem;
         line-height: 1.7;
         color: rgba(var(--text), 0.75);
-        margin: 0;
         max-width: 800px;
     }
 
@@ -391,10 +396,6 @@ const isTopOne = game.rank === 1;
         object-fit: cover;
         display: block;
         transition: transform 0.3s ease;
-        border: none !important;
-        border-radius: 0 !important;
-        background: none !important;
-        box-shadow: none !important;
     }
 
     .game-card:hover .game-img {
@@ -442,7 +443,6 @@ const isTopOne = game.rank === 1;
         font-size: 0.95rem;
         color: rgb(var(--accent));
         font-weight: 500;
-        text-decoration: none;
         transition: color 0.2s ease;
     }
 
@@ -470,7 +470,6 @@ const isTopOne = game.rank === 1;
         font-size: 1.05rem;
         line-height: 1.7;
         color: rgba(var(--text), 0.8);
-        margin: 0;
     }
 
     .content-columns {
@@ -498,11 +497,6 @@ const isTopOne = game.rank === 1;
         gap: 0.75rem;
         padding: 0;
         margin: 0;
-    }
-
-    .pros-list li::before,
-    .cons-list li::before {
-        display: none;
     }
 
     .pros-list svg,
@@ -625,18 +619,12 @@ const isTopOne = game.rank === 1;
     /* ========== ACCESSIBILITY ========== */
 
     @media (prefers-reduced-motion: reduce) {
-        .game-card,
-        .game-img,
-        .steam-link {
-            transition: none !important;
-        }
-
         .game-card:hover .game-img {
-            transform: none !important;
+            transform: none;
         }
 
         .crown-icon {
-            animation: none !important;
+            animation: none;
         }
     }
 </style>

@@ -16,17 +16,13 @@ const success = Astro.url.searchParams.get("success") === "true";
         />
     </head>
 
-    <body
-        class="flex flex-col min-h-screen bg-[rgb(var(--bg))] text-[rgb(var(--text))] font-mono selection:bg-[rgba(var(--accent),0.3)]"
-    >
+    <body>
         <Header />
 
-        <main
-            class="grow flex flex-col items-center justify-center animate-fadeIn"
-        >
-            <div class="max-w-xl w-full">
-                <header class="text-center mb-10">
-                    <p class="text-[rgba(var(--text),0.7)] leading-relaxed">
+        <main class="contact-main animate-fadeIn">
+            <div class="contact-wrapper">
+                <header class="contact-header">
+                    <p class="contact-intro">
                         Si vous avez un projet, une question ou souhaitez juste
                         dire bonjour, envoyez-moi un message. Je vous répondrai
                         dès que possible.
@@ -35,7 +31,11 @@ const success = Astro.url.searchParams.get("success") === "true";
 
                 {
                     success && (
-                        <div class="mb-8 p-4 border border-green-500/50 bg-green-500/10 rounded-lg text-green-400 font-medium text-center animate-bounce">
+                        <div
+                            class="success-message"
+                            role="status"
+                            aria-live="polite"
+                        >
                             Merci ! Votre message a bien été envoyé.
                         </div>
                     )
@@ -44,7 +44,8 @@ const success = Astro.url.searchParams.get("success") === "true";
                 <div
                     id="errorMessage"
                     role="alert"
-                    class="hidden mb-8 p-4 border border-red-500/50 bg-red-500/10 rounded-lg text-red-400 font-medium text-center"
+                    aria-live="assertive"
+                    class="error-message hidden"
                 >
                 </div>
 
@@ -53,7 +54,7 @@ const success = Astro.url.searchParams.get("success") === "true";
                         id="contactForm"
                         action="https://formspree.io/f/xovgkrbn"
                         method="POST"
-                        class="flex flex-col gap-6"
+                        class="contact-form"
                         autocomplete="on"
                     >
                         <input
@@ -67,7 +68,7 @@ const success = Astro.url.searchParams.get("success") === "true";
                             value={`Nouveau message de contact - ${SITE_TITLE}`}
                         />
 
-                        <div style="display:none!important;" aria-hidden="true">
+                        <div class="honeypot" aria-hidden="true">
                             <input
                                 type="text"
                                 name="website"
@@ -104,36 +105,31 @@ const success = Astro.url.searchParams.get("success") === "true";
                                 required
                                 rows="5"
                                 placeholder="Écrivez votre message ici..."
-                                class="input-field resize-none"
+                                class="input-field"
+                                style="resize: none;"
                                 minlength="20"
                                 maxlength="2000"
                                 spellcheck="true"></textarea>
-                            <div class="flex justify-between items-center mt-1">
-                                <span
-                                    class="sub-label text-[rgb(var(--accent))] opacity-70"
+                            <div class="textarea-footer">
+                                <span class="sub-label accent-label"
                                     >Markdown supporté</span
                                 >
-                                <span id="charCount" class="sub-label"
-                                    ><span id="charCountValue">0</span>/2000
-                                    caractères</span
-                                >
+                                <span class="sub-label" id="charCount">
+                                    <span id="charCountValue">0</span>/2000
+                                    caractères
+                                </span>
                             </div>
                         </div>
 
-                        <div
-                            class="flex items-start gap-3 p-3 bg-[rgba(var(--accent),0.03)] rounded border border-[rgba(var(--accent),0.1)]"
-                        >
+                        <div class="privacy-row">
                             <input
                                 type="checkbox"
                                 id="privacy"
                                 name="privacy"
                                 required
-                                class="mt-1 accent-[rgb(var(--accent))]"
+                                class="privacy-checkbox"
                             />
-                            <label
-                                for="privacy"
-                                class="text-xs text-[rgba(var(--text),0.7)] cursor-pointer"
-                            >
+                            <label for="privacy" class="privacy-label">
                                 J'accepte que mes données soient utilisées
                                 uniquement pour répondre à mon message
                             </label>
@@ -145,174 +141,318 @@ const success = Astro.url.searchParams.get("success") === "true";
                             class="submit-button"
                         >
                             <span id="submitText">Envoyer le message</span>
-                            <span id="submitSpinner" class="hidden ml-2"
-                                >...</span
-                            >
+                            <span id="submitSpinner" class="hidden">...</span>
                         </button>
 
-                        <p
-                            class="text-[10px] text-center text-[rgba(var(--text),0.4)] uppercase tracking-widest"
-                        >
-                            Powered by Formspree
-                        </p>
+                        <p class="powered-by">Powered by Formspree</p>
                     </form>
                 </div>
             </div>
         </main>
 
         <Footer />
-
-        <style>
-            .form-container {
-                background: linear-gradient(
-                    145deg,
-                    rgba(var(--bg), 0.8) 0%,
-                    rgba(var(--accent), 0.03) 100%
-                );
-                border: 1px solid rgba(var(--accent), 0.15);
-                border-radius: var(--radius-md);
-                padding: 2rem;
-                box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.5);
-            }
-
-            .input-group {
-                display: flex;
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-
-            .label-text {
-                font-family: var(--font-title);
-                font-size: 0.85rem;
-                text-transform: uppercase;
-                letter-spacing: 0.05em;
-                color: rgb(var(--accent));
-            }
-
-            .input-field {
-                background: rgba(var(--bg), 0.5);
-                border: 1px solid rgba(var(--accent), 0.2);
-                border-radius: var(--radius-sm);
-                padding: 0.75rem;
-                color: rgb(var(--text));
-                transition: all 0.2s ease;
-                font-family: var(--font-body);
-            }
-
-            .input-field:focus {
-                outline: none;
-                border-color: rgb(var(--accent));
-                background: rgba(var(--accent), 0.05);
-                box-shadow: 0 0 0 3px rgba(var(--accent), 0.1);
-            }
-
-            .sub-label {
-                font-size: 0.7rem;
-                color: rgba(var(--text), 0.5);
-            }
-
-            .submit-button {
-                background: rgb(var(--accent));
-                color: rgb(var(--bg));
-                padding: 0.9rem;
-                border-radius: var(--radius-sm);
-                font-weight: 700;
-                text-transform: uppercase;
-                letter-spacing: 0.1em;
-                cursor: pointer;
-                border: none;
-                transition: all 0.3s ease;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .submit-button:hover:not(:disabled) {
-                filter: brightness(1.1);
-                transform: translateY(-2px);
-                box-shadow: 0 5px 15px rgba(var(--accent), 0.3);
-            }
-
-            .submit-button:disabled {
-                opacity: 0.6;
-                cursor: not-allowed;
-                transform: none !important;
-                box-shadow: none !important;
-            }
-
-            @media (max-width: 640px) {
-                .form-container {
-                    padding: 1rem;
-                }
-            }
-        </style>
-
-        <script is:inline>
-            function updateCharCount() {
-                const textarea = document.getElementById("message");
-                const charCountValue =
-                    document.getElementById("charCountValue");
-
-                if (!textarea || !charCountValue) return;
-
-                const length = textarea.value.length;
-                charCountValue.textContent = length;
-
-                if (length > 0 && length < 20) {
-                    charCountValue.classList.add("text-red-500");
-                } else {
-                    charCountValue.classList.remove("text-red-500");
-                }
-            }
-
-            function showError(message) {
-                const errorDiv = document.getElementById("errorMessage");
-                if (!errorDiv) return;
-                errorDiv.textContent = message;
-                errorDiv.classList.remove("hidden");
-                setTimeout(() => errorDiv.classList.add("hidden"), 5000);
-            }
-
-            document.addEventListener("DOMContentLoaded", () => {
-                const form = document.getElementById("contactForm");
-                const messageTextarea = document.getElementById("message");
-
-                if (!form || !messageTextarea) return;
-
-                messageTextarea.addEventListener("input", updateCharCount);
-                updateCharCount();
-
-                form.addEventListener("submit", function (e) {
-                    const honeypot = this.querySelector(
-                        'input[name="website"]',
-                    );
-
-                    if (honeypot && honeypot.value.trim() !== "") {
-                        e.preventDefault();
-                        return;
-                    }
-
-                    if (messageTextarea.value.trim().length < 20) {
-                        e.preventDefault();
-                        showError(
-                            "Le message doit contenir au moins 20 caractères.",
-                        );
-                        messageTextarea.focus();
-                        return;
-                    }
-
-                    const submitBtn = document.getElementById("submitBtn");
-                    const submitText = document.getElementById("submitText");
-                    const submitSpinner =
-                        document.getElementById("submitSpinner");
-
-                    if (submitBtn && submitText && submitSpinner) {
-                        submitBtn.disabled = true;
-                        submitText.textContent = "Envoi en cours...";
-                        submitSpinner.classList.remove("hidden");
-                    }
-                });
-            });
-        </script>
     </body>
 </html>
+
+<style>
+    /* ========== SELECTION ========== */
+
+    ::selection {
+        background: rgba(var(--accent), 0.3);
+    }
+
+    /* ========== LAYOUT ========== */
+
+    .contact-main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: calc(var(--header-height, 60px) + 2rem) 1.5rem 3rem;
+        box-sizing: border-box;
+    }
+
+    .contact-wrapper {
+        max-width: 36rem;
+        width: 100%;
+    }
+
+    /* ========== HEADER ========== */
+
+    .contact-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .contact-intro {
+        color: rgba(var(--text), 0.7);
+        line-height: 1.7;
+    }
+
+    /* ========== NOTIFICATIONS ========== */
+
+    .success-message {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid rgba(39, 201, 63, 0.5);
+        background: rgba(39, 201, 63, 0.1);
+        border-radius: var(--radius-sm);
+        color: #27c93f;
+        font-weight: 600;
+        text-align: center;
+        animation: fadeIn 0.5s ease forwards;
+    }
+
+    .error-message {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid rgba(239, 68, 68, 0.5);
+        background: rgba(239, 68, 68, 0.1);
+        border-radius: var(--radius-sm);
+        color: #ef4444;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .error-message.hidden,
+    .hidden {
+        display: none;
+    }
+
+    /* ========== FORM CONTAINER ========== */
+
+    .form-container {
+        background: linear-gradient(
+            145deg,
+            rgba(var(--bg), 0.8) 0%,
+            rgba(var(--accent), 0.03) 100%
+        );
+        border: 1px solid rgba(var(--accent), 0.15);
+        border-radius: var(--radius-md);
+        padding: 2rem;
+        box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.5);
+    }
+
+    .contact-form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    /* ========== HONEYPOT ========== */
+
+    .honeypot {
+        display: none;
+    }
+
+    /* ========== INPUTS ========== */
+
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .label-text {
+        font-family: var(--font-title);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: rgb(var(--accent));
+    }
+
+    .input-field {
+        background: rgba(var(--bg), 0.5);
+        border: 1px solid rgba(var(--accent), 0.2);
+        border-radius: var(--radius-sm);
+        padding: 0.75rem;
+        color: rgb(var(--text));
+        font-family: var(--font-body);
+        width: 100%;
+        box-sizing: border-box;
+        transition:
+            border-color 0.2s ease,
+            background 0.2s ease,
+            box-shadow 0.2s ease;
+    }
+
+    .input-field:focus {
+        outline: none;
+        border-color: rgb(var(--accent));
+        background: rgba(var(--accent), 0.05);
+        box-shadow: 0 0 0 3px rgba(var(--accent), 0.1);
+    }
+
+    .sub-label {
+        font-size: 0.7rem;
+        color: rgba(var(--text), 0.5);
+    }
+
+    .accent-label {
+        color: rgb(var(--accent));
+        opacity: 0.7;
+    }
+
+    .textarea-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0.25rem;
+    }
+
+    /* ========== PRIVACY ========== */
+
+    .privacy-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0.75rem;
+        background: rgba(var(--accent), 0.03);
+        border: 1px solid rgba(var(--accent), 0.1);
+        border-radius: var(--radius-sm);
+    }
+
+    .privacy-checkbox {
+        margin-top: 0.15rem;
+        accent-color: rgb(var(--accent));
+        flex-shrink: 0;
+    }
+
+    .privacy-label {
+        font-size: 0.75rem;
+        color: rgba(var(--text), 0.7);
+        cursor: pointer;
+        line-height: 1.5;
+    }
+
+    /* ========== SUBMIT ========== */
+
+    .submit-button {
+        background: rgb(var(--accent));
+        color: rgb(var(--bg));
+        padding: 0.9rem;
+        border-radius: var(--radius-sm);
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        cursor: pointer;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        transition:
+            filter 0.3s ease,
+            transform 0.3s ease,
+            box-shadow 0.3s ease;
+    }
+
+    .submit-button:hover:not(:disabled) {
+        filter: brightness(1.1);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(var(--accent), 0.3);
+    }
+
+    .submit-button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .powered-by {
+        font-size: 0.625rem;
+        text-align: center;
+        color: rgba(var(--text), 0.4);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+    }
+
+    /* ========== RESPONSIVE ========== */
+
+    @media (max-width: 640px) {
+        .form-container {
+            padding: 1rem;
+        }
+    }
+
+    /* ========== ACCESSIBILITY ========== */
+
+    @media (prefers-reduced-motion: reduce) {
+        .success-message {
+            animation: none;
+        }
+
+        .contact-main {
+            animation: none;
+            opacity: 1;
+        }
+
+        .submit-button:hover:not(:disabled) {
+            transform: none;
+        }
+    }
+</style>
+
+<script is:inline>
+    function updateCharCount() {
+        const textarea = document.getElementById("message");
+        const charCountValue = document.getElementById("charCountValue");
+
+        if (!textarea || !charCountValue) return;
+
+        const length = textarea.value.length;
+        charCountValue.textContent = length;
+
+        if (length > 0 && length < 20) {
+            charCountValue.classList.add("text-red-500");
+        } else {
+            charCountValue.classList.remove("text-red-500");
+        }
+    }
+
+    function showError(message) {
+        const errorDiv = document.getElementById("errorMessage");
+        if (!errorDiv) return;
+        errorDiv.textContent = message;
+        errorDiv.classList.remove("hidden");
+        setTimeout(() => errorDiv.classList.add("hidden"), 5000);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("contactForm");
+        const messageTextarea = document.getElementById("message");
+
+        if (!form || !messageTextarea) return;
+
+        messageTextarea.addEventListener("input", updateCharCount);
+        updateCharCount();
+
+        form.addEventListener("submit", function (e) {
+            const honeypot = this.querySelector('input[name="website"]');
+
+            if (honeypot && honeypot.value.trim() !== "") {
+                e.preventDefault();
+                return;
+            }
+
+            if (messageTextarea.value.trim().length < 20) {
+                e.preventDefault();
+                showError("Le message doit contenir au moins 20 caractères.");
+                messageTextarea.focus();
+                return;
+            }
+
+            const submitBtn = document.getElementById("submitBtn");
+            const submitText = document.getElementById("submitText");
+            const submitSpinner = document.getElementById("submitSpinner");
+
+            if (submitBtn && submitText && submitSpinner) {
+                submitBtn.disabled = true;
+                submitText.textContent = "Envoi en cours...";
+                submitSpinner.classList.remove("hidden");
+            }
+        });
+    });
+</script>

@@ -39,18 +39,9 @@ interface Props {}
         position: relative;
         display: block;
         margin-bottom: 0.75rem;
+        border-radius: 50%;
         transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-        border-radius: 50%;
-    }
-
-    .avatar-link::after {
-        content: "";
-        position: absolute;
-        inset: -4px;
-        border-radius: 50%;
-        border: 2px solid transparent;
-        transition: border-color 0.3s ease;
-    }
+    } 
 
     .avatar-link:hover {
         transform: scale(1.05);
@@ -64,16 +55,16 @@ interface Props {}
     .avatar-img {
         display: block;
         border-radius: 50%;
-        border: 3px solid rgba(var(--accent), 0.2) !important;
+        border: 3px solid rgba(var(--accent), 0.2);
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+        background: none;
         transition:
             border-color 0.3s ease,
             box-shadow 0.3s ease;
-        background: none !important;
     }
 
     .avatar-link:hover .avatar-img {
-        border-color: rgba(var(--accent), 0.5) !important;
+        border-color: rgba(var(--accent), 0.5);
         box-shadow: 0 12px 32px rgba(var(--accent), 0.2);
     }
 
@@ -90,13 +81,11 @@ interface Props {}
             width: 100px;
             height: 100px;
         }
+    }
 
-        section {
-            margin-bottom: 3rem;
-        }
-
-        .projects-v {
-            margin-top: 1rem;
+    @media (prefers-reduced-motion: reduce) {
+        .avatar-link:hover {
+            transform: none;
         }
     }
 </style>

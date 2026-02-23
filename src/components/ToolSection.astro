@@ -14,23 +14,55 @@ const { title, tools } = Astro.props;
 const isOddNumber = tools.length % 2 !== 0;
 ---
 
-<section class="mb-24 w-full flex flex-col items-center">
-    <h2
-        class="text-3xl font-semibold mb-12 text-[rgb(var(--accent))] tracking-tight text-center drop-shadow-[0_0_10px_rgba(var(--accent),0.6)]"
-    >
-        {title}
-    </h2>
+<section class="tool-section">
+    {
+        title.length > 0 ? (
+            <h2 class="tool-section-title glow-text">{title}</h2>
+        ) : null
+    }
 
-    <div
-        class:list={[
-            "mt-5",
-            "grid gap-6 w-full max-w-4xl",
-            "md:grid-cols-1",
-            "lg:grid-cols-2",
-            isOddNumber &&
-                "lg:[&>*:last-child]:col-span-2 lg:[&>*:last-child]:max-w-md lg:[&>*:last-child]:mx-auto",
-        ]}
-    >
+    <div class:list={["tool-grid", { "has-odd": isOddNumber }]}>
         {tools.map((tool) => <ToolCard {...tool} />)}
     </div>
 </section>
+
+<style>
+    .tool-section {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 6rem;
+    }
+
+    .tool-section-title {
+        font-size: clamp(1.5rem, 3vw, 1.875rem);
+        font-weight: 600;
+        margin-bottom: 3rem;
+        color: rgb(var(--accent));
+        letter-spacing: -0.025em;
+        text-align: center;
+    }
+
+    .tool-grid {
+        margin-top: 1.25rem;
+        display: grid;
+        gap: 1.5rem;
+        width: 100%;
+        max-width: 56rem;
+    }
+
+    @media (min-width: 1024px) {
+        .tool-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .tool-grid.has-odd > *:last-child {
+            grid-column: span 2;
+            max-width: 28rem;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+    }
+</style>

@@ -55,13 +55,15 @@ const cardProps = link
     );
     border: 1px solid rgba(var(--accent), 0.15);
     border-radius: var(--radius-md);
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    transition:
+      transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+      border-color 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     overflow: hidden;
     isolation: isolate;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
-    text-decoration: none;
     color: inherit;
   }
 
@@ -84,9 +86,11 @@ const cardProps = link
     box-shadow: 0 12px 40px -10px rgba(var(--accent), 0.4);
   }
 
+  /* ========== SCANLINE ========== */
+
   .scanline {
     position: absolute;
-    top: -100%;
+    top: 0;
     left: 0;
     width: 100%;
     height: 100%;
@@ -98,6 +102,7 @@ const cardProps = link
     );
     z-index: 2;
     pointer-events: none;
+    transform: translateY(-100%);
   }
 
   .tool-card:hover .scanline {
@@ -106,10 +111,10 @@ const cardProps = link
 
   @keyframes scan {
     from {
-      top: -100%;
+      transform: translateY(-100%);
     }
     to {
-      top: 100%;
+      transform: translateY(100%);
     }
   }
 
@@ -134,7 +139,10 @@ const cardProps = link
     border: 1px solid rgba(var(--accent), 0.3);
     border-radius: var(--radius-sm);
     flex-shrink: 0;
-    transition: all 0.3s ease;
+    transition:
+      border-color 0.3s ease,
+      box-shadow 0.3s ease,
+      transform 0.3s ease;
     overflow: hidden;
   }
 
@@ -158,9 +166,9 @@ const cardProps = link
   }
 
   .tool-title {
-    margin: 0 0 0.35rem 0 !important;
+    margin: 0 0 0.35rem 0;
     font-family: var(--font-title);
-    font-size: 1.1rem !important;
+    font-size: 1.1rem;
     color: rgb(var(--text));
     letter-spacing: -0.01em;
     line-height: 1.2;
@@ -173,7 +181,9 @@ const cardProps = link
     font-size: 0.9rem;
     opacity: 0;
     transform: translateY(2px) translateX(-4px);
-    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    transition:
+      opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+      transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
     color: rgb(var(--accent));
   }
 
@@ -187,9 +197,9 @@ const cardProps = link
   }
 
   .tool-description {
-    margin: 0 !important;
-    font-size: 0.9rem !important;
-    line-height: 1.5 !important;
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
     color: rgba(var(--text), 0.6);
     word-wrap: break-word;
     white-space: normal;
@@ -220,11 +230,11 @@ const cardProps = link
     }
 
     .tool-title {
-      font-size: 1rem !important;
+      font-size: 1rem;
     }
 
     .tool-description {
-      font-size: 0.85rem !important;
+      font-size: 0.85rem;
     }
 
     .external-link-icon {
@@ -236,10 +246,13 @@ const cardProps = link
     .tool-card:hover .scanline {
       animation: none;
     }
-    .tool-card,
-    .tool-icon-container,
-    .external-link-icon {
-      transition: none !important;
+
+    .tool-card:hover {
+      transform: none;
+    }
+
+    .tool-card:hover .tool-icon-container {
+      transform: none;
     }
   }
 </style>

@@ -389,21 +389,17 @@ export const GAMES: Game[] = [
 ];
 
 export const EDUCATION = [
+
     {
-        period: "2023 - 2025",
-        title: "BTS CIEL IR",
-        subtitle: "Cybersécurité, Informatique et Réseaux, Électronique",
-        description:
-            "Formation technique axée sur les systèmes, les réseaux, la sécurité informatique et le développement. J'ai choisi de me recentrer sur un cursus professionnalisant afin de consolider mes compétences techniques par une approche pratique et concrète.",
-    },
-    {
-        period: "2020 - 2022",
+        period: "2023",
         title: "Cursus Ingénieur",
-        subtitle: "Software Engineer Web / Mobile",
+        subtitle: "Software Engineer Web / Mobile - Bachelor",
         description:
-            "Deux années de formation supérieure orientées vers le développement web et mobile. Ce cursus m'a permis d'acquérir des bases solides en architecture logicielle et d'adopter les bonnes pratiques de programmation.",
+            "Formation supérieure orientées vers le développement web, mobile et bas niveau. Ce cursus m'a permis d'acquérir des bases solides en architecture logicielle et d'adopter les bonnes pratiques de programmation.",
     },
 ];
+
+export const SITE_THEME_COLOR = "rgb(10,12,20)";
 
 export const EXPERIENCES = [
     {

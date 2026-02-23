@@ -29,7 +29,7 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
         <div class="owner-info">
             <Image
                 src={profile}
-                alt=''
+                alt=""
                 width={32}
                 height={32}
                 class="avatar"
@@ -83,8 +83,11 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
         background: rgba(var(--bg), 0.5);
         border: 1px solid rgba(var(--accent), 0.1);
         border-radius: var(--radius-md);
-        text-decoration: none;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition:
+            border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+            transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+            background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+            box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         height: 100%;
         overflow: hidden;
     }
@@ -107,6 +110,7 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
         opacity: 0;
         transition: opacity 0.3s ease;
     }
+
     .project-card:hover .glow-layer {
         opacity: 1;
     }
@@ -134,8 +138,8 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
     }
 
     .project-name {
-        margin: 0 !important;
-        font-size: 1.1rem !important;
+        margin: 0;
+        font-size: 1.1rem;
         color: rgb(var(--accent));
         white-space: nowrap;
         overflow: hidden;
@@ -156,7 +160,7 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
 
     .project-description {
         flex-grow: 1;
-        font-size: 0.9rem !important;
+        font-size: 0.9rem;
         color: rgba(var(--text), 0.7);
         line-height: 1.5;
         margin-bottom: 1.5rem;
@@ -200,19 +204,16 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
         }
 
         .project-name {
-            font-size: 1rem !important;
+            font-size: 1rem;
         }
 
         .project-description {
             -webkit-line-clamp: 2;
-            font-size: 0.85rem !important;
+            font-size: 0.85rem;
         }
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .project-card {
-            transition: none;
-        }
         .project-card:hover {
             transform: none;
         }

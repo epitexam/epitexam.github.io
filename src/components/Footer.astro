@@ -103,11 +103,14 @@ const today = new Date();
 	}
 
 	.social-icon {
-		color: rgba(var(--text), 0.4);
-		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		color: rgba(var(--text), 0.4);
+		transition:
+			color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+			transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+			filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
 	.social-icon:hover {
@@ -135,9 +138,6 @@ const today = new Date();
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.social-icon {
-			transition: none;
-		}
 		.social-icon:hover {
 			transform: none;
 		}

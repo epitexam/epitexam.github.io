@@ -39,7 +39,7 @@ const { post } = Astro.props;
                             width={800}
                             height={400}
                             class="post-image"
-                            loading="eager"
+                            loading="lazy"
                         />
                     </div>
                 </div>
@@ -162,15 +162,17 @@ const { post } = Astro.props;
         width: 100%;
         background: linear-gradient(
             145deg,
-            rgba(10, 12, 20, 0.95) 0%,
-            rgba(15, 18, 28, 0.8) 100%
+            rgba(var(--bg), 0.95) 0%,
+            rgba(var(--bg), 0.8) 100%
         );
         border: 1px solid rgba(var(--accent), 0.08);
         border-radius: 12px;
         overflow: hidden;
-        text-decoration: none !important;
+        transition:
+            transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+            border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+            box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         color: inherit;
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         box-shadow:
             0 4px 20px rgba(0, 0, 0, 0.4),
             inset 0 1px 0 rgba(255, 255, 255, 0.05);
@@ -228,9 +230,6 @@ const { post } = Astro.props;
         object-fit: cover;
         transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         filter: brightness(0.9) contrast(1.1);
-        border: none !important;
-        border-radius: 0 !important;
-        background: none !important;
     }
 
     .post-card:hover .post-image {
@@ -265,7 +264,7 @@ const { post } = Astro.props;
     .post-title {
         font-size: clamp(1.75rem, 4vw, 2.25rem);
         font-weight: 700;
-        margin: 0 0 1.25rem 0 !important;
+        margin: 0 0 1.25rem 0;
         line-height: 1.2;
         color: rgb(var(--text));
         transition: color 0.3s ease;
@@ -282,7 +281,7 @@ const { post } = Astro.props;
         font-size: 1.1rem;
         line-height: 1.7;
         color: rgba(var(--text), 0.8);
-        margin-bottom: 1.75rem !important;
+        margin-bottom: 1.75rem;
         font-weight: 400;
         letter-spacing: -0.01em;
     }
@@ -299,7 +298,6 @@ const { post } = Astro.props;
         letter-spacing: 0.02em;
         padding: 0.75rem 0;
         position: relative;
-        transition: all 0.3s ease;
     }
 
     .read-more::after {
@@ -307,14 +305,15 @@ const { post } = Astro.props;
         position: absolute;
         bottom: 0.5rem;
         left: 0;
-        width: 0;
+        width: 100%;
         height: 1px;
         background: linear-gradient(90deg, rgb(var(--accent)), transparent);
-        transition: width 0.3s ease;
+        clip-path: inset(0 100% 0 0);
+        transition: clip-path 0.3s ease;
     }
 
     .post-card:hover .read-more::after {
-        width: 100%;
+        clip-path: inset(0 0% 0 0);
     }
 
     .arrow-icon {
@@ -345,12 +344,12 @@ const { post } = Astro.props;
         }
 
         .post-title {
-            font-size: 1.6rem !important;
+            font-size: 1.6rem;
             line-height: 1.3;
         }
 
         .post-description {
-            font-size: 1rem !important;
+            font-size: 1rem;
             line-height: 1.65;
         }
 
@@ -380,7 +379,7 @@ const { post } = Astro.props;
         }
 
         .post-title {
-            font-size: 1.4rem !important;
+            font-size: 1.4rem;
         }
 
         .post-image-container {
@@ -414,14 +413,6 @@ const { post } = Astro.props;
 
         .badge-dot {
             animation: none;
-        }
-
-        .post-card,
-        .post-image,
-        .arrow-icon,
-        .read-more,
-        .post-title {
-            transition: none !important;
         }
 
         .post-card:hover {

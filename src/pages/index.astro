@@ -25,7 +25,7 @@ if (import.meta.env.SSR) {
 		if (response.ok) {
 			projects = (await response.json()) as Project[];
 		}
-	} catch (error) {
+	} catch {
 		projects = [];
 	}
 }
@@ -46,8 +46,7 @@ for (const post of allPosts) {
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
 	</head>
-
-	<body class="bg-[rgb(var(--bg))]">
+	<body>
 		<Header />
 
 		<main class="stable-layout animate-fadeIn">
@@ -103,6 +102,7 @@ for (const post of allPosts) {
 									height="16"
 									viewBox="0 0 16 16"
 									fill="none"
+									aria-hidden="true"
 								>
 									<path
 										d="M3.5 8H12.5M12.5 8L8.5 4M12.5 8L8.5 12"
@@ -121,7 +121,7 @@ for (const post of allPosts) {
 			<section class="projects-v">
 				<div class="projects-header">
 					<div class="section-badge">
-						<span class="badge-dot"></span>
+						<span class="badge-dot" aria-hidden="true"></span>
 						<span class="badge-text">Projets récents</span>
 					</div>
 					<h2 class="section-title">Mes derniers projets</h2>
@@ -133,7 +133,7 @@ for (const post of allPosts) {
 				<div class="projects-grid">
 					{
 						projects.length > 0 ? (
-							projects.map((repo, i) => (
+							projects.map((repo) => (
 								<GitHubProject project={repo} eager={false} />
 							))
 						) : (
@@ -165,7 +165,6 @@ for (const post of allPosts) {
 		width: 100%;
 		max-width: 960px;
 		margin: 0 auto;
-		border-left: none !important;
 		box-sizing: border-box;
 	}
 
@@ -177,10 +176,10 @@ for (const post of allPosts) {
 		margin-bottom: 5rem;
 	}
 
-	/* ========== HERO SECTION ========== */
+	/* ========== HERO ========== */
 
 	.hero-v {
-		padding-top: 2rem;
+		padding-top: calc(var(--header-height, 60px) + 2rem);
 	}
 
 	.hero-title {
@@ -238,8 +237,9 @@ for (const post of allPosts) {
 		font-family: var(--font-title);
 		font-weight: 600;
 		font-size: 0.95rem;
-		text-decoration: none !important;
-		transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+		transition:
+			transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+			box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 		display: inline-flex;
 		align-items: center;
 		gap: 0.5rem;
@@ -258,10 +258,6 @@ for (const post of allPosts) {
 		);
 		opacity: 0;
 		transition: opacity 0.3s ease;
-	}
-
-	.btn-pill::after {
-		display: none !important;
 	}
 
 	.btn-pill:hover::before {
@@ -385,7 +381,6 @@ for (const post of allPosts) {
 	.projects-fallback a {
 		color: rgb(var(--accent));
 		font-weight: 600;
-		text-decoration: none;
 		transition: color 0.2s ease;
 	}
 
@@ -411,8 +406,13 @@ for (const post of allPosts) {
 		font-family: var(--font-title);
 		font-size: 0.95rem;
 		font-weight: 500;
-		text-decoration: none !important;
-		transition: all 0.3s ease;
+
+		transition:
+			color 0.3s ease,
+			background 0.3s ease,
+			border-color 0.3s ease,
+			transform 0.3s ease,
+			box-shadow 0.3s ease;
 		padding: 0.85rem 1.75rem;
 		border-radius: 8px;
 		background: rgba(var(--accent), 0.02);
@@ -427,6 +427,10 @@ for (const post of allPosts) {
 		box-shadow:
 			0 4px 12px rgba(0, 0, 0, 0.2),
 			0 0 0 1px rgba(var(--accent), 0.1);
+	}
+
+	.arrow-icon {
+		transition: transform 0.3s ease;
 	}
 
 	.view-all-link:hover .arrow-icon {
@@ -445,7 +449,7 @@ for (const post of allPosts) {
 		}
 
 		.hero-v {
-			padding-top: 1rem;
+			padding-top: calc(var(--header-height, 60px) + 1rem);
 		}
 
 		.hero-title {
@@ -501,24 +505,26 @@ for (const post of allPosts) {
 	/* ========== ACCESSIBILITY ========== */
 
 	@media (prefers-reduced-motion: reduce) {
-		.avatar-link,
 		.btn-pill,
 		.view-all-link,
-		.btn-icon {
-			transition: none !important;
+		.btn-icon,
+		.arrow-icon {
+			transition: none;
+		}
+
+		.btn-solid:hover,
+		.btn-outline:hover,
+		.view-all-link:hover {
+			transform: none;
 		}
 
 		.badge-dot {
-			animation: none !important;
+			animation: none;
 		}
-	}
 
-	/* ========== DARK MODE SUPPORT ========== */
-
-	@media (prefers-color-scheme: light) {
-		.view-all-link {
-			background: rgba(var(--accent), 0.05);
-			border-color: rgba(var(--accent), 0.1);
+		.stable-layout {
+			animation: none;
+			opacity: 1;
 		}
 	}
 </style>
