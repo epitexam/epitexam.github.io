@@ -21,6 +21,7 @@ const cardProps = link
 
 <CardTag class="tool-card group" {...cardProps}>
   <div class="scanline"></div>
+  <div class="card-glow"></div>
   <div class="tool-inner">
     <div class="tool-icon-container">
       <span class="tool-icon-text">{icon}</span>
@@ -43,6 +44,7 @@ const cardProps = link
 </CardTag>
 
 <style>
+  /* ── Card shell ─────────────────────────────────────── */
   .tool-card {
     position: relative;
     width: 100%;
@@ -51,20 +53,35 @@ const cardProps = link
     background: linear-gradient(
       145deg,
       rgba(var(--bg), 1) 0%,
-      rgba(var(--accent), 0.08) 100%
+      rgba(var(--accent), 0.06) 100%
     );
-    border: 1px solid rgba(var(--accent), 0.15);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
+    box-shadow:
+      var(--shadow-soft),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
     transition:
       transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
       border-color 0.4s cubic-bezier(0.23, 1, 0.32, 1),
       box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     overflow: hidden;
     isolation: isolate;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
     color: inherit;
+  }
+
+  :global(html.light) .tool-card {
+    background: linear-gradient(
+      145deg,
+      rgb(var(--bg)) 0%,
+      rgba(var(--accent), 0.07) 100%
+    );
+    border-color: rgba(var(--accent), 0.25);
+    box-shadow:
+      0 2px 8px rgba(var(--text), 0.08),
+      0 1px 2px rgba(var(--text), 0.06),
+      inset 0 1px 0 rgba(255, 255, 255, 0.9);
   }
 
   a.tool-card {
@@ -72,41 +89,84 @@ const cardProps = link
   }
 
   a.tool-card:focus-visible {
-    outline: 2px solid rgb(var(--accent));
+    outline: 2px solid var(--color-accent);
     outline-offset: 2px;
   }
 
   .tool-card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(var(--accent), 0.4);
-    box-shadow: 0 10px 30px -10px rgba(var(--accent), 0.3);
+    transform: translateY(-4px);
+    border-color: rgba(var(--accent), 0.45);
+    box-shadow:
+      0 12px 36px -8px rgba(var(--accent), 0.28),
+      0 4px 12px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
   }
 
-  a.tool-card:hover {
-    box-shadow: 0 12px 40px -10px rgba(var(--accent), 0.4);
+  :global(html.light) .tool-card:hover {
+    border-color: rgba(var(--accent), 0.55);
+    box-shadow:
+      0 12px 36px -8px rgba(var(--accent), 0.22),
+      0 4px 12px rgba(var(--text), 0.1),
+      inset 0 1px 0 rgba(255, 255, 255, 0.95);
   }
 
-  /* ========== SCANLINE ========== */
+  /* ── Glow blob (ambient light behind card) ──────────── */
+  .card-glow {
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: radial-gradient(
+      ellipse at 50% 0%,
+      rgba(var(--accent), 0.18) 0%,
+      transparent 65%
+    );
+    opacity: 0;
+    z-index: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
 
+  .tool-card:hover .card-glow {
+    opacity: 1;
+  }
+
+  :global(html.light) .card-glow {
+    background: radial-gradient(
+      ellipse at 50% 0%,
+      rgba(var(--accent), 0.28) 0%,
+      transparent 65%
+    );
+  }
+
+  /* ── Scanline ────────────────────────────────────────── */
   .scanline {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 50%;
     background: linear-gradient(
       to bottom,
-      transparent,
-      rgba(var(--accent), 0.08),
-      transparent
+      transparent 0%,
+      rgba(var(--accent), 0.13) 50%,
+      transparent 100%
     );
     z-index: 2;
     pointer-events: none;
     transform: translateY(-100%);
   }
 
+  :global(html.light) .scanline {
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(var(--accent), 0.3) 50%,
+      transparent 100%
+    );
+  }
+
   .tool-card:hover .scanline {
-    animation: scan 2.5s linear infinite;
+    animation: scan 3s linear infinite;
   }
 
   @keyframes scan {
@@ -114,10 +174,11 @@ const cardProps = link
       transform: translateY(-100%);
     }
     to {
-      transform: translateY(100%);
+      transform: translateY(300%);
     }
   }
 
+  /* ── Inner layout ────────────────────────────────────── */
   .tool-inner {
     display: flex;
     align-items: flex-start;
@@ -127,6 +188,7 @@ const cardProps = link
     position: relative;
   }
 
+  /* ── Icon ────────────────────────────────────────────── */
   .tool-icon-container {
     display: flex;
     align-items: center;
@@ -135,15 +197,22 @@ const cardProps = link
     height: 3rem;
     min-width: 3rem;
     min-height: 3rem;
-    background: rgba(var(--bg), 0.8);
-    border: 1px solid rgba(var(--accent), 0.3);
+    background: rgba(var(--accent), 0.08);
+    border: 1px solid rgba(var(--accent), 0.28);
     border-radius: var(--radius-sm);
     flex-shrink: 0;
     transition:
       border-color 0.3s ease,
       box-shadow 0.3s ease,
-      transform 0.3s ease;
+      transform 0.3s ease,
+      background 0.3s ease;
     overflow: hidden;
+  }
+
+  :global(html.light) .tool-icon-container {
+    background: rgba(var(--accent), 0.1);
+    border-color: rgba(var(--accent), 0.4);
+    box-shadow: 0 1px 4px rgba(var(--text), 0.08);
   }
 
   .tool-icon-text {
@@ -155,11 +224,19 @@ const cardProps = link
   }
 
   .tool-card:hover .tool-icon-container {
-    border-color: rgb(var(--accent));
-    box-shadow: 0 0 15px rgba(var(--accent), 0.3);
-    transform: scale(1.05) rotate(-3deg);
+    border-color: var(--color-accent);
+    background: rgba(var(--accent), 0.15);
+    box-shadow: 0 0 16px rgba(var(--accent), 0.35);
+    transform: scale(1.06) rotate(-3deg);
   }
 
+  :global(html.light) .tool-card:hover .tool-icon-container {
+    box-shadow:
+      0 0 16px rgba(var(--accent), 0.3),
+      0 2px 8px rgba(var(--text), 0.1);
+  }
+
+  /* ── Content ─────────────────────────────────────────── */
   .tool-content {
     flex: 1;
     min-width: 0;
@@ -169,12 +246,17 @@ const cardProps = link
     margin: 0 0 0.35rem 0;
     font-family: var(--font-title);
     font-size: 1.1rem;
-    color: rgb(var(--text));
+    color: var(--color-text);
     letter-spacing: -0.01em;
     line-height: 1.2;
     display: flex;
     align-items: center;
     gap: 0.4rem;
+    transition: color 0.3s ease;
+  }
+
+  :global(html.light) .tool-title {
+    color: rgb(var(--text));
   }
 
   .external-link-icon {
@@ -184,7 +266,7 @@ const cardProps = link
     transition:
       opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1),
       transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-    color: rgb(var(--accent));
+    color: var(--color-accent);
   }
 
   a.tool-card:hover .external-link-icon {
@@ -193,7 +275,7 @@ const cardProps = link
   }
 
   .tool-card:hover .tool-title {
-    color: rgb(var(--accent));
+    color: var(--color-accent);
   }
 
   .tool-description {
@@ -203,17 +285,22 @@ const cardProps = link
     color: rgba(var(--text), 0.6);
     word-wrap: break-word;
     white-space: normal;
+    transition: color 0.3s ease;
+  }
+
+  :global(html.light) .tool-description {
+    color: rgba(var(--text), 0.7);
   }
 
   a.tool-card:hover .tool-description {
-    color: rgba(var(--text), 0.75);
+    color: rgba(var(--text), 0.8);
   }
 
+  /* ── Responsive ──────────────────────────────────────── */
   @media (max-width: 640px) {
     .tool-card {
       padding: 1rem;
     }
-
     .tool-inner {
       gap: 1rem;
     }
@@ -228,29 +315,25 @@ const cardProps = link
     .tool-icon-text {
       font-size: 0.9rem;
     }
-
     .tool-title {
       font-size: 1rem;
     }
-
     .tool-description {
       font-size: 0.85rem;
     }
-
     .external-link-icon {
       font-size: 0.8rem;
     }
   }
 
+  /* ── Reduced motion ──────────────────────────────────── */
   @media (prefers-reduced-motion: reduce) {
     .tool-card:hover .scanline {
       animation: none;
     }
-
     .tool-card:hover {
       transform: none;
     }
-
     .tool-card:hover .tool-icon-container {
       transform: none;
     }

@@ -20,10 +20,11 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
     href={project.html_url}
     target="_blank"
     rel="noopener noreferrer"
-    class="project-card group"
+    class="project-card"
     aria-label={`Voir le projet ${project.name}`}
 >
-    <div class="glow-layer"></div>
+    <div class="scanline"></div>
+    <div class="card-glow"></div>
 
     <header class="project-header">
         <div class="owner-info">
@@ -36,7 +37,6 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
                 loading={eager ? "eager" : "lazy"}
                 fetchpriority={eager ? "high" : "auto"}
             />
-
             <h3 class="project-name">{project.name}</h3>
         </div>
 
@@ -72,150 +72,297 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
         </div>
         <span class="date-info">Màj {pushDate}</span>
     </footer>
-</a>
 
-<style>
-    .project-card {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-        padding: 1.5rem;
-        background: rgba(var(--bg), 0.5);
-        border: 1px solid rgba(var(--accent), 0.1);
-        border-radius: var(--radius-md);
-        transition:
-            border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-            transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-            background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-            box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        height: 100%;
-        overflow: hidden;
-    }
-
-    .project-card:hover {
-        border-color: rgba(var(--accent), 0.4);
-        transform: translateY(-4px);
-        background: rgba(var(--accent), 0.03);
-        box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.5);
-    }
-
-    .glow-layer {
-        position: absolute;
-        inset: 0;
-        background: radial-gradient(
-            circle at top right,
-            rgba(var(--accent), 0.05),
-            transparent 70%
-        );
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    .project-card:hover .glow-layer {
-        opacity: 1;
-    }
-
-    .project-header {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        gap: 1rem;
-        margin-bottom: 1rem;
-        z-index: 1;
-    }
-
-    .owner-info {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        min-width: 0;
-    }
-
-    .avatar {
-        border-radius: 50%;
-        border: 1px solid rgba(var(--accent), 0.2);
-        flex-shrink: 0;
-    }
-
-    .project-name {
-        margin: 0;
-        font-size: 1.1rem;
-        color: rgb(var(--accent));
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .language-badge {
-        font-family: var(--font-title);
-        font-size: 0.7rem;
-        text-transform: lowercase;
-        padding: 0.2rem 0.6rem;
-        border-radius: 4px;
-        background: rgba(var(--accent), 0.1);
-        color: rgb(var(--accent));
-        border: 1px solid rgba(var(--accent), 0.2);
-        white-space: nowrap;
-    }
-
-    .project-description {
-        flex-grow: 1;
-        font-size: 0.9rem;
-        color: rgba(var(--text), 0.7);
-        line-height: 1.5;
-        margin-bottom: 1.5rem;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-    }
-
-    .project-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-family: var(--font-title);
-        font-size: 0.75rem;
-        padding-top: 1rem;
-        border-top: 1px solid rgba(var(--accent), 0.05);
-        color: rgba(var(--text), 0.5);
-    }
-
-    .stat-item {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-    }
-
-    .stat-item svg {
-        width: 14px;
-        height: 14px;
-        color: rgb(var(--accent));
-    }
-
-    @media (max-width: 640px) {
+    <style>
+        /* ── Card shell ─────────────────────────────────────── */
         .project-card {
-            padding: 1.25rem;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            background: linear-gradient(
+                145deg,
+                rgba(var(--bg), 1) 0%,
+                rgba(var(--accent), 0.06) 100%
+            );
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            box-shadow:
+                var(--shadow-soft),
+                inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            transition:
+                border-color 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+                transform 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+                box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            height: 100%;
+            overflow: hidden;
+            isolation: isolate;
+            color: inherit;
         }
 
+        :global(html.light) .project-card {
+            background: linear-gradient(
+                145deg,
+                rgb(var(--bg)) 0%,
+                rgba(var(--accent), 0.07) 100%
+            );
+            border-color: rgba(var(--accent), 0.25);
+            box-shadow:
+                0 2px 8px rgba(var(--text), 0.08),
+                0 1px 2px rgba(var(--text), 0.06),
+                inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        }
+
+        .project-card:hover {
+            border-color: rgba(var(--accent), 0.45);
+            transform: translateY(-4px);
+            box-shadow:
+                0 12px 36px -8px rgba(var(--accent), 0.28),
+                0 4px 12px rgba(0, 0, 0, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        }
+
+        :global(html.light) .project-card:hover {
+            border-color: rgba(var(--accent), 0.55);
+            box-shadow:
+                0 12px 36px -8px rgba(var(--accent), 0.22),
+                0 4px 12px rgba(var(--text), 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.95);
+        }
+
+        /* ── Glow blob ───────────────────────────────────────── */
+        .card-glow {
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            background: radial-gradient(
+                ellipse at 100% 0%,
+                rgba(var(--accent), 0.16) 0%,
+                transparent 65%
+            );
+            opacity: 0;
+            z-index: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .project-card:hover .card-glow {
+            opacity: 1;
+        }
+
+        :global(html.light) .card-glow {
+            background: radial-gradient(
+                ellipse at 100% 0%,
+                rgba(var(--accent), 0.28) 0%,
+                transparent 65%
+            );
+        }
+
+        /* ── Scanline ────────────────────────────────────────── */
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                rgba(var(--accent), 0.1) 50%,
+                transparent 100%
+            );
+            z-index: 2;
+            pointer-events: none;
+            transform: translateY(-100%);
+        }
+
+        :global(html.light) .scanline {
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                rgba(var(--accent), 0.28) 50%,
+                transparent 100%
+            );
+        }
+
+        .project-card:hover .scanline {
+            animation: scan 4s linear infinite;
+        }
+
+        @keyframes scan {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(300%);
+            }
+        }
+
+        /* ── Header ──────────────────────────────────────────── */
         .project-header {
-            flex-direction: row;
-            gap: 0.5rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 3;
+        }
+
+        .owner-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-width: 0;
+        }
+
+        .avatar {
+            border-radius: 50%;
+            border: 1px solid rgba(var(--accent), 0.25);
+            flex-shrink: 0;
+            transition:
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+        }
+
+        :global(html.light) .avatar {
+            border-color: rgba(var(--accent), 0.4);
+            box-shadow: 0 1px 4px rgba(var(--text), 0.08);
+        }
+
+        .project-card:hover .avatar {
+            border-color: var(--color-accent);
+            box-shadow: 0 0 10px rgba(var(--accent), 0.3);
         }
 
         .project-name {
-            font-size: 1rem;
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--color-accent);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: text-shadow 0.3s ease;
         }
 
+        .project-card:hover .project-name {
+            text-shadow: 0 0 12px rgba(var(--accent), 0.45);
+        }
+
+        :global(html.light) .project-card:hover .project-name {
+            text-shadow: 0 0 12px rgba(var(--accent), 0.3);
+        }
+
+        /* ── Language badge ──────────────────────────────────── */
+        .language-badge {
+            font-family: var(--font-title);
+            font-size: 0.7rem;
+            text-transform: lowercase;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            background: rgba(var(--accent), 0.1);
+            color: var(--color-accent);
+            border: 1px solid rgba(var(--accent), 0.2);
+            white-space: nowrap;
+            transition:
+                background 0.3s ease,
+                border-color 0.3s ease;
+        }
+
+        :global(html.light) .language-badge {
+            background: rgba(var(--accent), 0.12);
+            border-color: rgba(var(--accent), 0.35);
+        }
+
+        .project-card:hover .language-badge {
+            background: rgba(var(--accent), 0.18);
+            border-color: rgba(var(--accent), 0.45);
+        }
+
+        /* ── Description ─────────────────────────────────────── */
         .project-description {
-            -webkit-line-clamp: 2;
-            font-size: 0.85rem;
+            flex-grow: 1;
+            font-size: 0.9rem;
+            color: rgba(var(--text), 0.65);
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            position: relative;
+            z-index: 3;
+            transition: color 0.3s ease;
         }
-    }
 
-    @media (prefers-reduced-motion: reduce) {
-        .project-card:hover {
-            transform: none;
+        :global(html.light) .project-description {
+            color: rgba(var(--text), 0.72);
         }
-    }
-</style>
+
+        .project-card:hover .project-description {
+            color: rgba(var(--text), 0.82);
+        }
+
+        /* ── Footer ──────────────────────────────────────────── */
+        .project-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-title);
+            font-size: 0.75rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(var(--accent), 0.08);
+            color: rgba(var(--text), 0.5);
+            position: relative;
+            z-index: 3;
+            transition: border-color 0.3s ease;
+        }
+
+        :global(html.light) .project-footer {
+            border-top-color: rgba(var(--accent), 0.18);
+            color: rgba(var(--text), 0.55);
+        }
+
+        .project-card:hover .project-footer {
+            border-top-color: rgba(var(--accent), 0.2);
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .stat-item svg {
+            width: 14px;
+            height: 14px;
+            color: var(--color-accent);
+        }
+
+        /* ── Responsive ──────────────────────────────────────── */
+        @media (max-width: 640px) {
+            .project-card {
+                padding: 1.25rem;
+            }
+
+            .project-name {
+                font-size: 1rem;
+            }
+
+            .project-description {
+                -webkit-line-clamp: 2;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* ── Reduced motion ──────────────────────────────────── */
+        @media (prefers-reduced-motion: reduce) {
+            .project-card:hover {
+                transform: none;
+            }
+            .project-card:hover .scanline {
+                animation: none;
+            }
+        }
+    </style>
+</a>

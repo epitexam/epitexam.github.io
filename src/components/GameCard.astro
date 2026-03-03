@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import Tag from "./Tag.astro";
 
 interface Props {
     rank: number;
@@ -244,7 +245,7 @@ const isTopOne = game.rank === 1;
             <footer class="game-footer">
                 <div class="game-tags">
                     {game.tags.map((tag) => (
-                        <span class="tag">#{tag}</span>
+                        <Tag tag={tag} />
                     ))}
                 </div>
             </footer>
@@ -268,11 +269,12 @@ const isTopOne = game.rank === 1;
             rgba(var(--bg), 1),
             rgba(var(--accent), 0.02)
         );
-        border: 1px solid rgba(var(--accent), 0.15);
+        border: 1px solid var(--color-border);
         border-radius: 12px;
         transition:
             border-color 0.3s ease,
             box-shadow 0.3s ease;
+        box-shadow: var(--shadow-soft);
     }
 
     .game-card:hover {
@@ -315,7 +317,7 @@ const isTopOne = game.rank === 1;
         font-family: var(--font-title);
         font-size: 1.1rem;
         font-weight: 700;
-        color: rgb(var(--accent));
+        color: var(--color-accent);
     }
 
     .crown-icon {
@@ -347,7 +349,7 @@ const isTopOne = game.rank === 1;
         font-family: var(--font-title);
         font-size: 0.85rem;
         font-weight: 600;
-        color: rgb(var(--accent));
+        color: var(--color-accent);
         text-transform: uppercase;
         letter-spacing: 0.05em;
     }
@@ -355,7 +357,7 @@ const isTopOne = game.rank === 1;
     .top-one-badge svg {
         width: 16px;
         height: 16px;
-        color: rgb(var(--accent));
+        color: var(--color-accent);
     }
 
     /* ========== HEADER ========== */
@@ -368,7 +370,7 @@ const isTopOne = game.rank === 1;
         font-size: clamp(1.8rem, 4vw, 2.5rem);
         font-weight: 800;
         margin: 0 0 1rem 0;
-        color: rgb(var(--text));
+        color: var(--color-text);
         letter-spacing: -0.02em;
         line-height: 1.2;
     }
@@ -386,8 +388,8 @@ const isTopOne = game.rank === 1;
         margin: 0 0 2.5rem 0;
         border-radius: var(--radius-md);
         overflow: hidden;
-        border: 1px solid rgba(var(--accent), 0.15);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--color-border);
+        box-shadow: var(--shadow-soft);
     }
 
     .game-img {
@@ -413,7 +415,7 @@ const isTopOne = game.rank === 1;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 1.25rem;
         padding: 1.5rem;
-        background: rgba(0, 0, 0, 0.3);
+        background: rgba(var(--bg), 0.3);
         border: 1px solid rgba(var(--accent), 0.1);
         border-radius: var(--radius-md);
     }
@@ -441,7 +443,7 @@ const isTopOne = game.rank === 1;
 
     .steam-link {
         font-size: 0.95rem;
-        color: rgb(var(--accent));
+        color: var(--color-accent);
         font-weight: 500;
         transition: color 0.2s ease;
     }
@@ -462,7 +464,7 @@ const isTopOne = game.rank === 1;
         font-size: 1.2rem;
         font-weight: 700;
         margin: 0 0 1rem 0;
-        color: rgb(var(--text));
+        color: var(--color-text);
         letter-spacing: -0.01em;
     }
 
@@ -508,7 +510,7 @@ const isTopOne = game.rank === 1;
     }
 
     .pros-list svg {
-        color: rgb(var(--accent));
+        color: var(--color-accent);
     }
 
     .cons-list svg {
@@ -532,7 +534,7 @@ const isTopOne = game.rank === 1;
     }
 
     .highlight-block h3 {
-        color: rgb(var(--accent));
+        color: var(--color-accent);
     }
 
     /* ========== FOOTER & TAGS ========== */
@@ -547,16 +549,6 @@ const isTopOne = game.rank === 1;
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
-    }
-
-    .tag {
-        padding: 0.35rem 0.85rem;
-        font-family: var(--font-title);
-        font-size: 0.8rem;
-        background: rgba(var(--accent), 0.08);
-        border: 1px solid rgba(var(--accent), 0.15);
-        border-radius: 12px;
-        color: rgba(var(--text), 0.7);
     }
 
     /* ========== RESPONSIVE ========== */

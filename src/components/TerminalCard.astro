@@ -52,11 +52,15 @@ const command = "cat -n";
 </div>
 
 <style>
+	/* ── Card shell ─────────────────────────────────────── */
 	.terminal-card {
-		background: rgba(13, 16, 23, 0.95);
-		border: 1px solid var(--accent-10);
+		position: relative;
+		background: rgba(var(--bg), 0.97);
+		border: 1px solid var(--color-border);
 		border-radius: var(--radius-md);
-		box-shadow: var(--shadow-strong);
+		box-shadow:
+			var(--shadow-strong),
+			inset 0 1px 0 rgba(255, 255, 255, 0.04);
 		font-family: var(--font-code);
 		width: 100%;
 		margin: 2rem 0;
@@ -65,40 +69,27 @@ const command = "cat -n";
 		transform-origin: center top;
 	}
 
-	@keyframes terminalEntry {
-		0% {
-			opacity: 0;
-			transform: translateY(20px) scale(0.98);
-			filter: brightness(2);
-		}
-		100% {
-			opacity: 1;
-			transform: translateY(0) scale(1);
-			filter: brightness(1);
-		}
+	:global(html.light) .terminal-card {
+		background: rgb(var(--bg));
+		border-color: rgba(var(--accent), 0.25);
+		box-shadow:
+			0 4px 16px rgba(var(--text), 0.08),
+			0 1px 3px rgba(var(--text), 0.06),
+			inset 0 1px 0 rgba(255, 255, 255, 0.9);
 	}
 
-	.terminal-body {
-		padding: 1.25rem;
-		counter-reset: line;
-		animation: contentFadeIn 0.5s ease-out 0.4s backwards;
-	}
-
-	@keyframes contentFadeIn {
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
-	}
-
+	/* ── Header ──────────────────────────────────────────── */
 	.terminal-header {
 		display: flex;
 		align-items: center;
 		padding: 10px 16px;
-		background: rgba(255, 255, 255, 0.03);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+		background: rgba(var(--text), 0.03);
+		border-bottom: 1px solid var(--color-border);
+	}
+
+	:global(html.light) .terminal-header {
+		background: rgba(var(--accent), 0.05);
+		border-bottom-color: rgba(var(--accent), 0.18);
 	}
 
 	.dots {
@@ -115,13 +106,21 @@ const command = "cat -n";
 	.dot.red {
 		background: #ff5f56;
 	}
-
 	.dot.yellow {
 		background: #ffbd2e;
 	}
-
 	.dot.green {
 		background: #27c93f;
+	}
+
+	:global(html.light) .dot.red {
+		box-shadow: 0 0 4px rgba(255, 95, 86, 0.5);
+	}
+	:global(html.light) .dot.yellow {
+		box-shadow: 0 0 4px rgba(255, 189, 46, 0.5);
+	}
+	:global(html.light) .dot.green {
+		box-shadow: 0 0 4px rgba(39, 201, 63, 0.5);
 	}
 
 	.terminal-title {
@@ -132,6 +131,18 @@ const command = "cat -n";
 		margin-right: 35px;
 	}
 
+	:global(html.light) .terminal-title {
+		color: rgba(var(--text), 0.45);
+	}
+
+	/* ── Body ────────────────────────────────────────────── */
+	.terminal-body {
+		padding: 1.25rem;
+		counter-reset: line;
+		animation: contentFadeIn 0.5s ease-out 0.4s backwards;
+	}
+
+	/* ── Prompt ──────────────────────────────────────────── */
 	.prompt-line {
 		display: flex;
 		flex-wrap: wrap;
@@ -141,7 +152,7 @@ const command = "cat -n";
 	}
 
 	.user {
-		color: rgb(var(--accent));
+		color: var(--color-accent);
 		opacity: 0.9;
 		font-weight: 600;
 	}
@@ -150,18 +161,31 @@ const command = "cat -n";
 		color: rgba(var(--text), 0.4);
 	}
 
+	:global(html.light) .sep {
+		color: rgba(var(--text), 0.35);
+	}
+
 	.path {
-		color: #5fafff;
+		color: var(--color-accent);
 	}
 
 	.symbol {
 		color: rgba(var(--text), 0.6);
 	}
 
+	:global(html.light) .symbol {
+		color: rgba(var(--text), 0.5);
+	}
+
 	.command {
 		color: rgba(var(--text), 1);
 	}
 
+	:global(html.light) .command {
+		color: rgba(var(--text), 0.9);
+	}
+
+	/* ── File content ────────────────────────────────────── */
 	.file-content {
 		margin-bottom: 12px;
 	}
@@ -186,6 +210,10 @@ const command = "cat -n";
 		padding-top: 1px;
 	}
 
+	:global(html.light) .line::before {
+		color: rgba(var(--accent), 0.35);
+	}
+
 	.line-text {
 		color: rgba(var(--text), 0.85);
 		white-space: pre-wrap;
@@ -193,6 +221,11 @@ const command = "cat -n";
 		font-size: 0.95rem;
 	}
 
+	:global(html.light) .line-text {
+		color: rgba(var(--text), 0.82);
+	}
+
+	/* ── Curseur ─────────────────────────────────────────── */
 	.last-prompt {
 		margin-top: 16px;
 	}
@@ -201,10 +234,37 @@ const command = "cat -n";
 		display: inline-block;
 		width: 8px;
 		height: 1.1em;
-		background: rgb(var(--accent));
+		background: var(--color-accent);
 		box-shadow: var(--glow);
 		animation: blink 1.2s step-end infinite;
 		vertical-align: middle;
+	}
+
+	:global(html.light) .cursor {
+		box-shadow: 0 0 8px rgba(var(--accent), 0.45);
+	}
+
+	/* ── Keyframes ───────────────────────────────────────── */
+	@keyframes terminalEntry {
+		0% {
+			opacity: 0;
+			transform: translateY(20px) scale(0.98);
+			filter: brightness(2);
+		}
+		100% {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+			filter: brightness(1);
+		}
+	}
+
+	@keyframes contentFadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
 	}
 
 	@keyframes blink {
@@ -217,6 +277,7 @@ const command = "cat -n";
 		}
 	}
 
+	/* ── Responsive ──────────────────────────────────────── */
 	@media (max-width: 600px) {
 		.terminal-body {
 			padding: 1rem;
@@ -245,17 +306,14 @@ const command = "cat -n";
 		.line {
 			padding-left: 0;
 		}
-
 		.line::before {
 			display: none;
 		}
 	}
 
+	/* ── Reduced motion ──────────────────────────────────── */
 	@media (prefers-reduced-motion: reduce) {
-		.terminal-card {
-			animation: none;
-		}
-
+		.terminal-card,
 		.terminal-body {
 			animation: none;
 		}

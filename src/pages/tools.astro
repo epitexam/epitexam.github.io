@@ -3,36 +3,137 @@ import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import ToolSection from "../components/ToolSection.astro";
-import { SECTIONS, SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import { SECTIONS, EXPERTISE, SITE_DESCRIPTION, SITE_TITLE } from "../consts";
 ---
 
 <!doctype html>
 <html lang="fr">
     <head>
-        <BaseHead title={`${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+        <BaseHead
+            title={`Outils & Expertise - ${SITE_TITLE}`}
+            description={SITE_DESCRIPTION}
+        />
     </head>
-    <body
-        class="flex flex-col min-h-screen bg-[rgb(var(--bg))] text-[rgb(var(--text))] font-mono"
-    >
+    <body>
         <Header />
 
-        <main
-            class="grow flex flex-col items-center text-center animate-fadeIn"
-        >
-            <div class="max-w-6xl w-full">
-                <div class="my-10">
-                    {
-                        SECTIONS.map((section) => (
-                            <ToolSection
-                                title={section.title}
-                                tools={section.tools}
-                            />
-                        ))
-                    }
-                </div>
+        <main class="tools-container">
+            <div class="page-header">
+                <h1 class="page-title">Stack & Expertise</h1>
+                <p class="page-desc">
+                    Les technologies que je maîtrise, les outils avec lesquels
+                    je travaille au quotidien, et les domaines où je me
+                    spécialise.
+                </p>
             </div>
+
+            <section class="section">
+                <h2 class="section-title">Domaines d'expertise</h2>
+                <ToolSection
+                    title=""
+                    tools={EXPERTISE.map((item) => ({
+                        icon: item.title[0],
+                        name: item.title,
+                        description: item.description,
+                    }))}
+                />
+            </section>
+
+            <section class="section">
+                <h2 class="section-title">Stack technique</h2>
+                {
+                    SECTIONS.map((section) => (
+                        <ToolSection
+                            title={section.title}
+                            tools={section.tools}
+                        />
+                    ))
+                }
+            </section>
         </main>
 
         <Footer />
     </body>
 </html>
+
+<style>
+    .tools-container {
+        width: 100%;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: calc(var(--header-height, 60px) + 4rem) 1.5rem 4rem;
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+    }
+
+    /* ========== PAGE HEADER ========== */
+
+    .page-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .page-title {
+        font-family: var(--font-title);
+        font-size: clamp(2rem, 6vw, 3rem);
+        font-weight: 700;
+        color: var(--color-text);
+        margin: 0;
+    }
+
+    .page-desc {
+        font-size: 1.05rem;
+        color: var(--color-muted);
+        max-width: 560px;
+        line-height: 1.7;
+        margin: 0;
+    }
+
+    /* ========== SECTIONS ========== */
+
+    .section-title {
+        font-size: clamp(1.3rem, 4vw, 1.75rem);
+        font-weight: 700;
+        margin-bottom: 2rem;
+        color: var(--color-text);
+        position: relative;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid var(--color-border);
+    }
+
+    .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 100px;
+        height: 2px;
+        background: var(--color-accent);
+        clip-path: inset(0 50% 0 0);
+        transition: clip-path 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .section:hover .section-title::after {
+        clip-path: inset(0 0% 0 0);
+    }
+
+    /* ========== RESPONSIVE ========== */
+
+    @media (max-width: 768px) {
+        .tools-container {
+            gap: 3rem;
+            padding-top: calc(var(--header-height, 60px) + 2rem);
+        }
+    }
+
+    /* ========== ACCESSIBILITY ========== */
+
+    @media (prefers-reduced-motion: reduce) {
+        .section-title::after {
+            clip-path: inset(0 0% 0 0);
+            transition: none;
+        }
+    }
+</style>

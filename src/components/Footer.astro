@@ -62,7 +62,7 @@ const today = new Date();
 		background: linear-gradient(
 			90deg,
 			transparent,
-			rgb(var(--accent)),
+			var(--color-accent),
 			transparent
 		);
 		opacity: 0.3;
@@ -84,17 +84,17 @@ const today = new Date();
 	}
 
 	.copyright-symbol {
-		color: rgb(var(--accent));
+		color: var(--color-accent);
 	}
 
 	.site-name {
-		color: rgb(var(--text));
+		color: var(--color-text);
 		font-weight: 700;
 		transition: color 0.3s ease;
 	}
 
 	.footer:hover .site-name {
-		color: rgb(var(--accent));
+		color: var(--color-accent);
 	}
 
 	.social-links {
@@ -114,7 +114,7 @@ const today = new Date();
 	}
 
 	.social-icon:hover {
-		color: rgb(var(--accent));
+		color: var(--color-accent);
 		transform: translateY(-3px);
 		filter: drop-shadow(0 0 8px rgba(var(--accent), 0.4));
 	}

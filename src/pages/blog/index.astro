@@ -124,7 +124,7 @@ const EAGER_LIMIT = 3;
 		width: 100%;
 		overflow: hidden;
 		border-radius: 12px;
-		border: 1px solid rgba(var(--accent), 0.1);
+		border: 1px solid var(--color-border);
 		margin-bottom: 1.5rem;
 		background: rgba(var(--accent), 0.02);
 	}
@@ -140,7 +140,7 @@ const EAGER_LIMIT = 3;
 
 	.title {
 		margin: 0;
-		color: rgb(var(--text));
+		color: var(--color-text);
 		line-height: 1.2;
 		font-weight: 600;
 		font-size: 1.25rem;
@@ -153,14 +153,14 @@ const EAGER_LIMIT = 3;
 
 	.date {
 		margin-top: 0.75rem;
-		color: rgba(var(--text), 0.6);
+		color: var(--color-muted);
 		font-size: 0.9rem;
 	}
 
 	/* ========== HOVER ========== */
 
 	.blog-card:hover .title {
-		color: rgb(var(--accent));
+		color: var(--color-accent);
 	}
 
 	.blog-card:hover .card-img {

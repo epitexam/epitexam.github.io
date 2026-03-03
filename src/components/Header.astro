@@ -86,12 +86,15 @@ const navLinks = [
 </header>
 
 <script>
-	const toggle = document.getElementById(
-		"menu-toggle",
-	) as HTMLButtonElement | null;
-	const menu = document.getElementById("mobile-menu") as HTMLElement | null;
+	(function () {
+		const toggle = document.getElementById("menu-toggle");
+		const menu = document.getElementById("mobile-menu");
 
-	if (toggle && menu) {
+		if (!toggle || !menu) return;
+
+		if (toggle.hasAttribute("data-menu-initialized")) return;
+		toggle.setAttribute("data-menu-initialized", "true");
+
 		const isOpen = () => toggle.getAttribute("aria-expanded") === "true";
 
 		const open = () => {
@@ -108,33 +111,49 @@ const navLinks = [
 			menu.classList.remove("is-open");
 		};
 
-		toggle.addEventListener("click", () => (isOpen() ? close() : open()));
+		const handleToggleClick = (e: MouseEvent) => {
+			e.stopPropagation();
+			isOpen() ? close() : open();
+		};
 
+		const handleLinkClick = () => close();
+
+		const mediaQuery = window.matchMedia("(min-width: 769px)");
+		const handleMediaChange = (e: MediaQueryListEvent) => {
+			if (e.matches) close();
+		};
+
+		toggle.addEventListener("click", handleToggleClick);
 		menu.querySelectorAll("a").forEach((link) =>
-			link.addEventListener("click", close),
+			link.addEventListener("click", handleLinkClick),
 		);
+		mediaQuery.addEventListener("change", handleMediaChange);
 
-		let resizeFrame: number;
-		window.addEventListener("resize", () => {
-			cancelAnimationFrame(resizeFrame);
-			resizeFrame = requestAnimationFrame(() => {
-				if (window.innerWidth > 768) close();
-			});
-		});
-	}
+		window.addEventListener(
+			"astro:before-swap",
+			() => {
+				toggle.removeEventListener("click", handleToggleClick);
+				menu.querySelectorAll("a").forEach((link) =>
+					link.removeEventListener("click", handleLinkClick),
+				);
+				mediaQuery.removeEventListener("change", handleMediaChange);
+				toggle.removeAttribute("data-menu-initialized");
+			},
+			{ once: true },
+		);
+	})();
 </script>
 
 <style>
 	/* ========== HEADER ========== */
-
 	.site-header {
 		position: fixed;
 		top: 0;
 		left: 0;
 		right: 0;
 		z-index: 1000;
-		background: rgb(var(--bg));
-		border-bottom: 1px solid rgba(var(--accent), 0.15);
+		background: var(--color-bg);
+		border-bottom: 1px solid var(--color-border);
 	}
 
 	.header-inner {
@@ -149,23 +168,21 @@ const navLinks = [
 	}
 
 	/* ========== BRAND ========== */
-
 	.brand-link {
 		font-family: var(--font-title);
 		font-weight: 700;
 		font-size: 1rem;
-		color: rgb(var(--text));
+		color: var(--color-text);
 		white-space: nowrap;
 		flex-shrink: 0;
 		transition: color 0.2s ease;
 	}
 
 	.brand-link:hover {
-		color: rgb(var(--accent));
+		color: var(--color-accent);
 	}
 
 	/* ========== DESKTOP NAV ========== */
-
 	.desktop-nav {
 		display: flex;
 		align-items: center;
@@ -173,7 +190,6 @@ const navLinks = [
 	}
 
 	/* ========== HEADER RIGHT ========== */
-
 	.header-right {
 		display: flex;
 		align-items: center;
@@ -189,11 +205,10 @@ const navLinks = [
 	}
 
 	.social-link:hover {
-		color: rgb(var(--accent));
+		color: var(--color-accent);
 	}
 
 	/* ========== BURGER ========== */
-
 	.menu-toggle {
 		display: none;
 		align-items: center;
@@ -204,17 +219,16 @@ const navLinks = [
 		background: none;
 		border: 1px solid rgba(var(--accent), 0.25);
 		border-radius: 4px;
-		color: rgb(var(--accent));
+		color: var(--color-accent);
 		cursor: pointer;
 		-webkit-tap-highlight-color: transparent;
 	}
 
 	/* ========== MOBILE MENU ========== */
-
 	.mobile-menu {
 		display: none;
 		flex-direction: column;
-		background: rgb(var(--bg));
+		background: var(--color-bg);
 		border-top: 1px solid rgba(var(--accent), 0.1);
 	}
 
@@ -231,7 +245,6 @@ const navLinks = [
 	}
 
 	/* ========== RESPONSIVE ========== */
-
 	@media (max-width: 768px) {
 		.desktop-nav {
 			display: none;
