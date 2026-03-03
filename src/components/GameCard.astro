@@ -1,35 +1,27 @@
 ---
 import { Image } from "astro:assets";
+import Tag from "./Tag.astro";
 
 interface Props {
     rank: number;
     title: string;
     slug: string;
-
     image: string;
     imageAlt: string;
-
     developer: string;
     publisher?: string;
     engine?: string;
-
     releaseDate: string;
     genre: string;
-
     platforms: string[];
     storeUrl?: string;
-
     playtime?: string;
-
     description: string;
     summary: string;
-
     pros: string[];
     cons: string[];
-
     linux: string;
     rankingReason: string;
-
     tags?: string[];
 }
 
@@ -52,11 +44,7 @@ const isTopOne = game.rank === 1;
         {
             isTopOne && (
                 <div class="top-one-badge">
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
+                    <svg viewBox="0 0 24 24" fill="none">
                         <path
                             d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
                             fill="currentColor"
@@ -95,7 +83,6 @@ const isTopOne = game.rank === 1;
                     >{game.developer}</span
                 >
             </div>
-
             {
                 game.publisher && (
                     <div class="meta-item">
@@ -104,7 +91,6 @@ const isTopOne = game.rank === 1;
                     </div>
                 )
             }
-
             <div class="meta-item">
                 <span class="meta-label">Sortie</span>
                 <time
@@ -121,17 +107,14 @@ const isTopOne = game.rank === 1;
                     }
                 </time>
             </div>
-
             <div class="meta-item">
                 <span class="meta-label">Genre</span>
                 <span class="meta-value" itemprop="genre">{game.genre}</span>
             </div>
-
             <div class="meta-item">
                 <span class="meta-label">Plateformes</span>
                 <span class="meta-value">{game.platforms.join(", ")}</span>
             </div>
-
             {
                 game.engine && (
                     <div class="meta-item">
@@ -140,7 +123,6 @@ const isTopOne = game.rank === 1;
                     </div>
                 )
             }
-
             {
                 game.playtime && (
                     <div class="meta-item">
@@ -149,7 +131,6 @@ const isTopOne = game.rank === 1;
                     </div>
                 )
             }
-
             {
                 game.storeUrl && (
                     <div class="meta-item meta-link">
@@ -181,11 +162,7 @@ const isTopOne = game.rank === 1;
                     {
                         game.pros.map((pro) => (
                             <li>
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
+                                <svg viewBox="0 0 24 24" fill="none">
                                     <path
                                         d="M20 6L9 17l-5-5"
                                         stroke="currentColor"
@@ -200,18 +177,13 @@ const isTopOne = game.rank === 1;
                     }
                 </ul>
             </div>
-
             <div class="content-block">
                 <h3>Points faibles</h3>
                 <ul class="cons-list">
                     {
                         game.cons.map((con) => (
                             <li>
-                                <svg
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
+                                <svg viewBox="0 0 24 24" fill="none">
                                     <path
                                         d="M18 6L6 18M6 6l12 12"
                                         stroke="currentColor"
@@ -244,7 +216,7 @@ const isTopOne = game.rank === 1;
             <footer class="game-footer">
                 <div class="game-tags">
                     {game.tags.map((tag) => (
-                        <span class="tag">#{tag}</span>
+                        <Tag tag={tag} />
                     ))}
                 </div>
             </footer>
@@ -253,26 +225,25 @@ const isTopOne = game.rank === 1;
 </article>
 
 <style>
-    /* ========== CARD CONTAINER ========== */
-
     li::before {
         content: none !important;
     }
 
     .game-card {
         position: relative;
-        margin: 0 0 5rem 0;
+        margin: 0 0 5rem;
         padding: 2.5rem;
         background: linear-gradient(
             145deg,
             rgba(var(--bg), 1),
             rgba(var(--accent), 0.02)
         );
-        border: 1px solid rgba(var(--accent), 0.15);
-        border-radius: 12px;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
         transition:
-            border-color 0.3s ease,
-            box-shadow 0.3s ease;
+            border-color var(--duration-base) ease,
+            box-shadow var(--duration-base) ease;
+        box-shadow: var(--shadow-soft);
     }
 
     .game-card:hover {
@@ -295,8 +266,6 @@ const isTopOne = game.rank === 1;
         box-shadow: 0 12px 40px rgba(var(--accent), 0.25);
     }
 
-    /* ========== RANK BADGE ========== */
-
     .rank-badge {
         position: absolute;
         top: -1rem;
@@ -307,15 +276,14 @@ const isTopOne = game.rank === 1;
         padding: 0.5rem 1.25rem;
         background: rgba(var(--bg), 0.95);
         border: 2px solid rgba(var(--accent), 0.3);
-        border-radius: 50px;
-        backdrop-filter: blur(10px);
+        border-radius: 999px;
     }
 
     .rank-number {
         font-family: var(--font-title);
         font-size: 1.1rem;
         font-weight: 700;
-        color: rgb(var(--accent));
+        color: var(--color-accent);
     }
 
     .crown-icon {
@@ -333,8 +301,6 @@ const isTopOne = game.rank === 1;
         }
     }
 
-    /* ========== TOP ONE BADGE ========== */
-
     .top-one-badge {
         display: inline-flex;
         align-items: center;
@@ -343,11 +309,11 @@ const isTopOne = game.rank === 1;
         margin-bottom: 1rem;
         background: rgba(var(--accent), 0.1);
         border: 1px solid rgba(var(--accent), 0.3);
-        border-radius: 50px;
+        border-radius: 999px;
         font-family: var(--font-title);
         font-size: 0.85rem;
         font-weight: 600;
-        color: rgb(var(--accent));
+        color: var(--color-accent);
         text-transform: uppercase;
         letter-spacing: 0.05em;
     }
@@ -355,10 +321,8 @@ const isTopOne = game.rank === 1;
     .top-one-badge svg {
         width: 16px;
         height: 16px;
-        color: rgb(var(--accent));
+        color: var(--color-accent);
     }
-
-    /* ========== HEADER ========== */
 
     .game-header {
         margin-bottom: 2rem;
@@ -367,8 +331,8 @@ const isTopOne = game.rank === 1;
     .game-title {
         font-size: clamp(1.8rem, 4vw, 2.5rem);
         font-weight: 800;
-        margin: 0 0 1rem 0;
-        color: rgb(var(--text));
+        margin: 0 0 1rem;
+        color: var(--color-text);
         letter-spacing: -0.02em;
         line-height: 1.2;
     }
@@ -380,14 +344,12 @@ const isTopOne = game.rank === 1;
         max-width: 800px;
     }
 
-    /* ========== IMAGE ========== */
-
     .game-image {
-        margin: 0 0 2.5rem 0;
+        margin: 0 0 2.5rem;
         border-radius: var(--radius-md);
         overflow: hidden;
-        border: 1px solid rgba(var(--accent), 0.15);
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--color-border);
+        box-shadow: var(--shadow-soft);
     }
 
     .game-img {
@@ -395,14 +357,12 @@ const isTopOne = game.rank === 1;
         height: auto;
         object-fit: cover;
         display: block;
-        transition: transform 0.3s ease;
+        transition: transform var(--duration-base) ease;
     }
 
     .game-card:hover .game-img {
         transform: scale(1.02);
     }
-
-    /* ========== META GRID ========== */
 
     .game-meta {
         margin-bottom: 2.5rem;
@@ -413,7 +373,7 @@ const isTopOne = game.rank === 1;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 1.25rem;
         padding: 1.5rem;
-        background: rgba(0, 0, 0, 0.3);
+        background: rgba(var(--bg), 0.3);
         border: 1px solid rgba(var(--accent), 0.1);
         border-radius: var(--radius-md);
     }
@@ -441,16 +401,14 @@ const isTopOne = game.rank === 1;
 
     .steam-link {
         font-size: 0.95rem;
-        color: rgb(var(--accent));
+        color: var(--color-accent);
         font-weight: 500;
-        transition: color 0.2s ease;
+        transition: color var(--duration-fast) ease;
     }
 
     .steam-link:hover {
         color: rgba(var(--accent), 0.8);
     }
-
-    /* ========== CONTENT ========== */
 
     .game-content {
         display: flex;
@@ -461,8 +419,8 @@ const isTopOne = game.rank === 1;
     .content-block h3 {
         font-size: 1.2rem;
         font-weight: 700;
-        margin: 0 0 1rem 0;
-        color: rgb(var(--text));
+        margin: 0 0 1rem;
+        color: var(--color-text);
         letter-spacing: -0.01em;
     }
 
@@ -477,8 +435,6 @@ const isTopOne = game.rank === 1;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 2rem;
     }
-
-    /* ========== LISTS ========== */
 
     .pros-list,
     .cons-list {
@@ -508,9 +464,8 @@ const isTopOne = game.rank === 1;
     }
 
     .pros-list svg {
-        color: rgb(var(--accent));
+        color: var(--color-accent);
     }
-
     .cons-list svg {
         color: rgba(var(--text), 0.4);
     }
@@ -522,8 +477,6 @@ const isTopOne = game.rank === 1;
         color: rgba(var(--text), 0.8);
     }
 
-    /* ========== HIGHLIGHT BLOCK ========== */
-
     .highlight-block {
         padding: 1.5rem;
         background: rgba(var(--accent), 0.05);
@@ -532,10 +485,8 @@ const isTopOne = game.rank === 1;
     }
 
     .highlight-block h3 {
-        color: rgb(var(--accent));
+        color: var(--color-accent);
     }
-
-    /* ========== FOOTER & TAGS ========== */
 
     .game-footer {
         margin-top: 1.5rem;
@@ -549,52 +500,33 @@ const isTopOne = game.rank === 1;
         gap: 0.5rem;
     }
 
-    .tag {
-        padding: 0.35rem 0.85rem;
-        font-family: var(--font-title);
-        font-size: 0.8rem;
-        background: rgba(var(--accent), 0.08);
-        border: 1px solid rgba(var(--accent), 0.15);
-        border-radius: 12px;
-        color: rgba(var(--text), 0.7);
-    }
-
-    /* ========== RESPONSIVE ========== */
-
     @media (max-width: 768px) {
         .game-card {
             padding: 1.5rem;
-            margin: 0 0 3rem 0;
+            margin: 0 0 3rem;
         }
-
         .rank-badge {
             left: 1rem;
             padding: 0.4rem 1rem;
         }
-
         .rank-number {
             font-size: 1rem;
         }
-
         .game-title {
             font-size: 1.8rem;
         }
-
         .game-description {
             font-size: 1rem;
         }
-
         .meta-grid {
             grid-template-columns: 1fr;
             gap: 1rem;
             padding: 1.25rem;
         }
-
         .content-columns {
             grid-template-columns: 1fr;
             gap: 1.5rem;
         }
-
         .highlight-block {
             padding: 1.25rem;
         }
@@ -604,25 +536,20 @@ const isTopOne = game.rank === 1;
         .game-card {
             padding: 1.25rem;
         }
-
         .top-one-badge {
             font-size: 0.75rem;
             padding: 0.4rem 0.85rem;
         }
-
         .top-one-badge svg {
             width: 14px;
             height: 14px;
         }
     }
 
-    /* ========== ACCESSIBILITY ========== */
-
     @media (prefers-reduced-motion: reduce) {
         .game-card:hover .game-img {
             transform: none;
         }
-
         .crown-icon {
             animation: none;
         }

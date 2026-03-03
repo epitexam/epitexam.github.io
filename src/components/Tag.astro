@@ -1,0 +1,41 @@
+---
+interface Props {
+    tag: string;
+}
+
+const { tag } = Astro.props;
+---
+
+<span class="tag">
+    {tag}
+</span>
+
+<style>
+    .tag {
+        display: inline-flex;
+        align-items: center;
+
+        padding: 0.2rem 0.55rem;
+
+        font-size: 0.72rem;
+        font-family: var(--font-code);
+        letter-spacing: 0.02em;
+
+        color: rgba(var(--text), 0.85);
+
+        background: var(--accent-05);
+        border: 1px solid var(--accent-20);
+        border-radius: var(--radius-sm);
+
+        transition:
+            background 0.2s ease,
+            border-color 0.2s ease,
+            color 0.2s ease;
+    }
+
+    .tag:hover {
+        background: var(--accent-10);
+        border-color: var(--accent-40);
+        color: var(--color-text);
+    }
+</style>

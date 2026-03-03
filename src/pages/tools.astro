@@ -2,37 +2,362 @@
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
+import ExpertiseCard from "../components/ExpertiseCard.astro";
 import ToolSection from "../components/ToolSection.astro";
-import { SECTIONS, SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import {
+    SECTIONS,
+    EXPERTISE,
+    SITE_DESCRIPTION,
+    SITE_TITLE,
+    TAB_SHORT,
+} from "../consts";
+
+const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
 ---
 
 <!doctype html>
 <html lang="fr">
     <head>
-        <BaseHead title={`${SITE_TITLE}`} description={SITE_DESCRIPTION} />
+        <BaseHead
+            title={`Stack & Expertise - ${SITE_TITLE}`}
+            description={SITE_DESCRIPTION}
+        />
     </head>
-    <body
-        class="flex flex-col min-h-screen bg-[rgb(var(--bg))] text-[rgb(var(--text))] font-mono"
-    >
+    <body>
         <Header />
 
-        <main
-            class="grow flex flex-col items-center text-center animate-fadeIn"
-        >
-            <div class="max-w-6xl w-full">
-                <div class="my-10">
+        <main class="tools-main">
+            <header class="page-header">
+                <h1 class="page-title">Ce avec quoi<br />je travaille.</h1>
+                <p class="page-desc">
+                    Mes domaines de spécialisation et les technologies que
+                    j'utilise au quotidien.
+                </p>
+            </header>
+
+            <section
+                class="content-section"
+                aria-labelledby="expertise-heading"
+            >
+                <div class="section-heading">
+                    <h2 id="expertise-heading" class="section-title">
+                        Domaines d'expertise
+                    </h2>
+                    <span class="section-count"
+                        >{EXPERTISE.length} domaines</span
+                    >
+                </div>
+                <div class="expertise-grid">
                     {
-                        SECTIONS.map((section) => (
-                            <ToolSection
-                                title={section.title}
-                                tools={section.tools}
+                        EXPERTISE.map((item, index) => (
+                            <ExpertiseCard
+                                index={index}
+                                title={item.title}
+                                description={item.description}
                             />
                         ))
                     }
                 </div>
-            </div>
+            </section>
+
+            <section class="content-section" aria-labelledby="stack-heading">
+                <div class="section-heading">
+                    <h2 id="stack-heading" class="section-title">
+                        Stack technique
+                    </h2>
+                    <span class="section-count">{totalTools} outils</span>
+                </div>
+
+                <div class="tabs-scroll-wrapper">
+                    <div
+                        class="tabs-nav"
+                        role="tablist"
+                        aria-label="Catégories"
+                    >
+                        {
+                            SECTIONS.map((section, i) => (
+                                <button
+                                    class:list={[
+                                        "tab-btn",
+                                        { active: i === 0 },
+                                    ]}
+                                    role="tab"
+                                    aria-selected={i === 0 ? "true" : "false"}
+                                    aria-controls={`panel-${i}`}
+                                    id={`tab-${i}`}
+                                    data-tab={i}
+                                    aria-label={section.title}
+                                >
+                                    <span class="tab-label-full">
+                                        {section.title}
+                                    </span>
+                                    <span
+                                        class="tab-label-short"
+                                        aria-hidden="true"
+                                    >
+                                        {TAB_SHORT[section.title] ??
+                                            section.title}
+                                    </span>
+                                </button>
+                            ))
+                        }
+                    </div>
+                </div>
+
+                <div class="panels">
+                    {
+                        SECTIONS.map((section, i) => (
+                            <div
+                                class:list={["tab-panel", { active: i === 0 }]}
+                                role="tabpanel"
+                                id={`panel-${i}`}
+                                aria-labelledby={`tab-${i}`}
+                                hidden={i !== 0}
+                            >
+                                <ToolSection title="" tools={section.tools} />
+                            </div>
+                        ))
+                    }
+                </div>
+            </section>
         </main>
 
         <Footer />
     </body>
 </html>
+
+<style>
+    .tools-main {
+        gap: 5rem;
+    }
+
+    .page-header {
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+    }
+
+    .page-title {
+        font-size: clamp(2rem, 6vw, 3rem);
+        font-weight: 700;
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+        margin: 0;
+        animation: none;
+    }
+
+    .page-desc {
+        font-size: 1rem;
+        color: var(--color-muted);
+        max-width: 480px;
+        line-height: 1.7;
+        margin: 0;
+    }
+
+    .content-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1.75rem;
+        width: 100%;
+    }
+
+    .section-heading {
+        display: flex;
+        align-items: baseline;
+        gap: 1rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .section-title {
+        font-size: clamp(1.1rem, 3vw, 1.4rem);
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        margin: 0;
+        animation: none;
+    }
+
+    .section-count {
+        font-family: var(--font-code);
+        font-size: 0.7rem;
+        color: var(--color-accent);
+        opacity: 0.5;
+        letter-spacing: 0.04em;
+    }
+
+    .expertise-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+
+    .tabs-scroll-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 2px;
+        margin-inline: calc(-1 * var(--content-padding-mobile));
+        padding-inline: var(--content-padding-mobile);
+    }
+
+    .tabs-scroll-wrapper::-webkit-scrollbar {
+        display: none;
+    }
+
+    .tabs-nav {
+        display: flex;
+        gap: 0.5rem;
+
+        flex-wrap: wrap;
+        width: max-content;
+        max-width: 100%;
+    }
+
+    .tab-btn {
+        font-family: var(--font-title);
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        padding: 0.4rem 0.9rem;
+        border-radius: 999px;
+        border: 1px solid var(--color-border);
+        background: transparent;
+        color: var(--color-muted);
+        cursor: pointer;
+        flex-shrink: 0;
+        white-space: nowrap;
+        transition:
+            color var(--duration-fast) ease,
+            background var(--duration-fast) ease,
+            border-color var(--duration-fast) ease,
+            box-shadow var(--duration-fast) ease;
+    }
+
+    .tab-btn:hover:not(.active) {
+        color: var(--color-text);
+        border-color: rgba(var(--accent), 0.3);
+        background: rgba(var(--accent), 0.04);
+    }
+
+    .tab-btn.active {
+        background: rgba(var(--accent), 0.1);
+        border-color: rgba(var(--accent), 0.4);
+        color: var(--color-accent);
+        box-shadow: var(--glow);
+    }
+
+    .tab-label-short {
+        display: none;
+    }
+    .tab-label-full {
+        display: inline;
+    }
+
+    .tab-panel {
+        display: none;
+        animation: fadePanel var(--duration-fast) var(--ease-spring) both;
+    }
+
+    .tab-panel.active {
+        display: block;
+    }
+
+    @keyframes fadePanel {
+        from {
+            opacity: 0;
+            transform: translateY(5px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .tools-main {
+            gap: 3.5rem;
+        }
+        .expertise-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .page-title br {
+            display: none;
+        }
+
+        .tabs-nav {
+            flex-wrap: nowrap;
+        }
+
+        .tab-label-full {
+            display: none;
+        }
+        .tab-label-short {
+            display: inline;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .expertise-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .tab-btn {
+            font-size: 0.68rem;
+            padding: 0.35rem 0.8rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .tab-panel {
+            animation: none;
+        }
+    }
+</style>
+
+<script>
+    (function () {
+        const tabs = document.querySelectorAll<HTMLButtonElement>(".tab-btn");
+        const panels = document.querySelectorAll<HTMLElement>(".tab-panel");
+
+        if (!tabs.length) return;
+
+        function activate(index: number) {
+            tabs.forEach((t, i) => {
+                const on = i === index;
+                t.classList.toggle("active", on);
+                t.setAttribute("aria-selected", String(on));
+            });
+            panels.forEach((p, i) => {
+                const on = i === index;
+                p.classList.toggle("active", on);
+                p.hidden = !on;
+            });
+
+            const activeTab = tabs[index];
+            activeTab?.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+                inline: "nearest",
+            });
+        }
+
+        tabs.forEach((tab, i) => {
+            tab.addEventListener("click", () => activate(i));
+
+            tab.addEventListener("keydown", (e: KeyboardEvent) => {
+                if (e.key === "ArrowRight") {
+                    e.preventDefault();
+                    const next = (i + 1) % tabs.length;
+                    activate(next);
+                    (tabs[next] as HTMLElement).focus();
+                }
+                if (e.key === "ArrowLeft") {
+                    e.preventDefault();
+                    const prev = (i - 1 + tabs.length) % tabs.length;
+                    activate(prev);
+                    (tabs[prev] as HTMLElement).focus();
+                }
+            });
+        });
+    })();
+</script>

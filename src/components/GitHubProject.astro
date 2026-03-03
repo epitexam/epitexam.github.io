@@ -20,10 +20,11 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
     href={project.html_url}
     target="_blank"
     rel="noopener noreferrer"
-    class="project-card group"
+    class="project-card"
     aria-label={`Voir le projet ${project.name}`}
 >
-    <div class="glow-layer"></div>
+    <div class="scanline"></div>
+    <div class="card-glow"></div>
 
     <header class="project-header">
         <div class="owner-info">
@@ -36,10 +37,8 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
                 loading={eager ? "eager" : "lazy"}
                 fetchpriority={eager ? "high" : "auto"}
             />
-
             <h3 class="project-name">{project.name}</h3>
         </div>
-
         {
             project.language && (
                 <span class="language-badge">{project.language}</span>
@@ -80,39 +79,81 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
         display: flex;
         flex-direction: column;
         padding: 1.5rem;
-        background: rgba(var(--bg), 0.5);
-        border: 1px solid rgba(var(--accent), 0.1);
+        background: linear-gradient(
+            145deg,
+            rgba(var(--bg), 1) 0%,
+            rgba(var(--accent), 0.06) 100%
+        );
+        border: 1px solid var(--color-border);
         border-radius: var(--radius-md);
+        box-shadow:
+            var(--shadow-soft),
+            inset 0 1px 0 rgba(255, 255, 255, 0.04);
         transition:
-            border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-            transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-            background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-            box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-color var(--duration-base) var(--ease-spring),
+            transform var(--duration-base) var(--ease-spring),
+            box-shadow var(--duration-base) var(--ease-spring);
         height: 100%;
         overflow: hidden;
+        isolation: isolate;
+        color: inherit;
     }
 
     .project-card:hover {
-        border-color: rgba(var(--accent), 0.4);
+        border-color: rgba(var(--accent), 0.45);
         transform: translateY(-4px);
-        background: rgba(var(--accent), 0.03);
-        box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.5);
+        box-shadow:
+            0 12px 36px -8px rgba(var(--accent), 0.28),
+            inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
 
-    .glow-layer {
+    .card-glow {
         position: absolute;
-        inset: 0;
+        inset: -1px;
+        border-radius: inherit;
         background: radial-gradient(
-            circle at top right,
-            rgba(var(--accent), 0.05),
-            transparent 70%
+            ellipse at 100% 0%,
+            rgba(var(--accent), 0.16) 0%,
+            transparent 65%
         );
         opacity: 0;
-        transition: opacity 0.3s ease;
+        z-index: 0;
+        pointer-events: none;
+        transition: opacity var(--duration-base) ease;
     }
 
-    .project-card:hover .glow-layer {
+    .project-card:hover .card-glow {
         opacity: 1;
+    }
+
+    .scanline {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background: linear-gradient(
+            to bottom,
+            transparent 0%,
+            rgba(var(--accent), 0.1) 50%,
+            transparent 100%
+        );
+        z-index: 2;
+        pointer-events: none;
+        transform: translateY(-100%);
+    }
+
+    .project-card:hover .scanline {
+        animation: scan 4s linear infinite;
+    }
+
+    @keyframes scan {
+        from {
+            transform: translateY(-100%);
+        }
+        to {
+            transform: translateY(300%);
+        }
     }
 
     .project-header {
@@ -121,7 +162,8 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
         justify-content: space-between;
         gap: 1rem;
         margin-bottom: 1rem;
-        z-index: 1;
+        position: relative;
+        z-index: 3;
     }
 
     .owner-info {
@@ -133,17 +175,31 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
 
     .avatar {
         border-radius: 50%;
-        border: 1px solid rgba(var(--accent), 0.2);
+        border: 1px solid rgba(var(--accent), 0.25);
         flex-shrink: 0;
+        transition:
+            border-color var(--duration-base) ease,
+            box-shadow var(--duration-base) ease;
+    }
+
+    .project-card:hover .avatar {
+        border-color: var(--color-accent);
+        box-shadow: 0 0 10px rgba(var(--accent), 0.3);
     }
 
     .project-name {
         margin: 0;
         font-size: 1.1rem;
-        color: rgb(var(--accent));
+        color: var(--color-accent);
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        transition: text-shadow var(--duration-base) ease;
+        animation: none;
+    }
+
+    .project-card:hover .project-name {
+        text-shadow: 0 0 12px rgba(var(--accent), 0.45);
     }
 
     .language-badge {
@@ -151,23 +207,39 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
         font-size: 0.7rem;
         text-transform: lowercase;
         padding: 0.2rem 0.6rem;
-        border-radius: 4px;
+        border-radius: var(--radius-sm);
         background: rgba(var(--accent), 0.1);
-        color: rgb(var(--accent));
+        color: var(--color-accent);
         border: 1px solid rgba(var(--accent), 0.2);
         white-space: nowrap;
+        flex-shrink: 0;
+        transition:
+            background var(--duration-fast) ease,
+            border-color var(--duration-fast) ease;
+    }
+
+    .project-card:hover .language-badge {
+        background: rgba(var(--accent), 0.18);
+        border-color: rgba(var(--accent), 0.45);
     }
 
     .project-description {
         flex-grow: 1;
         font-size: 0.9rem;
-        color: rgba(var(--text), 0.7);
+        color: rgba(var(--text), 0.65);
         line-height: 1.5;
         margin-bottom: 1.5rem;
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
+        position: relative;
+        z-index: 3;
+        transition: color var(--duration-base) ease;
+    }
+
+    .project-card:hover .project-description {
+        color: rgba(var(--text), 0.82);
     }
 
     .project-footer {
@@ -177,8 +249,15 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
         font-family: var(--font-title);
         font-size: 0.75rem;
         padding-top: 1rem;
-        border-top: 1px solid rgba(var(--accent), 0.05);
+        border-top: 1px solid rgba(var(--accent), 0.08);
         color: rgba(var(--text), 0.5);
+        position: relative;
+        z-index: 3;
+        transition: border-color var(--duration-base) ease;
+    }
+
+    .project-card:hover .project-footer {
+        border-top-color: rgba(var(--accent), 0.2);
     }
 
     .stat-item {
@@ -190,23 +269,16 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
     .stat-item svg {
         width: 14px;
         height: 14px;
-        color: rgb(var(--accent));
+        color: var(--color-accent);
     }
 
     @media (max-width: 640px) {
         .project-card {
             padding: 1.25rem;
         }
-
-        .project-header {
-            flex-direction: row;
-            gap: 0.5rem;
-        }
-
         .project-name {
             font-size: 1rem;
         }
-
         .project-description {
             -webkit-line-clamp: 2;
             font-size: 0.85rem;
@@ -216,6 +288,9 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
     @media (prefers-reduced-motion: reduce) {
         .project-card:hover {
             transform: none;
+        }
+        .project-card:hover .scanline {
+            animation: none;
         }
     }
 </style>

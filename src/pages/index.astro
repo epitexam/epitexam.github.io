@@ -49,7 +49,7 @@ for (const post of allPosts) {
 	<body>
 		<Header />
 
-		<main class="stable-layout animate-fadeIn">
+		<main class="home-main">
 			<section class="hero-v">
 				<Avatar />
 
@@ -59,9 +59,9 @@ for (const post of allPosts) {
 				</h1>
 
 				<p class="hero-description">
-					Passionné par l'embarqué, le web et les systèmes connectés.<br
-					/>
-					Je conçois des solutions performantes du frontend au backend.
+					Passionné par l'embarqué, le web et les systèmes connectés.
+					Je conçois des solutions performantes du frontend au
+					backend.
 				</p>
 
 				<div class="cta-group">
@@ -71,15 +71,25 @@ for (const post of allPosts) {
 						rel="noopener noreferrer"
 						class="btn-pill btn-solid"
 					>
-						<span class="btn-icon">→</span>
+						<svg
+							width="16"
+							height="16"
+							viewBox="0 0 16 16"
+							fill="currentColor"
+							aria-hidden="true"
+						>
+							<path
+								d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+							></path>
+						</svg>
 						GitHub
 					</a>
-					<a href="/blog" class="btn-pill btn-outline">
-						Blog technique
-					</a>
+					<a href="/blog" class="btn-pill btn-outline"
+						>Blog technique</a
+					>
 				</div>
 
-				<div class="hash-list">
+				<div class="hash-list" aria-label="Technologies">
 					<span>#WebDev</span>
 					<span>#LowLevel</span>
 					<span>#Embedded</span>
@@ -90,16 +100,15 @@ for (const post of allPosts) {
 
 			{
 				latestPost && (
-					<div>
+					<div class="blog-section">
 						<LatestPost post={latestPost} />
-
 						<div class="blog-footer">
 							<a href="/blog" class="view-all-link">
 								Voir tous les articles
 								<svg
 									class="arrow-icon"
-									width="16"
-									height="16"
+									width="15"
+									height="15"
 									viewBox="0 0 16 16"
 									fill="none"
 									aria-hidden="true"
@@ -118,13 +127,15 @@ for (const post of allPosts) {
 				)
 			}
 
-			<section class="projects-v">
+			<section class="projects-v" aria-labelledby="projects-heading">
 				<div class="projects-header">
 					<div class="section-badge">
 						<span class="badge-dot" aria-hidden="true"></span>
-						<span class="badge-text">Projets récents</span>
+						<span>Projets récents</span>
 					</div>
-					<h2 class="section-title">Mes derniers projets</h2>
+					<h2 id="projects-heading" class="section-title">
+						Mes derniers projets
+					</h2>
 					<p class="section-subtitle">
 						Une sélection de mes projets les plus récents sur GitHub
 					</p>
@@ -158,45 +169,33 @@ for (const post of allPosts) {
 </html>
 
 <style>
-	.stable-layout {
-		display: flex;
-		flex-direction: column;
+	.home-main {
 		align-items: center;
-		width: 100%;
-		max-width: 960px;
-		margin: 0 auto;
-		box-sizing: border-box;
+		gap: 5rem;
 	}
-
-	section {
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		margin-bottom: 5rem;
-	}
-
-	/* ========== HERO ========== */
 
 	.hero-v {
-		padding-top: calc(var(--header-height, 60px) + 2rem);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
 	}
 
 	.hero-title {
 		text-align: center;
-		font-size: clamp(2.5rem, 7vw, 4rem);
+		font-size: clamp(2.2rem, 7vw, 4rem);
 		line-height: 1.1;
-		margin-bottom: 1.5rem;
-		max-width: 900px;
+		margin: 0 0 1.25rem;
 		font-weight: 800;
-		letter-spacing: -0.02em;
+		letter-spacing: -0.025em;
+		animation: none;
 	}
 
 	.title-accent {
 		background: linear-gradient(
 			135deg,
 			rgb(var(--accent)),
-			rgba(var(--accent), 0.6)
+			rgba(var(--accent), 0.55)
 		);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
@@ -205,241 +204,243 @@ for (const post of allPosts) {
 
 	.hero-description {
 		text-align: center;
-		max-width: 700px;
-		font-size: 1.15rem;
+		max-width: 580px;
+		font-size: 1.05rem;
 		line-height: 1.8;
-		color: rgba(var(--text), 0.75);
-		margin-bottom: 3rem;
-		font-weight: 400;
+		color: var(--color-muted);
+		margin: 0 0 2.5rem;
 	}
 
 	.cta-group {
 		display: flex;
 		gap: 1rem;
-		margin-bottom: 3rem;
+		margin-bottom: 2rem;
+		flex-wrap: wrap;
+		justify-content: center;
 	}
-
-	.hash-list {
-		display: flex;
-		gap: 1.5rem;
-		font-family: var(--font-title);
-		font-size: 0.8rem;
-		color: rgba(var(--text), 0.4);
-		letter-spacing: 0.05em;
-		font-weight: 500;
-	}
-
-	/* ========== BUTTONS ========== */
 
 	.btn-pill {
-		padding: 0.9rem 2.5rem;
-		border-radius: 50px;
+		padding: 0.8rem 1.75rem;
+		border-radius: 999px;
 		font-family: var(--font-title);
 		font-weight: 600;
-		font-size: 0.95rem;
-		transition:
-			transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
-			box-shadow 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+		font-size: 0.85rem;
+		letter-spacing: 0.02em;
 		display: inline-flex;
 		align-items: center;
-		gap: 0.5rem;
-		position: relative;
-		overflow: hidden;
-	}
-
-	.btn-pill::before {
-		content: "";
-		position: absolute;
-		inset: 0;
-		background: linear-gradient(
-			135deg,
-			rgba(255, 255, 255, 0.1),
-			transparent
-		);
-		opacity: 0;
-		transition: opacity 0.3s ease;
-	}
-
-	.btn-pill:hover::before {
-		opacity: 1;
+		gap: 0.55rem;
+		transition:
+			transform var(--duration-base) var(--ease-spring),
+			box-shadow var(--duration-base) ease,
+			filter var(--duration-fast) ease;
 	}
 
 	.btn-solid {
-		background: rgb(var(--text));
-		color: rgb(var(--bg));
-		box-shadow: 0 4px 16px rgba(var(--text), 0.2);
+		background: var(--color-accent);
+		color: var(--color-bg);
+		border: 1px solid transparent;
+		box-shadow: 0 2px 12px rgba(var(--accent), 0.3);
 	}
 
 	.btn-solid:hover {
 		transform: translateY(-3px);
-		box-shadow: 0 8px 24px rgba(var(--text), 0.3);
+		box-shadow: 0 6px 20px rgba(var(--accent), 0.4);
+		filter: brightness(1.06);
 	}
 
 	.btn-outline {
-		border: 2px solid rgba(var(--text), 0.2);
-		color: rgb(var(--text));
+		background: transparent;
+		color: var(--color-text);
+		border: 1px solid rgba(var(--accent), 0.3);
 	}
 
 	.btn-outline:hover {
 		transform: translateY(-3px);
-		border-color: rgba(var(--accent), 0.5);
-		box-shadow: 0 4px 16px rgba(var(--accent), 0.2);
+		border-color: rgba(var(--accent), 0.6);
+		background: rgba(var(--accent), 0.06);
+		box-shadow: 0 4px 14px rgba(var(--accent), 0.18);
 	}
 
-	.btn-icon {
-		font-size: 1.2rem;
-		transition: transform 0.3s ease;
-	}
-
-	.btn-pill:hover .btn-icon {
-		transform: translateX(4px);
-	}
-
-	/* ========== PROJECTS SECTION ========== */
-
-	.projects-v {
-		margin-top: 2rem;
-	}
-
-	.projects-header {
-		text-align: center;
-		margin-bottom: 3rem;
-	}
-
-	.section-badge {
-		display: inline-flex;
-		align-items: center;
+	.hash-list {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
 		gap: 0.5rem;
-		padding: 0.5rem 1rem;
-		background: rgba(var(--accent), 0.05);
-		border: 1px solid rgba(var(--accent), 0.15);
-		border-radius: 50px;
-		margin-bottom: 1.5rem;
-		font-size: 0.75rem;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		color: rgba(var(--text), 0.6);
 		font-family: var(--font-title);
+		font-size: 0.7rem;
+		letter-spacing: 0.06em;
 	}
 
-	.badge-dot {
-		width: 6px;
-		height: 6px;
-		background: rgb(var(--accent));
-		border-radius: 50%;
-		animation: pulse 2s ease-in-out infinite;
+	.hash-list span {
+		padding: 0.28rem 0.7rem;
+		border-radius: 999px;
+		background: rgba(var(--accent), 0.05);
+		border: 1px solid rgba(var(--accent), 0.12);
+		color: rgba(var(--text), 0.42);
+		transition:
+			color var(--duration-fast) ease,
+			border-color var(--duration-fast) ease,
+			background var(--duration-fast) ease;
 	}
 
-	@keyframes pulse {
-		0%,
-		100% {
-			opacity: 1;
-		}
-		50% {
-			opacity: 0.5;
-		}
+	.hash-list span:hover {
+		color: var(--color-accent);
+		border-color: rgba(var(--accent), 0.35);
+		background: rgba(var(--accent), 0.08);
 	}
 
-	.section-title {
-		font-size: clamp(2rem, 5vw, 2.8rem);
-		font-weight: 700;
-		margin-bottom: 1rem;
-		letter-spacing: -0.02em;
-	}
-
-	.section-subtitle {
-		font-size: 1.05rem;
-		color: rgba(var(--text), 0.6);
-		max-width: 600px;
-		margin: 0 auto;
-		line-height: 1.6;
-	}
-
-	.projects-grid {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 1.5rem;
+	.blog-section {
 		width: 100%;
-		margin-bottom: 2rem;
 	}
-
-	.projects-fallback {
-		grid-column: span 2;
-		padding: 4rem 2rem;
-		border: 2px dashed rgba(var(--accent), 0.1);
-		border-radius: 12px;
-		text-align: center;
-		background: rgba(var(--accent), 0.02);
-	}
-
-	.projects-fallback p {
-		color: rgba(var(--text), 0.5);
-		margin-bottom: 1.5rem;
-		font-size: 1.05rem;
-	}
-
-	.projects-fallback a {
-		color: rgb(var(--accent));
-		font-weight: 600;
-		transition: color 0.2s ease;
-	}
-
-	.projects-fallback a:hover {
-		color: rgb(var(--text));
-	}
-
-	/* ========== BLOG FOOTER ========== */
 
 	.blog-footer {
 		width: 100%;
-		text-align: center;
-		padding-top: 2.5rem;
-		margin-top: 1.5rem;
-		border-top: 1px solid rgba(var(--accent), 0.08);
+		display: flex;
+		justify-content: center;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--color-border);
 	}
 
 	.view-all-link {
 		display: inline-flex;
 		align-items: center;
-		gap: 0.75rem;
-		color: rgba(var(--text), 0.7);
+		gap: 0.55rem;
 		font-family: var(--font-title);
-		font-size: 0.95rem;
-		font-weight: 500;
-
+		font-size: 0.78rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		color: var(--color-muted);
+		padding: 0.65rem 1.4rem;
+		border-radius: 999px;
+		border: 1px solid rgba(var(--accent), 0.15);
+		background: rgba(var(--accent), 0.03);
 		transition:
-			color 0.3s ease,
-			background 0.3s ease,
-			border-color 0.3s ease,
-			transform 0.3s ease,
-			box-shadow 0.3s ease;
-		padding: 0.85rem 1.75rem;
-		border-radius: 8px;
-		background: rgba(var(--accent), 0.02);
-		border: 1px solid rgba(var(--accent), 0.05);
+			color var(--duration-fast) ease,
+			border-color var(--duration-fast) ease,
+			background var(--duration-fast) ease,
+			transform var(--duration-base) var(--ease-spring),
+			box-shadow var(--duration-fast) ease;
 	}
 
 	.view-all-link:hover {
-		color: rgb(var(--accent));
-		background: rgba(var(--accent), 0.05);
-		border-color: rgba(var(--accent), 0.15);
-		transform: translateY(-1px);
-		box-shadow:
-			0 4px 12px rgba(0, 0, 0, 0.2),
-			0 0 0 1px rgba(var(--accent), 0.1);
+		color: var(--color-accent);
+		border-color: rgba(var(--accent), 0.45);
+		background: rgba(var(--accent), 0.07);
+		transform: translateY(-2px);
+		box-shadow: 0 4px 14px rgba(var(--accent), 0.15);
 	}
 
 	.arrow-icon {
-		transition: transform 0.3s ease;
+		transition: transform var(--duration-base) var(--ease-spring);
+		flex-shrink: 0;
 	}
 
 	.view-all-link:hover .arrow-icon {
 		transform: translateX(4px);
 	}
 
-	/* ========== RESPONSIVE ========== */
+	.projects-v {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0;
+	}
+
+	.projects-header {
+		text-align: center;
+		margin-bottom: 2.25rem;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.65rem;
+	}
+
+	.section-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.55rem;
+		padding: 0.4rem 1rem;
+		background: rgba(var(--accent), 0.05);
+		border: 1px solid rgba(var(--accent), 0.15);
+		border-radius: 999px;
+		font-family: var(--font-title);
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--color-accent);
+	}
+
+	.badge-dot {
+		width: 6px;
+		height: 6px;
+		background: var(--color-accent);
+		border-radius: 50%;
+		flex-shrink: 0;
+		animation: pulse 2.5s ease-in-out infinite;
+	}
+
+	@keyframes pulse {
+		0%,
+		100% {
+			box-shadow: 0 0 4px rgba(var(--accent), 0.5);
+		}
+		50% {
+			box-shadow: 0 0 10px rgba(var(--accent), 1);
+		}
+	}
+
+	.section-title {
+		font-family: var(--font-title);
+		font-size: clamp(1.5rem, 4vw, 2.2rem);
+		font-weight: 700;
+		letter-spacing: -0.025em;
+		color: var(--color-text);
+		margin: 0;
+		animation: none;
+	}
+
+	.section-subtitle {
+		font-size: 0.95rem;
+		color: var(--color-muted);
+		max-width: 500px;
+		line-height: 1.65;
+		margin: 0;
+	}
+
+	.projects-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 1.25rem;
+		width: 100%;
+	}
+
+	.projects-fallback {
+		grid-column: span 2;
+		padding: 3rem 2rem;
+		border: 1px dashed rgba(var(--accent), 0.2);
+		border-radius: var(--radius-md);
+		text-align: center;
+		background: rgba(var(--accent), 0.02);
+	}
+
+	.projects-fallback p {
+		color: var(--color-muted);
+		margin-bottom: 1rem;
+	}
+
+	.projects-fallback a {
+		color: var(--color-accent);
+		font-family: var(--font-title);
+		font-size: 0.85rem;
+		font-weight: 600;
+	}
 
 	@media (max-width: 768px) {
+		.home-main {
+			gap: 3.5rem;
+		}
+
 		.projects-grid {
 			grid-template-columns: 1fr;
 		}
@@ -447,69 +448,43 @@ for (const post of allPosts) {
 		.projects-fallback {
 			grid-column: span 1;
 		}
+	}
 
-		.hero-v {
-			padding-top: calc(var(--header-height, 60px) + 1rem);
+	@media (max-width: 480px) {
+		.home-main {
+			gap: 2.5rem;
 		}
 
 		.hero-title {
-			font-size: 2.2rem;
+			font-size: 2rem;
 		}
 
 		.hero-description {
-			font-size: 1rem;
-			line-height: 1.7;
-		}
-
-		.hero-description br {
-			display: none;
+			font-size: 0.95rem;
 		}
 
 		.cta-group {
 			flex-direction: column;
 			width: 100%;
-			max-width: 300px;
 		}
 
 		.btn-pill {
-			text-align: center;
 			justify-content: center;
 		}
 
 		.hash-list {
-			flex-wrap: wrap;
-			justify-content: center;
-			gap: 1rem;
-			font-size: 0.75rem;
+			gap: 0.4rem;
 		}
 
-		.section-title {
-			font-size: 1.8rem;
-		}
-
-		.section-subtitle {
-			font-size: 0.95rem;
-		}
-
-		.blog-footer {
-			padding-top: 2rem;
-			margin-top: 1rem;
-		}
-
-		.view-all-link {
-			padding: 0.75rem 1.5rem;
-			font-size: 0.9rem;
+		.hash-list span {
+			font-size: 0.65rem;
+			padding: 0.25rem 0.6rem;
 		}
 	}
 
-	/* ========== ACCESSIBILITY ========== */
-
 	@media (prefers-reduced-motion: reduce) {
-		.btn-pill,
-		.view-all-link,
-		.btn-icon,
-		.arrow-icon {
-			transition: none;
+		.badge-dot {
+			animation: none;
 		}
 
 		.btn-solid:hover,
@@ -518,13 +493,8 @@ for (const post of allPosts) {
 			transform: none;
 		}
 
-		.badge-dot {
-			animation: none;
-		}
-
-		.stable-layout {
-			animation: none;
-			opacity: 1;
+		.arrow-icon {
+			transition: none;
 		}
 	}
 </style>

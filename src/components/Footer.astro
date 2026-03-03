@@ -6,7 +6,6 @@ const today = new Date();
 <footer class="footer">
 	<div class="footer-container">
 		<div class="footer-divider"></div>
-
 		<div class="footer-content">
 			<div class="copyright">
 				<span class="copyright-symbol">&copy;</span>
@@ -14,7 +13,6 @@ const today = new Date();
 				<span class="site-name">{SITE_TITLE}</span>
 				<span class="reserved">. All rights reserved.</span>
 			</div>
-
 			<div class="social-links">
 				<a
 					href={GITHUB_URL}
@@ -62,7 +60,7 @@ const today = new Date();
 		background: linear-gradient(
 			90deg,
 			transparent,
-			rgb(var(--accent)),
+			var(--color-accent),
 			transparent
 		);
 		opacity: 0.3;
@@ -84,17 +82,17 @@ const today = new Date();
 	}
 
 	.copyright-symbol {
-		color: rgb(var(--accent));
+		color: var(--color-accent);
 	}
 
 	.site-name {
-		color: rgb(var(--text));
+		color: var(--color-text);
 		font-weight: 700;
-		transition: color 0.3s ease;
+		transition: color var(--duration-base) ease;
 	}
 
 	.footer:hover .site-name {
-		color: rgb(var(--accent));
+		color: var(--color-accent);
 	}
 
 	.social-links {
@@ -108,13 +106,13 @@ const today = new Date();
 		justify-content: center;
 		color: rgba(var(--text), 0.4);
 		transition:
-			color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-			transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-			filter 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+			color var(--duration-base) ease,
+			transform var(--duration-base) ease,
+			filter var(--duration-base) ease;
 	}
 
 	.social-icon:hover {
-		color: rgb(var(--accent));
+		color: var(--color-accent);
 		transform: translateY(-3px);
 		filter: drop-shadow(0 0 8px rgba(var(--accent), 0.4));
 	}

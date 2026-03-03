@@ -2,7 +2,6 @@
 import { Image } from "astro:assets";
 import profile from "../assets/profile.webp";
 import { GITHUB_URL, SITE_TITLE } from "../consts";
-
 interface Props {}
 ---
 
@@ -14,6 +13,7 @@ interface Props {}
         class="avatar-link"
         aria-label="Voir mon profil GitHub"
     >
+        <div class="avatar-glow"></div>
         <Image
             src={profile}
             alt="Icone de profil github"
@@ -40,40 +40,69 @@ interface Props {}
         display: block;
         margin-bottom: 0.75rem;
         border-radius: 50%;
-        transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-    } 
+        transition: transform var(--duration-base) var(--ease-spring);
+    }
 
     .avatar-link:hover {
-        transform: scale(1.05);
+        transform: scale(1.06);
     }
 
     .avatar-link:focus-visible {
-        outline: 2px solid rgb(var(--accent));
+        outline: 2px solid var(--color-accent);
         outline-offset: 4px;
+    }
+
+    .avatar-glow {
+        position: absolute;
+        inset: -6px;
+        border-radius: 50%;
+        background: radial-gradient(
+            circle,
+            rgba(var(--accent), 0.22) 0%,
+            transparent 70%
+        );
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity var(--duration-base) ease;
+        z-index: 0;
+    }
+
+    .avatar-link:hover .avatar-glow {
+        opacity: 1;
     }
 
     .avatar-img {
         display: block;
+        position: relative;
+        z-index: 1;
         border-radius: 50%;
-        border: 3px solid rgba(var(--accent), 0.2);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-        background: none;
+        border: 2px solid rgba(var(--accent), 0.22);
+        box-shadow:
+            var(--shadow-strong),
+            inset 0 1px 0 rgba(255, 255, 255, 0.06);
         transition:
-            border-color 0.3s ease,
-            box-shadow 0.3s ease;
+            border-color var(--duration-base) ease,
+            box-shadow var(--duration-base) ease;
     }
 
     .avatar-link:hover .avatar-img {
-        border-color: rgba(var(--accent), 0.5);
-        box-shadow: 0 12px 32px rgba(var(--accent), 0.2);
+        border-color: rgba(var(--accent), 0.6);
+        box-shadow:
+            0 8px 28px rgba(var(--accent), 0.25),
+            inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
 
     .profile-handle {
         font-family: var(--font-title);
-        font-size: 0.9rem;
-        color: rgba(var(--text), 0.5);
-        letter-spacing: 0.05em;
+        font-size: 0.82rem;
+        color: rgba(var(--text), 0.4);
+        letter-spacing: 0.06em;
         font-weight: 500;
+        transition: color var(--duration-fast) ease;
+    }
+
+    .avatar-container:hover .profile-handle {
+        color: var(--color-accent);
     }
 
     @media (max-width: 480px) {
@@ -86,6 +115,9 @@ interface Props {}
     @media (prefers-reduced-motion: reduce) {
         .avatar-link:hover {
             transform: none;
+        }
+        .avatar-glow {
+            display: none;
         }
     }
 </style>

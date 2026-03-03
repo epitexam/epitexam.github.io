@@ -17,13 +17,13 @@ const isExact = pathname === href || pathname === href + "/";
 	aria-current={isActive ? "page" : undefined}
 	{...attrs}
 >
-	<span class="content">
-		<slot />
-	</span>
+	<span class="content"><slot /></span>
 </a>
 
 <style>
 	a {
+		display: inline-flex;
+		align-items: center;
 		text-decoration: none;
 		color: rgba(var(--text), 0.5);
 		font-family: var(--font-title);
@@ -31,15 +31,18 @@ const isExact = pathname === href || pathname === href + "/";
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 		position: relative;
+		transition:
+			color var(--duration-fast) ease,
+			opacity var(--duration-fast) ease;
 	}
 
 	@media (min-width: 769px) {
 		a:hover {
-			color: rgb(var(--accent));
+			color: var(--color-accent);
 		}
 
 		a.active {
-			color: rgb(var(--accent));
+			color: var(--color-accent);
 			font-weight: 700;
 			pointer-events: none;
 		}
@@ -52,21 +55,39 @@ const isExact = pathname === href || pathname === href + "/";
 		a.active::before {
 			content: ">";
 			margin-right: 0.4rem;
-			color: rgb(var(--accent));
+			color: var(--color-accent);
 			opacity: 0.8;
 		}
 
 		a.active::after {
 			content: "<";
 			margin-left: 0.4rem;
-			color: rgb(var(--accent));
+			color: var(--color-accent);
 			opacity: 0.8;
 		}
 	}
 
 	@media (max-width: 768px) {
+		a {
+			min-height: 44px;
+			padding: 0.5rem 0.25rem;
+			font-size: 1rem;
+		}
+
 		a.active {
-			color: rgb(var(--accent));
+			color: var(--color-accent);
+			font-weight: 700;
+		}
+
+		a.active::after {
+			content: "";
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 2px;
+			background-color: var(--color-accent);
+			border-radius: 2px;
 		}
 	}
 </style>

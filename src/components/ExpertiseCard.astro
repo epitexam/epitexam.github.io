@@ -1,0 +1,115 @@
+---
+export interface Props {
+    index: number;
+    title: string;
+    description: string;
+}
+
+const { index, title, description } = Astro.props;
+const num = String(index + 1).padStart(2, "0");
+---
+
+<div class="expertise-card">
+    <div class="card-glow"></div>
+    <div class="card-inner">
+        <h3 class="card-title">{title}</h3>
+        <p class="card-desc">{description}</p>
+    </div>
+</div>
+
+<style>
+    .expertise-card {
+        position: relative;
+        padding: 1.75rem;
+        background: linear-gradient(
+            145deg,
+            rgba(var(--bg), 1) 0%,
+            rgba(var(--accent), 0.05) 100%
+        );
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        isolation: isolate;
+        box-shadow:
+            var(--shadow-soft),
+            inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        transition:
+            border-color var(--duration-base) var(--ease-spring),
+            box-shadow var(--duration-base) var(--ease-spring),
+            transform var(--duration-base) var(--ease-spring);
+    }
+
+    .expertise-card:hover {
+        transform: translateY(-3px);
+        border-color: rgba(var(--accent), 0.4);
+        box-shadow:
+            0 10px 32px -8px rgba(var(--accent), 0.22),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .card-glow {
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        background: radial-gradient(
+            ellipse at 0% 0%,
+            rgba(var(--accent), 0.14) 0%,
+            transparent 60%
+        );
+        opacity: 0;
+        z-index: 0;
+        pointer-events: none;
+        transition: opacity var(--duration-base) ease;
+    }
+
+    .expertise-card:hover .card-glow {
+        opacity: 1;
+    }
+
+    .card-inner {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .card-title {
+        font-family: var(--font-title);
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--color-text);
+        margin: 0;
+        line-height: 1.2;
+        transition: color var(--duration-fast) ease;
+        animation: none;
+    }
+
+    .expertise-card:hover .card-title {
+        color: var(--color-accent);
+    }
+
+    .card-desc {
+        font-size: 0.875rem;
+        line-height: 1.65;
+        color: var(--color-muted);
+        margin: 0;
+    }
+
+    .expertise-card:hover .card-desc {
+        color: rgba(var(--text), 0.8);
+    }
+
+    @media (max-width: 640px) {
+        .expertise-card {
+            padding: 1.25rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .expertise-card:hover {
+            transform: none;
+        }
+    }
+</style>

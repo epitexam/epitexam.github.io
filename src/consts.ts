@@ -150,7 +150,7 @@ export const SECTIONS: { title: string, tools: { icon: string, name: string, des
         tools: [
             {
                 icon: "G",
-                name: "Git & GitHub / Gitlab (Parfois Gitea)",
+                name: "Git & GitHub / Gitlab / Gitea",
                 description:
                     "Je garde mes dépôts propres, mes commits clairs, et j'automatise ce qui peut l'être. Le tout branché sur des pipelines CI/CD.",
 
@@ -491,3 +491,12 @@ export const ABOUT_ME = [
     "connectés (ESP32, Zigbee, Home Assistant), cherchant à",
     "comprendre comment matériel et logiciel s'articulent.",
 ];
+
+
+export const TAB_SHORT: Record<string, string> = {
+    "Langages informatiques": "Langages",
+    "Frameworks & Bibliothèques": "Frameworks",
+    "Systèmes & Environnements": "Systèmes",
+    "Collaboration & API": "Collab / API",
+    "Outils de développement": "Outils",
+};

@@ -11,142 +11,171 @@ const success = Astro.url.searchParams.get("success") === "true";
 <html lang="fr">
     <head>
         <BaseHead
-            title={`${SITE_TITLE} - Contact`}
-            description="Contactez-moi pour discuter de vos projets, collaborations ou questions. Envoyez votre message directement via ce formulaire sécurisé."
+            title={`Contact - ${SITE_TITLE}`}
+            description="Contactez-moi pour discuter de vos projets, collaborations ou questions."
         />
     </head>
 
     <body>
         <Header />
 
-        <main class="contact-main animate-fadeIn">
+        <main class="contact-main">
             <div class="contact-wrapper">
                 <header class="contact-header">
+                    <h1 class="contact-title">Travaillons ensemble.</h1>
                     <p class="contact-intro">
-                        Si vous avez un projet, une question ou souhaitez juste
-                        dire bonjour, envoyez-moi un message. Je vous répondrai
-                        dès que possible.
+                        Un projet, une question, ou juste envie d'échanger : je
+                        réponds à tous les messages sous 48h.
                     </p>
                 </header>
 
                 {
                     success && (
                         <div
-                            class="success-message"
+                            class="notification success-notification"
                             role="status"
                             aria-live="polite"
                         >
-                            Merci ! Votre message a bien été envoyé.
+                            <svg
+                                width="16"
+                                height="16"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2.5"
+                                aria-hidden="true"
+                            >
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg>
+                            Message envoyé : je vous réponds dès que possible.
                         </div>
                     )
                 }
 
                 <div
-                    id="errorMessage"
+                    id="errorNotification"
+                    class="notification error-notification hidden"
                     role="alert"
                     aria-live="assertive"
-                    class="error-message hidden"
                 >
                 </div>
 
-                <div class="form-container">
-                    <form
-                        id="contactForm"
-                        action="https://formspree.io/f/xovgkrbn"
-                        method="POST"
-                        class="contact-form"
-                        autocomplete="on"
-                    >
+                <form
+                    id="contactForm"
+                    action="https://formspree.io/f/xovgkrbn"
+                    method="POST"
+                    class="contact-form"
+                    autocomplete="on"
+                    novalidate
+                >
+                    <input
+                        type="hidden"
+                        name="_next"
+                        value={`${Astro.url.origin}${Astro.url.pathname}?success=true`}
+                    />
+                    <input
+                        type="hidden"
+                        name="_subject"
+                        value={`Nouveau message - ${SITE_TITLE}`}
+                    />
+
+                    <div class="honeypot" aria-hidden="true">
                         <input
-                            type="hidden"
-                            name="_next"
-                            value={`${Astro.url.origin}${Astro.url.pathname}?success=true`}
+                            type="text"
+                            name="website"
+                            tabindex="-1"
+                            autocomplete="off"
                         />
-                        <input
-                            type="hidden"
-                            name="_subject"
-                            value={`Nouveau message de contact - ${SITE_TITLE}`}
-                        />
+                    </div>
 
-                        <div class="honeypot" aria-hidden="true">
-                            <input
-                                type="text"
-                                name="website"
-                                tabindex="-1"
-                                autocomplete="off"
-                            />
-                        </div>
-
-                        <div class="input-group">
-                            <label for="email" class="label-text"
-                                >Votre email</label
-                            >
-                            <input
-                                type="email"
-                                id="email"
-                                name="email"
-                                required
-                                placeholder="nom@domaine.com"
-                                class="input-field"
-                                autocomplete="email"
-                            />
-                            <span class="sub-label"
-                                >Votre email ne sera jamais partagé</span
-                            >
-                        </div>
-
-                        <div class="input-group">
-                            <label for="message" class="label-text"
-                                >Votre message</label
-                            >
-                            <textarea
-                                id="message"
-                                name="message"
-                                required
-                                rows="5"
-                                placeholder="Écrivez votre message ici..."
-                                class="input-field"
-                                style="resize: none;"
-                                minlength="20"
-                                maxlength="2000"
-                                spellcheck="true"></textarea>
-                            <div class="textarea-footer">
-                                <span class="sub-label accent-label"
-                                    >Markdown supporté</span
-                                >
-                                <span class="sub-label" id="charCount">
-                                    <span id="charCountValue">0</span>/2000
-                                    caractères
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="privacy-row">
-                            <input
-                                type="checkbox"
-                                id="privacy"
-                                name="privacy"
-                                required
-                                class="privacy-checkbox"
-                            />
-                            <label for="privacy" class="privacy-label">
-                                J'accepte que mes données soient utilisées
-                                uniquement pour répondre à mon message
-                            </label>
-                        </div>
-
-                        <button
-                            id="submitBtn"
-                            type="submit"
-                            class="submit-button"
+                    <div class="field-group">
+                        <label for="email" class="field-label"
+                            >Votre email</label
                         >
-                            <span id="submitText">Envoyer le message</span>
-                            <span id="submitSpinner" class="hidden">...</span>
-                        </button>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            required
+                            placeholder="nom@domaine.com"
+                            class="input-field"
+                            autocomplete="email"
+                        />
+                        <p class="field-hint">Ne sera jamais partagé.</p>
+                    </div>
 
-                        <p class="powered-by">Powered by Formspree</p>
-                    </form>
-                </div>
+                    <div class="field-group">
+                        <label for="message" class="field-label"
+                            >Votre message</label
+                        >
+                        <textarea
+                            id="message"
+                            name="message"
+                            required
+                            rows="6"
+                            placeholder="Décrivez votre projet, votre question…"
+                            class="input-field textarea-field"
+                            minlength="20"
+                            maxlength="2000"
+                            spellcheck="true"></textarea>
+                        <div class="textarea-meta">
+                            <span class="field-hint">Markdown supporté.</span>
+                            <span class="char-counter">
+                                <span id="charCount">0</span><span
+                                    class="char-max">/2000</span
+                                >
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="consent-row">
+                        <input
+                            type="checkbox"
+                            id="privacy"
+                            name="privacy"
+                            required
+                            class="consent-checkbox"
+                        />
+                        <label for="privacy" class="consent-label">
+                            J'accepte que mes données soient utilisées
+                            uniquement pour répondre à mon message.
+                        </label>
+                    </div>
+
+                    <button id="submitBtn" type="submit" class="submit-btn">
+                        <span id="submitLabel">Envoyer</span>
+                        <svg
+                            id="submitArrow"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                        <svg
+                            id="submitSpinner"
+                            class="spinner hidden"
+                            width="16"
+                            height="16"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            aria-hidden="true"
+                        >
+                            <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
+                        </svg>
+                    </button>
+
+                    <p class="powered-by">Propulsé par Formspree</p>
+                </form>
             </div>
         </main>
 
@@ -155,304 +184,383 @@ const success = Astro.url.searchParams.get("success") === "true";
 </html>
 
 <style>
-    /* ========== SELECTION ========== */
-
-    ::selection {
-        background: rgba(var(--accent), 0.3);
+    :root {
+        --color-error: 210, 55, 55;
     }
 
-    /* ========== LAYOUT ========== */
-
     .contact-main {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
         justify-content: center;
-        min-height: 100vh;
-        padding: calc(var(--header-height, 60px) + 2rem) 1.5rem 3rem;
-        box-sizing: border-box;
+        align-items: center;
     }
 
     .contact-wrapper {
-        max-width: 36rem;
         width: 100%;
+        max-width: 44rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.75rem;
     }
 
-    /* ========== HEADER ========== */
-
     .contact-header {
-        text-align: center;
-        margin-bottom: 2.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .contact-title {
+        font-size: clamp(1.75rem, 5vw, 2.5rem);
+        font-weight: 700;
+        line-height: 1.1;
+        letter-spacing: -0.03em;
+        margin: 0;
     }
 
     .contact-intro {
-        color: rgba(var(--text), 0.7);
-        line-height: 1.7;
+        font-size: 0.95rem;
+        line-height: 1.75;
+        color: var(--color-muted);
+        margin: 0;
     }
 
-    /* ========== NOTIFICATIONS ========== */
-
-    .success-message {
-        margin-bottom: 2rem;
-        padding: 1rem;
-        border: 1px solid rgba(39, 201, 63, 0.5);
-        background: rgba(39, 201, 63, 0.1);
-        border-radius: var(--radius-sm);
-        color: #27c93f;
-        font-weight: 600;
-        text-align: center;
-        animation: fadeIn 0.5s ease forwards;
-    }
-
-    .error-message {
-        margin-bottom: 2rem;
-        padding: 1rem;
-        border: 1px solid rgba(239, 68, 68, 0.5);
-        background: rgba(239, 68, 68, 0.1);
-        border-radius: var(--radius-sm);
-        color: #ef4444;
-        font-weight: 600;
-        text-align: center;
-    }
-
-    .error-message.hidden,
-    .hidden {
-        display: none;
-    }
-
-    /* ========== FORM CONTAINER ========== */
-
-    .form-container {
-        background: linear-gradient(
-            145deg,
-            rgba(var(--bg), 0.8) 0%,
-            rgba(var(--accent), 0.03) 100%
-        );
-        border: 1px solid rgba(var(--accent), 0.15);
+    .notification {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.9rem 1.1rem;
         border-radius: var(--radius-md);
-        padding: 2rem;
-        box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.5);
+        font-size: 0.875rem;
+        font-weight: 500;
+        animation: slideDown var(--duration-base) var(--ease-spring) both;
+    }
+
+    .success-notification {
+        background: rgba(var(--accent), 0.08);
+        border: 1px solid rgba(var(--accent), 0.28);
+        color: var(--color-accent);
+    }
+
+    .error-notification {
+        background: rgba(var(--color-error), 0.08);
+        border: 1px solid rgba(var(--color-error), 0.28);
+        color: rgb(var(--color-error));
+    }
+
+    .notification.hidden {
+        display: none !important;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .contact-form {
         display: flex;
         flex-direction: column;
-        gap: 1.5rem;
+        gap: 1.75rem;
+        background: linear-gradient(
+            145deg,
+            rgba(var(--bg), 1) 0%,
+            rgba(var(--accent), 0.04) 100%
+        );
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        padding: 2rem;
+        box-shadow:
+            var(--shadow-soft),
+            inset 0 1px 0 rgba(255, 255, 255, 0.04);
     }
-
-    /* ========== HONEYPOT ========== */
 
     .honeypot {
         display: none;
     }
 
-    /* ========== INPUTS ========== */
-
-    .input-group {
+    .field-group {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
     }
 
-    .label-text {
+    .field-label {
         font-family: var(--font-title);
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: rgb(var(--accent));
+        letter-spacing: 0.06em;
+        color: var(--color-text);
     }
 
     .input-field {
-        background: rgba(var(--bg), 0.5);
-        border: 1px solid rgba(var(--accent), 0.2);
-        border-radius: var(--radius-sm);
-        padding: 0.75rem;
-        color: rgb(var(--text));
-        font-family: var(--font-body);
         width: 100%;
         box-sizing: border-box;
+        background: rgba(var(--accent), 0.03);
+        border: 1px solid rgba(var(--accent), 0.15);
+        border-radius: var(--radius-sm);
+        padding: 0.75rem 1rem;
+        color: var(--color-text);
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        line-height: 1.5;
         transition:
-            border-color 0.2s ease,
-            background 0.2s ease,
-            box-shadow 0.2s ease;
+            border-color var(--duration-fast) ease,
+            background var(--duration-fast) ease,
+            box-shadow var(--duration-fast) ease;
+    }
+
+    .input-field::placeholder {
+        color: rgba(var(--text), 0.22);
     }
 
     .input-field:focus {
         outline: none;
-        border-color: rgb(var(--accent));
+        border-color: rgba(var(--accent), 0.55);
         background: rgba(var(--accent), 0.05);
         box-shadow: 0 0 0 3px rgba(var(--accent), 0.1);
     }
 
-    .sub-label {
+    .textarea-field {
+        resize: vertical;
+        min-height: 140px;
+    }
+
+    .field-hint {
         font-size: 0.7rem;
-        color: rgba(var(--text), 0.5);
+        color: var(--color-muted);
+        margin: 0;
     }
 
-    .accent-label {
-        color: rgb(var(--accent));
-        opacity: 0.7;
-    }
-
-    .textarea-footer {
+    .textarea-meta {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 0.25rem;
     }
 
-    /* ========== PRIVACY ========== */
+    .char-counter {
+        font-family: var(--font-code);
+        font-size: 0.68rem;
+        color: var(--color-muted);
+        transition: color var(--duration-fast) ease;
+    }
 
-    .privacy-row {
+    .char-max {
+        opacity: 0.5;
+    }
+
+    .char-counter.near-limit {
+        color: rgb(220, 140, 40);
+    }
+    .char-counter.at-limit {
+        color: rgb(var(--color-error));
+    }
+
+    .consent-row {
         display: flex;
         align-items: flex-start;
         gap: 0.75rem;
-        padding: 0.75rem;
+        padding: 0.85rem 1rem;
         background: rgba(var(--accent), 0.03);
         border: 1px solid rgba(var(--accent), 0.1);
         border-radius: var(--radius-sm);
     }
 
-    .privacy-checkbox {
-        margin-top: 0.15rem;
-        accent-color: rgb(var(--accent));
+    .consent-checkbox {
+        margin-top: 0.1rem;
+        accent-color: var(--color-accent);
         flex-shrink: 0;
-    }
-
-    .privacy-label {
-        font-size: 0.75rem;
-        color: rgba(var(--text), 0.7);
         cursor: pointer;
-        line-height: 1.5;
+        width: 15px;
+        height: 15px;
     }
 
-    /* ========== SUBMIT ========== */
+    .consent-label {
+        font-size: 0.78rem;
+        color: var(--color-muted);
+        cursor: pointer;
+        line-height: 1.6;
+    }
 
-    .submit-button {
-        background: rgb(var(--accent));
-        color: rgb(var(--bg));
-        padding: 0.9rem;
+    .submit-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        padding: 0.85rem 1.5rem;
+        background: var(--color-accent);
+        color: var(--color-bg);
+        border: none;
         border-radius: var(--radius-sm);
+        font-family: var(--font-title);
+        font-size: 0.8rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.1em;
         cursor: pointer;
-        border: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.5rem;
         transition:
-            filter 0.3s ease,
-            transform 0.3s ease,
-            box-shadow 0.3s ease;
+            transform var(--duration-base) var(--ease-spring),
+            box-shadow var(--duration-base) ease,
+            filter var(--duration-fast) ease;
     }
 
-    .submit-button:hover:not(:disabled) {
-        filter: brightness(1.1);
+    .submit-btn:hover:not(:disabled) {
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(var(--accent), 0.3);
+        box-shadow: 0 6px 20px rgba(var(--accent), 0.35);
+        filter: brightness(1.06);
     }
 
-    .submit-button:disabled {
-        opacity: 0.6;
+    .submit-btn:active:not(:disabled) {
+        transform: translateY(0);
+    }
+    .submit-btn:disabled {
+        opacity: 0.55;
         cursor: not-allowed;
-        transform: none;
-        box-shadow: none;
+    }
+
+    .spinner {
+        animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .hidden {
+        display: none !important;
     }
 
     .powered-by {
-        font-size: 0.625rem;
+        font-size: 0.6rem;
         text-align: center;
-        color: rgba(var(--text), 0.4);
+        color: rgba(var(--text), 0.2);
         text-transform: uppercase;
         letter-spacing: 0.1em;
+        margin: -0.5rem 0 0;
     }
 
-    /* ========== RESPONSIVE ========== */
-
-    @media (max-width: 640px) {
-        .form-container {
-            padding: 1rem;
+    @media (max-width: 768px) {
+        .contact-main {
+            align-items: flex-start;
+            justify-content: flex-start;
+        }
+        .contact-form {
+            padding: 1.5rem;
+            gap: 1.5rem;
         }
     }
 
-    /* ========== ACCESSIBILITY ========== */
+    @media (max-width: 480px) {
+        .contact-wrapper {
+            gap: 1.25rem;
+        }
+        .contact-form {
+            padding: 1.1rem;
+            gap: 1.25rem;
+        }
+        .contact-title {
+            font-size: 1.6rem;
+        }
+        .submit-btn {
+            width: 100%;
+        }
+    }
 
     @media (prefers-reduced-motion: reduce) {
-        .success-message {
+        .spinner {
             animation: none;
         }
-
-        .contact-main {
+        .notification {
             animation: none;
-            opacity: 1;
         }
-
-        .submit-button:hover:not(:disabled) {
+        .submit-btn:hover:not(:disabled) {
             transform: none;
         }
     }
 </style>
 
-<script is:inline>
-    function updateCharCount() {
-        const textarea = document.getElementById("message");
-        const charCountValue = document.getElementById("charCountValue");
+<script>
+    (function () {
+        const form = document.getElementById(
+            "contactForm",
+        ) as HTMLFormElement | null;
+        const textarea = document.getElementById(
+            "message",
+        ) as HTMLTextAreaElement | null;
+        const charCountEl = document.getElementById("charCount");
+        const charCounter = document.querySelector(".char-counter");
+        const submitBtn = document.getElementById(
+            "submitBtn",
+        ) as HTMLButtonElement | null;
+        const submitLabel = document.getElementById("submitLabel");
+        const submitArrow = document.getElementById("submitArrow");
+        const submitSpinner = document.getElementById("submitSpinner");
+        const errorNotif = document.getElementById("errorNotification");
 
-        if (!textarea || !charCountValue) return;
+        if (!form || !textarea) return;
 
-        const length = textarea.value.length;
-        charCountValue.textContent = length;
+        const updateCount = () => {
+            const len = textarea.value.length;
+            if (charCountEl) charCountEl.textContent = String(len);
+            if (charCounter) {
+                charCounter.classList.toggle(
+                    "near-limit",
+                    len > 1800 && len < 2000,
+                );
+                charCounter.classList.toggle("at-limit", len >= 2000);
+            }
+        };
 
-        if (length > 0 && length < 20) {
-            charCountValue.classList.add("text-red-500");
-        } else {
-            charCountValue.classList.remove("text-red-500");
-        }
-    }
+        textarea.addEventListener("input", updateCount);
+        updateCount();
 
-    function showError(message) {
-        const errorDiv = document.getElementById("errorMessage");
-        if (!errorDiv) return;
-        errorDiv.textContent = message;
-        errorDiv.classList.remove("hidden");
-        setTimeout(() => errorDiv.classList.add("hidden"), 5000);
-    }
+        const showError = (msg: string) => {
+            if (!errorNotif) return;
+            errorNotif.textContent = msg;
+            errorNotif.classList.remove("hidden");
+            errorNotif.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            setTimeout(() => errorNotif.classList.add("hidden"), 5000);
+        };
 
-    document.addEventListener("DOMContentLoaded", () => {
-        const form = document.getElementById("contactForm");
-        const messageTextarea = document.getElementById("message");
-
-        if (!form || !messageTextarea) return;
-
-        messageTextarea.addEventListener("input", updateCharCount);
-        updateCharCount();
-
-        form.addEventListener("submit", function (e) {
-            const honeypot = this.querySelector('input[name="website"]');
-
-            if (honeypot && honeypot.value.trim() !== "") {
+        form.addEventListener("submit", (e) => {
+            const honeypot = form.querySelector<HTMLInputElement>(
+                'input[name="website"]',
+            );
+            if (honeypot?.value.trim()) {
                 e.preventDefault();
                 return;
             }
 
-            if (messageTextarea.value.trim().length < 20) {
+            const privacy = form.querySelector<HTMLInputElement>(
+                'input[name="privacy"]',
+            );
+            if (!privacy?.checked) {
+                e.preventDefault();
+                showError("Veuillez accepter la politique de confidentialité.");
+                privacy?.focus();
+                return;
+            }
+
+            if (textarea.value.trim().length < 20) {
                 e.preventDefault();
                 showError("Le message doit contenir au moins 20 caractères.");
-                messageTextarea.focus();
+                textarea.focus();
                 return;
             }
 
-            const submitBtn = document.getElementById("submitBtn");
-            const submitText = document.getElementById("submitText");
-            const submitSpinner = document.getElementById("submitSpinner");
-
-            if (submitBtn && submitText && submitSpinner) {
+            if (submitBtn && submitLabel && submitArrow && submitSpinner) {
                 submitBtn.disabled = true;
-                submitText.textContent = "Envoi en cours...";
+                submitLabel.textContent = "Envoi en cours…";
+                submitArrow.classList.add("hidden");
                 submitSpinner.classList.remove("hidden");
             }
         });
-    });
+    })();
 </script>

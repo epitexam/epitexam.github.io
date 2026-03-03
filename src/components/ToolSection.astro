@@ -7,62 +7,50 @@ export interface Props {
         icon: string;
         name: string;
         description: string;
+        link?: string;
     }[];
 }
 
 const { title, tools } = Astro.props;
-const isOddNumber = tools.length % 2 !== 0;
 ---
 
-<section class="tool-section">
-    {
-        title.length > 0 ? (
-            <h2 class="tool-section-title glow-text">{title}</h2>
-        ) : null
-    }
-
-    <div class:list={["tool-grid", { "has-odd": isOddNumber }]}>
+<div class="tool-section">
+    {title && <p class="tool-section-label">{title}</p>}
+    <div class="tool-grid">
         {tools.map((tool) => <ToolCard {...tool} />)}
     </div>
-</section>
+</div>
 
 <style>
     .tool-section {
-        width: 100%;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        margin-bottom: 6rem;
+        gap: 1.1rem;
+        width: 100%;
     }
 
-    .tool-section-title {
-        font-size: clamp(1.5rem, 3vw, 1.875rem);
+    .tool-section-label {
+        font-family: var(--font-code);
+        font-size: 0.72rem;
         font-weight: 600;
-        margin-bottom: 3rem;
-        color: rgb(var(--accent));
-        letter-spacing: -0.025em;
-        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--color-accent);
+        opacity: 0.6;
+        margin: 0;
+        padding-left: 0.1rem;
     }
 
     .tool-grid {
-        margin-top: 1.25rem;
         display: grid;
-        gap: 1.5rem;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
         width: 100%;
-        max-width: 56rem;
     }
 
-    @media (min-width: 1024px) {
+    @media (max-width: 640px) {
         .tool-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .tool-grid.has-odd > *:last-child {
-            grid-column: span 2;
-            max-width: 28rem;
-            margin-left: auto;
-            margin-right: auto;
-            width: 100%;
+            grid-template-columns: 1fr;
         }
     }
 </style>

@@ -53,52 +53,27 @@ const command = "cat -n";
 
 <style>
 	.terminal-card {
-		background: rgba(13, 16, 23, 0.95);
-		border: 1px solid var(--accent-10);
+		position: relative;
+		background: rgba(var(--bg), 0.97);
+		border: 1px solid var(--color-border);
 		border-radius: var(--radius-md);
-		box-shadow: var(--shadow-strong);
+		box-shadow:
+			var(--shadow-strong),
+			inset 0 1px 0 rgba(255, 255, 255, 0.04);
 		font-family: var(--font-code);
 		width: 100%;
 		margin: 2rem 0;
 		overflow: hidden;
-		animation: terminalEntry 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+		animation: terminalEntry 0.8s var(--ease-spring) backwards;
 		transform-origin: center top;
-	}
-
-	@keyframes terminalEntry {
-		0% {
-			opacity: 0;
-			transform: translateY(20px) scale(0.98);
-			filter: brightness(2);
-		}
-		100% {
-			opacity: 1;
-			transform: translateY(0) scale(1);
-			filter: brightness(1);
-		}
-	}
-
-	.terminal-body {
-		padding: 1.25rem;
-		counter-reset: line;
-		animation: contentFadeIn 0.5s ease-out 0.4s backwards;
-	}
-
-	@keyframes contentFadeIn {
-		from {
-			opacity: 0;
-		}
-		to {
-			opacity: 1;
-		}
 	}
 
 	.terminal-header {
 		display: flex;
 		align-items: center;
 		padding: 10px 16px;
-		background: rgba(255, 255, 255, 0.03);
-		border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+		background: rgba(var(--accent), 0.04);
+		border-bottom: 1px solid var(--color-border);
 	}
 
 	.dots {
@@ -115,11 +90,9 @@ const command = "cat -n";
 	.dot.red {
 		background: #ff5f56;
 	}
-
 	.dot.yellow {
 		background: #ffbd2e;
 	}
-
 	.dot.green {
 		background: #27c93f;
 	}
@@ -132,6 +105,12 @@ const command = "cat -n";
 		margin-right: 35px;
 	}
 
+	.terminal-body {
+		padding: 1.25rem;
+		counter-reset: line;
+		animation: contentFadeIn 0.5s ease-out 0.4s backwards;
+	}
+
 	.prompt-line {
 		display: flex;
 		flex-wrap: wrap;
@@ -141,7 +120,7 @@ const command = "cat -n";
 	}
 
 	.user {
-		color: rgb(var(--accent));
+		color: var(--color-accent);
 		opacity: 0.9;
 		font-weight: 600;
 	}
@@ -149,15 +128,12 @@ const command = "cat -n";
 	.sep {
 		color: rgba(var(--text), 0.4);
 	}
-
 	.path {
-		color: #5fafff;
+		color: var(--color-accent);
 	}
-
 	.symbol {
 		color: rgba(var(--text), 0.6);
 	}
-
 	.command {
 		color: rgba(var(--text), 1);
 	}
@@ -180,7 +156,7 @@ const command = "cat -n";
 		left: 0;
 		width: 2rem;
 		text-align: right;
-		color: rgba(var(--text), 0.15);
+		color: rgba(var(--accent), 0.3);
 		font-size: 0.75rem;
 		user-select: none;
 		padding-top: 1px;
@@ -201,10 +177,32 @@ const command = "cat -n";
 		display: inline-block;
 		width: 8px;
 		height: 1.1em;
-		background: rgb(var(--accent));
+		background: var(--color-accent);
 		box-shadow: var(--glow);
 		animation: blink 1.2s step-end infinite;
 		vertical-align: middle;
+	}
+
+	@keyframes terminalEntry {
+		0% {
+			opacity: 0;
+			transform: translateY(20px) scale(0.98);
+			filter: brightness(2);
+		}
+		100% {
+			opacity: 1;
+			transform: translateY(0) scale(1);
+			filter: brightness(1);
+		}
+	}
+
+	@keyframes contentFadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
 	}
 
 	@keyframes blink {
@@ -221,21 +219,17 @@ const command = "cat -n";
 		.terminal-body {
 			padding: 1rem;
 		}
-
 		.line {
 			padding-left: 2.2rem;
 		}
-
 		.line::before {
 			width: 1.5rem;
 			font-size: 0.65rem;
 		}
-
 		.line-text,
 		.prompt-line {
 			font-size: 0.85rem;
 		}
-
 		.terminal-title {
 			display: none;
 		}
@@ -245,21 +239,16 @@ const command = "cat -n";
 		.line {
 			padding-left: 0;
 		}
-
 		.line::before {
 			display: none;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.terminal-card {
-			animation: none;
-		}
-
+		.terminal-card,
 		.terminal-body {
 			animation: none;
 		}
-
 		.cursor {
 			animation: none;
 			opacity: 1;

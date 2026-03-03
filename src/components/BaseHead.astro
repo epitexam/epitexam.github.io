@@ -1,6 +1,4 @@
 ---
-// Import the global.css file here so that it is included on
-// all pages through the use of the <BaseHead /> component.
 import "../styles/global.css";
 import type { ImageMetadata } from "astro";
 import FallbackImage from "../assets/ian-panelo.webp";
@@ -22,7 +20,11 @@ const {
 	ImageDescription = ALT_DESCRIPTION,
 } = Astro.props;
 
-const imageURL = new URL(image.src, Astro.site);
+const imageURL = new URL(image.src, Astro.site).toString();
+const ogImageType = image.format ? `image/${image.format}` : "image/webp";
+
+const FONTS_URL =
+	"https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Mono:wght@400;700&family=JetBrains+Mono:wght@400&display=swap&subset=latin";
 ---
 
 <!-- Global Metadata -->
@@ -37,28 +39,6 @@ const imageURL = new URL(image.src, Astro.site);
 	href={new URL("rss.xml", Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
-<link rel="dns-prefetch" href="//fonts.googleapis.com" />
-<link rel="dns-prefetch" href="//fonts.gstatic.com" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
-<link
-	rel="preload"
-	as="style"
-	href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700&family=Space+Mono:wght@400;700&family=JetBrains+Mono:wght@400&display=swap"
-/>
-<link
-	href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700&family=Space+Mono:wght@400;700&family=JetBrains+Mono:wght@400&display=swap"
-	rel="stylesheet"
-	media="print"
-	onload="this.media='all'"
-/>
-<noscript>
-	<link
-		href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,600;0,700&family=Space+Mono:wght@400;700&family=JetBrains+Mono:wght@400&display=swap"
-		rel="stylesheet"
-	/>
-</noscript>
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
@@ -77,16 +57,13 @@ const imageURL = new URL(image.src, Astro.site);
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
-<meta property="og:url" content={Astro.url} />
+<meta property="og:url" content={canonicalURL.toString()} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={imageURL} />
 <meta property="og:image:width" content={String(image.width)} />
 <meta property="og:image:height" content={String(image.height)} />
-<meta
-	property="og:image:type"
-	content={image.format ? `image/${image.format}` : "image/webp"}
-/>
+<meta property="og:image:type" content={ogImageType} />
 <meta property="og:image:alt" content={ImageDescription} />
 <meta property="og:locale" content="fr_FR" />
 <meta property="og:site_name" content={SITE_TITLE} />
@@ -97,3 +74,67 @@ const imageURL = new URL(image.src, Astro.site);
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={imageURL} />
 <meta name="twitter:image:alt" content={ImageDescription} />
+
+<link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+<link rel="dns-prefetch" href="https://fonts.gstatic.com" />
+<link
+	rel="preconnect"
+	href="https://fonts.googleapis.com"
+	crossorigin="anonymous"
+/>
+<link
+	rel="preconnect"
+	href="https://fonts.gstatic.com"
+	crossorigin="anonymous"
+/>
+
+<link
+	rel="preload"
+	as="style"
+	href={`https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap&subset=latin`}
+/>
+
+<link
+	rel="stylesheet"
+	href={FONTS_URL}
+	media="print"
+	onload="this.media='all'"
+/>
+<noscript>
+	<link rel="stylesheet" href={FONTS_URL} />
+</noscript>
+
+<style>
+	:root {
+		--font-sans:
+			-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+			Arial, sans-serif;
+		--font-mono:
+			ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas,
+			monospace;
+	}
+
+	body {
+		font-family: var(--font-sans);
+	}
+
+	.fonts-loaded body {
+		font-family: Inter, var(--font-sans);
+	}
+
+	.fonts-loaded code,
+	.fonts-loaded pre {
+		font-family: "JetBrains Mono", var(--font-mono);
+	}
+</style>
+
+<script>
+	if ("fonts" in document) {
+		Promise.all([
+			document.fonts.load("400 1em Inter"),
+			document.fonts.load("700 1em Inter"),
+		]).then(() => {
+			document.documentElement.classList.add("fonts-loaded");
+		});
+	}
+</script>
