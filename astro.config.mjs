@@ -1,3 +1,4 @@
+// astro.config.mjs
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
@@ -6,13 +7,11 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
 	site: 'https://epitexam.github.io',
 	base: '/',
-
 	build: {
 		format: 'directory',
 		assets: '_assets',
 		inlineStylesheets: 'always',
 	},
-
 	integrations: [
 		mdx({
 			optimize: true,
@@ -23,7 +22,6 @@ export default defineConfig({
 			lastmod: new Date(),
 		}),
 	],
-
 	image: {
 		service: {
 			entrypoint: 'astro/assets/services/sharp',
@@ -38,22 +36,19 @@ export default defineConfig({
 			},
 		],
 	},
-
 	vite: {
 		plugins: [tailwindcss()],
 		build: {
-			cssMinify: "lightningcss",
+			cssMinify: 'lightningcss',
 			cssCodeSplit: true,
 			minify: 'esbuild',
 			target: 'esnext',
 			chunkSizeWarningLimit: 500,
+			modulePreload: {
+				polyfill: true,
+			},
 			rollupOptions: {
 				output: {
-					manualChunks(id) {
-						if (id.includes("node_modules")) {
-							return "vendor";
-						}
-					},
 					entryFileNames: 'entry.[hash].js',
 					chunkFileNames: 'chunks/[name].[hash].js',
 					assetFileNames: 'assets/[name].[hash][extname]',
@@ -61,21 +56,17 @@ export default defineConfig({
 			},
 		},
 	},
-
 	prefetch: {
 		prefetchAll: true,
 		defaultStrategy: 'hover',
 	},
-
 	compressHTML: true,
-
 	markdown: {
 		shikiConfig: {
 			theme: 'github-dark',
 			wrap: false,
 		},
 	},
-
 	server: {
 		headers: {
 			'X-Content-Type-Options': 'nosniff',

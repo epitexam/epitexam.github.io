@@ -52,8 +52,6 @@ const EAGER_LIMIT = 3;
 														.heroImageDescription ||
 													post.data.title
 												}
-												width={isFeatured ? 960 : 480}
-												height={isFeatured ? 480 : 240}
 												class="card-img"
 												loading={
 													isEager ? "eager" : "lazy"
@@ -61,7 +59,21 @@ const EAGER_LIMIT = 3;
 												fetchpriority={
 													isFeatured ? "high" : "auto"
 												}
-												decoding="async"
+												decoding={
+													isFeatured
+														? "sync"
+														: "async"
+												}
+												widths={
+													isFeatured
+														? [480, 700, 960, 1280]
+														: [320, 480, 662, 960]
+												}
+												sizes={
+													isFeatured
+														? "(max-width: 768px) 100vw, 662px"
+														: "(max-width: 480px) 100vw, (max-width: 768px) 50vw, 25vw"
+												}
 											/>
 										</div>
 									)}

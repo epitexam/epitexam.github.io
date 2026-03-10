@@ -147,12 +147,14 @@ const {
 			heroImage && (
 				<div class="hero-background animate-fadeIn">
 					<Image
-						width={1920}
-						height={1080}
 						src={heroImage}
-						alt=""
+						alt={heroImageDescription ?? ""}
 						class="hero-img"
 						loading="eager"
+						fetchpriority="high"
+						decoding="sync"
+						widths={[768, 1280, 1440, 1920]}
+						sizes="100vw"
 					/>
 				</div>
 			)
