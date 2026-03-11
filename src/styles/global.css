@@ -12,671 +12,674 @@
    To retheme the site, change the three triplets only.
    ============================================================ */
 :root {
-  --accent: 70, 255, 185;
-  --text: 210, 255, 235;
-  --bg: 4, 10, 12;
+    --accent: 70, 255, 185;
+    --text: 210, 255, 235;
+    --bg: 4, 10, 12;
 
-  --color-bg: rgb(var(--bg));
-  --color-text: rgb(var(--text));
-  --color-accent: rgb(var(--accent));
-  --color-surface: rgb(14, 17, 27);
-  --color-border: rgba(var(--accent), 0.12);
-  --color-muted: rgba(var(--text), 0.65);
+    --color-bg: rgb(var(--bg));
+    --color-text: rgb(var(--text));
+    --color-accent: rgb(var(--accent));
+    --color-surface: rgb(14, 17, 27);
+    --color-border: rgba(var(--accent), 0.12);
+    --color-muted: rgba(var(--text), 0.65);
 
-  --accent-05: rgba(var(--accent), 0.05);
-  --accent-10: rgba(var(--accent), 0.10);
-  --accent-20: rgba(var(--accent), 0.20);
-  --accent-40: rgba(var(--accent), 0.40);
+    --accent-05: rgba(var(--accent), 0.05);
+    --accent-10: rgba(var(--accent), 0.1);
+    --accent-20: rgba(var(--accent), 0.2);
+    --accent-40: rgba(var(--accent), 0.4);
 
-  --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.40);
-  --shadow-strong: 0 4px 25px rgba(0, 0, 0, 0.50);
-  --glow: 0 0 18px rgba(var(--accent), 0.35);
+    --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.4);
+    --shadow-strong: 0 4px 25px rgba(0, 0, 0, 0.5);
+    --glow: 0 0 18px rgba(var(--accent), 0.35);
 
-  --max-width: 960px;
-  --header-height: 60px;
-  --content-padding: 1.5rem;
-  --content-padding-mobile: 1rem;
+    --max-width: 960px;
+    --header-height: 60px;
+    --content-padding: 1.5rem;
+    --content-padding-mobile: 1rem;
 
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
 
-  --font-body: "Inter", -apple-system, sans-serif;
-  --font-title: "Space Mono", monospace;
-  --font-code: "JetBrains Mono", monospace;
-
-
-  --duration-fast: 0.2s;
-  --duration-base: 0.4s;
-  --duration-slow: 0.6s;
-  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
-  --stagger: 0.08s;
+    --duration-fast: 0.2s;
+    --duration-base: 0.4s;
+    --duration-slow: 0.6s;
+    --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+    --stagger: 0.08s;
 }
 
 /* ============================================================
    ANIMATABLE CUSTOM PROPERTY
    ============================================================ */
 @property --glow-opacity {
-  syntax: "<number>";
-  inherits: false;
-  initial-value: 0;
+    syntax: "<number>";
+    inherits: false;
+    initial-value: 0;
 }
 
 /* ============================================================
    BASE & RESET
    ============================================================ */
 @layer base {
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        word-wrap: break-word;
+    }
 
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-    word-wrap: break-word;
-  }
+    html {
+        scroll-behavior: smooth;
+        scroll-padding-top: var(--header-height);
+        scrollbar-gutter: stable;
+        text-size-adjust: none;
+        -webkit-text-size-adjust: none;
+    }
 
-  html {
-    scroll-behavior: smooth;
-    scroll-padding-top: var(--header-height);
-    scrollbar-gutter: stable;
-    text-size-adjust: none;
-    -webkit-text-size-adjust: none;
-  }
+    body {
+        margin: 0;
+        min-width: 280px;
+        min-height: 100dvh;
+        background-color: var(--color-bg);
+        font-family: var(--font-body);
+        font-size: 1rem;
+        line-height: 1.6;
+        letter-spacing: -0.011em;
+        color: rgba(var(--text), 0.95);
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeSpeed;
+        font-synthesis: none;
+    }
 
-  body {
-    margin: 0;
-    min-width: 280px;
-    min-height: 100dvh;
-    background-color: var(--color-bg);
-    font-family: var(--font-body);
-    font-size: 1rem;
-    line-height: 1.6;
-    letter-spacing: -0.011em;
-    color: rgba(var(--text), 0.95);
-    -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeSpeed;
-    font-synthesis: none;
-  }
+    :focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 3px;
+        border-radius: var(--radius-sm);
+    }
 
-  :focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 3px;
-    border-radius: var(--radius-sm);
-  }
+    :focus:not(:focus-visible) {
+        outline: none;
+    }
 
-  :focus:not(:focus-visible) {
-    outline: none;
-  }
+    img,
+    video {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
 
-  img,
-  video {
-    max-width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  hr {
-    border: none;
-    border-top: 1px solid var(--color-border);
-    margin-block: 2rem;
-  }
+    hr {
+        border: none;
+        border-top: 1px solid var(--color-border);
+        margin-block: 2rem;
+    }
 }
 
 /* ============================================================
    BACKGROUND: GRID + RADIAL GLOW
    ============================================================ */
 @layer base {
-  @media (min-width: 769px) {
-    body {
-      background-image:
-        radial-gradient(circle at 0% 0%,
-          rgba(var(--accent), 0.04) 0%,
-          transparent 40%),
-        linear-gradient(rgba(var(--accent), 0.05) 1px,
-          transparent 1px),
-        linear-gradient(90deg,
-          rgba(var(--accent), 0.05) 1px,
-          transparent 1px);
-      background-size: 100% 100%, 60px 60px, 60px 60px;
-      background-attachment: fixed;
+    @media (min-width: 769px) {
+        body {
+            background-image:
+                radial-gradient(
+                    circle at 0% 0%,
+                    rgba(var(--accent), 0.04) 0%,
+                    transparent 40%
+                ),
+                linear-gradient(rgba(var(--accent), 0.05) 1px, transparent 1px),
+                linear-gradient(
+                    90deg,
+                    rgba(var(--accent), 0.05) 1px,
+                    transparent 1px
+                );
+            background-size:
+                100% 100%,
+                60px 60px,
+                60px 60px;
+            background-attachment: fixed;
+        }
     }
-  }
 }
 
 /* ============================================================
    LAYOUT
    ============================================================ */
 @layer layout {
-  main {
-    width: 100%;
-    max-width: var(--max-width);
-    margin-inline: auto;
-    padding-block: calc(var(--header-height) + 2rem) 4rem;
-    padding-inline: var(--content-padding);
-    min-height: 100dvh;
-    display: flex;
-    flex-direction: column;
-  }
-
-  @media (max-width: 768px) {
     main {
-      padding-block-start: calc(var(--header-height) + 1rem);
-      padding-inline: var(--content-padding-mobile);
+        width: 100%;
+        max-width: var(--max-width);
+        margin-inline: auto;
+        padding-block: calc(var(--header-height) + 2rem) 4rem;
+        padding-inline: var(--content-padding);
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
     }
-  }
+
+    @media (max-width: 768px) {
+        main {
+            padding-block-start: calc(var(--header-height) + 1rem);
+            padding-inline: var(--content-padding-mobile);
+        }
+    }
 }
 
 /* ============================================================
    TYPOGRAPHY
    ============================================================ */
 @layer typography {
-  :is(h1, h2, h3, h4, h5, h6) {
-    margin: 0 0 0.75rem;
-    color: var(--color-text);
-    word-break: break-word;
-    font-family: var(--font-title);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    text-wrap: balance;
-  }
+    :is(h1, h2, h3, h4, h5, h6) {
+        margin: 0 0 0.75rem;
+        color: var(--color-text);
+        word-break: break-word;
+        font-family: var(--font-title);
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        text-wrap: balance;
+    }
 
-  h1 {
-    font-size: clamp(2rem, 8vw, 3rem);
-    padding-bottom: 0.5rem;
-  }
+    h1 {
+        font-size: clamp(2rem, 8vw, 3rem);
+        padding-bottom: 0.5rem;
+    }
 
-  h2 {
-    font-size: clamp(1.3rem, 5vw, 2rem);
-  }
+    h2 {
+        font-size: clamp(1.3rem, 5vw, 2rem);
+    }
 
-  h3 {
-    font-size: clamp(1.1rem, 4vw, 1.6rem);
-  }
+    h3 {
+        font-size: clamp(1.1rem, 4vw, 1.6rem);
+    }
 
-  h4 {
-    font-size: clamp(1rem, 3.5vw, 1.35rem);
-  }
+    h4 {
+        font-size: clamp(1rem, 3.5vw, 1.35rem);
+    }
 
-  h5 {
-    font-size: clamp(0.95rem, 3vw, 1.2rem);
-    color: var(--color-muted);
-  }
+    h5 {
+        font-size: clamp(0.95rem, 3vw, 1.2rem);
+        color: var(--color-muted);
+    }
 
-  h6 {
-    font-size: clamp(0.9rem, 2.5vw, 1rem);
-    color: var(--color-muted);
-    font-style: italic;
-  }
+    h6 {
+        font-size: clamp(0.9rem, 2.5vw, 1rem);
+        color: var(--color-muted);
+        font-style: italic;
+    }
 
-  p {
-    margin: 0;
-    line-height: 1.6;
-    color: var(--color-muted);
-    text-wrap: pretty;
-  }
+    p {
+        margin: 0;
+        line-height: 1.6;
+        color: var(--color-muted);
+        text-wrap: pretty;
+    }
 
-  p+p {
-    margin: 20px auto 20px auto;
-  }
-
+    p + p {
+        margin: 20px auto 20px auto;
+    }
 }
 
 /* ============================================================
    LINKS
    ============================================================ */
 @layer typography {
-  a {
-    color: var(--color-accent);
-    text-decoration: none;
-    transition: color var(--duration-fast) ease;
-  }
-
-  .prose a {
-    background-image: linear-gradient(currentColor, currentColor);
-    background-position: 0% 100%;
-    background-repeat: no-repeat;
-    background-size: 0% 1px;
-    transition:
-      background-size var(--duration-base) var(--ease-spring),
-      text-shadow var(--duration-fast) ease;
-  }
-
-  @media (hover: hover) {
-    .prose a:hover {
-      background-size: 100% 1px;
-      text-shadow: var(--glow);
+    a {
+        color: var(--color-accent);
+        text-decoration: none;
+        transition: color var(--duration-fast) ease;
     }
-  }
+
+    .prose a {
+        background-image: linear-gradient(currentColor, currentColor);
+        background-position: 0% 100%;
+        background-repeat: no-repeat;
+        background-size: 0% 1px;
+        transition:
+            background-size var(--duration-base) var(--ease-spring),
+            text-shadow var(--duration-fast) ease;
+    }
+
+    @media (hover: hover) {
+        .prose a:hover {
+            background-size: 100% 1px;
+            text-shadow: var(--glow);
+        }
+    }
 }
 
 /* ============================================================
    LISTS
    ============================================================ */
 @layer typography {
-  :is(ul, ol) {
-    margin-block: 1.5rem;
-    padding-inline-start: 1.5rem;
-  }
+    :is(ul, ol) {
+        margin-block: 1.5rem;
+        padding-inline-start: 1.5rem;
+    }
 
-  ul {
-    list-style: none;
-  }
+    ul {
+        list-style: none;
+    }
 
-  .prose ul li {
-    position: relative;
-    padding-inline-start: 1.25rem;
-  }
+    .prose ul li {
+        position: relative;
+        padding-inline-start: 1.25rem;
+    }
 
-  .prose ul li::before {
-    content: "▸";
-    position: absolute;
-    inset-inline-start: 0;
-    color: var(--color-accent);
-    opacity: 0.7;
-  }
+    .prose ul li::before {
+        content: "▸";
+        position: absolute;
+        inset-inline-start: 0;
+        color: var(--color-accent);
+        opacity: 0.7;
+    }
 
-  li {
-    line-height: 1.6;
-  }
+    li {
+        line-height: 1.6;
+    }
 
-  :is(ul, ol) :is(ul, ol) {
-    margin-inline-start: 1rem;
-  }
+    :is(ul, ol) :is(ul, ol) {
+        margin-inline-start: 1rem;
+    }
 }
 
 /* ============================================================
    TABLES
    ============================================================ */
 @layer components {
-  .table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin-block: 2rem;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-soft);
-    border: 1px solid var(--color-border);
-    contain: layout style;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background: rgba(var(--text), 0.03);
-    font-size: 0.95em;
-  }
-
-  :is(th, td) {
-    text-align: start;
-    padding: 1rem 1.25rem;
-    border-bottom: 1px solid rgba(var(--text), 0.07);
-    vertical-align: top;
-  }
-
-  thead th {
-    color: var(--color-accent);
-    text-transform: uppercase;
-    font-size: 0.8em;
-    letter-spacing: 0.05em;
-    background: rgba(var(--accent), 0.08);
-  }
-
-  @media (min-width: 769px) and (hover: hover) and (prefers-reduced-motion: no-preference) {
-    tbody tr {
-      transition:
-        background var(--duration-fast) ease,
-        transform var(--duration-fast) ease;
+    .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-block: 2rem;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-soft);
+        border: 1px solid var(--color-border);
+        contain: layout style;
     }
 
-    tbody tr:hover {
-      background: rgba(var(--accent), 0.06);
-      transform: translateX(4px);
-    }
-  }
-
-  @media (max-width: 768px) {
     table {
-      display: block;
-      overflow-x: auto;
-      white-space: nowrap;
-      box-shadow: none;
+        width: 100%;
+        border-collapse: collapse;
+        background: rgba(var(--text), 0.03);
+        font-size: 0.95em;
     }
 
     :is(th, td) {
-      padding: 0.75rem 1rem;
-      font-size: 0.9em;
+        text-align: start;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid rgba(var(--text), 0.07);
+        vertical-align: top;
     }
 
     thead th {
-      font-size: 0.8em;
+        color: var(--color-accent);
+        text-transform: uppercase;
+        font-size: 0.8em;
+        letter-spacing: 0.05em;
+        background: rgba(var(--accent), 0.08);
     }
-  }
+
+    @media (min-width: 769px) and (hover: hover) and (prefers-reduced-motion: no-preference) {
+        tbody tr {
+            transition:
+                background var(--duration-fast) ease,
+                transform var(--duration-fast) ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(var(--accent), 0.06);
+            transform: translateX(4px);
+        }
+    }
+
+    @media (max-width: 768px) {
+        table {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+            box-shadow: none;
+        }
+
+        :is(th, td) {
+            padding: 0.75rem 1rem;
+            font-size: 0.9em;
+        }
+
+        thead th {
+            font-size: 0.8em;
+        }
+    }
 }
 
 /* ============================================================
    IMAGES
    ============================================================ */
 @layer components {
-  .content-img {
-    border-radius: var(--radius-md);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    background: linear-gradient(135deg,
-        rgba(var(--accent), 0.10),
-        transparent);
-    box-shadow: var(--shadow-soft);
-    transition:
-      transform var(--duration-base) var(--ease-spring),
-      border-color var(--duration-base) ease,
-      box-shadow var(--duration-base) ease;
-  }
-
-  @media (hover: hover) {
-    .content-img:hover {
-      transform: scale(1.01);
-      border-color: rgba(var(--accent), 0.40);
-      box-shadow: 0 4px 20px rgba(var(--accent), 0.20);
-    }
-  }
-
-  @media (max-width: 768px) {
     .content-img {
-      box-shadow: none;
+        border-radius: var(--radius-md);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        background: linear-gradient(
+            135deg,
+            rgba(var(--accent), 0.1),
+            transparent
+        );
+        box-shadow: var(--shadow-soft);
+        transition:
+            transform var(--duration-base) var(--ease-spring),
+            border-color var(--duration-base) ease,
+            box-shadow var(--duration-base) ease;
     }
-  }
+
+    @media (hover: hover) {
+        .content-img:hover {
+            transform: scale(1.01);
+            border-color: rgba(var(--accent), 0.4);
+            box-shadow: 0 4px 20px rgba(var(--accent), 0.2);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .content-img {
+            box-shadow: none;
+        }
+    }
 }
 
 /* ============================================================
    CODE
    ============================================================ */
 @layer components {
+    :is(code, pre, .jetbrains-font) {
+        font-family: var(--font-code);
+        font-variant-ligatures: none;
+    }
 
-  :is(code, pre, .jetbrains-font) {
-    font-family: var(--font-code);
-    font-variant-ligatures: none;
-  }
-
-  code {
-    padding: 0.2em 0.4em;
-    font-size: 0.9em;
-    background: rgba(var(--text), 0.08);
-    color: var(--color-accent);
-    border-radius: var(--radius-sm);
-  }
-
-  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
     code {
-      transition:
-        background var(--duration-fast) ease,
-        color var(--duration-fast) ease;
+        padding: 0.2em 0.4em;
+        font-size: 0.9em;
+        background: rgba(var(--text), 0.08);
+        color: var(--color-accent);
+        border-radius: var(--radius-sm);
     }
 
-    code:hover {
-      background: rgba(var(--accent), 0.15);
-      color: var(--color-text);
+    @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+        code {
+            transition:
+                background var(--duration-fast) ease,
+                color var(--duration-fast) ease;
+        }
+
+        code:hover {
+            background: rgba(var(--accent), 0.15);
+            color: var(--color-text);
+        }
     }
-  }
 
-  pre {
-    margin-block: 2rem;
-    padding: 1.5rem;
-    background: rgba(var(--bg), 0.97);
-    border: 1px solid rgba(var(--text), 0.08);
-    border-inline-start: 2px solid rgba(var(--accent), 0.50);
-    border-radius: var(--radius-md);
-    overflow-x: auto;
-    box-shadow: var(--shadow-strong);
-    contain: layout style;
-  }
-
-  pre code {
-    background: none;
-    padding: 0;
-    color: rgba(var(--text), 0.90);
-  }
-
-  @media (max-width: 480px) {
     pre {
-      margin-block: 1.5rem;
-      margin-inline: -0.5rem;
-      padding: 1.2rem;
-      font-size: 0.85em;
-      border-radius: 0;
-      border-inline-start-width: 1px;
+        margin-block: 2rem;
+        padding: 1.5rem;
+        background: rgba(var(--bg), 0.97);
+        border: 1px solid rgba(var(--text), 0.08);
+        border-inline-start: 2px solid rgba(var(--accent), 0.5);
+        border-radius: var(--radius-md);
+        overflow-x: auto;
+        box-shadow: var(--shadow-strong);
+        contain: layout style;
     }
-  }
+
+    pre code {
+        background: none;
+        padding: 0;
+        color: rgba(var(--text), 0.9);
+    }
+
+    @media (max-width: 480px) {
+        pre {
+            margin-block: 1.5rem;
+            margin-inline: -0.5rem;
+            padding: 1.2rem;
+            font-size: 0.85em;
+            border-radius: 0;
+            border-inline-start-width: 1px;
+        }
+    }
 }
 
 /* ============================================================
    UTILITIES
    ============================================================ */
 @layer utilities {
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
-  }
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
 
-  .glow-text {
-    text-shadow: var(--glow);
-  }
+    .glow-text {
+        text-shadow: var(--glow);
+    }
 
-  .animate-fade-in {
-    animation: fade-in var(--duration-slow) ease forwards;
-  }
+    .animate-fade-in {
+        animation: fade-in var(--duration-slow) ease forwards;
+    }
 
-  .truncate {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+    .truncate {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 }
 
 /* ============================================================
    RESPONSIVE FONT SCALING
    ============================================================ */
 @layer base {
-  @media (max-width: 768px) {
-    body {
-      font-size: 0.9375rem;
-    }
-  }
-
-  @media (max-width: 480px) {
-    body {
-      font-size: 0.875rem;
+    @media (max-width: 768px) {
+        body {
+            font-size: 0.9375rem;
+        }
     }
 
-    hr {
-      margin-block: 1rem;
-    }
-  }
+    @media (max-width: 480px) {
+        body {
+            font-size: 0.875rem;
+        }
 
-  @media (max-width: 360px) {
-    body {
-      font-size: 0.8125rem;
-      line-height: 1.4;
+        hr {
+            margin-block: 1rem;
+        }
     }
-  }
+
+    @media (max-width: 360px) {
+        body {
+            font-size: 0.8125rem;
+            line-height: 1.4;
+        }
+    }
 }
 
 /* ============================================================
    KEYFRAMES
    ============================================================ */
 @keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes slide-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
 
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 @keyframes slide-in-bottom {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes fade-slide-right {
-  from {
-    opacity: 0;
-    transform: translateX(-15px);
-  }
+    from {
+        opacity: 0;
+        transform: translateX(-15px);
+    }
 
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 @keyframes scale-in {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
 
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /* ============================================================
    ENTRANCE ANIMATIONS
    ============================================================ */
 @layer animations {
-  @media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
-    h1 {
-      animation: slide-in-left var(--duration-slow) var(--ease-spring) both;
-      animation-delay: var(--delay, 0s);
-    }
+    @media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
+        h1 {
+            animation: slide-in-left var(--duration-slow) var(--ease-spring)
+                both;
+            animation-delay: var(--delay, 0s);
+        }
 
-    h2 {
-      animation: slide-in-left var(--duration-slow) var(--ease-spring) both;
-      animation-delay: var(--delay, calc(var(--stagger) * 1));
-    }
+        h2 {
+            animation: slide-in-left var(--duration-slow) var(--ease-spring)
+                both;
+            animation-delay: var(--delay, calc(var(--stagger) * 1));
+        }
 
-    h3 {
-      animation: fade-in-up var(--duration-slow) var(--ease-spring) both;
-      animation-delay: var(--delay, calc(var(--stagger) * 2));
-    }
+        h3 {
+            animation: fade-in-up var(--duration-slow) var(--ease-spring) both;
+            animation-delay: var(--delay, calc(var(--stagger) * 2));
+        }
 
-    :is(h4, h5, h6) {
-      animation: fade-in-up var(--duration-slow) var(--ease-spring) both;
-      animation-delay: var(--delay, calc(var(--stagger) * 3));
-    }
+        :is(h4, h5, h6) {
+            animation: fade-in-up var(--duration-slow) var(--ease-spring) both;
+            animation-delay: var(--delay, calc(var(--stagger) * 3));
+        }
 
-    .prose p {
-      animation: fade-in var(--duration-slow) var(--ease-spring) both;
-      animation-delay: var(--delay, calc(var(--stagger) * 4));
-    }
+        .prose p {
+            animation: fade-in var(--duration-slow) var(--ease-spring) both;
+            animation-delay: var(--delay, calc(var(--stagger) * 4));
+        }
 
-    .prose li {
-      animation: fade-slide-right 0.5s var(--ease-spring) both;
-      animation-delay: var(--delay, calc(var(--stagger) * 5));
-    }
+        .prose li {
+            animation: fade-slide-right 0.5s var(--ease-spring) both;
+            animation-delay: var(--delay, calc(var(--stagger) * 5));
+        }
 
-    .prose li:nth-child(1) {
-      --delay: calc(var(--stagger) * 5.0);
-    }
+        .prose li:nth-child(1) {
+            --delay: calc(var(--stagger) * 5);
+        }
 
-    .prose li:nth-child(2) {
-      --delay: calc(var(--stagger) * 5.5);
-    }
+        .prose li:nth-child(2) {
+            --delay: calc(var(--stagger) * 5.5);
+        }
 
-    .prose li:nth-child(3) {
-      --delay: calc(var(--stagger) * 6.0);
-    }
+        .prose li:nth-child(3) {
+            --delay: calc(var(--stagger) * 6);
+        }
 
-    .prose li:nth-child(4) {
-      --delay: calc(var(--stagger) * 6.5);
-    }
+        .prose li:nth-child(4) {
+            --delay: calc(var(--stagger) * 6.5);
+        }
 
-    .prose li:nth-child(5) {
-      --delay: calc(var(--stagger) * 7.0);
-    }
+        .prose li:nth-child(5) {
+            --delay: calc(var(--stagger) * 7);
+        }
 
-    .prose li:nth-child(n+6) {
-      --delay: calc(var(--stagger) * 7.5);
-    }
+        .prose li:nth-child(n + 6) {
+            --delay: calc(var(--stagger) * 7.5);
+        }
 
-    .table-wrapper {
-      animation: scale-in 0.5s var(--ease-spring) both;
-      animation-delay: calc(var(--stagger) * 6);
-    }
+        .table-wrapper {
+            animation: scale-in 0.5s var(--ease-spring) both;
+            animation-delay: calc(var(--stagger) * 6);
+        }
 
-    pre {
-      animation: slide-in-bottom var(--duration-slow) var(--ease-spring) both;
-      animation-delay: calc(var(--stagger) * 5);
+        pre {
+            animation: slide-in-bottom var(--duration-slow) var(--ease-spring)
+                both;
+            animation-delay: calc(var(--stagger) * 5);
+        }
     }
-  }
 }
 
 /* ============================================================
    ACCESSIBILITY:
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+    html {
+        scroll-behavior: auto;
+    }
 
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
 
 @media (prefers-color-scheme: light) {
-  :root {
-    --bg: 242, 241, 235;
-    --text: 15, 25, 20;
-    --accent: 25, 95, 70;
-    --color-surface: rgb(235, 233, 225);
-    --color-border: rgba(var(--accent), 0.15);
-    --color-muted: rgba(var(--text), 0.70);
-    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
-    --shadow-strong: 0 8px 30px rgba(0, 0, 0, 0.12);
-    --glow: 0 0 15px rgba(var(--accent), 0.25);
-  }
+    :root {
+        --bg: 242, 241, 235;
+        --text: 15, 25, 20;
+        --accent: 25, 95, 70;
+        --color-surface: rgb(235, 233, 225);
+        --color-border: rgba(var(--accent), 0.15);
+        --color-muted: rgba(var(--text), 0.7);
+        --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
+        --shadow-strong: 0 8px 30px rgba(0, 0, 0, 0.12);
+        --glow: 0 0 15px rgba(var(--accent), 0.25);
+    }
 }
