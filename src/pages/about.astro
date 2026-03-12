@@ -3,319 +3,415 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import {
-	SITE_TITLE,
-	SITE_DESCRIPTION,
-	ABOUT_ME,
-	EDUCATION,
-	EXPERIENCES,
+    SITE_TITLE,
+    SITE_DESCRIPTION,
+    ABOUT_ME,
+    EDUCATION,
+    EXPERIENCES,
 } from "../consts";
-import Avatar from "../components/Avatar.astro";
-import TerminalCard from "../components/TerminalCard.astro";
+import ProfileCard from "../components/ProfileCard.astro";
 import Tag from "../components/Tag.astro";
 ---
 
 <!doctype html>
 <html lang="fr">
-	<head>
-		<BaseHead
-			title={`À propos - ${SITE_TITLE}`}
-			description={SITE_DESCRIPTION}
-		/>
-	</head>
+    <head>
+        <BaseHead
+            title={`À propos - ${SITE_TITLE}`}
+            description={SITE_DESCRIPTION}
+        />
+    </head>
 
-	<body>
-		<Header />
+    <body>
+        <Header />
 
-		<main class="about-main">
-			<section class="hero-section">
-				<Avatar />
-				<div class="terminal-wrapper">
-					<TerminalCard
-						filename="presentation.md"
-						content={ABOUT_ME}
-					/>
-				</div>
-			</section>
+        <main class="about-main">
+            <section aria-label="Présentation">
+                <ProfileCard
+                    title="Développeur Full-Stack"
+                    tagline="3 ans d'expérience · Web · Backend · Embarqué"
+                    content={ABOUT_ME}
+                    contactUrl="/contact"
+                />
+            </section>
+            <section class="content-section" aria-labelledby="parcours-heading">
+                <h2 id="parcours-heading" class="section-title">Parcours</h2>
 
-			<section class="content-section" aria-labelledby="parcours-heading">
-				<h2 id="parcours-heading" class="section-title">Parcours</h2>
+                <div class="journey-block">
+                    <p class="journey-label">Formation</p>
+                    <div class="journey-list">
+                        {
+                            EDUCATION.map((item) => (
+                                <div class="journey-item">
+                                    <div class="journey-header">
+                                        <span class="journey-period">
+                                            {item.period}
+                                        </span>
+                                        <h3 class="journey-title">
+                                            {item.title}
+                                        </h3>
+                                    </div>
+                                    {item.subtitle && (
+                                        <p class="journey-subtitle-text">
+                                            {item.subtitle}
+                                        </p>
+                                    )}
+                                    <p class="journey-desc">
+                                        {item.description}
+                                    </p>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
 
-				<div class="journey-block">
-					<p class="journey-subtitle">Formation</p>
-					<div class="journey-list">
-						{
-							EDUCATION.map((item) => (
-								<div class="journey-item">
-									<div class="journey-header">
-										<span class="journey-period">
-											{item.period}
-										</span>
-										<h3 class="journey-title">
-											{item.title}
-										</h3>
-									</div>
-									{item.subtitle && (
-										<p class="journey-subtitle-text">
-											{item.subtitle}
-										</p>
-									)}
-									<p class="journey-desc">
-										{item.description}
-									</p>
-								</div>
-							))
-						}
-					</div>
-				</div>
+                <div class="journey-block">
+                    <p class="journey-label">Expériences professionnelles</p>
+                    <div class="journey-list">
+                        {
+                            EXPERIENCES.map((item) => (
+                                <div class="journey-item">
+                                    <div class="journey-header">
+                                        <span class="journey-period">
+                                            {item.period}
+                                        </span>
+                                        <h3 class="journey-title">
+                                            {item.title}
+                                        </h3>
+                                    </div>
 
-				<div class="journey-block">
-					<p class="journey-subtitle">Expériences</p>
-					<div class="journey-list">
-						{
-							EXPERIENCES.map((item) => (
-								<div class="journey-item">
-									<div class="journey-header">
-										<span class="journey-period">
-											{item.period}
-										</span>
-										<h3 class="journey-title">
-											{item.title}
-										</h3>
-									</div>
-									<p class="journey-desc">
-										{item.description}
-									</p>
-									<div class="journey-tags">
-										{item.tags.map((tag) => (
-											<Tag tag={tag} />
-										))}
-									</div>
-								</div>
-							))
-						}
-					</div>
-				</div>
-			</section>
+                                    <p class="journey-desc">
+                                        {item.description}
+                                    </p>
+                                    <div class="journey-tags">
+                                        {item.tags.map((tag) => (
+                                            <Tag tag={tag} />
+                                        ))}
+                                    </div>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
+            </section>
 
-			<section
-				class="content-section"
-				aria-labelledby="interests-heading"
-			>
-				<h2 id="interests-heading" class="section-title">
-					Au-delà du code
-				</h2>
-				<div class="interests-content">
-					<p>
-						Passionné de <strong>jeux vidéo</strong> et de <strong
-							>game design</strong
-						>, j'aime analyser les mécaniques et comprendre comment
-						créer des expériences engageantes. Cet intérêt influence
-						ma manière de concevoir des interfaces utilisateur.
-					</p>
-					<p>
-						Je m'intéresse également à <strong>l'émulation</strong> et
-						à la
-						<strong>rétro informatique (Atari 2600)</strong>,
-						comprendre comment fonctionnaient les anciennes machines
-						m'aide à mieux appréhender les contraintes hardware et
-						l'optimisation bas niveau.
-					</p>
-					<p>
-						Grand utilisateur de projets <strong>open source</strong
-						>, j'en mesure toute l'importance pour l'écosystème
-						tech. Même si je n'ai pas encore eu l'occasion de voir
-						une PR mergée, je contribue à ma manière en partageant
-						mes découvertes techniques sur ce blog.
-					</p>
-				</div>
-			</section>
-		</main>
+            <section
+                class="content-section"
+                aria-labelledby="interests-heading"
+            >
+                <h2 id="interests-heading" class="section-title">
+                    Centres d'intérêt
+                </h2>
+                <div class="interests-content">
+                    <p>
+                        Passionné de <strong>jeux vidéo</strong> et de <strong
+                            >game design</strong
+                        >, j'aime observer les mécaniques de gameplay pour voir
+                        ce qui rend une expérience agréable. Ça influence
+                        directement ma façon de concevoir des interfaces simples
+                        et intuitives.
+                    </p>
+                    <p>
+                        L'<strong>émulation</strong> et la <strong
+                            >rétro-informatique</strong
+                        > (Atari 2600, 6502) alimentent ma curiosité pour les contraintes
+                        hardware et l'optimisation bas niveau. Observer comment les
+                        anciens programmeurs faisaient tenir un jeu dans seulement
+                        4 Ko reste un bon exercice pour comprendre l'efficacité et
+                        la rigueur dans le code.
+                    </p>
+                    <p>
+                        Grand utilisateur de l'<strong>open source</strong>,
+                        j'explore les projets existants et m'inspire des
+                        meilleures pratiques. Je documente parfois mes
+                        découvertes et projets sur GitHub pour garder une trace
+                        de mon apprentissage.
+                    </p>
+                </div>
+            </section>
 
-		<Footer />
-	</body>
+            <aside class="contact-nudge" aria-label="Disponibilité">
+                <p class="nudge-text">
+                    Vous recrutez ?
+                    <a href="/contact" class="nudge-link">
+                        Échangeons
+                        <svg
+                            width="13"
+                            height="13"
+                            viewBox="0 0 16 16"
+                            fill="none"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M3.5 8H12.5M12.5 8L8.5 4M12.5 8L8.5 12"
+                                stroke="currentColor"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"></path>
+                        </svg>
+                    </a>
+                </p>
+            </aside>
+        </main>
+
+        <Footer />
+    </body>
 </html>
 
 <style>
-	.about-main {
-		max-width: 800px;
-		gap: 5rem;
-	}
+    .about-main {
+        max-width: 800px;
+        gap: 5rem;
+    }
 
-	.hero-section {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 2.5rem;
-		width: 100%;
-	}
+    .content-section {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        width: 100%;
+    }
 
-	.terminal-wrapper {
-		width: 100%;
-		min-width: 0;
-		overflow: hidden;
-	}
+    .section-title {
+        font-size: clamp(1.4rem, 4vw, 1.9rem);
+        font-weight: 700;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid var(--color-border);
+        margin: 0;
+        animation: none;
+    }
 
-	.content-section {
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-		width: 100%;
-	}
+    .journey-block {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
 
-	.section-title {
-		font-size: clamp(1.4rem, 4vw, 1.9rem);
-		font-weight: 700;
-		padding-bottom: 0.75rem;
-		border-bottom: 1px solid var(--color-border);
-		margin: 0;
+    .journey-label {
+        font-family: var(--font-code);
+        font-size: 0.72rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--color-accent);
+        opacity: 0.65;
+        margin: 0;
+    }
 
-		animation: none;
-	}
+    .journey-list {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
 
-	.journey-block {
-		display: flex;
-		flex-direction: column;
-		gap: 1.5rem;
-	}
+    .journey-item {
+        padding: 0.75rem 0 0.75rem 1.5rem;
+        border-left: 2px solid var(--color-border);
+        transition:
+            border-color var(--duration-base) ease,
+            padding-left var(--duration-base) var(--ease-spring);
+    }
 
-	.journey-subtitle {
-		font-family: var(--font-code);
-		font-size: 0.72rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		color: var(--color-accent);
-		opacity: 0.65;
-		margin: 0;
-	}
+    .journey-item:hover {
+        border-left-color: var(--color-accent);
+        padding-left: 1.85rem;
+    }
 
-	.journey-list {
-		display: flex;
-		flex-direction: column;
-		gap: 1.5rem;
-	}
+    .journey-header {
+        display: flex;
+        align-items: baseline;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        margin-bottom: 0.25rem;
+    }
 
-	.journey-item {
-		padding: 0.75rem 0 0.75rem 1.5rem;
-		border-left: 2px solid var(--color-border);
-		transition:
-			border-color var(--duration-base) ease,
-			padding-left var(--duration-base) var(--ease-spring);
-	}
+    .journey-period {
+        font-family: var(--font-code);
+        font-size: 0.75rem;
+        color: var(--color-muted);
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
 
-	.journey-item:hover {
-		border-left-color: var(--color-accent);
-		padding-left: 1.85rem;
-	}
+    .journey-title {
+        font-family: var(--font-title);
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--color-text);
+        margin: 0;
+        letter-spacing: -0.01em;
+        animation: none;
+    }
 
-	.journey-header {
-		display: flex;
-		align-items: baseline;
-		gap: 0.75rem;
-		flex-wrap: wrap;
-		margin-bottom: 0.4rem;
-	}
+    .journey-school {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--color-accent);
+        margin: 0 0 0.2rem;
+    }
 
-	.journey-period {
-		font-family: var(--font-code);
-		font-size: 0.75rem;
-		color: var(--color-muted);
-		white-space: nowrap;
-		flex-shrink: 0;
-	}
+    .journey-subtitle-text {
+        font-size: 0.875rem;
+        color: var(--color-muted);
+        font-style: italic;
+        margin: 0 0 0.3rem;
+    }
 
-	.journey-title {
-		font-family: var(--font-title);
-		font-size: 1rem;
-		font-weight: 600;
-		color: var(--color-text);
-		margin: 0;
-		letter-spacing: -0.01em;
-		animation: none;
-	}
+    .journey-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+        margin-bottom: 0.4rem;
+    }
 
-	.journey-subtitle-text {
-		font-size: 0.875rem;
-		color: var(--color-muted);
-		font-style: italic;
-		margin: 0 0 0.4rem;
-	}
+    .journey-company {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--color-text);
+    }
 
-	.journey-desc {
-		font-size: 0.9rem;
-		line-height: 1.7;
-		color: rgba(var(--text), 0.75);
-		margin: 0;
-	}
+    .journey-meta-sep {
+        color: var(--color-muted);
+        font-size: 0.8rem;
+    }
 
-	.journey-tags {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.4rem;
-		margin-top: 0.75rem;
-	}
+    .journey-contract {
+        font-family: var(--font-code);
+        font-size: 0.72rem;
+        color: var(--color-muted);
+    }
 
-	.interests-content {
-		font-size: 1rem;
-		line-height: 1.8;
-		color: rgba(var(--text), 0.8);
-		display: flex;
-		flex-direction: column;
-		gap: 1.2rem;
-	}
+    .journey-desc {
+        font-size: 0.9rem;
+        line-height: 1.7;
+        color: rgba(var(--text), 0.75);
+        margin: 0;
+    }
 
-	.interests-content p {
-		margin: 0;
-		color: rgba(var(--text), 0.8);
-	}
+    .journey-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-top: 0.75rem;
+    }
 
-	@media (max-width: 768px) {
-		.about-main {
-			gap: 3.5rem;
-		}
+    .interests-content {
+        font-size: 1rem;
+        line-height: 1.8;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+    }
 
-		.journey-header {
-			flex-direction: column;
-			gap: 0.2rem;
-		}
+    .interests-content p {
+        margin: 0;
+        color: rgba(var(--text), 0.8);
+    }
 
-		.journey-item:hover {
-			padding-left: 1.5rem;
-		}
-	}
+    .contact-nudge {
+        display: flex;
+        justify-content: center;
+        padding: 1.5rem;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        background: rgba(var(--accent), 0.03);
+    }
 
-	@media (max-width: 480px) {
-		.about-main {
-			gap: 2.5rem;
-		}
+    .nudge-text {
+        font-size: 0.95rem;
+        color: var(--color-muted);
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
 
-		.hero-section {
-			gap: 1.75rem;
-		}
+    .nudge-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        color: var(--color-accent);
+        font-weight: 600;
+        font-size: 0.95rem;
+        position: relative;
+        padding-bottom: 1px;
+        transition: opacity var(--duration-fast) ease;
+    }
 
-		.section-title {
-			font-size: 1.3rem;
-		}
+    .nudge-link::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: var(--color-accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform var(--duration-base) var(--ease-spring);
+    }
 
-		.journey-item {
-			padding-left: 1.1rem;
-		}
+    .nudge-link:hover::after {
+        transform: scaleX(1);
+    }
 
-		.journey-title {
-			font-size: 0.95rem;
-		}
+    .nudge-link svg {
+        transition: transform var(--duration-base) var(--ease-spring);
+    }
 
-		.interests-content {
-			font-size: 0.925rem;
-		}
-	}
+    .nudge-link:hover svg {
+        transform: translateX(3px);
+    }
 
-	@media (prefers-reduced-motion: reduce) {
-		.journey-item:hover {
-			padding-left: 1.5rem;
-		}
-		.journey-item {
-			transition: none;
-		}
-	}
+    @media (max-width: 768px) {
+        .about-main {
+            gap: 3.5rem;
+        }
+
+        .journey-header {
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .journey-item:hover {
+            padding-left: 1.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .about-main {
+            gap: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+        }
+
+        .journey-item {
+            padding-left: 1.1rem;
+        }
+        .journey-title {
+            font-size: 0.95rem;
+        }
+
+        .interests-content {
+            font-size: 0.925rem;
+        }
+
+        .contact-nudge {
+            padding: 1.25rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .journey-item {
+            transition: none;
+        }
+        .journey-item:hover {
+            padding-left: 1.5rem;
+        }
+        .nudge-link svg {
+            transition: none;
+        }
+    }
 </style>

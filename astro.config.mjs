@@ -81,7 +81,7 @@ export default defineConfig({
   compressHTML: true,
   markdown: {
     shikiConfig: {
-      theme: "github-dark",
+      theme: "vesper",
       wrap: false,
     },
   },

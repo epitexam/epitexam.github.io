@@ -133,15 +133,24 @@ const isTopOne = game.rank === 1;
             }
             {
                 game.storeUrl && (
-                    <div class="meta-item meta-link">
+                    <div class="meta-item">
                         <span class="meta-label">Boutique</span>
                         <a
                             href={game.storeUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            class="steam-link"
+                            class="store-link"
                         >
-                            Voir sur Steam →
+                            Voir sur Steam
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M7 17L17 7M17 7H7M17 7V17"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+                            </svg>
                         </a>
                     </div>
                 )
@@ -166,7 +175,7 @@ const isTopOne = game.rank === 1;
                                     <path
                                         d="M20 6L9 17l-5-5"
                                         stroke="currentColor"
-                                        stroke-width="2"
+                                        stroke-width="2.5"
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
                                     />
@@ -187,7 +196,7 @@ const isTopOne = game.rank === 1;
                                     <path
                                         d="M18 6L6 18M6 6l12 12"
                                         stroke="currentColor"
-                                        stroke-width="2"
+                                        stroke-width="2.5"
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
                                     />
@@ -212,7 +221,7 @@ const isTopOne = game.rank === 1;
     </section>
 
     {
-        game.tags && (
+        game.tags && game.tags.length > 0 && (
             <footer class="game-footer">
                 <div class="game-tags">
                     {game.tags.map((tag) => (
@@ -225,10 +234,22 @@ const isTopOne = game.rank === 1;
 </article>
 
 <style>
-    li::before {
-        content: none !important;
+    /* Reset liste */
+    ul,
+    ol,
+    li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
     }
 
+    li::before,
+    li::after {
+        content: none !important;
+        display: none !important;
+    }
+
+    /* Carte principale */
     .game-card {
         position: relative;
         margin: 0 0 5rem;
@@ -240,15 +261,13 @@ const isTopOne = game.rank === 1;
         );
         border: 1px solid var(--color-border);
         border-radius: var(--radius-md);
-        transition:
-            border-color var(--duration-base) ease,
-            box-shadow var(--duration-base) ease;
+        transition: all var(--duration-base) var(--ease-spring);
         box-shadow: var(--shadow-soft);
     }
 
     .game-card:hover {
         border-color: rgba(var(--accent), 0.3);
-        box-shadow: 0 8px 32px rgba(var(--accent), 0.1);
+        box-shadow: var(--shadow-strong);
     }
 
     .game-card.top-one {
@@ -266,6 +285,7 @@ const isTopOne = game.rank === 1;
         box-shadow: 0 12px 40px rgba(var(--accent), 0.25);
     }
 
+    /* Badge de classement */
     .rank-badge {
         position: absolute;
         top: -1rem;
@@ -274,9 +294,10 @@ const isTopOne = game.rank === 1;
         align-items: center;
         gap: 0.5rem;
         padding: 0.5rem 1.25rem;
-        background: rgba(var(--bg), 0.95);
+        background: var(--color-surface);
         border: 2px solid rgba(var(--accent), 0.3);
         border-radius: 999px;
+        backdrop-filter: blur(8px);
     }
 
     .rank-number {
@@ -301,12 +322,13 @@ const isTopOne = game.rank === 1;
         }
     }
 
+    /* Badge top 1 */
     .top-one-badge {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        padding: 0.5rem 1rem;
-        margin-bottom: 1rem;
+        padding: 0.5rem 1.2rem;
+        margin-bottom: 1.5rem;
         background: rgba(var(--accent), 0.1);
         border: 1px solid rgba(var(--accent), 0.3);
         border-radius: 999px;
@@ -316,14 +338,15 @@ const isTopOne = game.rank === 1;
         color: var(--color-accent);
         text-transform: uppercase;
         letter-spacing: 0.05em;
+        width: fit-content;
     }
 
     .top-one-badge svg {
-        width: 16px;
-        height: 16px;
-        color: var(--color-accent);
+        width: 18px;
+        height: 18px;
     }
 
+    /* Header */
     .game-header {
         margin-bottom: 2rem;
     }
@@ -344,6 +367,7 @@ const isTopOne = game.rank === 1;
         max-width: 800px;
     }
 
+    /* Image */
     .game-image {
         margin: 0 0 2.5rem;
         border-radius: var(--radius-md);
@@ -357,13 +381,14 @@ const isTopOne = game.rank === 1;
         height: auto;
         object-fit: cover;
         display: block;
-        transition: transform var(--duration-base) ease;
+        transition: transform var(--duration-base) var(--ease-spring);
     }
 
     .game-card:hover .game-img {
         transform: scale(1.02);
     }
 
+    /* Grille meta */
     .game-meta {
         margin-bottom: 2.5rem;
     }
@@ -371,10 +396,10 @@ const isTopOne = game.rank === 1;
     .meta-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.25rem;
+        gap: 1.5rem;
         padding: 1.5rem;
-        background: rgba(var(--bg), 0.3);
-        border: 1px solid rgba(var(--accent), 0.1);
+        background: rgba(var(--bg), 0.5);
+        border: 1px solid var(--color-border);
         border-radius: var(--radius-md);
     }
 
@@ -386,30 +411,46 @@ const isTopOne = game.rank === 1;
 
     .meta-label {
         font-family: var(--font-title);
-        font-size: 0.8rem;
+        font-size: 0.75rem;
         font-weight: 600;
-        color: rgba(var(--accent), 0.8);
+        color: var(--color-accent);
         text-transform: uppercase;
         letter-spacing: 0.05em;
+        opacity: 0.8;
     }
 
     .meta-value {
         font-size: 0.95rem;
-        color: rgba(var(--text), 0.85);
+        color: var(--color-text);
         line-height: 1.5;
     }
 
-    .steam-link {
+    .store-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
         font-size: 0.95rem;
         color: var(--color-accent);
         font-weight: 500;
-        transition: color var(--duration-fast) ease;
+        transition: all var(--duration-fast) var(--ease-spring);
+        text-decoration: none;
     }
 
-    .steam-link:hover {
-        color: rgba(var(--accent), 0.8);
+    .store-link svg {
+        width: 16px;
+        height: 16px;
+        transition: transform var(--duration-fast) var(--ease-spring);
     }
 
+    .store-link:hover {
+        color: var(--color-text);
+    }
+
+    .store-link:hover svg {
+        transform: translate(2px, -2px);
+    }
+
+    /* Contenu principal */
     .game-content {
         display: flex;
         flex-direction: column;
@@ -417,7 +458,7 @@ const isTopOne = game.rank === 1;
     }
 
     .content-block h3 {
-        font-size: 1.2rem;
+        font-size: 1.25rem;
         font-weight: 700;
         margin: 0 0 1rem;
         color: var(--color-text);
@@ -432,15 +473,13 @@ const isTopOne = game.rank === 1;
 
     .content-columns {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 2rem;
     }
 
+    /* Listes pros/cons - sans décorations */
     .pros-list,
     .cons-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
         display: flex;
         flex-direction: column;
         gap: 0.75rem;
@@ -451,8 +490,18 @@ const isTopOne = game.rank === 1;
         display: flex;
         align-items: flex-start;
         gap: 0.75rem;
-        padding: 0;
-        margin: 0;
+        padding: 0.5rem;
+        background: rgba(var(--bg), 0.3);
+        border: 1px solid transparent;
+        border-radius: var(--radius-sm);
+        transition: all var(--duration-fast) var(--ease-spring);
+    }
+
+    .pros-list li:hover,
+    .cons-list li:hover {
+        background: rgba(var(--bg), 0.6);
+        border-color: var(--color-border);
+        transform: translateX(4px);
     }
 
     .pros-list svg,
@@ -466,6 +515,7 @@ const isTopOne = game.rank === 1;
     .pros-list svg {
         color: var(--color-accent);
     }
+
     .cons-list svg {
         color: rgba(var(--text), 0.4);
     }
@@ -474,13 +524,14 @@ const isTopOne = game.rank === 1;
     .cons-list span {
         font-size: 0.95rem;
         line-height: 1.6;
-        color: rgba(var(--text), 0.8);
+        color: rgba(var(--text), 0.85);
     }
 
+    /* Bloc surligné */
     .highlight-block {
         padding: 1.5rem;
         background: rgba(var(--accent), 0.05);
-        border-left: 3px solid rgba(var(--accent), 0.5);
+        border-left: 3px solid var(--color-accent);
         border-radius: var(--radius-sm);
     }
 
@@ -488,10 +539,11 @@ const isTopOne = game.rank === 1;
         color: var(--color-accent);
     }
 
+    /* Footer avec tags */
     .game-footer {
-        margin-top: 1.5rem;
+        margin-top: 2rem;
         padding-top: 1.5rem;
-        border-top: 1px solid rgba(var(--accent), 0.1);
+        border-top: 1px solid rgba(var(--accent), 0.15);
     }
 
     .game-tags {
@@ -500,35 +552,48 @@ const isTopOne = game.rank === 1;
         gap: 0.5rem;
     }
 
+    /* Responsive */
     @media (max-width: 768px) {
         .game-card {
             padding: 1.5rem;
             margin: 0 0 3rem;
         }
+
         .rank-badge {
             left: 1rem;
             padding: 0.4rem 1rem;
         }
+
         .rank-number {
             font-size: 1rem;
         }
+
         .game-title {
             font-size: 1.8rem;
         }
+
         .game-description {
             font-size: 1rem;
         }
+
         .meta-grid {
             grid-template-columns: 1fr;
             gap: 1rem;
             padding: 1.25rem;
         }
+
         .content-columns {
             grid-template-columns: 1fr;
             gap: 1.5rem;
         }
+
         .highlight-block {
             padding: 1.25rem;
+        }
+
+        .pros-list li,
+        .cons-list li {
+            padding: 0.4rem;
         }
     }
 
@@ -536,22 +601,51 @@ const isTopOne = game.rank === 1;
         .game-card {
             padding: 1.25rem;
         }
+
         .top-one-badge {
-            font-size: 0.75rem;
-            padding: 0.4rem 0.85rem;
+            font-size: 0.7rem;
+            padding: 0.4rem 1rem;
         }
+
         .top-one-badge svg {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
+        }
+
+        .pros-list li,
+        .cons-list li {
+            flex-wrap: wrap;
         }
     }
 
     @media (prefers-reduced-motion: reduce) {
+        .game-card,
+        .game-card *,
+        .pros-list li,
+        .cons-list li,
+        .store-link,
+        .store-link svg,
+        .crown-icon,
+        .game-img {
+            animation: none !important;
+            transition: none !important;
+            transform: none !important;
+        }
+
+        .game-card:hover {
+            transform: none;
+            box-shadow: var(--shadow-soft);
+        }
+
         .game-card:hover .game-img {
             transform: none;
         }
-        .crown-icon {
-            animation: none;
+
+        .pros-list li:hover,
+        .cons-list li:hover {
+            transform: none;
+            background: rgba(var(--bg), 0.3);
+            border-color: transparent;
         }
     }
 </style>

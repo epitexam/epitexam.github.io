@@ -101,28 +101,8 @@ for (const post of allPosts) {
 			{
 				latestPost && (
 					<div class="blog-section">
+						<h2 class="sr-only">Dernier article de blog</h2>
 						<LatestPost post={latestPost} />
-						<div class="blog-footer">
-							<a href="/blog" class="view-all-link">
-								Voir tous les articles
-								<svg
-									class="arrow-icon"
-									width="15"
-									height="15"
-									viewBox="0 0 16 16"
-									fill="none"
-									aria-hidden="true"
-								>
-									<path
-										d="M3.5 8H12.5M12.5 8L8.5 4M12.5 8L8.5 12"
-										stroke="currentColor"
-										stroke-width="1.5"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-									/>
-								</svg>
-							</a>
-						</div>
 					</div>
 				)
 			}
@@ -276,7 +256,7 @@ for (const post of allPosts) {
 		border-radius: 999px;
 		background: rgba(var(--accent), 0.05);
 		border: 1px solid rgba(var(--accent), 0.12);
-		color: rgba(var(--text), 0.42);
+		color: rgba(var(--text), 0.75);
 		transition:
 			color var(--duration-fast) ease,
 			border-color var(--duration-fast) ease,

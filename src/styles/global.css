@@ -6,45 +6,76 @@
 @layer base, layout, typography, components, utilities, animations;
 
 /* ============================================================
-   DESIGN TOKENS
-   All colors derive from three RGB triplets: --accent, --text, --bg.
-   Semantic tokens (--color-*) are built on top for new code.
-   To retheme the site, change the three triplets only.
+   DESIGN TOKENS – MONOCHROME REFINED
+   Three base triplets drive every color on the site.
+   Dark mode: near-neutral black + white accent.
+   Light mode: soft white + near-black accent.
+   To retheme, change the three triplets only.
    ============================================================ */
 :root {
-    --accent: 70, 255, 185;
-    --text: 210, 255, 235;
-    --bg: 4, 10, 12;
+    --bg: 9, 9, 9;
+    --text: 232, 232, 234;
+    --accent: 255, 255, 255;
 
     --color-bg: rgb(var(--bg));
     --color-text: rgb(var(--text));
     --color-accent: rgb(var(--accent));
-    --color-surface: rgb(14, 17, 27);
-    --color-border: rgba(var(--accent), 0.12);
-    --color-muted: rgba(var(--text), 0.65);
+    --color-surface: rgb(17, 17, 19);
+    --color-border: rgba(var(--text), 0.09);
+    --color-muted: rgba(var(--text), 0.72);
 
-    --accent-05: rgba(var(--accent), 0.05);
-    --accent-10: rgba(var(--accent), 0.1);
-    --accent-20: rgba(var(--accent), 0.2);
-    --accent-40: rgba(var(--accent), 0.4);
+    --accent-05: rgba(var(--text), 0.04);
+    --accent-10: rgba(var(--text), 0.08);
+    --accent-20: rgba(var(--text), 0.14);
+    --accent-40: rgba(var(--text), 0.30);
 
-    --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.4);
-    --shadow-strong: 0 4px 25px rgba(0, 0, 0, 0.5);
-    --glow: 0 0 18px rgba(var(--accent), 0.35);
+    --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.50);
+    --shadow-strong: 0 12px 32px rgba(0, 0, 0, 0.65);
+    --glow: 0 0 10px rgba(255, 255, 255, 0.08);
 
     --max-width: 960px;
     --header-height: 60px;
     --content-padding: 1.5rem;
     --content-padding-mobile: 1rem;
 
+    /* Rayons */
     --radius-sm: 0.25rem;
     --radius-md: 0.5rem;
 
+    /* Animations */
     --duration-fast: 0.2s;
     --duration-base: 0.4s;
     --duration-slow: 0.6s;
     --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
     --stagger: 0.08s;
+}
+
+/* ============================================================
+   LIGHT MODE
+   ============================================================ */
+@media (prefers-color-scheme: light) {
+    :root {
+        --bg: 250, 250, 252;
+        --text: 14, 14, 16;
+        --accent: 14, 14, 16;
+
+        --color-surface: rgb(255, 255, 255);
+        --color-border: rgba(var(--text), 0.10);
+        --color-muted: rgba(var(--text), 0.7);
+
+        --accent-05: rgba(var(--text), 0.04);
+        --accent-10: rgba(var(--text), 0.07);
+        --accent-20: rgba(var(--text), 0.12);
+        --accent-40: rgba(var(--text), 0.28);
+
+        --shadow-soft:
+            0 2px 8px rgba(0, 0, 0, 0.05),
+            0 6px 16px rgba(0, 0, 0, 0.04);
+        --shadow-strong:
+            0 4px 14px rgba(0, 0, 0, 0.07),
+            0 10px 28px rgba(0, 0, 0, 0.06);
+        --glow: 0 0 8px rgba(14, 14, 16, 0.12);
+    }
 }
 
 /* ============================================================
@@ -60,6 +91,7 @@
    BASE & RESET
    ============================================================ */
 @layer base {
+
     *,
     *::before,
     *::after {
@@ -73,6 +105,7 @@
         scrollbar-gutter: stable;
         text-size-adjust: none;
         -webkit-text-size-adjust: none;
+        overflow-x: hidden;
     }
 
     body {
@@ -88,6 +121,7 @@
         -webkit-font-smoothing: antialiased;
         text-rendering: optimizeSpeed;
         font-synthesis: none;
+        overflow-x: hidden;
     }
 
     :focus-visible {
@@ -121,17 +155,13 @@
     @media (min-width: 769px) {
         body {
             background-image:
-                radial-gradient(
-                    circle at 0% 0%,
-                    rgba(var(--accent), 0.04) 0%,
-                    transparent 40%
-                ),
-                linear-gradient(rgba(var(--accent), 0.05) 1px, transparent 1px),
-                linear-gradient(
-                    90deg,
-                    rgba(var(--accent), 0.05) 1px,
-                    transparent 1px
-                );
+                radial-gradient(circle at 0% 0%,
+                    rgba(var(--accent), 0.015) 0%,
+                    transparent 40%),
+                linear-gradient(rgba(var(--text), 0.015) 1px, transparent 1px),
+                linear-gradient(90deg,
+                    rgba(var(--text), 0.015) 1px,
+                    transparent 1px);
             background-size:
                 100% 100%,
                 60px 60px,
@@ -213,7 +243,7 @@
         text-wrap: pretty;
     }
 
-    p + p {
+    p+p {
         margin: 20px auto 20px auto;
     }
 }
@@ -291,23 +321,29 @@
         -webkit-overflow-scrolling: touch;
         margin-block: 2rem;
         border-radius: var(--radius-md);
-        box-shadow: var(--shadow-soft);
+        background: var(--accent-05);
         border: 1px solid var(--color-border);
-        contain: layout style;
+        box-shadow: var(--shadow-soft);
+        transition: border-color var(--duration-base) ease;
+    }
+
+    .table-wrapper:hover {
+        border-color: rgba(var(--accent), 0.25);
     }
 
     table {
         width: 100%;
         border-collapse: collapse;
-        background: rgba(var(--text), 0.03);
         font-size: 0.95em;
+        min-width: 100%;
     }
 
     :is(th, td) {
         text-align: start;
         padding: 1rem 1.25rem;
-        border-bottom: 1px solid rgba(var(--text), 0.07);
+        border-bottom: 1px solid var(--accent-10);
         vertical-align: top;
+        color: var(--color-text);
     }
 
     thead th {
@@ -315,38 +351,84 @@
         text-transform: uppercase;
         font-size: 0.8em;
         letter-spacing: 0.05em;
-        background: rgba(var(--accent), 0.08);
+        background: var(--accent-10);
+        border-bottom: 2px solid var(--color-accent);
+        font-weight: 600;
     }
 
-    @media (min-width: 769px) and (hover: hover) and (prefers-reduced-motion: no-preference) {
-        tbody tr {
-            transition:
-                background var(--duration-fast) ease,
-                transform var(--duration-fast) ease;
-        }
+    tbody tr {
+        transition: background var(--duration-fast) ease;
+    }
 
+    @media (hover: hover) and (prefers-reduced-motion: no-preference) {
         tbody tr:hover {
-            background: rgba(var(--accent), 0.06);
-            transform: translateX(4px);
+            background: var(--accent-10);
         }
     }
 
     @media (max-width: 768px) {
+        .table-wrapper {
+            margin-inline: calc(-1 * var(--content-padding-mobile));
+            width: calc(100% + 2 * var(--content-padding-mobile));
+            border-radius: 0;
+            border-left: none;
+            border-right: none;
+        }
+
         table {
             display: block;
             overflow-x: auto;
             white-space: nowrap;
-            box-shadow: none;
+            -webkit-overflow-scrolling: touch;
         }
 
         :is(th, td) {
             padding: 0.75rem 1rem;
             font-size: 0.9em;
+            white-space: nowrap;
         }
+    }
+}
 
-        thead th {
-            font-size: 0.8em;
-        }
+/* ============================================================
+   FORM
+   ============================================================ */
+@layer components {
+
+    input,
+    textarea,
+    select,
+    button:not(.tool-card):not(.menu-toggle) {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        padding: 0.5rem 0.75rem;
+        color: var(--color-text);
+        font-family: var(--font-body);
+        font-size: 0.95rem;
+        transition:
+            border-color var(--duration-fast) ease,
+            box-shadow var(--duration-fast) ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+        outline: none;
+        border-color: var(--color-accent);
+        box-shadow: 0 0 0 2px rgba(var(--accent), 0.15);
+    }
+
+    button:not(.tool-card):not(.menu-toggle) {
+        cursor: pointer;
+        background: var(--accent-10);
+        border-color: var(--accent-20);
+        font-weight: 500;
+    }
+
+    button:not(.tool-card):not(.menu-toggle):hover {
+        background: rgba(var(--accent), 0.12);
+        border-color: rgba(var(--accent), 0.35);
     }
 }
 
@@ -356,12 +438,8 @@
 @layer components {
     .content-img {
         border-radius: var(--radius-md);
-        border: 1px solid rgba(255, 255, 255, 0.05);
-        background: linear-gradient(
-            135deg,
-            rgba(var(--accent), 0.1),
-            transparent
-        );
+        border: 1px solid var(--accent-20);
+        background: linear-gradient(135deg, var(--accent-10), transparent);
         box-shadow: var(--shadow-soft);
         transition:
             transform var(--duration-base) var(--ease-spring),
@@ -372,8 +450,8 @@
     @media (hover: hover) {
         .content-img:hover {
             transform: scale(1.01);
-            border-color: rgba(var(--accent), 0.4);
-            box-shadow: 0 4px 20px rgba(var(--accent), 0.2);
+            border-color: rgba(var(--accent), 0.35);
+            box-shadow: 0 4px 20px rgba(var(--accent), 0.12);
         }
     }
 
@@ -396,20 +474,17 @@
     code {
         padding: 0.2em 0.4em;
         font-size: 0.9em;
-        background: rgba(var(--text), 0.08);
+        background: var(--accent-10);
         color: var(--color-accent);
         border-radius: var(--radius-sm);
+        transition:
+            background var(--duration-fast) ease,
+            color var(--duration-fast) ease;
     }
 
-    @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-        code {
-            transition:
-                background var(--duration-fast) ease,
-                color var(--duration-fast) ease;
-        }
-
+    @media (hover: hover) {
         code:hover {
-            background: rgba(var(--accent), 0.15);
+            background: rgba(var(--accent), 0.12);
             color: var(--color-text);
         }
     }
@@ -417,9 +492,9 @@
     pre {
         margin-block: 2rem;
         padding: 1.5rem;
-        background: rgba(var(--bg), 0.97);
-        border: 1px solid rgba(var(--text), 0.08);
-        border-inline-start: 2px solid rgba(var(--accent), 0.5);
+        background: var(--color-surface);
+        border: 1px solid var(--accent-20);
+        border-inline-start: 2px solid var(--color-accent);
         border-radius: var(--radius-md);
         overflow-x: auto;
         box-shadow: var(--shadow-strong);
@@ -584,14 +659,12 @@
 @layer animations {
     @media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
         h1 {
-            animation: slide-in-left var(--duration-slow) var(--ease-spring)
-                both;
+            animation: slide-in-left var(--duration-slow) var(--ease-spring) both;
             animation-delay: var(--delay, 0s);
         }
 
         h2 {
-            animation: slide-in-left var(--duration-slow) var(--ease-spring)
-                both;
+            animation: slide-in-left var(--duration-slow) var(--ease-spring) both;
             animation-delay: var(--delay, calc(var(--stagger) * 1));
         }
 
@@ -645,15 +718,14 @@
         }
 
         pre {
-            animation: slide-in-bottom var(--duration-slow) var(--ease-spring)
-                both;
+            animation: slide-in-bottom var(--duration-slow) var(--ease-spring) both;
             animation-delay: calc(var(--stagger) * 5);
         }
     }
 }
 
 /* ============================================================
-   ACCESSIBILITY:
+   ACCESSIBILITY
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
     html {
@@ -667,19 +739,5 @@
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
-    }
-}
-
-@media (prefers-color-scheme: light) {
-    :root {
-        --bg: 242, 241, 235;
-        --text: 15, 25, 20;
-        --accent: 25, 95, 70;
-        --color-surface: rgb(235, 233, 225);
-        --color-border: rgba(var(--accent), 0.15);
-        --color-muted: rgba(var(--text), 0.7);
-        --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.08);
-        --shadow-strong: 0 8px 30px rgba(0, 0, 0, 0.12);
-        --glow: 0 0 15px rgba(var(--accent), 0.25);
     }
 }
