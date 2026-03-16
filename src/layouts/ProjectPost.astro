@@ -1,0 +1,449 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import FormattedDate from "../components/FormattedDate.astro";
+import Header from "../components/Header.astro";
+import fallBackImage from "../assets/sejio.webp";
+
+type Props = CollectionEntry<"projects">["data"] & {
+    technologies?: string[];
+    liveUrl?: string;
+    sourceUrl?: string;
+};
+
+const {
+    title,
+    description,
+    categoryTag,
+    pubDate,
+    updatedDate,
+    heroImage,
+    heroImageDescription,
+    technologies = [],
+    liveUrl,
+    sourceUrl,
+} = Astro.props;
+
+const imageSrc = heroImage ?? fallBackImage;
+---
+
+<html lang="fr">
+    <head>
+        <BaseHead
+            title={title}
+            description={description}
+            image={heroImage}
+            ImageDescription={heroImageDescription}
+        />
+        <style>
+            main {
+                width: 100%;
+                max-width: 900px;
+                margin-inline: auto;
+                padding: calc(var(--header-height) + 3rem) 1.5rem 5rem;
+            }
+
+            .project-cover {
+                display: grid;
+                grid-template-columns: 1fr 340px;
+                background: rgba(var(--bg), 0.9);
+                border: 1px solid var(--color-border);
+                border-radius: var(--radius-md);
+                overflow: hidden;
+                box-shadow: var(--shadow-strong);
+                margin-bottom: 1.5rem;
+            }
+
+            .cover-meta {
+                padding: 2.5rem 2.5rem 2rem;
+                display: flex;
+                flex-direction: column;
+                border-right: 1px solid var(--color-border);
+                min-width: 0;
+            }
+
+            .cover-eyebrow {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                margin-bottom: 1.5rem;
+                min-width: 0;
+            }
+
+            .cover-eyebrow .dot {
+                width: 7px;
+                height: 7px;
+                border-radius: 50%;
+                background: var(--color-accent);
+                flex-shrink: 0;
+            }
+
+            .cover-eyebrow .label {
+                font-family: var(--font-title);
+                font-size: 0.65rem;
+                font-weight: 700;
+                letter-spacing: 0.22em;
+                color: var(--color-accent);
+                text-transform: uppercase;
+                white-space: nowrap;
+            }
+
+            .cover-eyebrow .date {
+                font-family: var(--font-title);
+                font-size: 0.65rem;
+                color: var(--color-muted);
+                margin-left: auto;
+                letter-spacing: 0.08em;
+                white-space: nowrap;
+                padding-left: 0.5rem;
+            }
+
+            h1 {
+                font-family: var(--font-title);
+                font-size: clamp(1.5rem, 4vw, 2.6rem);
+                font-weight: 800;
+                line-height: 1.1;
+                letter-spacing: -0.03em;
+                color: var(--color-text);
+                margin: 0 0 1rem;
+                word-break: break-word;
+            }
+
+            .cover-description {
+                font-size: 0.95rem;
+                line-height: 1.65;
+                color: var(--color-muted);
+                margin: 0 0 auto;
+                padding-bottom: 1.75rem;
+            }
+
+            .cover-footer {
+                padding-top: 1.5rem;
+                border-top: 1px solid var(--color-border);
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .tech-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.4rem;
+            }
+
+            .tech-item {
+                font-size: 0.65rem;
+                font-weight: 700;
+                padding: 0.2rem 0.65rem;
+                background: var(--accent-05);
+                border: 1px solid var(--color-border);
+                border-radius: var(--radius-sm);
+                color: var(--color-muted);
+                text-transform: uppercase;
+                letter-spacing: 0.07em;
+                transition:
+                    border-color var(--duration-fast) ease,
+                    color var(--duration-fast) ease;
+            }
+
+            .tech-item:hover {
+                border-color: var(--accent-40);
+                color: var(--color-text);
+            }
+
+            .external-links {
+                display: flex;
+                gap: 0.6rem;
+                flex-wrap: wrap;
+            }
+
+            .link-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.45rem;
+                font-family: var(--font-title);
+                font-size: 0.78rem;
+                font-weight: 600;
+                padding: 0.45rem 1rem;
+                background: var(--color-text);
+                color: var(--color-bg);
+                border-radius: var(--radius-sm);
+                text-decoration: none;
+                letter-spacing: 0.02em;
+                transition:
+                    transform var(--duration-fast) var(--ease-spring),
+                    opacity 0.2s ease;
+            }
+
+            .link-btn:hover {
+                transform: translateY(-2px);
+                opacity: 0.85;
+            }
+
+            .link-btn.secondary {
+                background: transparent;
+                border: 1px solid var(--color-border);
+                color: var(--color-text);
+            }
+
+            .link-btn.secondary:hover {
+                border-color: var(--accent-40);
+            }
+
+            .cover-image {
+                position: relative;
+                overflow: hidden;
+                background: var(--color-surface);
+                background-image: radial-gradient(
+                    rgba(var(--text), 0.06) 1px,
+                    transparent 1px
+                );
+                background-size: 24px 24px;
+            }
+
+            .cover-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+                filter: grayscale(30%) contrast(1.05);
+                transition:
+                    filter var(--duration-base) ease,
+                    transform var(--duration-slow) var(--ease-spring);
+            }
+
+            .project-cover:hover .cover-image img {
+                filter: grayscale(0%) contrast(1);
+                transform: scale(1.02);
+            }
+
+            .cover-image::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(
+                    to bottom,
+                    transparent 60%,
+                    rgba(var(--bg), 0.55) 100%
+                );
+                pointer-events: none;
+            }
+
+            .article-body {
+                background: rgba(var(--bg), 0.85);
+                backdrop-filter: blur(10px);
+                border: 1px solid var(--color-border);
+                border-radius: var(--radius-md);
+                padding: 2.5rem;
+                box-shadow: var(--shadow-soft);
+            }
+
+            .prose {
+                font-size: 1.05rem;
+                line-height: 1.75;
+            }
+
+            .prose :global(h2) {
+                font-family: var(--font-title);
+                font-size: 1.4rem;
+                margin-top: 2.5rem;
+                border-bottom: 1px solid var(--accent-10);
+                padding-bottom: 0.5rem;
+            }
+
+            @media (max-width: 768px) {
+                main {
+                    padding-top: calc(var(--header-height) + 2rem);
+                    padding-inline: 1rem;
+                    padding-bottom: 3rem;
+                }
+
+                .project-cover {
+                    grid-template-columns: 1fr;
+                    grid-template-rows: 240px auto;
+                }
+
+                .cover-image {
+                    order: -1;
+                    border-right: none;
+                    border-bottom: 1px solid var(--color-border);
+                }
+
+                .cover-meta {
+                    border-right: none;
+                    padding: 1.75rem 1.5rem 1.5rem;
+                }
+
+                .article-body {
+                    padding: 1.5rem;
+                }
+            }
+
+            @media (max-width: 480px) {
+                main {
+                    padding-top: calc(var(--header-height) + 1.5rem);
+                    padding-inline: 0.875rem;
+                    padding-bottom: 2.5rem;
+                }
+
+                .project-cover {
+                    grid-template-rows: 200px auto;
+                }
+
+                .cover-meta {
+                    padding: 1.25rem 1.25rem 1.25rem;
+                }
+
+                .cover-eyebrow {
+                    margin-bottom: 1rem;
+                }
+
+                .cover-description {
+                    font-size: 0.875rem;
+                    padding-bottom: 1.25rem;
+                }
+
+                .cover-footer {
+                    padding-top: 1.1rem;
+                    gap: 0.75rem;
+                }
+
+                .article-body {
+                    padding: 1.25rem;
+                }
+
+                .prose {
+                    font-size: 0.975rem;
+                }
+
+                .external-links {
+                    gap: 0.5rem;
+                }
+
+                .link-btn {
+                    font-size: 0.73rem;
+                    padding: 0.4rem 0.8rem;
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                .project-cover:hover .cover-image img {
+                    transform: none;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <Header />
+
+        <main>
+            <div class="project-cover animate-fadeIn">
+                <div class="cover-meta">
+                    <div class="cover-eyebrow">
+                        <span class="dot"></span>
+                        <span class="label">{categoryTag}</span>
+                        <span class="date">
+                            <FormattedDate date={pubDate} />
+                            {
+                                updatedDate && (
+                                    <>
+                                        {" "}
+                                        · <FormattedDate date={updatedDate} />
+                                    </>
+                                )
+                            }
+                        </span>
+                    </div>
+
+                    <h1>{title}</h1>
+                    <p class="cover-description">{description}</p>
+
+                    <div class="cover-footer">
+                        {
+                            technologies.length > 0 && (
+                                <div class="tech-list">
+                                    {technologies.map((tech) => (
+                                        <span class="tech-item">{tech}</span>
+                                    ))}
+                                </div>
+                            )
+                        }
+
+                        {
+                            (liveUrl || sourceUrl) && (
+                                <div class="external-links">
+                                    {liveUrl && (
+                                        <a
+                                            href={liveUrl}
+                                            class="link-btn"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Live Demo
+                                            <svg
+                                                width="11"
+                                                height="11"
+                                                viewBox="0 0 12 12"
+                                                fill="none"
+                                                aria-hidden="true"
+                                            >
+                                                <path
+                                                    d="M1 11L11 1M11 1H1M11 1V11"
+                                                    stroke="currentColor"
+                                                    stroke-width="2"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                />
+                                            </svg>
+                                        </a>
+                                    )}
+                                    {sourceUrl && (
+                                        <a
+                                            href={sourceUrl}
+                                            class="link-btn secondary"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Code source
+                                            <svg
+                                                width="13"
+                                                height="13"
+                                                viewBox="0 0 16 16"
+                                                fill="currentColor"
+                                                aria-hidden="true"
+                                            >
+                                                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.7.63-.1 1.2.35 1.44.75.61 1.05 1.59.75 1.97.58.06-.44.24-.75.44-.92-1.6-.18-3.28-.8-3.28-3.57 0-.79.28-1.43.74-1.94-.07-.18-.32-.91.07-1.91 0 0 .61-.19 2 0 .58-.16 1.2-.24 1.81-.24.61 0 1.23.08 1.81.24 1.39-.19 2 0 2 0 .39 1 .14 1.73.07 1.91.46.51.74 1.15.74 1.94 0 2.78-1.68 3.38-3.29 3.56.26.22.49.65.49 1.32 0 .95-.01 1.72-.01 1.95 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                                            </svg>
+                                        </a>
+                                    )}
+                                </div>
+                            )
+                        }
+                    </div>
+                </div>
+
+                <div class="cover-image">
+                    <Image
+                        src={imageSrc}
+                        alt={heroImageDescription ?? ""}
+                        loading="eager"
+                        fetchpriority="high"
+                        widths={[400, 680, 800]}
+                        sizes="(max-width: 768px) 100vw, 340px"
+                    />
+                </div>
+            </div>
+
+            <div class="article-body animate-fadeIn">
+                <div class="prose">
+                    <slot />
+                </div>
+            </div>
+        </main>
+
+        <Footer />
+    </body>
+</html>
