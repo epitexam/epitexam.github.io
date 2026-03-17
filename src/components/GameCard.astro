@@ -37,14 +37,26 @@ const isTopOne = game.rank === 1;
 >
     <div class="rank-badge">
         <span class="rank-number">#{game.rank}</span>
-        {isTopOne && <span class="crown-icon">👑</span>}
+        {
+            isTopOne && (
+                <span class="crown-icon" aria-label="Coup de cœur">
+                    👑
+                </span>
+            )
+        }
     </div>
 
     <header class="game-header">
         {
             isTopOne && (
                 <div class="top-one-badge">
-                    <svg viewBox="0 0 24 24" fill="none">
+                    <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                    >
                         <path
                             d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
                             fill="currentColor"
@@ -71,7 +83,6 @@ const isTopOne = game.rank === 1;
             height={600}
             loading="lazy"
             class="game-img"
-            fetchpriority="high"
         />
     </figure>
 
@@ -142,7 +153,13 @@ const isTopOne = game.rank === 1;
                             class="store-link"
                         >
                             Voir sur Steam
-                            <svg viewBox="0 0 24 24" fill="none">
+                            <svg
+                                width="13"
+                                height="13"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                aria-hidden="true"
+                            >
                                 <path
                                     d="M7 17L17 7M17 7H7M17 7V17"
                                     stroke="currentColor"
@@ -171,7 +188,13 @@ const isTopOne = game.rank === 1;
                     {
                         game.pros.map((pro) => (
                             <li>
-                                <svg viewBox="0 0 24 24" fill="none">
+                                <svg
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    aria-hidden="true"
+                                >
                                     <path
                                         d="M20 6L9 17l-5-5"
                                         stroke="currentColor"
@@ -192,7 +215,13 @@ const isTopOne = game.rank === 1;
                     {
                         game.cons.map((con) => (
                             <li>
-                                <svg viewBox="0 0 24 24" fill="none">
+                                <svg
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    aria-hidden="true"
+                                >
                                     <path
                                         d="M18 6L6 18M6 6l12 12"
                                         stroke="currentColor"
@@ -234,7 +263,6 @@ const isTopOne = game.rank === 1;
 </article>
 
 <style>
-    /* Reset liste */
     ul,
     ol,
     li {
@@ -242,50 +270,38 @@ const isTopOne = game.rank === 1;
         margin: 0;
         padding: 0;
     }
-
     li::before,
     li::after {
         content: none !important;
         display: none !important;
     }
 
-    /* Carte principale */
     .game-card {
         position: relative;
         margin: 0 0 5rem;
         padding: 2.5rem;
-        background: linear-gradient(
-            145deg,
-            rgba(var(--bg), 1),
-            rgba(var(--accent), 0.02)
-        );
+        background: rgba(var(--bg), 0.9);
         border: 1px solid var(--color-border);
         border-radius: var(--radius-md);
-        transition: all var(--duration-base) var(--ease-spring);
         box-shadow: var(--shadow-soft);
+        transition:
+            border-color var(--duration-base) ease,
+            box-shadow var(--duration-base) ease;
     }
 
     .game-card:hover {
-        border-color: rgba(var(--accent), 0.3);
+        border-color: var(--accent-40);
         box-shadow: var(--shadow-strong);
     }
 
     .game-card.top-one {
-        border: 2px solid rgba(var(--accent), 0.4);
-        background: linear-gradient(
-            145deg,
-            rgba(var(--bg), 1),
-            rgba(var(--accent), 0.05)
-        );
-        box-shadow: 0 4px 24px rgba(var(--accent), 0.15);
+        border: 2px solid var(--accent-20);
     }
 
     .game-card.top-one:hover {
-        border-color: rgba(var(--accent), 0.6);
-        box-shadow: 0 12px 40px rgba(var(--accent), 0.25);
+        border-color: var(--accent-40);
     }
 
-    /* Badge de classement */
     .rank-badge {
         position: absolute;
         top: -1rem;
@@ -293,60 +309,42 @@ const isTopOne = game.rank === 1;
         display: flex;
         align-items: center;
         gap: 0.5rem;
-        padding: 0.5rem 1.25rem;
+        padding: 0.45rem 1.1rem;
         background: var(--color-surface);
-        border: 2px solid rgba(var(--accent), 0.3);
+        border: 1px solid var(--color-border);
         border-radius: 999px;
-        backdrop-filter: blur(8px);
     }
 
     .rank-number {
         font-family: var(--font-title);
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 700;
-        color: var(--color-accent);
+        color: var(--color-text);
+        letter-spacing: -0.02em;
     }
 
     .crown-icon {
-        font-size: 1.2rem;
-        animation: float 3s ease-in-out infinite;
+        font-size: 1rem;
+        line-height: 1;
     }
 
-    @keyframes float {
-        0%,
-        100% {
-            transform: translateY(0);
-        }
-        50% {
-            transform: translateY(-4px);
-        }
-    }
-
-    /* Badge top 1 */
     .top-one-badge {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        padding: 0.5rem 1.2rem;
-        margin-bottom: 1.5rem;
-        background: rgba(var(--accent), 0.1);
-        border: 1px solid rgba(var(--accent), 0.3);
+        padding: 0.4rem 1rem;
+        background: rgba(var(--accent), 0.06);
+        border: 1px solid rgba(var(--accent), 0.2);
         border-radius: 999px;
         font-family: var(--font-title);
-        font-size: 0.85rem;
+        font-size: 0.7rem;
         font-weight: 600;
+        letter-spacing: 0.08em;
         color: var(--color-accent);
+        margin-bottom: 1rem;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
-        width: fit-content;
     }
 
-    .top-one-badge svg {
-        width: 18px;
-        height: 18px;
-    }
-
-    /* Header */
     .game-header {
         margin-bottom: 2rem;
     }
@@ -361,19 +359,24 @@ const isTopOne = game.rank === 1;
     }
 
     .game-description {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         line-height: 1.7;
-        color: rgba(var(--text), 0.75);
+        color: var(--color-muted);
         max-width: 800px;
     }
 
-    /* Image */
     .game-image {
         margin: 0 0 2.5rem;
         border-radius: var(--radius-md);
         overflow: hidden;
         border: 1px solid var(--color-border);
         box-shadow: var(--shadow-soft);
+        background: var(--color-surface);
+        background-image: radial-gradient(
+            rgba(var(--text), 0.05) 1px,
+            transparent 1px
+        );
+        background-size: 20px 20px;
     }
 
     .game-img {
@@ -381,24 +384,27 @@ const isTopOne = game.rank === 1;
         height: auto;
         object-fit: cover;
         display: block;
-        transition: transform var(--duration-base) var(--ease-spring);
+        filter: grayscale(10%);
+        transition:
+            transform var(--duration-base) var(--ease-spring),
+            filter var(--duration-base) ease;
     }
 
     .game-card:hover .game-img {
-        transform: scale(1.02);
+        transform: scale(1.01);
+        filter: grayscale(0%);
     }
 
-    /* Grille meta */
     .game-meta {
         margin-bottom: 2.5rem;
     }
 
     .meta-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.25rem;
         padding: 1.5rem;
-        background: rgba(var(--bg), 0.5);
+        background: var(--accent-05);
         border: 1px solid var(--color-border);
         border-radius: var(--radius-md);
     }
@@ -406,21 +412,20 @@ const isTopOne = game.rank === 1;
     .meta-item {
         display: flex;
         flex-direction: column;
-        gap: 0.35rem;
+        gap: 0.3rem;
     }
 
     .meta-label {
         font-family: var(--font-title);
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: var(--color-accent);
+        font-size: 0.65rem;
+        font-weight: 700;
+        color: var(--color-muted);
         text-transform: uppercase;
-        letter-spacing: 0.05em;
-        opacity: 0.8;
+        letter-spacing: 0.12em;
     }
 
     .meta-value {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         color: var(--color-text);
         line-height: 1.5;
     }
@@ -429,28 +434,17 @@ const isTopOne = game.rank === 1;
         display: inline-flex;
         align-items: center;
         gap: 0.35rem;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         color: var(--color-accent);
         font-weight: 500;
-        transition: all var(--duration-fast) var(--ease-spring);
         text-decoration: none;
-    }
-
-    .store-link svg {
-        width: 16px;
-        height: 16px;
-        transition: transform var(--duration-fast) var(--ease-spring);
+        transition: color var(--duration-fast) ease;
     }
 
     .store-link:hover {
         color: var(--color-text);
     }
 
-    .store-link:hover svg {
-        transform: translate(2px, -2px);
-    }
-
-    /* Contenu principal */
     .game-content {
         display: flex;
         flex-direction: column;
@@ -458,80 +452,76 @@ const isTopOne = game.rank === 1;
     }
 
     .content-block h3 {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
         font-weight: 700;
-        margin: 0 0 1rem;
+        margin: 0 0 0.9rem;
         color: var(--color-text);
-        letter-spacing: -0.01em;
+        letter-spacing: -0.02em;
+        animation: none;
     }
 
     .content-block p {
-        font-size: 1.05rem;
+        font-size: 0.975rem;
         line-height: 1.7;
-        color: rgba(var(--text), 0.8);
+        color: var(--color-muted);
     }
 
     .content-columns {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 2rem;
     }
 
-    /* Listes pros/cons - sans décorations */
     .pros-list,
     .cons-list {
         display: flex;
         flex-direction: column;
-        gap: 0.75rem;
+        gap: 0.6rem;
     }
 
     .pros-list li,
     .cons-list li {
         display: flex;
         align-items: flex-start;
-        gap: 0.75rem;
-        padding: 0.5rem;
-        background: rgba(var(--bg), 0.3);
+        gap: 0.65rem;
+        padding: 0.5rem 0.75rem;
+        background: var(--accent-05);
         border: 1px solid transparent;
         border-radius: var(--radius-sm);
-        transition: all var(--duration-fast) var(--ease-spring);
+        transition:
+            background var(--duration-fast) ease,
+            border-color var(--duration-fast) ease;
     }
 
     .pros-list li:hover,
     .cons-list li:hover {
-        background: rgba(var(--bg), 0.6);
+        background: var(--accent-10);
         border-color: var(--color-border);
-        transform: translateX(4px);
-    }
-
-    .pros-list svg,
-    .cons-list svg {
-        width: 20px;
-        height: 20px;
-        flex-shrink: 0;
-        margin-top: 0.2rem;
     }
 
     .pros-list svg {
         color: var(--color-accent);
+        flex-shrink: 0;
+        margin-top: 0.2rem;
     }
-
     .cons-list svg {
-        color: rgba(var(--text), 0.4);
+        color: var(--color-muted);
+        flex-shrink: 0;
+        margin-top: 0.2rem;
+        opacity: 0.5;
     }
 
     .pros-list span,
     .cons-list span {
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         line-height: 1.6;
-        color: rgba(var(--text), 0.85);
+        color: var(--color-muted);
     }
 
-    /* Bloc surligné */
     .highlight-block {
         padding: 1.5rem;
-        background: rgba(var(--accent), 0.05);
-        border-left: 3px solid var(--color-accent);
+        background: var(--accent-05);
+        border-left: 2px solid var(--color-accent);
         border-radius: var(--radius-sm);
     }
 
@@ -539,11 +529,11 @@ const isTopOne = game.rank === 1;
         color: var(--color-accent);
     }
 
-    /* Footer avec tags */
+    /* ── Footer ── */
     .game-footer {
         margin-top: 2rem;
         padding-top: 1.5rem;
-        border-top: 1px solid rgba(var(--accent), 0.15);
+        border-top: 1px solid var(--color-border);
     }
 
     .game-tags {
@@ -552,48 +542,26 @@ const isTopOne = game.rank === 1;
         gap: 0.5rem;
     }
 
-    /* Responsive */
+    /* ── Responsive ── */
     @media (max-width: 768px) {
         .game-card {
             padding: 1.5rem;
             margin: 0 0 3rem;
         }
-
         .rank-badge {
             left: 1rem;
-            padding: 0.4rem 1rem;
         }
-
-        .rank-number {
-            font-size: 1rem;
-        }
-
-        .game-title {
-            font-size: 1.8rem;
-        }
-
-        .game-description {
-            font-size: 1rem;
-        }
-
         .meta-grid {
             grid-template-columns: 1fr;
             gap: 1rem;
             padding: 1.25rem;
         }
-
         .content-columns {
             grid-template-columns: 1fr;
             gap: 1.5rem;
         }
-
         .highlight-block {
             padding: 1.25rem;
-        }
-
-        .pros-list li,
-        .cons-list li {
-            padding: 0.4rem;
         }
     }
 
@@ -601,51 +569,19 @@ const isTopOne = game.rank === 1;
         .game-card {
             padding: 1.25rem;
         }
-
         .top-one-badge {
-            font-size: 0.7rem;
-            padding: 0.4rem 1rem;
-        }
-
-        .top-one-badge svg {
-            width: 16px;
-            height: 16px;
-        }
-
-        .pros-list li,
-        .cons-list li {
-            flex-wrap: wrap;
+            font-size: 0.65rem;
         }
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .game-card,
-        .game-card *,
-        .pros-list li,
-        .cons-list li,
-        .store-link,
-        .store-link svg,
-        .crown-icon,
-        .game-img {
-            animation: none !important;
-            transition: none !important;
-            transform: none !important;
-        }
-
-        .game-card:hover {
-            transform: none;
-            box-shadow: var(--shadow-soft);
-        }
-
-        .game-card:hover .game-img {
-            transform: none;
-        }
-
+        .game-card:hover,
         .pros-list li:hover,
         .cons-list li:hover {
+            transition: none;
+        }
+        .game-card:hover .game-img {
             transform: none;
-            background: rgba(var(--bg), 0.3);
-            border-color: transparent;
         }
     }
 </style>
