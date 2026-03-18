@@ -2,6 +2,7 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import SectionHeader from "../components/SectionHeader.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import GitHubProject from "../components/GitHubProject.astro";
 import LatestPost from "../components/LatestPost.astro";
@@ -111,35 +112,16 @@ try {
 					</a>
 				</div>
 			</section>
+
 			<section
 				class="projects-section"
 				aria-labelledby="projects-heading"
 			>
-				<div class="section-header">
-					<div class="section-badge">
-						<span class="badge-dot" aria-hidden="true"></span>
-						<span>Projets récents</span>
-					</div>
-					<span class="section-line" aria-hidden="true"></span>
-					<a href="/project" class="section-link">
-						Voir tous les projets
-						<svg
-							class="arrow-icon"
-							width="14"
-							height="14"
-							viewBox="0 0 16 16"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="1.5"
-							aria-hidden="true"
-						>
-							<path
-								d="M6 12L10 8L6 4"
-								stroke-linecap="round"
-								stroke-linejoin="round"></path>
-						</svg>
-					</a>
-				</div>
+				<SectionHeader
+					label="Projets récents"
+					href="/project"
+					linkText="Voir tous les projets"
+				/>
 
 				{
 					displayProjects.length > 0 ? (
@@ -189,13 +171,7 @@ try {
 			</section>
 
 			<section class="skills-section" aria-labelledby="skills-heading">
-				<div class="section-header">
-					<div class="section-badge">
-						<span class="badge-dot" aria-hidden="true"></span>
-						<span>Compétences clés</span>
-					</div>
-					<span class="section-line" aria-hidden="true"></span>
-				</div>
+				<SectionHeader label="Compétences clés" />
 
 				<div class="skills-grid" aria-label="Technologies maîtrisées">
 					<span>TypeScript</span>
@@ -212,63 +188,22 @@ try {
 						class="blog-section"
 						aria-labelledby="blog-heading"
 					>
-						<div class="section-header">
-							<div class="section-badge">
-								<span class="badge-dot" aria-hidden="true" />
-								<span>Dernier article</span>
-							</div>
-							<span class="section-line" aria-hidden="true" />
-							<a href="/blog" class="section-link">
-								Voir tous les articles
-								<svg
-									class="arrow-icon"
-									width="14"
-									height="14"
-									viewBox="0 0 16 16"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="1.5"
-									aria-hidden="true"
-								>
-									<path
-										d="M6 12L10 8L6 4"
-										stroke-linecap="round"
-										stroke-linejoin="round"
-									/>
-								</svg>
-							</a>
-						</div>
+						<SectionHeader
+							label="Dernier article"
+							href="/blog"
+							linkText="Voir tous les articles"
+						/>
 						<LatestPost post={latestPost} />
 					</section>
 				)
 			}
 
 			<section class="contact-section" aria-labelledby="contact-heading">
-				<div class="section-header">
-					<div class="section-badge">
-						<span class="badge-dot" aria-hidden="true"></span>
-						<span>Contact</span>
-					</div>
-					<span class="section-line" aria-hidden="true"></span>
-					<a href="/contact" class="section-link">
-						Page contact
-						<svg
-							class="arrow-icon"
-							width="14"
-							height="14"
-							viewBox="0 0 16 16"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="1.5"
-							aria-hidden="true"
-						>
-							<path
-								d="M6 12L10 8L6 4"
-								stroke-linecap="round"
-								stroke-linejoin="round"></path>
-						</svg>
-					</a>
-				</div>
+				<SectionHeader
+					label="Contact"
+					href="/contact"
+					linkText="Page contact"
+				/>
 
 				<div class="contact-card">
 					<p>Intéressé par une collaboration ou un échange ?</p>
@@ -285,41 +220,16 @@ try {
 			</section>
 
 			<section class="github-section" aria-labelledby="github-heading">
-				<div class="section-header">
-					<div class="section-badge">
-						<span class="badge-dot" aria-hidden="true"></span>
-						<span>Dépôts GitHub</span>
-					</div>
-					<span class="section-line" aria-hidden="true"></span>
-					<a
-						href={GITHUB_URL}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="section-link"
-					>
-						Voir le profil
-						<svg
-							class="arrow-icon"
-							width="14"
-							height="14"
-							viewBox="0 0 16 16"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="1.5"
-							aria-hidden="true"
-						>
-							<path
-								d="M6 12L10 8L6 4"
-								stroke-linecap="round"
-								stroke-linejoin="round"></path>
-						</svg>
-					</a>
-				</div>
+				<SectionHeader
+					label="Dépôts GitHub"
+					href={GITHUB_URL}
+					linkText="Voir le profil"
+				/>
 
 				{
 					githubProjects.length > 0 ? (
 						<div class="github-grid">
-							{githubProjects.map((repo) => (
+							{githubProjects.map((repo, index) => (
 								<GitHubProject project={repo} eager={false} />
 							))}
 						</div>
@@ -479,70 +389,6 @@ try {
 	.btn-sm {
 		font-size: 0.78rem;
 		padding: 0.5rem 1.1rem;
-	}
-
-	.section-header {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-		width: 100%;
-	}
-
-	.section-badge {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.55rem;
-		padding: 0.4rem 1rem;
-		background: rgba(var(--accent), 0.05);
-		border: 1px solid rgba(var(--accent), 0.15);
-		border-radius: 999px;
-		font-family: var(--font-title);
-		font-size: 0.7rem;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		color: var(--color-accent);
-		white-space: nowrap;
-	}
-
-	.badge-dot {
-		width: 6px;
-		height: 6px;
-		background: var(--color-accent);
-		border-radius: 50%;
-		flex-shrink: 0;
-		animation: pulse 2.5s ease-in-out infinite;
-	}
-
-	.section-line {
-		flex: 1;
-		height: 1px;
-		background: var(--color-border);
-	}
-
-	.section-link {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.4rem;
-		font-family: var(--font-title);
-		font-size: 0.65rem;
-		font-weight: 600;
-		letter-spacing: 0.08em;
-		color: var(--color-muted);
-		text-decoration: none;
-		white-space: nowrap;
-		transition: color var(--duration-fast) ease;
-	}
-
-	.section-link:hover {
-		color: var(--color-text);
-	}
-
-	.arrow-icon {
-		transition: transform var(--duration-base) var(--ease-spring);
-	}
-
-	.section-link:hover .arrow-icon {
-		transform: translateX(4px);
 	}
 
 	@keyframes pulse {
@@ -707,13 +553,7 @@ try {
 			font-size: 0.75rem;
 			padding: 0.4rem 1rem;
 		}
-		.section-header {
-			flex-wrap: wrap;
-			justify-content: center;
-		}
-		.section-line {
-			display: none;
-		}
+
 		.contact-card .btn-pill {
 			min-width: 100%;
 		}
