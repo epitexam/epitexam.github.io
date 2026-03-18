@@ -8,9 +8,19 @@ export const GITHUB_URL = "https://github.com/epitexam";
 export const ALT_DESCRIPTION =
   "Vue en contre-plongée de plusieurs immeubles de bureaux imposants plongés dans l'obscurité";
 
+type ToolLevel = "mastered" | "practiced" | "exploring";
+
+interface Tool {
+  icon: string;
+  name: string;
+  description: string;
+  link?: string;
+  level?: ToolLevel;
+}
+
 export const SECTIONS: {
   title: string;
-  tools: { icon: string; name: string; description: string; link?: string }[];
+  tools: Tool[];
 }[] = [
     {
       title: "Langages",
@@ -18,42 +28,49 @@ export const SECTIONS: {
         {
           icon: "JS",
           name: "JavaScript / TypeScript",
+          level: "mastered",
           description:
             "Mon terrain de jeu principal pour le web, aussi bien en front-end qu'en full-stack. TypeScript apporte la rigueur nécessaire pour garder un code solide sans perdre la souplesse du JavaScript.",
         },
         {
           icon: "C",
           name: "C",
+          level: "practiced",
           description:
             "Utilisé pour des projets embarqués, notamment un driver ESP32H2 connecté à un capteur de CO₂. J'aime le côté brut du C, quand il faut vraiment parler directement à la machine.",
         },
         {
           icon: "C++",
           name: "C++",
+          level: "practiced",
           description:
             "Employé sur quelques applications expérimentales, notamment avec wxWidgets. Puissant et exigeant, parfait pour comprendre la mécanique derrière les abstractions modernes.",
         },
         {
           icon: "Asm",
           name: "Assembleur (6502 / x64)",
+          level: "practiced",
           description:
             "Un trip purement technique : écrire de l'assembleur permet de voir comment tout fonctionne, bit par bit. C'est un peu comme démonter un moteur juste pour comprendre comment il tourne. (Merci aux cours de Gustavo Pezzi)",
         },
         {
           icon: "Go",
           name: "Go",
+          level: "exploring",
           description:
             "Actuellement utilisé sur quelques side-projects orientés microservices. J'expérimente encore le langage et j'apprends progressivement son écosystème.",
         },
         {
           icon: "E",
           name: "Erlang",
+          level: "exploring",
           description:
             "J'ai commencé à apprendre Erlang en découvrant que Discord utilise la BEAM (via Elixir) pour sa messagerie temps réel. L'approche orientée concurrence est très différente des stacks web classiques.",
         },
         {
           icon: "L",
           name: "Lua",
+          level: "practiced",
           description:
             "Un langage simple, léger et très flexible. Je l'utilise principalement pour expérimenter rapidement des idées ou prototyper des mécaniques de jeu.",
         },
@@ -65,51 +82,66 @@ export const SECTIONS: {
         {
           icon: "R",
           name: "React",
+          level: "mastered",
           description:
             "Le framework que j'utilise le plus sérieusement côté front-end. J'apprécie sa logique déclarative et la manière dont il structure les projets.",
         },
         {
           icon: "A",
           name: "Astro",
+          level: "practiced",
           description:
             "Celui qui fait tourner ce site. Rapide, simple et flexible : parfait pour un portfolio ou un site statique moderne.",
         },
         {
-          icon: "N",
+          icon: "Nx",
           name: "Next.js",
+          level: "practiced",
           description:
-            "Exploré pour mieux comprendre le rendu côté serveur et les déploiements modernes. Très complet, idéal pour des applications full-stack basées sur React.",
+            "Utilisé pour le rendu côté serveur et les déploiements modernes. C'est un outil très complet pour lier le front-end et le back-end avec React.",
+        },
+        {
+          icon: "Ns",
+          name: "NestJS",
+          level: "practiced",
+          description:
+            "Mon framework de référence pour bâtir des API backend structurées et évolutives. J'apprécie son architecture qui facilite la maintenance sur le long terme.",
         },
         {
           icon: "S",
           name: "Svelte",
+          level: "mastered",
           description:
             "Testé sur quelques projets : très fluide, sans virtual DOM, et particulièrement agréable à utiliser.",
         },
         {
           icon: "So",
           name: "Solid.js",
+          level: "exploring",
           description:
             "Un framework que j'ai exploré par curiosité technique. Sa gestion granulaire de la réactivité est vraiment impressionnante.",
         },
         {
           icon: "T",
           name: "Tailwind CSS",
+          level: "mastered",
           description:
             "Mon outil principal pour le styling : rapide, flexible et très efficace pour construire des interfaces modernes, même si un peu de CSS pur reste parfois nécessaire.",
         },
         {
           icon: "L2D",
           name: "LÖVE2D",
+          level: "exploring",
           description:
             "Framework de jeu basé sur Lua que j'ai utilisé pour développer un petit prototype. Très agréable pour expérimenter rapidement des mécaniques de gameplay.",
         },
         {
-          icon: "G",
-          name: "Godot",
+          icon: "F",
+          name: "Fastify",
+          level: "mastered",
           description:
-            "Moteur de jeu open-source que j'utilise aussi pour expérimenter des applications mobiles et des prototypes interactifs.",
-        },
+            "Une alternative à Express que je privilégie pour sa rapidité et son système de plugins. C'est mon outil de référence pour construire des API performantes avec une excellente gestion du typage.",
+        }
       ],
     },
     {
@@ -117,19 +149,22 @@ export const SECTIONS: {
       tools: [
         {
           icon: "L",
-          name: "Linux (Fedora / Arch / WSL)",
+          name: "Linux",
+          level: "practiced",
           description:
             "J'utilise régulièrement Fedora et Arch Linux. J'apprécie leur philosophie et le contrôle qu'elles offrent sur l'environnement système. WSL reste une solution pratique dans certains contextes.",
         },
         {
           icon: "D",
           name: "Docker",
+          level: "practiced",
           description:
             "Utilisé pour isoler et gérer les environnements de développement. Très utile pour garder des setups reproductibles lorsque plusieurs technologies sont impliquées.",
         },
         {
           icon: "CICD",
           name: "CI/CD",
+          level: "practiced",
           description:
             "J'intègre l'automatisation dans mes projets via des workflows GitHub Actions : tests, build et déploiement pour garder des projets fiables et reproductibles.",
         },
@@ -141,12 +176,14 @@ export const SECTIONS: {
         {
           icon: "G",
           name: "Git",
+          level: "practiced",
           description:
             "Gestion de version au cœur de mon workflow. J'essaie de garder des commits clairs, des branches propres et un historique lisible.",
         },
         {
           icon: "GH",
           name: "GitHub / GitLab / Gitea",
+          level: "practiced",
           description:
             "Plateformes que j'utilise pour héberger mes projets, gérer les pull requests et connecter mes pipelines CI/CD.",
         },
@@ -158,17 +195,31 @@ export const SECTIONS: {
         {
           icon: "V",
           name: "Visual Studio Code",
+          level: "practiced",
           description:
             "Mon éditeur principal. Configuration minimaliste, zéro extension : juste l'essentiel pour rester rapide et concentré.",
         },
         {
           icon: "Z",
           name: "Zed",
+          level: "practiced",
           description:
             "Un éditeur de code moderne, extrêmement rapide et pensé pour la collaboration. Léger, réactif et très agréable à utiliser.",
         },
       ],
     },
+    {
+      title: "Autres",
+      tools: [
+        {
+          icon: "G",
+          name: "Godot",
+          level: "exploring",
+          description:
+            "Moteur de jeu open-source que j'utilise aussi pour expérimenter des applications mobiles et des prototypes interactifs.",
+        },
+      ]
+    }
   ];
 
 interface Game {
@@ -493,9 +544,9 @@ export const EXPERTISE = [
 ];
 
 export const ABOUT_ME = [
-  "Développeur Full-Stack avec 3 ans d'expérience, je conçois des solutions web robustes et performantes : du backend scalable aux interfaces modernes et réactives.",
-  "Passionné par l'architecture logicielle, je construis des systèmes fiables et maintenables, appliquant DDD, architecture hexagonale, CI/CD et bonnes pratiques de performance.",
-  "En parallèle du web, je m'intéresse à l'embarqué et à l'IoT (ESP32, Zigbee), explorant comment le matériel et le logiciel s'articulent pour créer des solutions concrètes.",
+  "Développeur Fullstack avec 3 ans d'expérience, je m'attache à concevoir des applications fiables et performantes, en appliquant des principes d'architecture solides comme les architectures hexagonales et le DDD.",
+  "Mon travail s'appuie sur TypeScript et Node.js au quotidien, complétés par Linux et Docker pour assurer des déploiements stables et efficaces.",
+  "J'interviens aussi bien sur l'architecture backend que sur la réactivité des interfaces, avec une attention particulière portée à la qualité du code et à l'automatisation des tests."
 ];
 
 export const TAB_SHORT: Record<string, string> = {
@@ -509,9 +560,17 @@ export const TAB_SHORT: Record<string, string> = {
 export const ABOUT_META_DESCRIPTION =
   "Découvrez le parcours d'Epitexam, développeur Full-Stack (Web, Backend, Embarqué). 3 ans d'expérience en SaaS, EdTech et optimisation de performances.";
 
-
 export const WHAT_I_LOOK_FOR = [
-  "Je recherche un environnement stimulant, de la startup agile à la scale-up structurée, où l'impact technique et la qualité de conception sont au cœur des priorités.",
-  "Je suis particulièrement attiré par les projets SaaS, les outils de développement ou l'IoT, avec une exigence forte sur l'architecture et l'optimisation des performances.",
-  "Je valorise les organisations modernes qui s'appuient sur une culture DevOps solide et des méthodes de travail flexibles."
+  "Je souhaite rejoindre une équipe structurée où la qualité technique est au cœur des projets.",
+  "Je suis intéressé par différents secteurs, mais ce qui me motive le plus, ce sont les défis techniques concrets et les projets ambitieux où chaque décision a un impact réel.",
+  "Je suis à l’aise dans un environnement hybride, avec quelques jours de télétravail par semaine, qui me permettent de combiner concentration et collaboration efficace avec l’équipe."
+];
+
+export const EXCLUDED_REPOS = [
+  "exercise",
+  "tutorial",
+  "test",
+  "practice",
+  "workshop",
+  "epitexam.github.io",
 ];

@@ -8,7 +8,13 @@ import GitHubProject from "../components/GitHubProject.astro";
 import LatestPost from "../components/LatestPost.astro";
 import Avatar from "../components/Avatar.astro";
 import { getCollection } from "astro:content";
-import { SITE_DESCRIPTION, SITE_TITLE, GITHUB_URL } from "../consts";
+import {
+	SITE_DESCRIPTION,
+	SITE_TITLE,
+	GITHUB_URL,
+	EXCLUDED_REPOS,
+	SECTIONS,
+} from "../consts";
 import type { Project } from "../types/github";
 
 const STATUS = { label: "Ouvert aux opportunités", active: true };
@@ -34,18 +40,38 @@ let githubProjects: Project[] = [];
 try {
 	const token = import.meta.env.TOKEN_GITHUB;
 	const response = await fetch(
-		`https://api.github.com/users/${username}/repos?sort=pushed&per_page=6`,
+		`https://api.github.com/users/${username}/repos?sort=pushed&per_page=15`,
 		{
 			headers: token ? { Authorization: `token ${token}` } : {},
 			signal: AbortSignal.timeout(5000),
 		},
 	);
+
 	if (response.ok) {
-		githubProjects = (await response.json()) as Project[];
+		const allRepos = (await response.json()) as Project[];
+
+		githubProjects = allRepos
+			.filter((repo) => {
+				const isBlacklisted = EXCLUDED_REPOS.some((word) =>
+					repo.name.toLowerCase().includes(word.toLowerCase()),
+				);
+
+				return !repo.fork && !isBlacklisted && !!repo.description;
+			})
+			.slice(0, 4);
 	}
-} catch {
+} catch (error) {
+	console.error("GitHub Fetch Error:", error);
 	githubProjects = [];
 }
+
+const topSkills = [
+	{ name: "TypeScript", role: "Langage pilier" },
+	{ name: "Node.js / NestJS", role: "Architecture Backend" },
+	{ name: "React / Next.js / Svelte", role: "Interface & SSR" },
+	{ name: "PostgreSQL / Mongo / Redis", role: "Gestion de données" },
+	{ name: "Docker / Linux", role: "Infrastructure & Ops" },
+];
 ---
 
 <!doctype html>
@@ -174,11 +200,7 @@ try {
 				<SectionHeader label="Compétences clés" />
 
 				<div class="skills-grid" aria-label="Technologies maîtrisées">
-					<span>TypeScript</span>
-					<span>Node.js</span>
-					<span>React</span>
-					<span>PostgreSQL</span>
-					<span>Docker</span>
+					{topSkills.map((skill) => <span>{skill.name}</span>)}
 				</div>
 			</section>
 
@@ -221,7 +243,7 @@ try {
 
 			<section class="github-section" aria-labelledby="github-heading">
 				<SectionHeader
-					label="Dépôts GitHub"
+					label="Dépôt GitHub"
 					href={GITHUB_URL}
 					linkText="Voir le profil"
 				/>
