@@ -1,0 +1,136 @@
+---
+interface Props {
+    label: string;
+    href?: string;
+    linkText?: string;
+}
+
+const { label, href, linkText } = Astro.props;
+---
+
+<div class="section-header">
+    <div class="section-badge">
+        <span class="badge-dot" aria-hidden="true"></span>
+        <span>{label}</span>
+    </div>
+    <span class="section-line" aria-hidden="true"></span>
+    {
+        href && linkText && (
+            <a href={href} class="section-link">
+                {linkText}
+                <svg
+                    class="arrow-icon"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M6 12L10 8L6 4"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                </svg>
+            </a>
+        )
+    }
+</div>
+
+<style>
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .section-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.4rem 1rem;
+        background: rgba(var(--accent), 0.05);
+        border: 1px solid rgba(var(--accent), 0.15);
+        border-radius: 999px;
+        font-family: var(--font-title);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--color-accent);
+        white-space: nowrap;
+    }
+
+    .badge-dot {
+        width: 6px;
+        height: 6px;
+        background: var(--color-accent);
+        border-radius: 50%;
+        flex-shrink: 0;
+        animation: pulse 2.5s ease-in-out infinite;
+    }
+
+    .section-line {
+        flex: 1;
+        height: 1px;
+        background: var(--color-border);
+    }
+
+    .section-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        font-family: var(--font-title);
+        font-size: 0.65rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: var(--color-muted);
+        text-decoration: none;
+        white-space: nowrap;
+        transition: color var(--duration-fast) ease;
+    }
+
+    .section-link:hover {
+        color: var(--color-text);
+    }
+
+    .arrow-icon {
+        transition: transform var(--duration-base) var(--ease-spring);
+    }
+
+    .section-link:hover .arrow-icon {
+        transform: translateX(4px);
+    }
+
+    @keyframes pulse {
+        0%,
+        100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.3;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .section-header {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .section-line {
+            display: none;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .badge-dot {
+            animation: none;
+            opacity: 0.6;
+        }
+        .section-link:hover .arrow-icon {
+            transform: none;
+        }
+    }
+</style>
