@@ -2,42 +2,48 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import ProjectCard from "../components/ProjectCard.astro";
 import GitHubProject from "../components/GitHubProject.astro";
 import LatestPost from "../components/LatestPost.astro";
+import Avatar from "../components/Avatar.astro";
 import { getCollection } from "astro:content";
 import { SITE_DESCRIPTION, SITE_TITLE, GITHUB_URL } from "../consts";
 import type { Project } from "../types/github";
-import Avatar from "../components/Avatar.astro";
+
+const STATUS = { label: "Ouvert aux opportunités", active: true };
+const allProjects = await getCollection("projects");
+const displayProjects = allProjects
+	.sort((a, b) => {
+		if (a.data.featured && !b.data.featured) return -1;
+		if (!a.data.featured && b.data.featured) return 1;
+		return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+	})
+	.slice(0, 3);
+
+const latestPost =
+	(await getCollection("blog"))
+		.filter((p) => !p.data.draft)
+		.sort(
+			(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+		)[0] ?? null;
 
 const username = SITE_TITLE.toLowerCase().replace(/\s+/g, "");
-let projects: Project[] = [];
+let githubProjects: Project[] = [];
 
-if (import.meta.env.SSR) {
-	try {
-		const token = import.meta.env.TOKEN_GITHUB;
-		const response = await fetch(
-			`https://api.github.com/users/${username}/repos?sort=pushed&per_page=6`,
-			{
-				headers: token ? { Authorization: `token ${token}` } : {},
-				signal: AbortSignal.timeout(5000),
-			},
-		);
-		if (response.ok) {
-			projects = (await response.json()) as Project[];
-		}
-	} catch {
-		projects = [];
+try {
+	const token = import.meta.env.TOKEN_GITHUB;
+	const response = await fetch(
+		`https://api.github.com/users/${username}/repos?sort=pushed&per_page=6`,
+		{
+			headers: token ? { Authorization: `token ${token}` } : {},
+			signal: AbortSignal.timeout(5000),
+		},
+	);
+	if (response.ok) {
+		githubProjects = (await response.json()) as Project[];
 	}
-}
-
-const allPosts = await getCollection("blog");
-let latestPost: Awaited<ReturnType<typeof getCollection<"blog">>>[0] | null =
-	null;
-
-for (const post of allPosts) {
-	if (!latestPost || post.data.pubDate > latestPost.data.pubDate) {
-		latestPost = post;
-	}
+} catch {
+	githubProjects = [];
 }
 ---
 
@@ -50,30 +56,49 @@ for (const post of allPosts) {
 		<Header />
 
 		<main class="home-main">
-			<section class="hero-v">
+			<section class="hero-section">
 				<Avatar />
 
+				{
+					STATUS.active && (
+						<div
+							class="status-badge"
+							role="status"
+							aria-live="polite"
+						>
+							<span class="status-dot" aria-hidden="true" />
+							{STATUS.label}
+						</div>
+					)
+				}
+
 				<h1 class="hero-title">
-					Développeur Web<br />
+					Développeur<br />
 					<span class="title-accent">Full-Stack</span>
 				</h1>
 
 				<p class="hero-description">
-					Passionné par l'embarqué, le web et les systèmes connectés.
-					Je conçois des solutions performantes du frontend au
-					backend.
+					TypeScript · Architectures propres · 3 ans d'expérience.<br
+					/>
+					Du backend scalable aux interfaces modernes, conçu pour durer.
 				</p>
 
 				<div class="cta-group">
+					<a href="/project" class="btn-pill btn-solid">
+						Mes projets
+					</a>
+					<a href="/contact" class="btn-pill btn-outline">
+						Me contacter
+					</a>
 					<a
 						href={GITHUB_URL}
 						target="_blank"
 						rel="noopener noreferrer"
-						class="btn-pill btn-solid"
+						class="btn-pill btn-ghost"
 					>
 						<svg
-							width="16"
-							height="16"
+							width="14"
+							height="14"
 							viewBox="0 0 16 16"
 							fill="currentColor"
 							aria-hidden="true"
@@ -84,63 +109,234 @@ for (const post of allPosts) {
 						</svg>
 						GitHub
 					</a>
-					<a href="/blog" class="btn-pill btn-outline"
-						>Blog technique</a
-					>
+				</div>
+			</section>
+			<section
+				class="projects-section"
+				aria-labelledby="projects-heading"
+			>
+				<div class="section-header">
+					<div class="section-badge">
+						<span class="badge-dot" aria-hidden="true"></span>
+						<span>Projets récents</span>
+					</div>
+					<span class="section-line" aria-hidden="true"></span>
+					<a href="/project" class="section-link">
+						Voir tous les projets
+						<svg
+							class="arrow-icon"
+							width="14"
+							height="14"
+							viewBox="0 0 16 16"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+							aria-hidden="true"
+						>
+							<path
+								d="M6 12L10 8L6 4"
+								stroke-linecap="round"
+								stroke-linejoin="round"></path>
+						</svg>
+					</a>
 				</div>
 
-				<div class="hash-list" aria-label="Technologies">
-					<span>#WebDev</span>
-					<span>#LowLevel</span>
-					<span>#Embedded</span>
-					<span>#Backend</span>
-					<span>#DevOps</span>
+				{
+					displayProjects.length > 0 ? (
+						<div class="projects-vertical">
+							{displayProjects.map((project, i) => (
+								<ProjectCard project={project} index={i} />
+							))}
+						</div>
+					) : (
+						<div class="projects-fallback">
+							<svg
+								width="32"
+								height="32"
+								viewBox="0 0 36 36"
+								fill="none"
+								aria-hidden="true"
+							>
+								<rect
+									x="1"
+									y="1"
+									width="34"
+									height="34"
+									rx="4"
+									stroke="currentColor"
+									stroke-width="1.5"
+									stroke-dasharray="4 3"
+								/>
+								<path
+									d="M12 18h12M18 12v12"
+									stroke="currentColor"
+									stroke-width="1.5"
+									stroke-linecap="round"
+								/>
+							</svg>
+							<p>Aucun projet à afficher pour l'instant.</p>
+							<a
+								href={GITHUB_URL}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="btn-pill btn-outline btn-sm"
+							>
+								Voir sur GitHub
+							</a>
+						</div>
+					)
+				}
+			</section>
+
+			<section class="skills-section" aria-labelledby="skills-heading">
+				<div class="section-header">
+					<div class="section-badge">
+						<span class="badge-dot" aria-hidden="true"></span>
+						<span>Compétences clés</span>
+					</div>
+					<span class="section-line" aria-hidden="true"></span>
+				</div>
+
+				<div class="skills-grid" aria-label="Technologies maîtrisées">
+					<span>TypeScript</span>
+					<span>Node.js</span>
+					<span>React</span>
+					<span>PostgreSQL</span>
+					<span>Docker</span>
 				</div>
 			</section>
 
 			{
 				latestPost && (
-					<div class="blog-section">
-						<h2 class="sr-only">Dernier article de blog</h2>
+					<section
+						class="blog-section"
+						aria-labelledby="blog-heading"
+					>
+						<div class="section-header">
+							<div class="section-badge">
+								<span class="badge-dot" aria-hidden="true" />
+								<span>Dernier article</span>
+							</div>
+							<span class="section-line" aria-hidden="true" />
+							<a href="/blog" class="section-link">
+								Voir tous les articles
+								<svg
+									class="arrow-icon"
+									width="14"
+									height="14"
+									viewBox="0 0 16 16"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="1.5"
+									aria-hidden="true"
+								>
+									<path
+										d="M6 12L10 8L6 4"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									/>
+								</svg>
+							</a>
+						</div>
 						<LatestPost post={latestPost} />
-					</div>
+					</section>
 				)
 			}
 
-			<section class="projects-v" aria-labelledby="projects-heading">
-				<div class="projects-header">
+			<section class="contact-section" aria-labelledby="contact-heading">
+				<div class="section-header">
 					<div class="section-badge">
 						<span class="badge-dot" aria-hidden="true"></span>
-						<span>Projets récents</span>
+						<span>Contact</span>
 					</div>
-					<h2 id="projects-heading" class="section-title">
-						Mes derniers projets
-					</h2>
-					<p class="section-subtitle">
-						Une sélection de mes projets les plus récents sur GitHub
-					</p>
+					<span class="section-line" aria-hidden="true"></span>
+					<a href="/contact" class="section-link">
+						Page contact
+						<svg
+							class="arrow-icon"
+							width="14"
+							height="14"
+							viewBox="0 0 16 16"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+							aria-hidden="true"
+						>
+							<path
+								d="M6 12L10 8L6 4"
+								stroke-linecap="round"
+								stroke-linejoin="round"></path>
+						</svg>
+					</a>
 				</div>
 
-				<div class="projects-grid">
-					{
-						projects.length > 0 ? (
-							projects.map((repo) => (
-								<GitHubProject project={repo} eager={false} />
-							))
-						) : (
-							<div class="projects-fallback">
-								<p>Impossible de charger les projets GitHub.</p>
-								<a
-									href={GITHUB_URL}
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									Voir sur GitHub directement →
-								</a>
-							</div>
-						)
-					}
+				<div class="contact-card">
+					<p>Intéressé par une collaboration ou un échange ?</p>
+					<a href="/contact" class="btn-pill btn-solid"
+						>Envoyer un message</a
+					>
+					<a
+						href={GITHUB_URL}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="btn-pill btn-outline">GitHub</a
+					>
 				</div>
+			</section>
+
+			<section class="github-section" aria-labelledby="github-heading">
+				<div class="section-header">
+					<div class="section-badge">
+						<span class="badge-dot" aria-hidden="true"></span>
+						<span>Dépôts GitHub</span>
+					</div>
+					<span class="section-line" aria-hidden="true"></span>
+					<a
+						href={GITHUB_URL}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="section-link"
+					>
+						Voir le profil
+						<svg
+							class="arrow-icon"
+							width="14"
+							height="14"
+							viewBox="0 0 16 16"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.5"
+							aria-hidden="true"
+						>
+							<path
+								d="M6 12L10 8L6 4"
+								stroke-linecap="round"
+								stroke-linejoin="round"></path>
+						</svg>
+					</a>
+				</div>
+
+				{
+					githubProjects.length > 0 ? (
+						<div class="github-grid">
+							{githubProjects.map((repo) => (
+								<GitHubProject project={repo} eager={false} />
+							))}
+						</div>
+					) : (
+						<div class="github-fallback">
+							<p>Impossible de charger les projets GitHub.</p>
+							<a
+								href={GITHUB_URL}
+								target="_blank"
+								rel="noopener noreferrer"
+								class="btn-pill btn-outline"
+							>
+								Voir sur GitHub directement →
+							</a>
+						</div>
+					)
+				}
 			</section>
 		</main>
 
@@ -154,11 +350,36 @@ for (const post of allPosts) {
 		gap: 5rem;
 	}
 
-	.hero-v {
+	.hero-section {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		width: 100%;
+	}
+
+	.status-badge {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.35rem 1rem;
+		margin-bottom: 1.5rem;
+		background: rgba(var(--accent), 0.05);
+		border: 1px solid rgba(var(--accent), 0.18);
+		border-radius: 999px;
+		font-family: var(--font-title);
+		font-size: 0.72rem;
+		font-weight: 500;
+		letter-spacing: 0.05em;
+		color: var(--color-muted);
+	}
+
+	.status-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--color-accent);
+		flex-shrink: 0;
+		animation: pulse 2.5s ease-in-out infinite;
 	}
 
 	.hero-title {
@@ -167,8 +388,7 @@ for (const post of allPosts) {
 		line-height: 1.1;
 		margin: 0 0 1.25rem;
 		font-weight: 800;
-		letter-spacing: -0.025em;
-		animation: none;
+		letter-spacing: -0.03em;
 	}
 
 	.title-accent {
@@ -184,8 +404,8 @@ for (const post of allPosts) {
 
 	.hero-description {
 		text-align: center;
-		max-width: 580px;
-		font-size: 1.05rem;
+		max-width: 520px;
+		font-size: 1rem;
 		line-height: 1.8;
 		color: var(--color-muted);
 		margin: 0 0 2.5rem;
@@ -193,147 +413,79 @@ for (const post of allPosts) {
 
 	.cta-group {
 		display: flex;
-		gap: 1rem;
+		gap: 0.75rem;
 		margin-bottom: 2rem;
 		flex-wrap: wrap;
 		justify-content: center;
 	}
 
 	.btn-pill {
-		padding: 0.8rem 1.75rem;
-		border-radius: 999px;
-		font-family: var(--font-title);
-		font-weight: 600;
-		font-size: 0.85rem;
-		letter-spacing: 0.02em;
 		display: inline-flex;
 		align-items: center;
 		gap: 0.55rem;
+		font-family: var(--font-title);
+		font-weight: 600;
+		font-size: 0.84rem;
+		letter-spacing: 0.02em;
+		padding: 0.7rem 1.6rem;
+		border-radius: 999px;
+		text-decoration: none;
 		transition:
 			transform var(--duration-base) var(--ease-spring),
 			box-shadow var(--duration-base) ease,
-			filter var(--duration-fast) ease;
+			filter var(--duration-fast) ease,
+			border-color var(--duration-fast) ease,
+			background var(--duration-fast) ease;
 	}
 
 	.btn-solid {
 		background: var(--color-accent);
 		color: var(--color-bg);
 		border: 1px solid transparent;
-		box-shadow: 0 2px 12px rgba(var(--accent), 0.3);
+		box-shadow: 0 2px 12px rgba(var(--accent), 0.25);
 	}
 
 	.btn-solid:hover {
 		transform: translateY(-3px);
-		box-shadow: 0 6px 20px rgba(var(--accent), 0.4);
+		box-shadow: 0 6px 20px rgba(var(--accent), 0.35);
 		filter: brightness(1.06);
 	}
 
 	.btn-outline {
 		background: transparent;
 		color: var(--color-text);
-		border: 1px solid rgba(var(--accent), 0.3);
+		border: 1px solid rgba(var(--accent), 0.25);
 	}
 
 	.btn-outline:hover {
 		transform: translateY(-3px);
-		border-color: rgba(var(--accent), 0.6);
+		border-color: rgba(var(--accent), 0.55);
 		background: rgba(var(--accent), 0.06);
-		box-shadow: 0 4px 14px rgba(var(--accent), 0.18);
-	}
-
-	.hash-list {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: 0.5rem;
-		font-family: var(--font-title);
-		font-size: 0.7rem;
-		letter-spacing: 0.06em;
-	}
-
-	.hash-list span {
-		padding: 0.28rem 0.7rem;
-		border-radius: 999px;
-		background: rgba(var(--accent), 0.05);
-		border: 1px solid rgba(var(--accent), 0.12);
-		color: rgba(var(--text), 0.75);
-		transition:
-			color var(--duration-fast) ease,
-			border-color var(--duration-fast) ease,
-			background var(--duration-fast) ease;
-	}
-
-	.hash-list span:hover {
-		color: var(--color-accent);
-		border-color: rgba(var(--accent), 0.35);
-		background: rgba(var(--accent), 0.08);
-	}
-
-	.blog-section {
-		width: 100%;
-	}
-
-	.blog-footer {
-		width: 100%;
-		display: flex;
-		justify-content: center;
-		padding-top: 1.5rem;
-		border-top: 1px solid var(--color-border);
-	}
-
-	.view-all-link {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.55rem;
-		font-family: var(--font-title);
-		font-size: 0.78rem;
-		font-weight: 600;
-		letter-spacing: 0.04em;
-		color: var(--color-muted);
-		padding: 0.65rem 1.4rem;
-		border-radius: 999px;
-		border: 1px solid rgba(var(--accent), 0.15);
-		background: rgba(var(--accent), 0.03);
-		transition:
-			color var(--duration-fast) ease,
-			border-color var(--duration-fast) ease,
-			background var(--duration-fast) ease,
-			transform var(--duration-base) var(--ease-spring),
-			box-shadow var(--duration-fast) ease;
-	}
-
-	.view-all-link:hover {
-		color: var(--color-accent);
-		border-color: rgba(var(--accent), 0.45);
-		background: rgba(var(--accent), 0.07);
-		transform: translateY(-2px);
 		box-shadow: 0 4px 14px rgba(var(--accent), 0.15);
 	}
 
-	.arrow-icon {
-		transition: transform var(--duration-base) var(--ease-spring);
-		flex-shrink: 0;
+	.btn-ghost {
+		background: transparent;
+		color: var(--color-muted);
+		border: 1px solid var(--color-border);
 	}
 
-	.view-all-link:hover .arrow-icon {
-		transform: translateX(4px);
+	.btn-ghost:hover {
+		transform: translateY(-3px);
+		color: var(--color-text);
+		border-color: var(--color-muted);
 	}
 
-	.projects-v {
+	.btn-sm {
+		font-size: 0.78rem;
+		padding: 0.5rem 1.1rem;
+	}
+
+	.section-header {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
 		width: 100%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 0;
-	}
-
-	.projects-header {
-		text-align: center;
-		margin-bottom: 2.25rem;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 0.65rem;
 	}
 
 	.section-badge {
@@ -349,6 +501,7 @@ for (const post of allPosts) {
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
 		color: var(--color-accent);
+		white-space: nowrap;
 	}
 
 	.badge-dot {
@@ -360,43 +513,144 @@ for (const post of allPosts) {
 		animation: pulse 2.5s ease-in-out infinite;
 	}
 
+	.section-line {
+		flex: 1;
+		height: 1px;
+		background: var(--color-border);
+	}
+
+	.section-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		font-family: var(--font-title);
+		font-size: 0.65rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		color: var(--color-muted);
+		text-decoration: none;
+		white-space: nowrap;
+		transition: color var(--duration-fast) ease;
+	}
+
+	.section-link:hover {
+		color: var(--color-text);
+	}
+
+	.arrow-icon {
+		transition: transform var(--duration-base) var(--ease-spring);
+	}
+
+	.section-link:hover .arrow-icon {
+		transform: translateX(4px);
+	}
+
 	@keyframes pulse {
 		0%,
 		100% {
-			box-shadow: 0 0 4px rgba(var(--accent), 0.5);
+			opacity: 1;
 		}
 		50% {
-			box-shadow: 0 0 10px rgba(var(--accent), 1);
+			opacity: 0.3;
 		}
 	}
 
-	.section-title {
+	.projects-section,
+	.skills-section,
+	.blog-section,
+	.contact-section,
+	.github-section {
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: 1.75rem;
+	}
+
+	.projects-vertical {
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+		width: 100%;
+	}
+
+	.projects-fallback {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1rem;
+		padding: 3.5rem 2rem;
+		border: 1px dashed var(--color-border);
+		border-radius: var(--radius-md);
+		text-align: center;
+		color: var(--color-muted);
+	}
+
+	.projects-fallback svg {
+		opacity: 0.25;
+	}
+
+	.projects-fallback p {
+		font-size: 0.9rem;
+		margin: 0;
+	}
+
+	.skills-grid {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.75rem;
+	}
+
+	.skills-grid span {
 		font-family: var(--font-title);
-		font-size: clamp(1.5rem, 4vw, 2.2rem);
-		font-weight: 700;
-		letter-spacing: -0.025em;
+		font-size: 0.85rem;
+		font-weight: 600;
+		padding: 0.5rem 1.2rem;
+		border-radius: 999px;
+		background: rgba(var(--accent), 0.08);
+		border: 1px solid rgba(var(--accent), 0.2);
+		color: var(--color-text);
+		transition: all 0.2s ease;
+	}
+
+	.skills-grid span:hover {
+		background: rgba(var(--accent), 0.15);
+		border-color: rgba(var(--accent), 0.35);
+		transform: scale(1.02);
+	}
+
+	.contact-card {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 1.5rem;
+		padding: 2.5rem 2rem;
+		background: rgba(var(--accent), 0.02);
+		border: 1px solid var(--color-border);
+		border-radius: var(--radius-md);
+		text-align: center;
+	}
+
+	.contact-card p {
+		font-size: 1.1rem;
 		color: var(--color-text);
 		margin: 0;
-		animation: none;
 	}
 
-	.section-subtitle {
-		font-size: 0.95rem;
-		color: var(--color-muted);
-		max-width: 500px;
-		line-height: 1.65;
-		margin: 0;
+	.contact-card .btn-pill {
+		min-width: 200px;
+		justify-content: center;
 	}
 
-	.projects-grid {
+	.github-grid {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		gap: 1.25rem;
 		width: 100%;
 	}
 
-	.projects-fallback {
-		grid-column: span 2;
+	.github-fallback {
+		grid-column: 1 / -1;
 		padding: 3rem 2rem;
 		border: 1px dashed rgba(var(--accent), 0.2);
 		border-radius: var(--radius-md);
@@ -404,16 +658,22 @@ for (const post of allPosts) {
 		background: rgba(var(--accent), 0.02);
 	}
 
-	.projects-fallback p {
+	.github-fallback p {
 		color: var(--color-muted);
 		margin-bottom: 1rem;
 	}
 
-	.projects-fallback a {
+	.github-fallback a {
 		color: var(--color-accent);
 		font-family: var(--font-title);
 		font-size: 0.85rem;
 		font-weight: 600;
+	}
+
+	@media (max-width: 1024px) {
+		.github-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
 	}
 
 	@media (max-width: 768px) {
@@ -421,12 +681,8 @@ for (const post of allPosts) {
 			gap: 3.5rem;
 		}
 
-		.projects-grid {
+		.github-grid {
 			grid-template-columns: 1fr;
-		}
-
-		.projects-fallback {
-			grid-column: span 1;
 		}
 	}
 
@@ -434,45 +690,46 @@ for (const post of allPosts) {
 		.home-main {
 			gap: 2.5rem;
 		}
-
 		.hero-title {
-			font-size: 2rem;
+			font-size: 2.1rem;
 		}
-
 		.hero-description {
-			font-size: 0.95rem;
+			font-size: 0.9rem;
 		}
-
 		.cta-group {
 			flex-direction: column;
 			width: 100%;
 		}
-
 		.btn-pill {
 			justify-content: center;
 		}
-
-		.hash-list {
-			gap: 0.4rem;
+		.skills-grid span {
+			font-size: 0.75rem;
+			padding: 0.4rem 1rem;
 		}
-
-		.hash-list span {
-			font-size: 0.65rem;
-			padding: 0.25rem 0.6rem;
+		.section-header {
+			flex-wrap: wrap;
+			justify-content: center;
+		}
+		.section-line {
+			display: none;
+		}
+		.contact-card .btn-pill {
+			min-width: 100%;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
+		.status-dot,
 		.badge-dot {
 			animation: none;
+			opacity: 0.6;
 		}
-
-		.btn-solid:hover,
-		.btn-outline:hover,
-		.view-all-link:hover {
+		.btn-pill:hover,
+		.section-link:hover,
+		.skills-grid span:hover {
 			transform: none;
 		}
-
 		.arrow-icon {
 			transition: none;
 		}
