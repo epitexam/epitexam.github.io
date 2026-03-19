@@ -2,7 +2,7 @@
 import { Font } from "astro:assets";
 import "../styles/global.css";
 import type { ImageMetadata } from "astro";
-import FallbackImage from "../assets/ian-panelo.webp";
+import OgImage from "../assets/og-image.webp";
 import { SITE_TITLE, ALT_DESCRIPTION, SITE_THEME_COLOR } from "../consts";
 
 interface Props {
@@ -17,7 +17,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const {
     title,
     description,
-    image = FallbackImage,
+    image = OgImage,
     ImageDescription = ALT_DESCRIPTION,
 } = Astro.props;
 
@@ -47,9 +47,9 @@ const ogImageType = image.format ? `image/${image.format}` : "image/webp";
 <meta name="theme-color" content={SITE_THEME_COLOR} />
 <meta
     name="keywords"
-    content="blog, portfolio, astro, javascript, typescript, web, développeur"
+    content="développeur fullstack, TypeScript, React, Node.js, PostgreSQL, Docker, portfolio, développeur web"
 />
-<meta name="author" content="Epitexam" />
+<meta name="author" content={SITE_TITLE} />
 <meta name="color-scheme" content="dark light" />
 <meta name="referrer" content="strict-origin-when-cross-origin" />
 

@@ -10,6 +10,7 @@ import {
     SITE_DESCRIPTION,
     SITE_TITLE,
     TAB_SHORT,
+    TOOLS_META_DESCRIPTION,
 } from "../consts";
 
 const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
@@ -20,7 +21,7 @@ const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
     <head>
         <BaseHead
             title={`Stack & Expertise - ${SITE_TITLE}`}
-            description={SITE_DESCRIPTION}
+            description={TOOLS_META_DESCRIPTION}
         />
     </head>
     <body>
@@ -28,7 +29,7 @@ const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
 
         <main class="tools-main">
             <header class="page-header">
-                <h1 class="page-title">Stack & Outils</h1>
+                <h1 class="page-title">Stack</h1>
                 <p class="page-desc">
                     Mes domaines de spécialisation et les technologies que
                     j'utilise au quotidien.
@@ -48,13 +49,14 @@ const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
                     >
                 </div>
                 <div class="expertise-grid">
-                    {EXPERTISE.map((item, index) => (
-                        <ExpertiseCard
-                            index={index}
-                            title={item.title}
-                            description={item.description}
-                        />
-                    ))}
+                    {
+                        EXPERTISE.map((item) => (
+                            <ExpertiseCard
+                                title={item.title}
+                                description={item.description}
+                            />
+                        ))
+                    }
                 </div>
             </section>
 
@@ -68,9 +70,15 @@ const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
 
                 <!-- Légende des niveaux (optionnelle) -->
                 <div class="level-legend">
-                    <span><span class="legend-dot mastered"></span> Maîtrisé</span>
-                    <span><span class="legend-dot practiced"></span> Pratiqué</span>
-                    <span><span class="legend-dot exploring"></span> En exploration</span>
+                    <span
+                        ><span class="legend-dot mastered"></span> Maîtrisé</span
+                    >
+                    <span
+                        ><span class="legend-dot practiced"></span> Pratiqué</span
+                    >
+                    <span
+                        ><span class="legend-dot exploring"></span> En exploration</span
+                    >
                 </div>
 
                 <div class="tabs-scroll-wrapper">
@@ -79,46 +87,50 @@ const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
                         role="tablist"
                         aria-label="Catégories"
                     >
-                        {SECTIONS.map((section, i) => (
-                            <button
-                                class:list={[
-                                    "tab-btn",
-                                    { active: i === 0 },
-                                ]}
-                                role="tab"
-                                aria-selected={i === 0 ? "true" : "false"}
-                                aria-controls={`panel-${i}`}
-                                id={`tab-${i}`}
-                                data-tab={i}
-                                aria-label={section.title}
-                            >
-                                <span class="tab-label-full">
-                                    {section.title}
-                                </span>
-                                <span
-                                    class="tab-label-short"
-                                    aria-hidden="true"
+                        {
+                            SECTIONS.map((section, i) => (
+                                <button
+                                    class:list={[
+                                        "tab-btn",
+                                        { active: i === 0 },
+                                    ]}
+                                    role="tab"
+                                    aria-selected={i === 0 ? "true" : "false"}
+                                    aria-controls={`panel-${i}`}
+                                    id={`tab-${i}`}
+                                    data-tab={i}
+                                    aria-label={section.title}
                                 >
-                                    {TAB_SHORT[section.title] ??
-                                        section.title}
-                                </span>
-                            </button>
-                        ))}
+                                    <span class="tab-label-full">
+                                        {section.title}
+                                    </span>
+                                    <span
+                                        class="tab-label-short"
+                                        aria-hidden="true"
+                                    >
+                                        {TAB_SHORT[section.title] ??
+                                            section.title}
+                                    </span>
+                                </button>
+                            ))
+                        }
                     </div>
                 </div>
 
                 <div class="panels">
-                    {SECTIONS.map((section, i) => (
-                        <div
-                            class:list={["tab-panel", { active: i === 0 }]}
-                            role="tabpanel"
-                            id={`panel-${i}`}
-                            aria-labelledby={`tab-${i}`}
-                            hidden={i !== 0}
-                        >
-                            <ToolSection title="" tools={section.tools} />
-                        </div>
-                    ))}
+                    {
+                        SECTIONS.map((section, i) => (
+                            <div
+                                class:list={["tab-panel", { active: i === 0 }]}
+                                role="tabpanel"
+                                id={`panel-${i}`}
+                                aria-labelledby={`tab-${i}`}
+                                hidden={i !== 0}
+                            >
+                                <ToolSection title="" tools={section.tools} />
+                            </div>
+                        ))
+                    }
                 </div>
             </section>
         </main>

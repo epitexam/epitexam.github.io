@@ -1,12 +1,10 @@
 ---
 export interface Props {
-    index: number;
     title: string;
     description: string;
 }
 
-const { index, title, description } = Astro.props;
-const num = String(index + 1).padStart(2, "0");
+const { title, description } = Astro.props;
 ---
 
 <div class="expertise-card">

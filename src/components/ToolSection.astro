@@ -1,6 +1,8 @@
 ---
 import ToolCard from "./ToolCard.astro";
 
+const LEVEL_ORDER = { mastered: 0, practiced: 1, exploring: 2 } as const;
+
 export interface Props {
     title: string;
     tools: {
@@ -13,12 +15,17 @@ export interface Props {
 }
 
 const { title, tools } = Astro.props;
+const sortedTools = [...tools].sort(
+    (a, b) =>
+        LEVEL_ORDER[a.level ?? "practiced"] -
+        LEVEL_ORDER[b.level ?? "practiced"],
+);
 ---
 
 <div class="tool-section">
     {title && <p class="tool-section-label">{title}</p>}
     <div class="tool-grid">
-        {tools.map((tool) => <ToolCard {...tool} />)}
+        {sortedTools.map((tool) => <ToolCard {...tool} />)}
     </div>
 </div>
 

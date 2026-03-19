@@ -550,20 +550,23 @@ export const ABOUT_ME = [
 ];
 
 export const TAB_SHORT: Record<string, string> = {
-  "Langages informatiques": "Langages",
+  "Langages": "Langages",
   "Frameworks & Bibliothèques": "Frameworks",
   "Systèmes & Environnements": "Systèmes",
-  "Collaboration & API": "Collab / API",
+  "Collaboration & Versioning": "Collab",
   "Outils de développement": "Outils",
 };
 
 export const ABOUT_META_DESCRIPTION =
   "Découvrez le parcours d'Epitexam, développeur Full-Stack (Web, Backend, Embarqué). 3 ans d'expérience en SaaS, EdTech et optimisation de performances.";
 
+export const TOOLS_META_DESCRIPTION =
+  "Stack technique d'epitexam : TypeScript, React, Node.js, PostgreSQL, Docker. Langages, frameworks et environnements utilisés en production.";
+
 export const WHAT_I_LOOK_FOR = [
-  "Je souhaite rejoindre une équipe structurée où la qualité technique est au cœur des projets.",
-  "Je suis intéressé par différents secteurs, mais ce qui me motive le plus, ce sont les défis techniques concrets et les projets ambitieux où chaque décision a un impact réel.",
-  "Je suis à l’aise dans un environnement hybride, avec quelques jours de télétravail par semaine, qui me permettent de combiner concentration et collaboration efficace avec l’équipe."
+  "Je souhaite rejoindre une équipe structurée, où la qualité technique est au cœur des projets.",
+  "Bien que je sois intéressé par différents secteurs, ce qui me motive le plus, ce sont les défis techniques concrets et les projets ambitieux, où chaque décision a un impact réel.",
+  "Un rythme hybride avec quelques jours de télétravail me convient, combinant concentration individuelle et travail collaboratif."
 ];
 
 export const EXCLUDED_REPOS = [
