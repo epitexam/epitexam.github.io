@@ -5,14 +5,33 @@ import Footer from "../components/Footer.astro";
 import SectionHeader from "../components/SectionHeader.astro";
 import {
     SITE_TITLE,
-    ABOUT_ME,
     EDUCATION,
     EXPERIENCES,
-    WHAT_I_LOOK_FOR,
     ABOUT_META_DESCRIPTION,
+    GITHUB_URL,
 } from "../consts";
-import ProfileCard from "../components/ProfileCard.astro";
 import Tag from "../components/Tag.astro";
+
+const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Epitexam",
+    url: "https://epitexam.github.io",
+    sameAs: [GITHUB_URL],
+    jobTitle: "Développeur Fullstack",
+    description: ABOUT_META_DESCRIPTION,
+    knowsAbout: [
+        "TypeScript",
+        "JavaScript",
+        "React",
+        "Node.js",
+        "PostgreSQL",
+        "Docker",
+        "NestJS",
+        "Next.js",
+        "Go",
+    ],
+};
 ---
 
 <!doctype html>
@@ -22,37 +41,62 @@ import Tag from "../components/Tag.astro";
             title={`À propos - ${SITE_TITLE}`}
             description={ABOUT_META_DESCRIPTION}
         />
+        <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     </head>
 
     <body>
         <Header />
 
         <main class="about-main">
-            <section aria-label="Présentation">
-                <ProfileCard
-                    title="Développeur Full-Stack"
-                    tagline="3 ans d'expérience · Web · Backend · Embarqué"
-                    content={ABOUT_ME}
-                    contactUrl="/contact"
-                />
+            <section class="content-section" aria-labelledby="about-heading">
+                <SectionHeader label="À propos" level="h1" id="about-heading" />
+
+                <div class="interests-content">
+                    <p>
+                        Développeur Fullstack avec <strong
+                            >3 ans d'expérience</strong
+                        >
+                        acquise en startup SaaS et EdTech, je conçois des applications
+                        robustes en m'appuyant sur <strong>TypeScript</strong>,
+                        <strong>Node.js</strong> et des architectures pensées pour
+                        durer.
+                    </p>
+                    <p>
+                        J'accorde autant d'importance à la <strong
+                            >lisibilité du code</strong
+                        >
+                        qu'à ses performances. Chaque décision technique doit pouvoir
+                        s'expliquer et s'assumer dans le temps.
+                    </p>
+                    <p>
+                        Curieux par nature, je continue d'explorer en dehors de
+                        mon stack principal : <strong>Go</strong>, systèmes
+                        embarqués, bas niveau. Apprendre reste une habitude
+                        autant qu'une nécessité.
+                    </p>
+                </div>
             </section>
 
             <section class="content-section" aria-labelledby="parcours-heading">
-                <SectionHeader label="Parcours" />
+                <SectionHeader
+                    label="Parcours"
+                    level="h2"
+                    id="parcours-heading"
+                />
 
                 <div class="journey-block">
-                    <p class="journey-label">Formation</p>
+                    <h3 class="journey-label">Formation</h3>
                     <div class="journey-list">
                         {
                             EDUCATION.map((item) => (
                                 <div class="journey-item">
                                     <div class="journey-header">
-                                        <span class="journey-period">
+                                        <time class="journey-period">
                                             {item.period}
-                                        </span>
-                                        <h3 class="journey-title">
+                                        </time>
+                                        <p class="journey-title">
                                             {item.title}
-                                        </h3>
+                                        </p>
                                     </div>
                                     {item.subtitle && (
                                         <p class="journey-subtitle-text">
@@ -69,18 +113,18 @@ import Tag from "../components/Tag.astro";
                 </div>
 
                 <div class="journey-block">
-                    <p class="journey-label">Expériences professionnelles</p>
+                    <h3 class="journey-label">Expériences professionnelles</h3>
                     <div class="journey-list">
                         {
                             EXPERIENCES.map((item) => (
                                 <div class="journey-item">
                                     <div class="journey-header">
-                                        <span class="journey-period">
+                                        <time class="journey-period">
                                             {item.period}
-                                        </span>
-                                        <h3 class="journey-title">
+                                        </time>
+                                        <p class="journey-title">
                                             {item.title}
-                                        </h3>
+                                        </p>
                                     </div>
 
                                     {item.context && (
@@ -94,7 +138,7 @@ import Tag from "../components/Tag.astro";
                                     </p>
 
                                     <div class="journey-tags">
-                                        {item.tags.map((tag, tagIndex) => (
+                                        {item.tags.map((tag) => (
                                             <Tag tag={tag} />
                                         ))}
                                     </div>
@@ -109,10 +153,28 @@ import Tag from "../components/Tag.astro";
                 class="content-section"
                 aria-labelledby="recherche-heading"
             >
-                <SectionHeader label="Ce que je recherche" />
+                <SectionHeader
+                    label="Ce que je recherche"
+                    level="h2"
+                    id="recherche-heading"
+                />
 
                 <div class="interests-content">
-                    {WHAT_I_LOOK_FOR.map((paragraph) => <p>{paragraph}</p>)}
+                    <p>
+                        Je cherche un poste où les décisions techniques ont du
+                        <strong>poids</strong> et où le code qu'on écrit a un
+                        <strong>impact réel</strong> sur le produit.
+                    </p>
+                    <p>
+                        J'ai besoin d'une équipe exigeante, avec qui on peut
+                        débattre d'<strong>architecture</strong> sans que ça soit
+                        perçu comme une perte de temps.
+                    </p>
+                    <p>
+                        Côté organisation, un rythme <strong>hybride</strong> me convient
+                        parfaitement. Suffisamment de remote pour être efficace, suffisamment
+                        de présentiel pour rester connecté à l'équipe.
+                    </p>
                 </div>
             </section>
 
@@ -120,7 +182,11 @@ import Tag from "../components/Tag.astro";
                 class="content-section"
                 aria-labelledby="interests-heading"
             >
-                <SectionHeader label="Centres d'intérêt" />
+                <SectionHeader
+                    label="Centres d'intérêt"
+                    level="h2"
+                    id="interests-heading"
+                />
 
                 <div class="interests-content">
                     <p>
@@ -150,11 +216,13 @@ import Tag from "../components/Tag.astro";
                 </div>
             </section>
 
-            <aside class="contact-section" aria-label="Disponibilité">
+            <aside class="contact-section" aria-labelledby="contact-heading">
                 <SectionHeader
                     label="Contact"
                     href="/contact"
                     linkText="Me contacter"
+                    level="h2"
+                    id="contact-heading"
                 />
 
                 <div class="contact-card">
@@ -194,12 +262,12 @@ import Tag from "../components/Tag.astro";
 
     .journey-label {
         font-family: var(--font-code);
-        font-size: 0.72rem;
-        font-weight: 600;
+        font-size: 1rem;
+        font-weight: bold;
         text-transform: uppercase;
         letter-spacing: 0.1em;
         color: var(--color-accent);
-        opacity: 0.65;
+        opacity: 0.9;
         margin: 0;
     }
 

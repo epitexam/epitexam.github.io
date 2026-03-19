@@ -7,593 +7,643 @@ import ProjectCard from "../components/ProjectCard.astro";
 import GitHubProject from "../components/GitHubProject.astro";
 import LatestPost from "../components/LatestPost.astro";
 import Avatar from "../components/Avatar.astro";
+import StatusBadge from "../components/StatusBadge.astro";
+import SkillBadge from "../components/SkillBadge.astro";
 import { getCollection } from "astro:content";
 import {
-	SITE_DESCRIPTION,
-	SITE_TITLE,
-	GITHUB_URL,
-	EXCLUDED_REPOS,
-	SECTIONS,
+    SITE_DESCRIPTION,
+    SITE_TITLE,
+    GITHUB_URL,
+    EXCLUDED_REPOS,
 } from "../consts";
 import type { Project } from "../types/github";
 
-const STATUS = { label: "Ouvert aux opportunités", active: true };
 const allProjects = await getCollection("projects");
 const displayProjects = allProjects
-	.sort((a, b) => {
-		if (a.data.featured && !b.data.featured) return -1;
-		if (!a.data.featured && b.data.featured) return 1;
-		return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
-	})
-	.slice(0, 3);
+    .sort((a, b) => {
+        if (a.data.featured && !b.data.featured) return -1;
+        if (!a.data.featured && b.data.featured) return 1;
+        return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+    })
+    .slice(0, 3);
 
 const latestPost =
-	(await getCollection("blog"))
-		.filter((p) => !p.data.draft)
-		.sort(
-			(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-		)[0] ?? null;
+    (await getCollection("blog"))
+        .filter((p) => !p.data.draft)
+        .sort(
+            (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+        )[0] ?? null;
 
 const username = SITE_TITLE.toLowerCase().replace(/\s+/g, "");
 let githubProjects: Project[] = [];
 
 try {
-	const token = import.meta.env.TOKEN_GITHUB;
-	const response = await fetch(
-		`https://api.github.com/users/${username}/repos?sort=pushed&per_page=15`,
-		{
-			headers: token ? { Authorization: `token ${token}` } : {},
-			signal: AbortSignal.timeout(5000),
-		},
-	);
+    const token = import.meta.env.TOKEN_GITHUB;
+    const response = await fetch(
+        `https://api.github.com/users/${username}/repos?sort=pushed&per_page=15`,
+        {
+            headers: token ? { Authorization: `token ${token}` } : {},
+            signal: AbortSignal.timeout(5000),
+        },
+    );
 
-	if (response.ok) {
-		const allRepos = (await response.json()) as Project[];
-
-		githubProjects = allRepos
-			.filter((repo) => {
-				const isBlacklisted = EXCLUDED_REPOS.some((word) =>
-					repo.name.toLowerCase().includes(word.toLowerCase()),
-				);
-
-				return !repo.fork && !isBlacklisted && !!repo.description;
-			})
-			.slice(0, 4);
-	}
+    if (response.ok) {
+        const allRepos = (await response.json()) as Project[];
+        githubProjects = allRepos
+            .filter((repo) => {
+                const isBlacklisted = EXCLUDED_REPOS.some((word) =>
+                    repo.name.toLowerCase().includes(word.toLowerCase()),
+                );
+                return !repo.fork && !isBlacklisted && !!repo.description;
+            })
+            .slice(0, 4);
+    }
 } catch (error) {
-	console.error("GitHub Fetch Error:", error);
-	githubProjects = [];
+    console.error("GitHub Fetch Error:", error);
+    githubProjects = [];
 }
 
 const topSkills = [
-	{ name: "TypeScript", role: "Langage pilier" },
-	{ name: "Node.js / NestJS", role: "Architecture Backend" },
-	{ name: "React / Next.js / Svelte", role: "Interface & SSR" },
-	{ name: "PostgreSQL / Mongo / Redis", role: "Gestion de données" },
-	{ name: "Docker / Linux", role: "Infrastructure & Ops" },
+    { name: "TypeScript", role: "Langage pilier" },
+    { name: "Node.js / NestJS", role: "Architecture Backend" },
+    { name: "React / Next.js / Svelte", role: "Interface & SSR" },
+    { name: "PostgreSQL / Mongo / Redis", role: "Gestion de données" },
+    { name: "Docker / Linux", role: "Infrastructure & Ops" },
 ];
+
+const jsonLdWebSite = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE_TITLE,
+    url: "https://epitexam.github.io",
+    description: SITE_DESCRIPTION,
+    author: {
+        "@type": "Person",
+        name: "Epitexam",
+        url: "https://epitexam.github.io/about",
+        sameAs: [GITHUB_URL],
+    },
+};
+
+const jsonLdProfile = {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    mainEntity: {
+        "@type": "Person",
+        name: "Epitexam",
+        jobTitle: "Développeur Fullstack",
+        url: "https://epitexam.github.io",
+        sameAs: [GITHUB_URL],
+        knowsAbout: [
+            "TypeScript",
+            "JavaScript",
+            "Node.js",
+            "NestJS",
+            "React",
+            "Next.js",
+            "Svelte",
+            "PostgreSQL",
+            "MongoDB",
+            "Redis",
+            "Docker",
+            "Linux",
+        ],
+    },
+};
 ---
 
 <!doctype html>
 <html lang="fr">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
+    <head>
+        <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify(jsonLdWebSite)}
+        />
 
-		<main class="home-main">
-			<section class="hero-section">
-				<Avatar />
+        <script
+            type="application/ld+json"
+            set:html={JSON.stringify(jsonLdProfile)}
+        />
+    </head>
+    <body>
+        <Header />
 
-				{
-					STATUS.active && (
-						<div
-							class="status-badge"
-							role="status"
-							aria-live="polite"
-						>
-							<span class="status-dot" aria-hidden="true" />
-							{STATUS.label}
-						</div>
-					)
-				}
+        <main class="home-main">
+            <section class="hero-section" aria-label="Introduction">
+                <Avatar />
 
-				<h1 class="hero-title">
-					Développeur<br />
-					<span class="title-accent">Full-Stack</span>
-				</h1>
+                <div class="status-wrapper">
+                        <StatusBadge label="Ouvert aux opportunités" />
+                    </div>
 
-				<p class="hero-description">
-					TypeScript · Architectures propres · 3 ans d'expérience.<br
-					/>
-					Du backend scalable aux interfaces modernes, conçu pour durer.
-				</p>
+                <h1 class="hero-title">
+                    Développeur<br />
+                    <span class="title-accent">Full-Stack</span>
+                </h1>
+                <p class="hero-description">
+                    TypeScript · Architectures propres · 3 ans d'expérience.<br
+                        class="hero-br"
+                    />
+                    Du backend scalable aux interfaces modernes, conçu pour durer.
+                </p>
 
-				<div class="cta-group">
-					<a href="/project" class="btn-pill btn-solid">
-						Mes projets
-					</a>
-					<a href="/contact" class="btn-pill btn-outline">
-						Me contacter
-					</a>
-					<a
-						href={GITHUB_URL}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="btn-pill btn-ghost"
-					>
-						<svg
-							width="14"
-							height="14"
-							viewBox="0 0 16 16"
-							fill="currentColor"
-							aria-hidden="true"
-						>
-							<path
-								d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
-							></path>
-						</svg>
-						GitHub
-					</a>
-				</div>
-			</section>
+                <div class="cta-group">
+                    <a href="/project" class="btn-pill btn-solid">
+                        Mes projets
+                    </a>
+                    <a href="/contact" class="btn-pill btn-outline">
+                        Me contacter
+                    </a>
+                    <a
+                        href={GITHUB_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-pill btn-ghost"
+                    >
+                        <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 16 16"
+                            fill="currentColor"
+                            aria-hidden="true"
+                        >
+                            <path
+                                d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+                            ></path>
+                        </svg>
+                        GitHub
+                    </a>
+                </div>
+            </section>
 
-			<section
-				class="projects-section"
-				aria-labelledby="projects-heading"
-			>
-				<SectionHeader
-					label="Projets récents"
-					href="/project"
-					linkText="Voir tous les projets"
-				/>
+            {
+                displayProjects.length > 0 && (
+                    <section
+                        class="projects-section"
+                        aria-labelledby="projects-heading"
+                    >
+                        <SectionHeader
+                            label="Projets récents"
+                            href="/project"
+                            linkText="Voir tous les projets"
+                            level="h2"
+                            id="projects-heading"
+                        />
+                        <div class="projects-vertical">
+                            {displayProjects.map((project, i) => (
+                                <ProjectCard project={project} index={i} />
+                            ))}
+                        </div>
+                    </section>
+                )
+            }
 
-				{
-					displayProjects.length > 0 ? (
-						<div class="projects-vertical">
-							{displayProjects.map((project, i) => (
-								<ProjectCard project={project} index={i} />
-							))}
-						</div>
-					) : (
-						<div class="projects-fallback">
-							<svg
-								width="32"
-								height="32"
-								viewBox="0 0 36 36"
-								fill="none"
-								aria-hidden="true"
-							>
-								<rect
-									x="1"
-									y="1"
-									width="34"
-									height="34"
-									rx="4"
-									stroke="currentColor"
-									stroke-width="1.5"
-									stroke-dasharray="4 3"
-								/>
-								<path
-									d="M12 18h12M18 12v12"
-									stroke="currentColor"
-									stroke-width="1.5"
-									stroke-linecap="round"
-								/>
-							</svg>
-							<p>Aucun projet à afficher pour l'instant.</p>
-							<a
-								href={GITHUB_URL}
-								target="_blank"
-								rel="noopener noreferrer"
-								class="btn-pill btn-outline btn-sm"
-							>
-								Voir sur GitHub
-							</a>
-						</div>
-					)
-				}
-			</section>
+            <section class="skills-section" aria-labelledby="skills-heading">
+                <SectionHeader
+                    label="Compétences clés"
+                    level="h2"
+                    id="skills-heading"
+                />
+                <ul
+                    class="skills-grid"
+                    aria-label="Technologies maîtrisées"
+                    role="list"
+                >
+                    {
+                        topSkills.map((skill) => (
+                            <SkillBadge name={skill.name} role={skill.role} />
+                        ))
+                    }
+                </ul>
+            </section>
 
-			<section class="skills-section" aria-labelledby="skills-heading">
-				<SectionHeader label="Compétences clés" />
+            {
+                latestPost && (
+                    <section
+                        class="blog-section"
+                        aria-labelledby="blog-heading"
+                    >
+                        <SectionHeader
+                            label="Dernier article"
+                            href="/blog"
+                            linkText="Voir tous les articles"
+                            level="h2"
+                            id="blog-heading"
+                        />
+                        <LatestPost post={latestPost} />
+                    </section>
+                )
+            }
 
-				<div class="skills-grid" aria-label="Technologies maîtrisées">
-					{topSkills.map((skill) => <span>{skill.name}</span>)}
-				</div>
-			</section>
+            <section class="github-section" aria-labelledby="github-heading">
+                <SectionHeader
+                    label="Dépôt GitHub"
+                    href={GITHUB_URL}
+                    linkText="Voir le profil"
+                    level="h2"
+                    id="github-heading"
+                />
 
-			{
-				latestPost && (
-					<section
-						class="blog-section"
-						aria-labelledby="blog-heading"
-					>
-						<SectionHeader
-							label="Dernier article"
-							href="/blog"
-							linkText="Voir tous les articles"
-						/>
-						<LatestPost post={latestPost} />
-					</section>
-				)
-			}
+                {
+                    githubProjects.length > 0 ? (
+                        <div class="github-grid">
+                            {githubProjects.map((repo) => (
+                                <GitHubProject project={repo} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div class="github-fallback">
+                            <p>Impossible de charger les projets GitHub.</p>
+                            <a
+                                href={GITHUB_URL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="btn-pill btn-outline"
+                            >
+                                Voir sur GitHub directement →
+                            </a>
+                        </div>
+                    )
+                }
+            </section>
 
-			<section class="contact-section" aria-labelledby="contact-heading">
-				<SectionHeader
-					label="Contact"
-					href="/contact"
-					linkText="Page contact"
-				/>
+            <section class="contact-section" aria-labelledby="contact-heading">
+                <SectionHeader
+                    label="Contact"
+                    href="/contact"
+                    linkText="Page contact"
+                    level="h2"
+                    id="contact-heading"
+                />
 
-				<div class="contact-card">
-					<p>Intéressé par une collaboration ou un échange ?</p>
-					<a href="/contact" class="btn-pill btn-solid"
-						>Envoyer un message</a
-					>
-					<a
-						href={GITHUB_URL}
-						target="_blank"
-						rel="noopener noreferrer"
-						class="btn-pill btn-outline">GitHub</a
-					>
-				</div>
-			</section>
+                <div class="contact-card">
+                    <p>Intéressé par une collaboration ou un échange ?</p>
+                    <a href="/contact" class="btn-pill btn-solid"
+                        >Envoyer un message</a
+                    >
+                    <a
+                        href={GITHUB_URL}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-pill btn-outline">GitHub</a
+                    >
+                </div>
+            </section>
+        </main>
 
-			<section class="github-section" aria-labelledby="github-heading">
-				<SectionHeader
-					label="Dépôt GitHub"
-					href={GITHUB_URL}
-					linkText="Voir le profil"
-				/>
-
-				{
-					githubProjects.length > 0 ? (
-						<div class="github-grid">
-							{githubProjects.map((repo, index) => (
-								<GitHubProject project={repo} eager={false} />
-							))}
-						</div>
-					) : (
-						<div class="github-fallback">
-							<p>Impossible de charger les projets GitHub.</p>
-							<a
-								href={GITHUB_URL}
-								target="_blank"
-								rel="noopener noreferrer"
-								class="btn-pill btn-outline"
-							>
-								Voir sur GitHub directement →
-							</a>
-						</div>
-					)
-				}
-			</section>
-		</main>
-
-		<Footer />
-	</body>
+        <Footer />
+    </body>
 </html>
 
 <style>
-	.home-main {
-		align-items: center;
-		gap: 5rem;
-	}
+    /* ── Base ── */
+    .home-main {
+        align-items: center;
+        gap: 5rem;
+    }
 
-	.hero-section {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		width: 100%;
-	}
+    .hero-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        width: 100%;
+        padding-bottom: 1rem;
+    }
 
-	.status-badge {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.35rem 1rem;
-		margin-bottom: 1.5rem;
-		background: rgba(var(--accent), 0.05);
-		border: 1px solid rgba(var(--accent), 0.18);
-		border-radius: 999px;
-		font-family: var(--font-title);
-		font-size: 0.72rem;
-		font-weight: 500;
-		letter-spacing: 0.05em;
-		color: var(--color-muted);
-	}
+    .status-wrapper {
+        display: contents;
+    }
 
-	.status-dot {
-		width: 6px;
-		height: 6px;
-		border-radius: 50%;
-		background: var(--color-accent);
-		flex-shrink: 0;
-		animation: pulse 2.5s ease-in-out infinite;
-	}
+    .hero-title {
+        text-align: center;
+        font-size: clamp(2.2rem, 7vw, 4rem);
+        line-height: 1.1;
+        margin: 0 0 1.25rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+    }
 
-	.hero-title {
-		text-align: center;
-		font-size: clamp(2.2rem, 7vw, 4rem);
-		line-height: 1.1;
-		margin: 0 0 1.25rem;
-		font-weight: 800;
-		letter-spacing: -0.03em;
-	}
+    .title-accent {
+        background: linear-gradient(
+            135deg,
+            rgb(var(--accent)),
+            rgba(var(--accent), 0.55)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
 
-	.title-accent {
-		background: linear-gradient(
-			135deg,
-			rgb(var(--accent)),
-			rgba(var(--accent), 0.55)
-		);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-	}
+    .hero-description {
+        text-align: center;
+        max-width: 520px;
+        font-size: 1rem;
+        line-height: 1.8;
+        color: var(--color-muted);
+        margin: 0;
+    }
 
-	.hero-description {
-		text-align: center;
-		max-width: 520px;
-		font-size: 1rem;
-		line-height: 1.8;
-		color: var(--color-muted);
-		margin: 0 0 2.5rem;
-	}
+    .cta-group {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 
-	.cta-group {
-		display: flex;
-		gap: 0.75rem;
-		margin-bottom: 2rem;
-		flex-wrap: wrap;
-		justify-content: center;
-	}
+    .btn-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        font-family: var(--font-title);
+        font-weight: 600;
+        font-size: 0.84rem;
+        letter-spacing: 0.02em;
+        padding: 0.7rem 1.6rem;
+        border-radius: 999px;
+        text-decoration: none;
+        transition:
+            transform var(--duration-base) var(--ease-spring),
+            box-shadow var(--duration-base) ease,
+            filter var(--duration-fast) ease,
+            border-color var(--duration-fast) ease,
+            background var(--duration-fast) ease;
+    }
 
-	.btn-pill {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.55rem;
-		font-family: var(--font-title);
-		font-weight: 600;
-		font-size: 0.84rem;
-		letter-spacing: 0.02em;
-		padding: 0.7rem 1.6rem;
-		border-radius: 999px;
-		text-decoration: none;
-		transition:
-			transform var(--duration-base) var(--ease-spring),
-			box-shadow var(--duration-base) ease,
-			filter var(--duration-fast) ease,
-			border-color var(--duration-fast) ease,
-			background var(--duration-fast) ease;
-	}
+    .btn-solid {
+        background: var(--color-accent);
+        color: var(--color-bg);
+        border: 1px solid transparent;
+        box-shadow: 0 2px 12px rgba(var(--accent), 0.25);
+    }
 
-	.btn-solid {
-		background: var(--color-accent);
-		color: var(--color-bg);
-		border: 1px solid transparent;
-		box-shadow: 0 2px 12px rgba(var(--accent), 0.25);
-	}
+    .btn-solid:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(var(--accent), 0.35);
+        filter: brightness(1.06);
+    }
 
-	.btn-solid:hover {
-		transform: translateY(-3px);
-		box-shadow: 0 6px 20px rgba(var(--accent), 0.35);
-		filter: brightness(1.06);
-	}
+    .btn-outline {
+        background: transparent;
+        color: var(--color-text);
+        border: 1px solid rgba(var(--accent), 0.25);
+    }
 
-	.btn-outline {
-		background: transparent;
-		color: var(--color-text);
-		border: 1px solid rgba(var(--accent), 0.25);
-	}
+    .btn-outline:hover {
+        transform: translateY(-3px);
+        border-color: rgba(var(--accent), 0.55);
+        background: rgba(var(--accent), 0.06);
+        box-shadow: 0 4px 14px rgba(var(--accent), 0.15);
+    }
 
-	.btn-outline:hover {
-		transform: translateY(-3px);
-		border-color: rgba(var(--accent), 0.55);
-		background: rgba(var(--accent), 0.06);
-		box-shadow: 0 4px 14px rgba(var(--accent), 0.15);
-	}
+    .btn-ghost {
+        background: transparent;
+        color: var(--color-muted);
+        border: 1px solid var(--color-border);
+    }
 
-	.btn-ghost {
-		background: transparent;
-		color: var(--color-muted);
-		border: 1px solid var(--color-border);
-	}
+    .btn-ghost:hover {
+        transform: translateY(-3px);
+        color: var(--color-text);
+        border-color: var(--color-muted);
+    }
 
-	.btn-ghost:hover {
-		transform: translateY(-3px);
-		color: var(--color-text);
-		border-color: var(--color-muted);
-	}
+    .btn-sm {
+        font-size: 0.78rem;
+        padding: 0.5rem 1.1rem;
+    }
 
-	.btn-sm {
-		font-size: 0.78rem;
-		padding: 0.5rem 1.1rem;
-	}
+    .projects-section,
+    .skills-section,
+    .blog-section,
+    .contact-section,
+    .github-section {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 1.75rem;
+    }
 
-	@keyframes pulse {
-		0%,
-		100% {
-			opacity: 1;
-		}
-		50% {
-			opacity: 0.3;
-		}
-	}
+    .projects-vertical {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        width: 100%;
+    }
 
-	.projects-section,
-	.skills-section,
-	.blog-section,
-	.contact-section,
-	.github-section {
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-		gap: 1.75rem;
-	}
+    .skills-grid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
 
-	.projects-vertical {
-		display: flex;
-		flex-direction: column;
-		gap: 1.25rem;
-		width: 100%;
-	}
+    .contact-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 2.5rem 2rem;
+        background: rgba(var(--accent), 0.02);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        text-align: center;
+    }
 
-	.projects-fallback {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 1rem;
-		padding: 3.5rem 2rem;
-		border: 1px dashed var(--color-border);
-		border-radius: var(--radius-md);
-		text-align: center;
-		color: var(--color-muted);
-	}
+    .contact-card p {
+        font-size: 1.1rem;
+        color: var(--color-text);
+        margin: 0;
+    }
 
-	.projects-fallback svg {
-		opacity: 0.25;
-	}
+    .contact-card .btn-pill {
+        min-width: 200px;
+        justify-content: center;
+    }
 
-	.projects-fallback p {
-		font-size: 0.9rem;
-		margin: 0;
-	}
+    .github-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
+        width: 100%;
+    }
 
-	.skills-grid {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: 0.75rem;
-	}
+    .github-fallback {
+        padding: 3rem 2rem;
+        border: 1px dashed rgba(var(--accent), 0.2);
+        border-radius: var(--radius-md);
+        text-align: center;
+        background: rgba(var(--accent), 0.02);
+    }
 
-	.skills-grid span {
-		font-family: var(--font-title);
-		font-size: 0.85rem;
-		font-weight: 600;
-		padding: 0.5rem 1.2rem;
-		border-radius: 999px;
-		background: rgba(var(--accent), 0.08);
-		border: 1px solid rgba(var(--accent), 0.2);
-		color: var(--color-text);
-		transition: all 0.2s ease;
-	}
+    .github-fallback p {
+        color: var(--color-muted);
+        margin-bottom: 1rem;
+    }
 
-	.skills-grid span:hover {
-		background: rgba(var(--accent), 0.15);
-		border-color: rgba(var(--accent), 0.35);
-		transform: scale(1.02);
-	}
+    .github-fallback a {
+        color: var(--color-accent);
+        font-family: var(--font-title);
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
 
-	.contact-card {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 1.5rem;
-		padding: 2.5rem 2rem;
-		background: rgba(var(--accent), 0.02);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-md);
-		text-align: center;
-	}
+    /* ── 768px ── */
+    @media (max-width: 768px) {
+        .home-main {
+            gap: 4rem;
+        }
 
-	.contact-card p {
-		font-size: 1.1rem;
-		color: var(--color-text);
-		margin: 0;
-	}
+        .hero-description {
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+        }
 
-	.contact-card .btn-pill {
-		min-width: 200px;
-		justify-content: center;
-	}
+        .cta-group {
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+        }
 
-	.github-grid {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 1.25rem;
-		width: 100%;
-	}
+        .btn-pill {
+            font-size: 0.8rem;
+            padding: 0.65rem 1.4rem;
+        }
 
-	.github-fallback {
-		grid-column: 1 / -1;
-		padding: 3rem 2rem;
-		border: 1px dashed rgba(var(--accent), 0.2);
-		border-radius: var(--radius-md);
-		text-align: center;
-		background: rgba(var(--accent), 0.02);
-	}
+        .github-grid {
+            grid-template-columns: 1fr;
+        }
 
-	.github-fallback p {
-		color: var(--color-muted);
-		margin-bottom: 1rem;
-	}
+        .contact-card {
+            padding: 2rem 1.75rem;
+            gap: 1.25rem;
+        }
 
-	.github-fallback a {
-		color: var(--color-accent);
-		font-family: var(--font-title);
-		font-size: 0.85rem;
-		font-weight: 600;
-	}
+        .contact-card p {
+            font-size: 1rem;
+        }
 
-	@media (max-width: 1024px) {
-		.github-grid {
-			grid-template-columns: repeat(2, 1fr);
-		}
-	}
+        .projects-section,
+        .skills-section,
+        .blog-section,
+        .contact-section,
+        .github-section {
+            gap: 1.5rem;
+        }
+    }
 
-	@media (max-width: 768px) {
-		.home-main {
-			gap: 3.5rem;
-		}
+    /* ── 600px ── */
+    @media (max-width: 600px) {
+        .home-main {
+            gap: 3.5rem;
+        }
 
-		.github-grid {
-			grid-template-columns: 1fr;
-		}
-	}
+        .hero-description {
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
 
-	@media (max-width: 480px) {
-		.home-main {
-			gap: 2.5rem;
-		}
-		.hero-title {
-			font-size: 2.1rem;
-		}
-		.hero-description {
-			font-size: 0.9rem;
-		}
-		.cta-group {
-			flex-direction: column;
-			width: 100%;
-		}
-		.btn-pill {
-			justify-content: center;
-		}
-		.skills-grid span {
-			font-size: 0.75rem;
-			padding: 0.4rem 1rem;
-		}
+        .hero-br {
+            display: none;
+        }
 
-		.contact-card .btn-pill {
-			min-width: 100%;
-		}
-	}
+        .contact-card {
+            padding: 1.75rem 1.5rem;
+        }
 
-	@media (prefers-reduced-motion: reduce) {
-		.status-dot,
-		.badge-dot {
-			animation: none;
-			opacity: 0.6;
-		}
-		.btn-pill:hover,
-		.section-link:hover,
-		.skills-grid span:hover {
-			transform: none;
-		}
-		.arrow-icon {
-			transition: none;
-		}
-	}
+        .github-fallback {
+            padding: 2.5rem 1.5rem;
+        }
+    }
+
+    /* ── 480px ── */
+    @media (max-width: 480px) {
+        .home-main {
+            gap: 2.75rem;
+        }
+
+        .hero-description {
+            font-size: 0.875rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .cta-group {
+            flex-direction: column;
+            width: 100%;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .btn-pill {
+            justify-content: center;
+            font-size: 0.78rem;
+            padding: 0.6rem 1.2rem;
+            width: 100%;
+        }
+
+        .btn-sm {
+            font-size: 0.72rem;
+            padding: 0.45rem 1rem;
+            width: auto;
+        }
+
+        .contact-card {
+            padding: 1.5rem 1.25rem;
+            gap: 1rem;
+        }
+
+        .contact-card p {
+            font-size: 0.95rem;
+        }
+
+        .contact-card .btn-pill {
+            min-width: 100%;
+        }
+
+        .github-fallback {
+            padding: 2rem 1.25rem;
+        }
+
+        .projects-section,
+        .skills-section,
+        .blog-section,
+        .contact-section,
+        .github-section {
+            gap: 1.25rem;
+        }
+    }
+
+    /* ── 360px ── */
+    @media (max-width: 360px) {
+        .home-main {
+            gap: 2.25rem;
+        }
+
+        .hero-description {
+            font-size: 0.825rem;
+        }
+
+        .btn-pill {
+            font-size: 0.72rem;
+            padding: 0.55rem 1rem;
+        }
+
+        .contact-card {
+            padding: 1.25rem 1rem;
+        }
+
+        .contact-card p {
+            font-size: 0.875rem;
+        }
+    }
+
+    /* ── Motion ── */
+    @media (prefers-reduced-motion: reduce) {
+        .btn-pill:hover {
+            transform: none;
+        }
+    }
 </style>

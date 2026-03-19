@@ -4,7 +4,7 @@ import BaseHead from "../../components/BaseHead.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
-import { SITE_TITLE } from "../../consts";
+import { SITE_TITLE, GITHUB_URL } from "../../consts";
 
 const projects = (await getCollection("projects")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
@@ -13,13 +13,44 @@ const projects = (await getCollection("projects")).sort(
 const featured = projects.filter((p) => p.data.featured);
 const others = projects.filter((p) => !p.data.featured);
 const isEmpty = projects.length === 0;
+
+const PROJECT_META_DESCRIPTION =
+  `Réalisations techniques d'Epitexam — projets fullstack, applications web et expérimentations en TypeScript, React, Node.js et Go.`;
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: `Projets — ${SITE_TITLE}`,
+  description: PROJECT_META_DESCRIPTION,
+  url: "https://epitexam.github.io/project",
+  author: {
+    "@type": "Person",
+    name: "Epitexam",
+    url: "https://epitexam.github.io",
+    sameAs: [GITHUB_URL],
+  },
+  numberOfItems: projects.length,
+  itemListElement: projects.map((p, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: p.data.title,
+    description: p.data.description,
+    url: `https://epitexam.github.io/project/${p.id}/`,
+    ...(p.data.liveUrl && { sameAs: p.data.liveUrl }),
+  })),
+};
 ---
 
+<!doctype html>
 <html lang="fr">
   <head>
     <BaseHead
       title={`Projets — ${SITE_TITLE}`}
-      description="Showcase de mes réalisations techniques"
+      description={PROJECT_META_DESCRIPTION}
+    />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(jsonLd)}
     />
     <style>
       main {
@@ -65,7 +96,7 @@ const isEmpty = projects.length === 0;
         letter-spacing: 0.08em;
       }
 
-      h1 {
+      .page-title {
         font-family: var(--font-title);
         font-size: clamp(2.75rem, 8vw, 4.5rem);
         font-weight: 800;
@@ -73,6 +104,7 @@ const isEmpty = projects.length === 0;
         letter-spacing: -0.04em;
         color: var(--color-text);
         margin: 0 0 1rem;
+        padding: 0;
       }
 
       .subtitle {
@@ -101,6 +133,9 @@ const isEmpty = projects.length === 0;
         letter-spacing: 0.22em;
         color: var(--color-muted);
         white-space: nowrap;
+        margin: 0;
+        padding: 0;
+        line-height: inherit;
       }
 
       .section-line {
@@ -210,7 +245,7 @@ const isEmpty = projects.length === 0;
     <main>
       <header class="page-header animate-slideIn">
         <div class="header-eyebrow">
-          <span class="dot"></span>
+          <span class="dot" aria-hidden="true"></span>
           <span class="label">Portfolio</span>
           {
             !isEmpty && (
@@ -220,7 +255,8 @@ const isEmpty = projects.length === 0;
             )
           }
         </div>
-        <h1>Projets</h1>
+
+        <h1 class="page-title">Projets</h1>
         <p class="subtitle">
           Présentation de mes réalisations techniques et expérimentations.
         </p>
@@ -228,7 +264,7 @@ const isEmpty = projects.length === 0;
 
       {
         isEmpty && (
-          <div class="empty-state">
+          <div class="empty-state" role="status">
             <svg
               class="empty-icon"
               width="36"
@@ -265,14 +301,14 @@ const isEmpty = projects.length === 0;
 
       {
         featured.length > 0 && (
-          <section class="grid-section">
+          <section class="grid-section" aria-labelledby="featured-heading">
             <div class="section-strip">
-              <span class="section-label">Sélection</span>
-              <span class="section-line" />
+              <h2 id="featured-heading" class="section-label">Sélection</h2>
+              <span class="section-line" aria-hidden="true" />
             </div>
             <div class="projects-grid featured-grid">
               {featured.map((p, i) => (
-                <ProjectCard project={p} index={i} />
+                <ProjectCard project={p} index={i} headingLevel="h3" />
               ))}
             </div>
           </section>
@@ -281,14 +317,14 @@ const isEmpty = projects.length === 0;
 
       {
         others.length > 0 && (
-          <section class="grid-section">
+          <section class="grid-section" aria-labelledby="archive-heading">
             <div class="section-strip">
-              <span class="section-label">Archive</span>
-              <span class="section-line" />
+              <h2 id="archive-heading" class="section-label">Archive</h2>
+              <span class="section-line" aria-hidden="true" />
             </div>
             <div class="projects-grid">
               {others.map((p, i) => (
-                <ProjectCard project={p} index={i + featured.length} />
+                <ProjectCard project={p} index={i + featured.length} headingLevel="h3" />
               ))}
             </div>
           </section>

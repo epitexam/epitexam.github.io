@@ -25,7 +25,7 @@ const isExact = pathname === href || pathname === href + "/";
 		display: inline-flex;
 		align-items: center;
 		text-decoration: none;
-		color: rgba(var(--text), 0.5);
+		color: rgba(var(--text), 0.72);
 		font-family: var(--font-title);
 		font-size: 0.9rem;
 		text-transform: uppercase;
@@ -88,6 +88,12 @@ const isExact = pathname === href || pathname === href + "/";
 			height: 2px;
 			background-color: var(--color-accent);
 			border-radius: 2px;
+		}
+	}
+
+	@media (prefers-color-scheme: light) {
+		a {
+			color: rgba(var(--text), 0.85);
 		}
 	}
 </style>

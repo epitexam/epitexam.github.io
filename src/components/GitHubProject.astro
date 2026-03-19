@@ -14,17 +14,15 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
     month: "short",
     year: "numeric",
 });
+
+const pushDatetime = new Date(project.pushed_at).toISOString().substring(0, 7);
+
+const readableName = project.name.replace(/-/g, " ");
 ---
 
-<a
-    href={project.html_url}
-    target="_blank"
-    rel="noopener noreferrer"
-    class="project-card"
-    aria-label={`Voir le projet ${project.name}`}
->
-    <div class="scanline"></div>
-    <div class="card-glow"></div>
+<article class="project-card">
+    <div class="scanline" aria-hidden="true"></div>
+    <div class="card-glow" aria-hidden="true"></div>
 
     <header class="project-header">
         <div class="owner-info">
@@ -36,8 +34,18 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
                 class="avatar"
                 loading={eager ? "eager" : "lazy"}
                 fetchpriority={eager ? "high" : "auto"}
+                aria-hidden="true"
             />
-            <h3 class="project-name">{project.name}</h3>
+            <h3 class="project-name">
+                <a
+                    href={project.html_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Voir le dépôt ${readableName} sur GitHub`}
+                >
+                    {project.name}
+                </a>
+            </h3>
         </div>
         {
             project.language && (
@@ -55,23 +63,29 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
 
     <footer class="project-footer">
         <div class="stats">
-            <span class="stat-item" title="Étoiles GitHub">
+            <span class="stat-item">
                 <svg
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
                     stroke-width="2"
+                    aria-hidden="true"
                 >
                     <polygon
                         points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"
                     ></polygon>
                 </svg>
-                {project.stargazers_count}
+                <span aria-label={`${project.stargazers_count} étoiles GitHub`}>
+                    {project.stargazers_count}
+                </span>
             </span>
         </div>
-        <span class="date-info">Màj {pushDate}</span>
+
+        <time class="date-info" datetime={pushDatetime}>
+            Màj {pushDate}
+        </time>
     </footer>
-</a>
+</article>
 
 <style>
     .project-card {
@@ -189,16 +203,22 @@ const pushDate = new Date(project.pushed_at).toLocaleDateString("fr-FR", {
 
     .project-name {
         margin: 0;
+        padding: 0;
         font-size: 1.1rem;
-        color: var(--color-accent);
+        font-weight: inherit;
+        line-height: inherit;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        transition: text-shadow var(--duration-base) ease;
-        animation: none;
     }
 
-    .project-card:hover .project-name {
+    .project-name a {
+        color: var(--color-accent);
+        text-decoration: none;
+        transition: text-shadow var(--duration-base) ease;
+    }
+
+    .project-card:hover .project-name a {
         text-shadow: 0 0 12px rgba(var(--accent), 0.45);
     }
 

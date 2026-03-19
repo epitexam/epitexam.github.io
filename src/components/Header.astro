@@ -202,6 +202,21 @@ const navLinks = [
 		color: var(--color-accent);
 	}
 
+	@media (prefers-color-scheme: light) {
+		.brand-link {
+			color: var(--color-text);
+		}
+
+		.social-link {
+			color: var(--color-text);
+		}
+
+		.brand-link:hover,
+		.social-link:hover {
+			color: var(--color-accent);
+		}
+	}
+
 	.menu-toggle {
 		display: none;
 		align-items: center;
@@ -234,6 +249,7 @@ const navLinks = [
 		padding: 0.85rem 1.5rem;
 		font-size: 1rem;
 		border-bottom: 1px solid rgba(var(--accent), 0.06);
+		color: var(--color-text);
 	}
 
 	@media (max-width: 768px) {

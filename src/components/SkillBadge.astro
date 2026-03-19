@@ -1,0 +1,53 @@
+---
+interface Props {
+    name: string;
+    role: string;
+}
+
+const { name, role } = Astro.props;
+---
+
+<li class="skill-badge" title={role}>
+    {name}
+</li>
+
+<style>
+    .skill-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.55rem 1.3rem;
+        background: rgba(var(--text), 0.04);
+        backdrop-filter: blur(10px) saturate(160%);
+        -webkit-backdrop-filter: blur(10px) saturate(160%);
+        border: 1px solid rgba(var(--text), 0.1);
+        border-radius: 999px;
+        box-shadow: inset 0 1px 0 rgba(var(--accent), 0.06);
+        font-family: var(--font-title);
+        font-size: 0.82rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        color: var(--color-text);
+        white-space: nowrap;
+        transition:
+            background var(--duration-fast) ease,
+            border-color var(--duration-fast) ease,
+            box-shadow var(--duration-fast) ease,
+            transform var(--duration-base) var(--ease-spring);
+    }
+
+    .skill-badge:hover {
+        background: rgba(var(--text), 0.08);
+        border-color: rgba(var(--text), 0.22);
+        box-shadow:
+            inset 0 1px 0 rgba(var(--accent), 0.1),
+            0 4px 14px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .skill-badge:hover {
+            transform: none;
+        }
+    }
+</style>

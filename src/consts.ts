@@ -96,14 +96,14 @@ export const SECTIONS: {
         {
           icon: "Nx",
           name: "Next.js",
-          level: "practiced",
+          level: "mastered",
           description:
             "Utilisé pour le rendu côté serveur et les déploiements modernes. C'est un outil très complet pour lier le front-end et le back-end avec React.",
         },
         {
           icon: "Ns",
           name: "NestJS",
-          level: "practiced",
+          level: "mastered",
           description:
             "Mon framework de référence pour bâtir des API backend structurées et évolutives. J'apprécie son architecture qui facilite la maintenance sur le long terme.",
         },
@@ -543,12 +543,6 @@ export const EXPERTISE = [
   },
 ];
 
-export const ABOUT_ME = [
-  "Développeur Fullstack avec 3 ans d'expérience, je m'attache à concevoir des applications fiables et performantes, en appliquant des principes d'architecture solides comme les architectures hexagonales et le DDD.",
-  "Mon travail s'appuie sur TypeScript et Node.js au quotidien, complétés par Linux et Docker pour assurer des déploiements stables et efficaces.",
-  "J'interviens aussi bien sur l'architecture backend que sur la réactivité des interfaces, avec une attention particulière portée à la qualité du code et à l'automatisation des tests."
-];
-
 export const TAB_SHORT: Record<string, string> = {
   "Langages": "Langages",
   "Frameworks & Bibliothèques": "Frameworks",
@@ -562,12 +556,6 @@ export const ABOUT_META_DESCRIPTION =
 
 export const TOOLS_META_DESCRIPTION =
   "Stack technique d'epitexam : TypeScript, React, Node.js, PostgreSQL, Docker. Langages, frameworks et environnements utilisés en production.";
-
-export const WHAT_I_LOOK_FOR = [
-  "Je souhaite rejoindre une équipe structurée, où la qualité technique est au cœur des projets.",
-  "Bien que je sois intéressé par différents secteurs, ce qui me motive le plus, ce sont les défis techniques concrets et les projets ambitieux, où chaque décision a un impact réel.",
-  "Un rythme hybride avec quelques jours de télétravail me convient, combinant concentration individuelle et travail collaboratif."
-];
 
 export const EXCLUDED_REPOS = [
   "exercise",

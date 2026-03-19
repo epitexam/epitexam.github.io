@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 import BaseHead from "../../components/BaseHead.astro";
-import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
+import { SITE_TITLE } from "../../consts";
 import Header from "../../components/Header.astro";
 import FormattedDate from "../../components/FormattedDate.astro";
 import Footer from "../../components/Footer.astro";
@@ -16,6 +16,35 @@ const posts = (await getCollection("blog"))
 	});
 
 const EAGER_LIMIT = 3;
+const BLOG_META_DESCRIPTION =
+	"Articles et réflexions sur le développement logiciel par Epitexam — architecture, performance, outillage et retours d'expérience.";
+
+const jsonLd = {
+	"@context": "https://schema.org",
+	"@type": "Blog",
+	name: `Blog — ${SITE_TITLE}`,
+	description: BLOG_META_DESCRIPTION,
+	url: "https://epitexam.github.io/blog",
+	author: {
+		"@type": "Person",
+		name: "Epitexam",
+		url: "https://epitexam.github.io",
+	},
+	blogPost: posts.map((post) => ({
+		"@type": "BlogPosting",
+		headline: post.data.title,
+		description: post.data.description ?? "",
+		datePublished: post.data.pubDate?.toISOString(),
+		...(post.data.updatedDate && {
+			dateModified: post.data.updatedDate.toISOString(),
+		}),
+		url: `https://epitexam.github.io/blog/${post.id}/`,
+		author: {
+			"@type": "Person",
+			name: "Epitexam",
+		},
+	})),
+};
 ---
 
 <!doctype html>
@@ -23,105 +52,147 @@ const EAGER_LIMIT = 3;
 	<head>
 		<BaseHead
 			title={`Blog - ${SITE_TITLE}`}
-			description={SITE_DESCRIPTION}
+			description={BLOG_META_DESCRIPTION}
 		/>
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 	</head>
 	<body>
 		<Header />
 
 		<main>
-			<section aria-label="Liste des articles">
-				<div class="blog-grid">
+			<header class="page-header">
+				<h1 class="page-title">Blog</h1>
+			</header>
+			<section aria-labelledby="blog-list-heading">
+				<h2 id="blog-list-heading" class="sr-only">
+					Liste des articles
+				</h2>
+
+				<ul class="blog-grid" role="list">
 					{
 						posts.map((post, index) => {
 							const isEager = index < EAGER_LIMIT;
 							const isFeatured = index === 0;
 
+							const pubDatetime =
+								post.data.pubDate?.toISOString() ?? "";
+
 							return (
-								<a
-									href={`/blog/${post.id}/`}
+								<li
 									class:list={[
-										"blog-card",
+										"blog-item",
 										{ featured: isFeatured },
 									]}
-									aria-label={`Lire l'article : ${post.data.title}`}
 								>
-									<div class="card-glow" />
+									<a
+										href={`/blog/${post.id}/`}
+										class="blog-card"
+										aria-label={`Lire l'article : ${post.data.title}`}
+									>
+										<div
+											class="card-glow"
+											aria-hidden="true"
+										/>
 
-									{post.data.heroImage && (
-										<div class="image-container">
-											<Image
-												src={post.data.heroImage}
-												alt={
-													post.data
-														.heroImageDescription ||
-													post.data.title
-												}
-												class="card-img"
-												loading={
-													isEager ? "eager" : "lazy"
-												}
-												fetchpriority={
-													isFeatured ? "high" : "auto"
-												}
-												decoding={
-													isFeatured
-														? "sync"
-														: "async"
-												}
-												widths={
-													isFeatured
-														? [480, 700, 960, 1280]
-														: [320, 480, 662, 960]
-												}
-												sizes={
-													isFeatured
-														? "(max-width: 768px) 100vw, 662px"
-														: "(max-width: 480px) 100vw, (max-width: 768px) 50vw, 25vw"
-												}
-											/>
-										</div>
-									)}
-
-									<div class="card-body">
-										<p class="card-date">
-											<FormattedDate
-												date={post.data.pubDate}
-											/>
-										</p>
-										<h2 class="card-title">
-											{post.data.title}
-										</h2>
-										{post.data.description && (
-											<p class="card-description">
-												{post.data.description}
-											</p>
+										{post.data.heroImage && (
+											<div class="image-container">
+												<Image
+													src={
+														post.data.heroImage
+													}
+													alt={
+														post.data
+															.heroImageDescription ||
+														post.data.title
+													}
+													class="card-img"
+													loading={
+														isEager
+															? "eager"
+															: "lazy"
+													}
+													fetchpriority={
+														isFeatured
+															? "high"
+															: "auto"
+													}
+													decoding={
+														isFeatured
+															? "sync"
+															: "async"
+													}
+													widths={
+														isFeatured
+															? [
+																	480,
+																	700,
+																	960,
+																	1280,
+																]
+															: [
+																	320,
+																	480,
+																	662,
+																	960,
+																]
+													}
+													sizes={
+														isFeatured
+															? "(max-width: 768px) 100vw, 662px"
+															: "(max-width: 480px) 100vw, (max-width: 768px) 50vw, 25vw"
+													}
+												/>
+											</div>
 										)}
-										<span class="read-more">
-											Lire l'article
-											<svg
-												class="arrow-icon"
-												width="14"
-												height="14"
-												viewBox="0 0 16 16"
-												fill="none"
+
+										<div class="card-body">
+											<time
+												class="card-date"
+												datetime={pubDatetime}
+											>
+												<FormattedDate
+													date={post.data.pubDate}
+												/>
+											</time>
+											<h2 class="card-title">
+												{post.data.title}
+											</h2>
+
+											{post.data.description && (
+												<p class="card-description">
+													{post.data.description}
+												</p>
+											)}
+
+											<span
+												class="read-more"
 												aria-hidden="true"
 											>
-												<path
-													d="M3.5 8H12.5M12.5 8L8.5 4M12.5 8L8.5 12"
-													stroke="currentColor"
-													stroke-width="1.5"
-													stroke-linecap="round"
-													stroke-linejoin="round"
-												/>
-											</svg>
-										</span>
-									</div>
-								</a>
+												Lire l'article
+												<svg
+													class="arrow-icon"
+													width="14"
+													height="14"
+													viewBox="0 0 16 16"
+													fill="none"
+													aria-hidden="true"
+												>
+													<path
+														d="M3.5 8H12.5M12.5 8L8.5 4M12.5 8L8.5 12"
+														stroke="currentColor"
+														stroke-width="1.5"
+														stroke-linecap="round"
+														stroke-linejoin="round"
+													/>
+												</svg>
+											</span>
+										</div>
+									</a>
+								</li>
 							);
 						})
 					}
-				</div>
+				</ul>
 			</section>
 		</main>
 
@@ -143,6 +214,35 @@ const EAGER_LIMIT = 3;
 		margin: 0 auto;
 		padding: calc(var(--header-height, 60px) + 3rem) 1.5rem 4rem;
 		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+		gap: 2.5rem;
+	}
+
+	.page-header {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	.page-title {
+		font-size: clamp(2rem, 6vw, 3rem);
+		font-weight: 700;
+		line-height: 1.05;
+		letter-spacing: -0.03em;
+		margin: 0;
+	}
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
 	}
 
 	.blog-grid {
@@ -150,12 +250,26 @@ const EAGER_LIMIT = 3;
 		grid-template-columns: 1fr 1fr;
 		gap: 1.75rem;
 		width: 100%;
+		list-style: none;
+		padding: 0;
+		margin: 0;
 	}
 
-	.blog-card {
+	.blog-item {
+		display: flex;
+	}
+
+	.blog-item.featured {
+		grid-column: 1 / -1;
+	}
+
+	a.blog-card {
 		position: relative;
 		display: flex;
 		flex-direction: column;
+		width: 100%;
+		text-decoration: none;
+		color: inherit;
 		background: linear-gradient(
 			145deg,
 			rgba(var(--bg), 1) 0%,
@@ -165,7 +279,6 @@ const EAGER_LIMIT = 3;
 		border-radius: var(--radius-md);
 		overflow: hidden;
 		isolation: isolate;
-		color: inherit;
 		box-shadow:
 			var(--shadow-soft),
 			inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -175,7 +288,7 @@ const EAGER_LIMIT = 3;
 			box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 	}
 
-	:global(html.light) .blog-card {
+	:global(html.light) a.blog-card {
 		background: linear-gradient(
 			145deg,
 			rgb(var(--bg)) 0%,
@@ -188,7 +301,7 @@ const EAGER_LIMIT = 3;
 			inset 0 1px 0 rgba(255, 255, 255, 0.9);
 	}
 
-	.blog-card:hover {
+	a.blog-card:hover {
 		transform: translateY(-4px);
 		border-color: rgba(var(--accent), 0.4);
 		box-shadow:
@@ -197,7 +310,7 @@ const EAGER_LIMIT = 3;
 			inset 0 1px 0 rgba(255, 255, 255, 0.06);
 	}
 
-	:global(html.light) .blog-card:hover {
+	:global(html.light) a.blog-card:hover {
 		border-color: rgba(var(--accent), 0.5);
 		box-shadow:
 			0 12px 36px -8px rgba(var(--accent), 0.2),
@@ -205,12 +318,11 @@ const EAGER_LIMIT = 3;
 			inset 0 1px 0 rgba(255, 255, 255, 0.95);
 	}
 
-	.blog-card.featured {
-		grid-column: 1 / -1;
+	.blog-item.featured a.blog-card {
 		flex-direction: row;
 	}
 
-	.blog-card.featured .image-container {
+	.blog-item.featured .image-container {
 		width: 52%;
 		flex-shrink: 0;
 		aspect-ratio: unset;
@@ -219,20 +331,20 @@ const EAGER_LIMIT = 3;
 		border-right: 1px solid var(--color-border);
 	}
 
-	:global(html.light) .blog-card.featured .image-container {
+	:global(html.light) .blog-item.featured .image-container {
 		border-right-color: rgba(var(--accent), 0.18);
 	}
 
-	.blog-card.featured .card-body {
+	.blog-item.featured .card-body {
 		padding: 2.25rem 2.5rem;
 		justify-content: center;
 	}
 
-	.blog-card.featured .card-title {
+	.blog-item.featured .card-title {
 		font-size: clamp(1.5rem, 3vw, 2rem);
 	}
 
-	.blog-card.featured .card-description {
+	.blog-item.featured .card-description {
 		display: -webkit-box;
 		-webkit-line-clamp: 4;
 	}
@@ -252,7 +364,7 @@ const EAGER_LIMIT = 3;
 		transition: opacity 0.4s ease;
 	}
 
-	.blog-card:hover .card-glow {
+	a.blog-card:hover .card-glow {
 		opacity: 1;
 	}
 
@@ -288,7 +400,7 @@ const EAGER_LIMIT = 3;
 		filter: brightness(0.95) contrast(1.04);
 	}
 
-	.blog-card:hover .card-img {
+	a.blog-card:hover .card-img {
 		transform: scale(1.04);
 		filter: brightness(1) contrast(1.08) saturate(1.05);
 	}
@@ -303,6 +415,7 @@ const EAGER_LIMIT = 3;
 	}
 
 	.card-date {
+		display: block;
 		font-family: var(--font-title);
 		font-size: 0.75rem;
 		color: var(--color-muted);
@@ -322,10 +435,11 @@ const EAGER_LIMIT = 3;
 		letter-spacing: -0.02em;
 		color: var(--color-text);
 		margin: 0 0 0.75rem;
+		padding: 0;
 		transition: color 0.3s ease;
 	}
 
-	.blog-card:hover .card-title {
+	a.blog-card:hover .card-title {
 		color: var(--color-accent);
 	}
 
@@ -346,7 +460,7 @@ const EAGER_LIMIT = 3;
 		color: rgba(var(--text), 0.62);
 	}
 
-	.blog-card:hover .card-description {
+	a.blog-card:hover .card-description {
 		color: rgba(var(--text), 0.8);
 	}
 
@@ -378,7 +492,7 @@ const EAGER_LIMIT = 3;
 		transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
 	}
 
-	.blog-card:hover .read-more::after {
+	a.blog-card:hover .read-more::after {
 		transform: scaleX(1);
 	}
 
@@ -387,7 +501,7 @@ const EAGER_LIMIT = 3;
 		flex-shrink: 0;
 	}
 
-	.blog-card:hover .arrow-icon {
+	a.blog-card:hover .arrow-icon {
 		transform: translateX(4px);
 	}
 
@@ -401,11 +515,11 @@ const EAGER_LIMIT = 3;
 			gap: 1.25rem;
 		}
 
-		.blog-card.featured {
+		.blog-item.featured a.blog-card {
 			flex-direction: column;
 		}
 
-		.blog-card.featured .image-container {
+		.blog-item.featured .image-container {
 			width: 100%;
 			aspect-ratio: 16 / 9;
 			min-height: unset;
@@ -413,23 +527,23 @@ const EAGER_LIMIT = 3;
 			border-bottom: 1px solid var(--color-border);
 		}
 
-		.blog-card.featured .card-body {
+		.blog-item.featured .card-body {
 			padding: 1.5rem;
 		}
 
-		.blog-card.featured .card-title {
+		.blog-item.featured .card-title {
 			font-size: 1.35rem;
 		}
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.blog-card:hover {
+		a.blog-card:hover {
 			transform: none;
 		}
-		.blog-card:hover .card-img {
+		a.blog-card:hover .card-img {
 			transform: none;
 		}
-		.blog-card:hover .arrow-icon {
+		a.blog-card:hover .arrow-icon {
 			transform: none;
 		}
 	}

@@ -7,13 +7,13 @@ export interface Props {
 const { title, description } = Astro.props;
 ---
 
-<div class="expertise-card">
-    <div class="card-glow"></div>
+<article class="expertise-card">
+    <div class="card-glow" aria-hidden="true"></div>
     <div class="card-inner">
         <h3 class="card-title">{title}</h3>
         <p class="card-desc">{description}</p>
     </div>
-</div>
+</article>
 
 <style>
     .expertise-card {

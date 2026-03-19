@@ -7,13 +7,33 @@ import ToolSection from "../components/ToolSection.astro";
 import {
     SECTIONS,
     EXPERTISE,
-    SITE_DESCRIPTION,
     SITE_TITLE,
     TAB_SHORT,
     TOOLS_META_DESCRIPTION,
+    GITHUB_URL,
 } from "../consts";
 
 const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
+const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Stack technique et domaines d'expertise",
+    description: TOOLS_META_DESCRIPTION,
+    url: "https://epitexam.github.io/tools",
+    author: {
+        "@type": "Person",
+        name: "Epitexam",
+        url: "https://epitexam.github.io",
+        sameAs: [GITHUB_URL],
+    },
+    numberOfItems: EXPERTISE.length,
+    itemListElement: EXPERTISE.map((item, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        name: item.title,
+        description: item.description,
+    })),
+};
 ---
 
 <!doctype html>
@@ -23,6 +43,7 @@ const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
             title={`Stack & Expertise - ${SITE_TITLE}`}
             description={TOOLS_META_DESCRIPTION}
         />
+        <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     </head>
     <body>
         <Header />
@@ -68,24 +89,32 @@ const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
                     <span class="section-count">{totalTools} outils</span>
                 </div>
 
-                <!-- Légende des niveaux (optionnelle) -->
-                <div class="level-legend">
-                    <span
-                        ><span class="legend-dot mastered"></span> Maîtrisé</span
-                    >
-                    <span
-                        ><span class="legend-dot practiced"></span> Pratiqué</span
-                    >
-                    <span
-                        ><span class="legend-dot exploring"></span> En exploration</span
-                    >
+                <div
+                    class="level-legend"
+                    aria-label="Légende des niveaux de maîtrise"
+                >
+                    <span>
+                        <span class="legend-dot mastered" aria-hidden="true"
+                        ></span>
+                        Maîtrisé
+                    </span>
+                    <span>
+                        <span class="legend-dot practiced" aria-hidden="true"
+                        ></span>
+                        Pratiqué
+                    </span>
+                    <span>
+                        <span class="legend-dot exploring" aria-hidden="true"
+                        ></span>
+                        En exploration
+                    </span>
                 </div>
 
                 <div class="tabs-scroll-wrapper">
                     <div
                         class="tabs-nav"
                         role="tablist"
-                        aria-label="Catégories"
+                        aria-label="Catégories de technologies"
                     >
                         {
                             SECTIONS.map((section, i) => (
@@ -197,7 +226,6 @@ const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
         letter-spacing: 0.02em;
     }
 
-    /* Légende des niveaux */
     .level-legend {
         display: flex;
         gap: 1.5rem;
@@ -322,10 +350,6 @@ const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
         .expertise-grid {
             grid-template-columns: repeat(2, 1fr);
         }
-        .page-title br {
-            display: none;
-        }
-
         .tabs-nav {
             flex-wrap: nowrap;
         }

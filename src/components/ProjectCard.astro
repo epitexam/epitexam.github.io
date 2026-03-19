@@ -7,14 +7,16 @@ import fallBackImage from "../assets/sejio.webp";
 interface Props {
     project: CollectionEntry<"projects">;
     index: number;
+    headingLevel?: "h2" | "h3";
 }
 
-const { project, index } = Astro.props;
+const { project, index, headingLevel = "h3" } = Astro.props;
 const { data, id } = project;
 const isEager = index < 2;
 
 const imageSrc = data.heroImage ?? fallBackImage;
 const imageAlt = data.heroImageDescription || data.title;
+const HeadingTag = headingLevel;
 ---
 
 <article class:list={["project-card", { featured: data.featured }]}>
@@ -48,24 +50,34 @@ const imageAlt = data.heroImageDescription || data.title;
                     )
                 }
             </div>
-            <a href={`/project/${id}/`} class="title-link">
-                <h2>{data.title}</h2>
-            </a>
+
+            <HeadingTag class="project-title">
+                <a href={`/project/${id}/`} class="title-link">
+                    {data.title}
+                </a>
+            </HeadingTag>
+
             <p class="desc">{data.description}</p>
         </header>
 
         {
             data.technologies.length > 0 && (
-                <div class="tech-stack">
+                <ul class="tech-stack" aria-label="Technologies utilisées">
                     {data.technologies.slice(0, 4).map((tech) => (
-                        <span class="tech-tag">{tech}</span>
+                        <li class="tech-tag">{tech}</li>
                     ))}
-                </div>
+                </ul>
             )
         }
 
         <footer class="card-actions">
-            <a href={`/project/${id}/`} class="btn-details"> Détails </a>
+            <a
+                href={`/project/${id}/`}
+                class="btn-details"
+                aria-label={`Voir les détails de ${data.title}`}
+            >
+                Détails
+            </a>
             <div class="external-links">
                 {
                     data.liveUrl && (
@@ -74,7 +86,7 @@ const imageAlt = data.heroImageDescription || data.title;
                             target="_blank"
                             rel="noopener noreferrer"
                             class="ext-link"
-                            title="Live Demo"
+                            aria-label={`Voir la démo en ligne de ${data.title}`}
                         >
                             Live
                             <svg
@@ -102,7 +114,7 @@ const imageAlt = data.heroImageDescription || data.title;
                             target="_blank"
                             rel="noopener noreferrer"
                             class="ext-link"
-                            title="Code source"
+                            aria-label={`Voir le code source de ${data.title}`}
                         >
                             Code
                             <svg
@@ -229,23 +241,23 @@ const imageAlt = data.heroImageDescription || data.title;
         }
     }
 
-    .title-link {
-        text-decoration: none;
-        color: inherit;
-    }
-
-    h2 {
-        font-family: var(--font-title);
+    .project-title {
+        margin: 0 0 0.5rem;
+        padding: 0;
         font-size: 1.15rem;
         font-weight: 800;
         line-height: 1.2;
         letter-spacing: -0.025em;
-        margin: 0 0 0.5rem;
         color: var(--color-text);
+    }
+
+    .title-link {
+        text-decoration: none;
+        color: inherit;
         transition: color var(--duration-fast) ease;
     }
 
-    .title-link:hover h2 {
+    .title-link:hover {
         color: var(--color-accent);
     }
 
@@ -265,6 +277,9 @@ const imageAlt = data.heroImageDescription || data.title;
         flex-wrap: wrap;
         gap: 0.35rem;
         margin-top: auto;
+        list-style: none;
+        padding: 0;
+        margin-bottom: 0;
     }
 
     .tech-tag {

@@ -18,13 +18,21 @@ const cardProps = link
       "aria-label": `En savoir plus sur ${name} (s'ouvre dans un nouvel onglet)`,
     }
   : {};
+
+const LEVEL_LABELS: Record<string, string> = {
+  mastered: "Maîtrisé",
+  practiced: "Pratiqué",
+  exploring: "En exploration",
+};
+
+const levelLabel = LEVEL_LABELS[level] ?? level;
 ---
 
 <CardTag class="tool-card" data-level={level} {...cardProps}>
-  <div class="card-glow"></div>
+  <div class="card-glow" aria-hidden="true"></div>
   <div class="tool-inner">
     <div class="tool-icon-container">
-      <span class="tool-icon-text">{icon}</span>
+      <span class="tool-icon-text" aria-hidden="true">{icon}</span>
     </div>
     <div class="tool-content">
       <h3 class="tool-title">
@@ -40,7 +48,11 @@ const cardProps = link
       <p class="tool-description">{description}</p>
     </div>
   </div>
-  {level && <span class="level-indicator" aria-label={`Niveau : ${level}`} />}
+  <span
+    class="level-indicator"
+    aria-label={`Niveau : ${levelLabel}`}
+    role="img"
+  />
 </CardTag>
 
 <style>
