@@ -20,23 +20,20 @@ const { tag } = Astro.props;
         font-family: var(--font-title);
         font-weight: 500;
         letter-spacing: 0.02em;
-        color: var(--color-accent);
+        color: var(--color-text);
         background: rgba(var(--accent), 0.08);
-        border: 1px solid rgba(var(--accent), 0.15);
-        border-radius: 999px; /* Pill shape plus moderne */
+        border: 1px solid rgba(var(--accent), 0.2);
+        border-radius: 999px;
         transition: all var(--duration-fast) var(--ease-spring);
         cursor: default;
         white-space: nowrap;
         line-height: 1.2;
-        backdrop-filter: blur(2px);
     }
 
     .tag:hover {
         background: rgba(var(--accent), 0.15);
-        border-color: rgba(var(--accent), 0.3);
-        color: var(--color-text);
-        transform: translateY(-1px);
-        box-shadow: 0 2px 8px rgba(var(--accent), 0.2);
+        border-color: rgba(var(--accent), 0.35);
+        transform: scale(1.02);
     }
 
     @media (max-width: 768px) {

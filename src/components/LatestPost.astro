@@ -18,13 +18,6 @@ const { post } = Astro.props;
 ---
 
 <article class="latest-post-container">
-    <div class="section-header">
-        <div class="section-badge">
-            <span class="badge-dot"></span>
-            <span class="badge-text">Dernier article</span>
-        </div>
-    </div>
-
     <a
         href={`/blog/${post.id}/`}
         class="post-card"
@@ -43,7 +36,7 @@ const { post } = Astro.props;
                         widths={[400, 640, 800]}
                         sizes="(max-width: 480px) 100vw, (max-width: 768px) calc(100vw - 2rem), 800px"
                         class="post-image"
-                        loading="eager"
+                        loading="lazy"
                     />
                     <div class="image-overlay" />
                 </div>
@@ -101,44 +94,6 @@ const { post } = Astro.props;
 </article>
 
 <style>
-    .latest-post-container {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: 3rem 0 4rem;
-    }
-
-    .section-header {
-        width: 100%;
-        text-align: center;
-        margin-bottom: 2rem;
-    }
-
-    .section-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.6rem;
-        padding: 0.5rem 1.1rem;
-        background: rgba(var(--accent), 0.05);
-        border: 1px solid rgba(var(--accent), 0.15);
-        border-radius: 999px;
-        font-family: var(--font-title);
-        font-size: 0.72rem;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--color-accent);
-    }
-
-    .badge-dot {
-        width: 6px;
-        height: 6px;
-        background: var(--color-accent);
-        border-radius: 50%;
-        flex-shrink: 0;
-        animation: pulse 2.5s ease-in-out infinite;
-    }
-
     @keyframes pulse {
         0%,
         100% {
@@ -328,12 +283,6 @@ const { post } = Astro.props;
     }
 
     @media (max-width: 768px) {
-        .latest-post-container {
-            margin: 2rem 0 3rem;
-        }
-        .section-header {
-            margin-bottom: 1.5rem;
-        }
         .post-content {
             padding: 1.5rem 1.75rem 2rem;
         }
@@ -346,9 +295,6 @@ const { post } = Astro.props;
     }
 
     @media (max-width: 480px) {
-        .latest-post-container {
-            margin: 1.5rem 0 2.5rem;
-        }
         .post-content {
             padding: 1.25rem 1.5rem 1.75rem;
         }
@@ -363,9 +309,6 @@ const { post } = Astro.props;
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .badge-dot {
-            animation: none;
-        }
         .post-card:hover {
             transform: none;
         }

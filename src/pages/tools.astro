@@ -10,6 +10,7 @@ import {
     SITE_DESCRIPTION,
     SITE_TITLE,
     TAB_SHORT,
+    TOOLS_META_DESCRIPTION,
 } from "../consts";
 
 const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
@@ -20,7 +21,7 @@ const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
     <head>
         <BaseHead
             title={`Stack & Expertise - ${SITE_TITLE}`}
-            description={SITE_DESCRIPTION}
+            description={TOOLS_META_DESCRIPTION}
         />
     </head>
     <body>
@@ -28,7 +29,7 @@ const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
 
         <main class="tools-main">
             <header class="page-header">
-                <h1 class="page-title">Stack & Outils</h1>
+                <h1 class="page-title">Stack</h1>
                 <p class="page-desc">
                     Mes domaines de spécialisation et les technologies que
                     j'utilise au quotidien.
@@ -49,9 +50,8 @@ const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
                 </div>
                 <div class="expertise-grid">
                     {
-                        EXPERTISE.map((item, index) => (
+                        EXPERTISE.map((item) => (
                             <ExpertiseCard
-                                index={index}
                                 title={item.title}
                                 description={item.description}
                             />
@@ -66,6 +66,19 @@ const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
                         Stack technique
                     </h2>
                     <span class="section-count">{totalTools} outils</span>
+                </div>
+
+                <!-- Légende des niveaux (optionnelle) -->
+                <div class="level-legend">
+                    <span
+                        ><span class="legend-dot mastered"></span> Maîtrisé</span
+                    >
+                    <span
+                        ><span class="legend-dot practiced"></span> Pratiqué</span
+                    >
+                    <span
+                        ><span class="legend-dot exploring"></span> En exploration</span
+                    >
                 </div>
 
                 <div class="tabs-scroll-wrapper">
@@ -184,6 +197,37 @@ const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
         letter-spacing: 0.02em;
     }
 
+    /* Légende des niveaux */
+    .level-legend {
+        display: flex;
+        gap: 1.5rem;
+        justify-content: flex-end;
+        font-size: 0.7rem;
+        font-family: var(--font-code);
+        color: var(--color-muted);
+        margin-top: -0.5rem;
+        margin-bottom: 0.5rem;
+    }
+    .legend-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: 0.3rem;
+    }
+    .legend-dot.mastered {
+        background: var(--color-accent);
+        box-shadow: 0 0 6px var(--color-accent);
+    }
+    .legend-dot.practiced {
+        background: var(--color-accent);
+        opacity: 0.6;
+    }
+    .legend-dot.exploring {
+        background: rgba(var(--text), 0.5);
+        opacity: 0.3;
+    }
+
     .expertise-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -206,7 +250,6 @@ const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
     .tabs-nav {
         display: flex;
         gap: 0.5rem;
-
         flex-wrap: wrap;
         width: max-content;
         max-width: 100%;
@@ -303,6 +346,12 @@ const totalTools = SECTIONS.reduce((acc, s) => acc + s.tools.length, 0);
         .tab-btn {
             font-size: 0.68rem;
             padding: 0.35rem 0.8rem;
+        }
+
+        .level-legend {
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
     }
 

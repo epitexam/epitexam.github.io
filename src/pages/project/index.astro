@@ -1,0 +1,300 @@
+---
+import { getCollection } from "astro:content";
+import BaseHead from "../../components/BaseHead.astro";
+import Header from "../../components/Header.astro";
+import Footer from "../../components/Footer.astro";
+import ProjectCard from "../../components/ProjectCard.astro";
+import { SITE_TITLE } from "../../consts";
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
+
+const featured = projects.filter((p) => p.data.featured);
+const others = projects.filter((p) => !p.data.featured);
+const isEmpty = projects.length === 0;
+---
+
+<html lang="fr">
+  <head>
+    <BaseHead
+      title={`Projets — ${SITE_TITLE}`}
+      description="Showcase de mes réalisations techniques"
+    />
+    <style>
+      main {
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: calc(var(--header-height) + 3rem) 1.5rem 5rem;
+      }
+
+      .page-header {
+        margin-bottom: 4.5rem;
+      }
+
+      .header-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 0.65rem;
+        margin-bottom: 1.25rem;
+      }
+
+      .header-eyebrow .dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--color-accent);
+        flex-shrink: 0;
+      }
+
+      .header-eyebrow .label {
+        font-family: var(--font-title);
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--color-accent);
+      }
+
+      .header-eyebrow .count {
+        margin-left: auto;
+        font-family: var(--font-code);
+        font-size: 0.65rem;
+        color: var(--color-muted);
+        letter-spacing: 0.08em;
+      }
+
+      h1 {
+        font-family: var(--font-title);
+        font-size: clamp(2.75rem, 8vw, 4.5rem);
+        font-weight: 800;
+        line-height: 1;
+        letter-spacing: -0.04em;
+        color: var(--color-text);
+        margin: 0 0 1rem;
+      }
+
+      .subtitle {
+        font-size: 1rem;
+        color: var(--color-muted);
+        margin: 0;
+        max-width: 48ch;
+      }
+
+      .grid-section {
+        margin-bottom: 4.5rem;
+      }
+
+      .section-strip {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-bottom: 1.75rem;
+      }
+
+      .section-label {
+        font-family: var(--font-title);
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.22em;
+        color: var(--color-muted);
+        white-space: nowrap;
+      }
+
+      .section-line {
+        flex: 1;
+        height: 1px;
+        background: var(--color-border);
+      }
+
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+      }
+
+      @media (min-width: 1024px) {
+        .featured-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1rem;
+        padding: 5rem 2rem;
+        border: 1px dashed var(--color-border);
+        border-radius: var(--radius-md);
+        text-align: center;
+        color: var(--color-muted);
+      }
+
+      .empty-icon {
+        opacity: 0.3;
+      }
+
+      .empty-title {
+        font-family: var(--font-title);
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--color-text);
+        margin: 0;
+        letter-spacing: -0.02em;
+      }
+
+      .empty-text {
+        font-size: 0.875rem;
+        color: var(--color-muted);
+        margin: 0;
+        max-width: 36ch;
+      }
+
+      @media (max-width: 768px) {
+        main {
+          padding-top: calc(var(--header-height) + 2rem);
+          padding-inline: 1rem;
+          padding-bottom: 4rem;
+        }
+
+        .page-header {
+          margin-bottom: 3rem;
+        }
+
+        .grid-section {
+          margin-bottom: 3rem;
+        }
+
+        .projects-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .empty-state {
+          padding: 3.5rem 1.5rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        main {
+          padding-top: calc(var(--header-height) + 1.5rem);
+          padding-inline: 0.875rem;
+          padding-bottom: 3rem;
+        }
+
+        .page-header {
+          margin-bottom: 2.5rem;
+        }
+
+        .subtitle {
+          font-size: 0.9rem;
+        }
+
+        .section-strip {
+          margin-bottom: 1.25rem;
+        }
+
+        .empty-state {
+          padding: 2.5rem 1rem;
+          gap: 0.75rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main>
+      <header class="page-header animate-slideIn">
+        <div class="header-eyebrow">
+          <span class="dot"></span>
+          <span class="label">Portfolio</span>
+          {
+            !isEmpty && (
+              <span class="count">
+                {projects.length} projet{projects.length > 1 ? "s" : ""}
+              </span>
+            )
+          }
+        </div>
+        <h1>Projets</h1>
+        <p class="subtitle">
+          Présentation de mes réalisations techniques et expérimentations.
+        </p>
+      </header>
+
+      {
+        isEmpty && (
+          <div class="empty-state">
+            <svg
+              class="empty-icon"
+              width="36"
+              height="36"
+              viewBox="0 0 36 36"
+              fill="none"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect
+                x="1"
+                y="1"
+                width="34"
+                height="34"
+                rx="4"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-dasharray="4 3"
+              />
+              <path
+                d="M12 18h12M18 12v12"
+                stroke="currentColor"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+            </svg>
+            <p class="empty-title">Aucun projet pour le moment</p>
+            <p class="empty-text">
+              Les projets arrivent bientôt. Revenez dans quelques temps.
+            </p>
+          </div>
+        )
+      }
+
+      {
+        featured.length > 0 && (
+          <section class="grid-section">
+            <div class="section-strip">
+              <span class="section-label">Sélection</span>
+              <span class="section-line" />
+            </div>
+            <div class="projects-grid featured-grid">
+              {featured.map((p, i) => (
+                <ProjectCard project={p} index={i} />
+              ))}
+            </div>
+          </section>
+        )
+      }
+
+      {
+        others.length > 0 && (
+          <section class="grid-section">
+            <div class="section-strip">
+              <span class="section-label">Archive</span>
+              <span class="section-line" />
+            </div>
+            <div class="projects-grid">
+              {others.map((p, i) => (
+                <ProjectCard project={p} index={i + featured.length} />
+              ))}
+            </div>
+          </section>
+        )
+      }
+    </main>
+    <Footer />
+  </body>
+</html>
