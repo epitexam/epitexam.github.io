@@ -1,0 +1,312 @@
+---
+export interface Props {
+    phase: string;
+    title: string;
+    status?: "done" | "planned" | "dream";
+}
+
+const { phase, title, status = "done" } = Astro.props;
+
+const statusMeta: Record<string, { label: string; icon: string }> = {
+    done: {
+        label: "Réalisé",
+        icon: `<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+    },
+    planned: {
+        label: "Planifié",
+        icon: `<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/></svg>`,
+    },
+    dream: {
+        label: "Vision",
+        icon: `<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`,
+    },
+};
+
+const { label, icon } = statusMeta[status] ?? statusMeta.done;
+---
+
+<div class={`timeline-step timeline-step--${status}`}>
+    <!-- Marker colonne -->
+    <div class="step-marker" aria-hidden="true">
+        <div class="step-dot-wrap">
+            {status === "done" && <span class="step-dot-ring" />}
+            <span class="step-dot"></span>
+        </div>
+        <span class="step-line"></span>
+    </div>
+
+    <!-- Content colonne -->
+    <div class="step-content">
+        <header class="step-header">
+            <span class="step-phase">{phase}</span>
+            <span class="step-badge">
+                <span class="badge-icon" set:html={icon} />
+                <span class="badge-label">{label}</span>
+            </span>
+        </header>
+
+        <h3 class="step-title">{title}</h3>
+
+        <div class="step-card">
+            <div class="step-card-glow" aria-hidden="true"></div>
+            <div class="step-body">
+                <slot />
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* ─── Layout ─── */
+    .timeline-step {
+        display: grid;
+        grid-template-columns: 2rem 1fr;
+        gap: 0 1.1rem;
+        margin-bottom: 0;
+    }
+
+    /* ─── Marker ─── */
+    .step-marker {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 0.15rem;
+    }
+
+    .step-dot-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+    }
+
+    .step-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(var(--accent), 0.25);
+        background: var(--color-bg);
+        position: relative;
+        z-index: 1;
+        flex-shrink: 0;
+    }
+
+    /* Halo animé pour "done" uniquement */
+    .step-dot-ring {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: rgba(var(--accent), 0.15);
+        animation: dot-pulse 2.8s ease-in-out infinite;
+    }
+
+    @keyframes dot-pulse {
+        0%,
+        100% {
+            transform: scale(1);
+            opacity: 0.6;
+        }
+        50% {
+            transform: scale(1.6);
+            opacity: 0;
+        }
+    }
+
+    .timeline-step--done .step-dot {
+        background: var(--color-accent);
+        border-color: var(--color-accent);
+        box-shadow:
+            0 0 0 3px rgba(var(--accent), 0.15),
+            0 0 10px rgba(var(--accent), 0.3);
+    }
+
+    .timeline-step--planned .step-dot {
+        border-color: rgba(var(--accent), 0.4);
+        background: rgba(var(--accent), 0.06);
+    }
+
+    .timeline-step--dream .step-dot {
+        border-color: rgba(var(--text), 0.15);
+        opacity: 0.4;
+    }
+
+    .step-line {
+        flex: 1;
+        width: 1px;
+        margin-top: 4px;
+        min-height: 2rem;
+        background: linear-gradient(
+            to bottom,
+            rgba(var(--accent), 0.2),
+            rgba(var(--accent), 0.04)
+        );
+    }
+
+    .timeline-step--planned .step-line,
+    .timeline-step--dream .step-line {
+        background: linear-gradient(
+            to bottom,
+            rgba(var(--text), 0.1),
+            transparent
+        );
+    }
+
+    .timeline-step:last-child .step-line {
+        display: none;
+    }
+
+    /* ─── Content ─── */
+    .step-content {
+        padding-bottom: 2rem;
+    }
+
+    .step-header {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 0.35rem;
+        padding-top: 0.1rem;
+    }
+
+    .step-phase {
+        font-family: var(--font-title);
+        font-size: 0.6rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        color: var(--color-accent);
+    }
+
+    .timeline-step--planned .step-phase {
+        color: rgba(var(--accent), 0.5);
+    }
+    .timeline-step--dream .step-phase {
+        color: rgba(var(--text), 0.3);
+    }
+
+    /* Badge statut */
+    .step-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.12rem 0.55rem;
+        border-radius: 999px;
+        border: 1px solid rgba(var(--accent), 0.15);
+        background: rgba(var(--accent), 0.04);
+        font-family: var(--font-title);
+        font-size: 0.57rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: rgba(var(--text), 0.4);
+    }
+
+    .timeline-step--done .step-badge {
+        border-color: rgba(var(--accent), 0.28);
+        background: rgba(var(--accent), 0.08);
+        color: var(--color-accent);
+    }
+
+    .badge-icon {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        opacity: 0.9;
+    }
+
+    /* Titre */
+    .step-title {
+        font-family: var(--font-title);
+        font-size: 1.05rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--color-text);
+        margin: 0 0 0.75rem;
+        animation: none;
+        line-height: 1.25;
+    }
+
+    .timeline-step--planned .step-title,
+    .timeline-step--dream .step-title {
+        opacity: 0.45;
+    }
+
+    /* Card du body */
+    .step-card {
+        position: relative;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        padding: 1rem 1.25rem;
+        overflow: hidden;
+        isolation: isolate;
+        background: rgba(var(--bg), 0.5);
+    }
+
+    .timeline-step--done .step-card {
+        border-color: rgba(var(--accent), 0.14);
+        background: rgba(var(--accent), 0.03);
+    }
+
+    .timeline-step--planned .step-card,
+    .timeline-step--dream .step-card {
+        opacity: 0.55;
+    }
+
+    .step-card-glow {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        border-radius: inherit;
+        background: radial-gradient(
+            ellipse at 0% 0%,
+            rgba(var(--accent), 0.07) 0%,
+            transparent 65%
+        );
+        opacity: 0;
+        transition: opacity var(--duration-base) ease;
+    }
+
+    .timeline-step--done .step-card:hover .step-card-glow {
+        opacity: 1;
+    }
+
+    .step-body {
+        position: relative;
+        z-index: 1;
+        font-size: 0.9rem;
+        line-height: 1.74;
+        color: rgba(var(--text), 0.75);
+    }
+
+    .step-body :global(p) {
+        margin: 0 0 0.6rem;
+    }
+    .step-body :global(p:last-child) {
+        margin-bottom: 0;
+    }
+    .step-body :global(strong) {
+        color: var(--color-text);
+        font-weight: 600;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 640px) {
+        .timeline-step {
+            grid-template-columns: 1.75rem 1fr;
+            gap: 0 0.85rem;
+        }
+        .step-card {
+            padding: 0.9rem 1rem;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .step-dot-ring {
+            animation: none;
+            opacity: 0.4;
+        }
+    }
+</style>
