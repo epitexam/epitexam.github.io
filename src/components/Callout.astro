@@ -1,0 +1,250 @@
+---
+export interface Props {
+    type?: "note" | "warning" | "insight" | "quote";
+    label?: string;
+}
+
+const { type = "note", label } = Astro.props;
+
+const config: Record<string, { icon: string; defaultLabel: string }> = {
+    note: {
+        icon: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+        defaultLabel: "Note",
+    },
+    warning: {
+        icon: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+        defaultLabel: "Attention",
+    },
+    insight: {
+        icon: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`,
+        defaultLabel: "Ce que j'ai appris",
+    },
+    quote: { icon: "", defaultLabel: "" },
+};
+
+const { icon, defaultLabel } = config[type] ?? config.note;
+const resolvedLabel = label ?? defaultLabel;
+---
+
+{
+    type === "quote" ? (
+        <blockquote class="callout-quote">
+            <span class="quote-mark" aria-hidden="true">
+                "
+            </span>
+            <div class="quote-body">
+                <slot />
+            </div>
+        </blockquote>
+    ) : (
+        <aside class={`callout callout--${type}`} role="note">
+            <div class="callout-glow" aria-hidden="true" />
+            <div class="callout-stripe" aria-hidden="true" />
+            <div class="callout-inner">
+                <header class="callout-header">
+                    <span
+                        class="callout-icon"
+                        aria-hidden="true"
+                        set:html={icon}
+                    />
+                    {resolvedLabel && (
+                        <span class="callout-label">{resolvedLabel}</span>
+                    )}
+                </header>
+                <div class="callout-body">
+                    <slot />
+                </div>
+            </div>
+        </aside>
+    )
+}
+
+<style>
+    /* ─── Callout card ─── */
+    .callout {
+        position: relative;
+        margin: 2rem 0;
+        border-radius: var(--radius-md);
+        border: 1px solid transparent;
+        overflow: hidden;
+        isolation: isolate;
+    }
+
+    .callout-inner {
+        position: relative;
+        z-index: 1;
+        padding: 1.1rem 1.4rem;
+    }
+
+    /* Glow de fond */
+    .callout-glow {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        border-radius: inherit;
+    }
+
+    /* Stripe verticale gauche */
+    .callout-stripe {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        z-index: 2;
+        border-radius: 3px 0 0 3px;
+    }
+
+    /* ── note ── */
+    .callout--note {
+        background: rgba(var(--accent), 0.04);
+        border-color: rgba(var(--accent), 0.14);
+    }
+    .callout--note .callout-glow {
+        background: radial-gradient(
+            ellipse at 0% 50%,
+            rgba(var(--accent), 0.08) 0%,
+            transparent 65%
+        );
+    }
+    .callout--note .callout-stripe {
+        background: rgba(var(--accent), 0.55);
+    }
+    .callout--note .callout-icon,
+    .callout--note .callout-label {
+        color: var(--color-accent);
+    }
+
+    /* ── warning ── */
+    .callout--warning {
+        background: rgba(232, 160, 74, 0.04);
+        border-color: rgba(232, 160, 74, 0.18);
+    }
+    .callout--warning .callout-glow {
+        background: radial-gradient(
+            ellipse at 0% 50%,
+            rgba(232, 160, 74, 0.1) 0%,
+            transparent 65%
+        );
+    }
+    .callout--warning .callout-stripe {
+        background: #e8a04a;
+    }
+    .callout--warning .callout-icon,
+    .callout--warning .callout-label {
+        color: #e8a04a;
+    }
+
+    /* ── insight ── */
+    .callout--insight {
+        background: rgba(var(--accent), 0.06);
+        border-color: rgba(var(--accent), 0.2);
+    }
+    .callout--insight .callout-glow {
+        background: radial-gradient(
+            ellipse at 0% 50%,
+            rgba(var(--accent), 0.13) 0%,
+            transparent 65%
+        );
+    }
+    .callout--insight .callout-stripe {
+        background: var(--color-accent);
+    }
+    .callout--insight .callout-icon,
+    .callout--insight .callout-label {
+        color: var(--color-accent);
+    }
+
+    /* ─── Header ─── */
+    .callout-header {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .callout-icon {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        opacity: 0.9;
+    }
+
+    .callout-label {
+        font-family: var(--font-title);
+        font-size: 0.62rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.13em;
+    }
+
+    /* ─── Body ─── */
+    .callout-body {
+        font-size: 0.92rem;
+        line-height: 1.74;
+        color: rgba(var(--text), 0.84);
+    }
+
+    .callout-body :global(p) {
+        margin: 0;
+    }
+    .callout-body :global(p + p) {
+        margin-top: 0.6rem;
+    }
+    .callout-body :global(strong) {
+        color: var(--color-text);
+        font-weight: 600;
+    }
+
+    /* ─── Quote ─── */
+    .callout-quote {
+        position: relative;
+        margin: 2.5rem 0;
+        padding: 0.25rem 0 0.25rem 1.75rem;
+        border: none;
+        border-left: 2px solid rgba(var(--accent), 0.3);
+    }
+
+    .quote-mark {
+        position: absolute;
+        top: -0.6rem;
+        left: 1rem;
+        font-family: var(--font-title);
+        font-size: 3rem;
+        line-height: 1;
+        color: rgba(var(--accent), 0.18);
+        font-style: normal;
+        pointer-events: none;
+        user-select: none;
+    }
+
+    .quote-body {
+        position: relative;
+        z-index: 1;
+        font-size: 1rem;
+        font-style: italic;
+        line-height: 1.7;
+        color: rgba(var(--text), 0.65);
+    }
+
+    .quote-body :global(p) {
+        margin: 0;
+    }
+    .quote-body :global(p + p) {
+        margin-top: 0.6rem;
+    }
+
+    @media (max-width: 640px) {
+        .callout-inner {
+            padding: 1rem 1.2rem;
+        }
+        .callout-quote {
+            padding-left: 1.4rem;
+        }
+        .quote-mark {
+            font-size: 2.5rem;
+            left: 0.75rem;
+        }
+    }
+</style>
