@@ -1,0 +1,171 @@
+---
+title: "Lellis : Backend Healthcare Sécurisé"
+description: "Ce que ça fait vraiment de concevoir un backend médical de zéro : les bonnes décisions, les mauvaises, et tout ce qu'on apprend entre les deux."
+categoryTag: "Back-end"
+pubDate: 2025-12-10
+updatedDate: 2026-03-27
+heroImage: '../../assets/sejio.webp'
+heroImageDescription: "Architecture modulaire d'une plateforme healthcare sécurisée"
+technologies: ["typescript", "bun", "hono", "postgresql", "prisma", "docker", "clean-architecture", "domain-driven-design", "modular-monolith", "rbac", "abac"]
+sourceUrl: "https://github.com/epitexam/lellis-backend-api"
+featured: true
+---
+
+import Callout from '../../components/Callout.astro';
+import TimelineStep from '../../components/TimelineStep.astro';
+
+Lellis a commencé comme une mission. J'intervenais dans un cabinet d'infirmières libérales pour construire des outils internes, des choses simples en apparence, mais qui révèlent vite la complexité du terrain : des professionnels qui jonglent entre plusieurs systèmes qui ne se parlent pas, des données éparpillées, un historique patient impossible à retrouver en moins de deux minutes.
+
+Quand la mission s'est terminée, je ne pouvais pas m'empêcher de regarder en arrière avec un sentiment d'insatisfaction. Le code fonctionnait. Mais il n'était pas ce qu'il aurait dû être : ni propre, ni vraiment solide à mon goût.
+
+J'ai donc décidé de reprendre le projet de zéro. Pas pour le mettre en production, pour tenter de **le faire bien**. Avec une architecture hexagonale et les principes de Clean Architecture poussés aussi loin que possible. Plus décentralisé, plus scalable, et surtout : un code dont je n'aurais pas honte en le relisant six mois plus tard.
+
+---
+
+## Ce que le système fait
+
+La plateforme s'organise autour de deux niveaux qui coexistent sans jamais se mélanger.
+
+Au niveau global, un utilisateur peut créer un compte, s'authentifier, gérer son profil et rejoindre ou créer un **workspace** : un environnement médical collaboratif, comme un cabinet ou une équipe de soins.
+
+Au niveau workspace, l'utilisateur devient **WorkspaceMember** et accède aux fonctions médicales : dossiers patients, suivi des signes vitaux, visites et tournées, prescriptions et séries de soins, documents médicaux, transmissions entre membres de l'équipe, facturation. Le même utilisateur peut appartenir à plusieurs workspaces avec des rôles complètement différents dans chacun.
+
+Cette dernière phrase semble anodine. Elle ne l'est pas. Elle impose toute une réflexion sur la sécurité, parce qu'un système où un utilisateur peut être "médecin référent" dans un workspace et "infirmier remplaçant" dans un autre, c'est un système où les droits d'accès ne peuvent jamais être globaux. Ils sont toujours **contextuels**.
+
+---
+
+## Modéliser le domaine
+
+Avant d'écrire la moindre ligne de code, j'ai passé du temps à comprendre ce que je modélisais vraiment. Un domaine médical, c'est dense : patients, dossiers, visites, rounds, prescriptions, actes médicaux, documents, transmissions, couvertures d'assurance, facturation... On pourrait tout mettre dans un seul modèle. Ce serait une erreur.
+
+La question que je me suis posée : **où se trouvent les vraies frontières ?** Qu'est-ce qui peut changer sans affecter le reste ? Mon premier découpage était trop granulaire : sept périmètres métier. Après itération, j'ai convergé vers cinq.
+
+* **Identity** : Gestion globale des utilisateurs et des sessions, sans aucune connaissance du domaine médical.
+* **Security Core** : Couche transversale pilotant les rôles, les permissions et les règles d'accès.
+* **Workspace** : Administration des environnements collaboratifs et des logiques d'appartenance.
+* **Medical Core** : Le "sanctuaire" où se concentre l'intégralité de la logique métier.
+* **System & Billing** : Garant de la traçabilité (audit) et de la viabilité (abonnements).
+
+<br/>
+<Callout type="note">
+En modélisant, j'ai découvert que `Visit` était en réalité deux concepts distincts : une **ScheduledVisit** (acte administratif de planification) et un **MedicalRound** (acte médical réel). Les séparer dans le code m'a probablement évité des bugs futurs difficiles à déboguer.
+</Callout>
+---
+
+## La décision architecturale centrale
+
+Quand on parle de backend healthcare moderne, la réaction instinctive est "microservices". Scalabilité, isolation, indépendance des déploiements. Sur le papier, parfait.
+
+En pratique, pour un projet solo en phase d'exploration ? C'est catastrophique. Kubernetes dès le jour 1, debugging distribué à travers plusieurs services, cycles d'itération qui s'allongent au moment où on a le plus besoin de rapidité. Dans un domaine médical, où le modèle métier évolue constamment au fil de la compréhension du domaine, la flexibilité de l'itération vaut plus que la perfection de l'architecture dès le départ.
+
+Le choix s'est porté sur le **monolithe modulaire**, une architecture qui tient à la fois du pragmatisme et d'une conviction : mieux vaut maîtriser la complexité d'un seul déploiement avant de la distribuer sur plusieurs services.
+
+Ce qui rend l'isolation possible, c'est l'architecture hexagonale. Chaque module expose ses fonctionnalités via des **ports**, des interfaces abstraites et communique avec l'extérieur uniquement via des **adaptateurs**. Un module ne connaît jamais les détails internes d'un autre. Il ne voit que ce que l'autre choisit d'exposer, à travers un contrat explicite. Pas d'import direct, pas de couplage caché.
+
+<br/>
+
+<TimelineStep phase="Phase 1" title="Monolithe Modulaire" status="done">
+Un seul déploiement, des modules strictement isolés. Chaque module a sa propre base de données PostgreSQL. La communication se fait via des domain events in-process. Aucune foreign key cross-modules, jamais.
+</TimelineStep>
+
+<TimelineStep phase="Phase 2" title="Extraction Sélective en Microservices" status="planned">
+Quand l'organisation ou l'usage le justifie, certains modules peuvent être extraits. Le transport des events passe d'in-process à asynchrone via RabbitMQ ou Kafka. Le code domaine, lui, ne change pas.
+</TimelineStep>
+
+<TimelineStep phase="Phase 3" title="Architecture Distribuée Complète" status="dream">
+Plusieurs équipes, plusieurs périmètres de déploiement indépendants. Pas un objectif immédiat.
+</TimelineStep>
+
+<br/>
+---
+
+## La stack technique
+
+Les choix technologiques ne sont pas neutres. Dans un projet d'exploration, ils orientent la façon de penser. Parfois autant que l'architecture elle-même.
+
+**Bun** à la place de Node. Au-delà des performances, ce qui m'a convaincu c'est la richesse de sa bibliothèque standard : hachage de mots de passe avec Argon2 natif, connecteurs intégrés pour PostgreSQL et SQLite, gestion des variables d'environnement, watchers de fichiers... Tout ce qu'on installe habituellement via des dépendances tierces est disponible out-of-the-box. La compatibilité avec l'écosystème npm est totale. Le compromis réel : Bun reste moins mature que Node sur certains edge cases, et quelques bibliothèques se comportent différemment. Rien de bloquant ici, mais à peser sérieusement pour un contexte de production critique.
+
+**HonoJS** pour sa complémentarité naturelle avec Bun et surtout pour sa légèreté. Le but de ce projet était d'expérimenter sur l'architecture. Je ne voulais pas d'un framework qui impose ses propres conventions et crée des barrières à la réflexion. Hono laisse la liberté de construire la structure soi-même, ce qui était précisément l'objectif. Le compromis, assumé : pour un projet destiné à la production, je choisirais **NestJS** : injection de dépendances, structure modulaire, conventions solides. Tout ce que j'ai construit manuellement ici, NestJS le fournit out-of-the-box.
+
+**PostgreSQL + Prisma** pour la persistance. Les garanties ACID sont non-négociables dans un contexte médical. Prisma impose une approche schema-first. On pense la structure avant de coder l'entité. Ses migrations versionnées apportent une traçabilité utile à chaque instant. Le compromis : le client généré peut devenir une contrainte sur des requêtes très complexes, où du SQL brut serait plus expressif.
+
+**Docker** pour tout envelopper. Un conteneur par service, des volumes persistants nommés, un fichier `docker-compose` comme point d'entrée unique. L'objectif : qu'un technicien puisse lancer l'ensemble du backend sans rien installer d'autre.
+
+---
+
+## Le défi de la sécurité
+
+Un système médical a des règles d'accès précises. Une infirmière voit les patients de son unité et ceux qui lui sont explicitement assignés. Un médecin peut modifier des prescriptions mais pas les paramètres système. Chaque accès doit être tracé.
+
+La tentation : implémenter directement une ABAC (Attribute-Based Access Control) complète, politiques contextuelles, conditions temporelles, permissions déléguées. C'est ce qu'on ferait dans un système mature en production. Ici, ça aurait été une erreur. Trop de variables à gérer d'un coup, et une faille dans un système d'autorisation trop complexe est une faille invisible.
+
+Le choix : découper l'implémentation en deux phases.
+
+La première, **RBAC pure et déterministe** : des rôles explicites, des permissions sous forme de value objects (`PATIENT_READ`, `VISIT_WRITE` … ), une logique d'autorisation sans effet de bord. Chaque décision est loggée automatiquement.
+
+```typescript
+const canAccess = securityCore.authorize({
+    actor: workspaceMember,
+    resource: patient,
+    action: 'PATIENT_READ'
+})
+// → boolean + audit entry automatique
+```
+
+La deuxième phase planifiée introduit l'**ABAC contextuelle** : des `Policy → Rule → Condition` évaluées par un `AuthorizationService` central. Permissions temporaires, permissions déléguées, accès d'urgence avec durée limitée.
+
+<Callout type="quote">
+L'ABAC vient en complément du RBAC. Le contrat `can(permission)` reste intact, on ajoute une surcharge optionnelle `can(permission, context?)`. Zéro breaking change.
+</Callout>
+
+---
+
+## Le déploiement
+
+L'objectif était simple à formuler, moins simple à tenir : un technicien doit pouvoir lancer l'intégralité du backend avec un seul `docker-compose up`. Pas de configuration complexe, pas de dépendances cachées.
+
+Concrètement : un VPS ou un serveur on-premise, un reverse proxy pour la terminaison TLS et les security headers, le backend dans un conteneur, et une base PostgreSQL par module, chacune avec son propre volume persistant. MinIO pour le stockage des fichiers médicaux, avec une API compatible S3 pour faciliter une éventuelle migration cloud.
+
+L'auto-hébergement n'est pas un détail ici. Dans le domaine médical, beaucoup d'établissements ne peuvent pas externaliser leurs données. C'est une contrainte réelle, pas un choix idéologique.
+
+Côté clients : desktop Tauri avec SQLite chiffré local pour l'offline-first, web SPA/SSR, et mobile. Dans la réalité du terrain, les infirmières travaillent très souvent depuis leur téléphone : rapidité de saisie entre deux patients, consultation d'un dossier en déplacement. Le mobile n'est pas un nice-to-have, c'est le cas d'usage principal.
+
+---
+
+## Ce que j'aurais fait différemment
+
+Je n'ai rédigé aucun test. C'est le regret le plus concret du projet, pas une question de méthodologie, juste une réalité : le code n'est pas couvert. Dans un domaine où les règles d'accès et la cohérence des données sont critiques, c'est un vrai problème. Si je recommençais, les tests arriveraient avant les features, pas après.
+
+Certaines classes n'exploitent pas vraiment les principes qu'elles sont censées incarner. Les aggregates en particulier : sur le papier ils sont là, dans le code ils ne jouent pas toujours leur rôle correctement. C'est le genre de détail qui ne saute pas aux yeux au premier regard, mais qui fragilise la cohérence du modèle de domaine à mesure que le projet grossit.
+
+<Callout type="insight">
+Les lacunes d'implémentation dans un projet d'exploration ne sont pas des échecs, elles sont exactement ce qu'on cherchait à trouver. C'est plus utile de les identifier sur un projet personnel que de les découvrir en production.
+</Callout>
+
+---
+
+## Ce que le domaine exige vraiment
+
+Construire un backend médical, c'est accepter que le code n'est que la partie émergée de l'iceberg. Ces trois contraintes ne sont pas des améliorations futures optionnelles, ce sont les prérequis d'un déploiement dans un contexte réel, et Lellis n'y répond pas encore.
+
+**L'interopérabilité.** Dans le soin, une donnée isolée est une donnée morte. Un logiciel sérieux doit pouvoir échanger avec l'hôpital voisin ou le dossier pharmaceutique national, c'est le rôle du standard **HL7 FHIR**. Plutôt que des modèles JSON maison, chaque entité (`Patient`, `Observation`, `Practitioner`) devrait être mappée sur des ressources standardisées. Le problème architectural : mon isolation stricte par modules rend la création d'une telle vue agrégée bien plus complexe. Il faudrait concevoir une façade capable de réconcilier des données distribuées sans briser l'étanchéité des modules. Ce n'est pas un refactoring mineur.
+
+**La certification HDS.** En France, stocker des données de santé ne s'improvise pas. Le référentiel HDS impose un chiffrement total *at rest* et *in transit*, une gestion des clés de chiffrement ultra-sécurisée, et une traçabilité souveraine à chaque niveau de la chaîne. Ma stack actuelle est optimisée pour la vitesse de développement, dans un audit de certification, la jeunesse de Bun pourrait être perçue comme un risque face à des écosystèmes comme Java/Spring, dont les patchs de sécurité sont scrutés depuis des décennies.
+
+**La non-répudiation.** En cas d'erreur médicale, le système doit pouvoir prouver qui a vu quoi, et quand, sans l'ombre d'un doute. C'est là que mon audit log dans PostgreSQL atteint ses limites : si un administrateur peut modifier la base, la preuve est caduque. Pour être rigoureux, l'audit ne devrait pas vivre dans la même base que les données métier. Il faudrait un registre *append-only* où l'on ne peut qu'écrire, ou des logs signés numériquement déportés sur un service tiers immuable. C'est la différence entre un log de debug et une preuve légale.
+
+<Callout type="insight">
+Ces trois contraintes auraient dû influencer des décisions d'architecture bien en amont, le type de base pour l'audit, la structure des entités, le choix de l'hébergeur. C'est ce qu'on apprend en se frottant à un vrai domaine réglementé.
+</Callout>
+
+---
+
+## Pour finir
+
+Penser "monolithe modulaire avec chemin vers microservices" est une discipline. Elle oblige à se poser des questions inconfortables à chaque nouvelle feature : est-ce que ce code appartient à ce module ? Est-ce que cette dépendance est légitime ?
+
+Lellis reste un work in progress. Mais c'est un système que j'ai **pensé avant de coder** avec une architecture documentée, des frontières explicites, et une trajectoire claire.
+
+---
+
+**Le code est sur [GitHub](https://github.com/epitexam/lellis-backend-api).**
