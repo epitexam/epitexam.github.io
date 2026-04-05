@@ -22,205 +22,205 @@ export const SECTIONS: {
   title: string;
   tools: Tool[];
 }[] = [
-    {
-      title: "Langages",
-      tools: [
-        {
-          icon: "JS",
-          name: "JavaScript / TypeScript",
-          level: "mastered",
-          description:
-            "Mon terrain de jeu principal pour le web, aussi bien en front-end qu'en full-stack. TypeScript apporte la rigueur nécessaire pour garder un code solide sans perdre la souplesse du JavaScript.",
-        },
-        {
-          icon: "C",
-          name: "C",
-          level: "practiced",
-          description:
-            "Utilisé pour des projets embarqués, notamment un driver ESP32H2 connecté à un capteur de CO₂. J'aime le côté brut du C, quand il faut vraiment parler directement à la machine.",
-        },
-        {
-          icon: "C++",
-          name: "C++",
-          level: "practiced",
-          description:
-            "Employé sur quelques applications expérimentales, notamment avec wxWidgets. Puissant et exigeant, parfait pour comprendre la mécanique derrière les abstractions modernes.",
-        },
-        {
-          icon: "Asm",
-          name: "Assembleur (6502 / x64)",
-          level: "practiced",
-          description:
-            "Un trip purement technique : écrire de l'assembleur permet de voir comment tout fonctionne, bit par bit. C'est un peu comme démonter un moteur juste pour comprendre comment il tourne. (Merci aux cours de Gustavo Pezzi)",
-        },
-        {
-          icon: "Go",
-          name: "Go",
-          level: "exploring",
-          description:
-            "Actuellement utilisé sur quelques side-projects orientés microservices. J'expérimente encore le langage et j'apprends progressivement son écosystème.",
-        },
-        {
-          icon: "E",
-          name: "Erlang",
-          level: "exploring",
-          description:
-            "J'ai commencé à apprendre Erlang en découvrant que Discord utilise la BEAM (via Elixir) pour sa messagerie temps réel. L'approche orientée concurrence est très différente des stacks web classiques.",
-        },
-        {
-          icon: "L",
-          name: "Lua",
-          level: "practiced",
-          description:
-            "Un langage simple, léger et très flexible. Je l'utilise principalement pour expérimenter rapidement des idées ou prototyper des mécaniques de jeu.",
-        },
-      ],
-    },
-    {
-      title: "Frameworks & Bibliothèques",
-      tools: [
-        {
-          icon: "R",
-          name: "React",
-          level: "mastered",
-          description:
-            "Le framework que j'utilise le plus sérieusement côté front-end. J'apprécie sa logique déclarative et la manière dont il structure les projets.",
-        },
-        {
-          icon: "A",
-          name: "Astro",
-          level: "practiced",
-          description:
-            "Celui qui fait tourner ce site. Rapide, simple et flexible : parfait pour un portfolio ou un site statique moderne.",
-        },
-        {
-          icon: "Nx",
-          name: "Next.js",
-          level: "mastered",
-          description:
-            "Utilisé pour le rendu côté serveur et les déploiements modernes. C'est un outil très complet pour lier le front-end et le back-end avec React.",
-        },
-        {
-          icon: "Ns",
-          name: "NestJS",
-          level: "mastered",
-          description:
-            "Mon framework de référence pour bâtir des API backend structurées et évolutives. J'apprécie son architecture qui facilite la maintenance sur le long terme.",
-        },
-        {
-          icon: "S",
-          name: "Svelte",
-          level: "mastered",
-          description:
-            "Testé sur quelques projets : très fluide, sans virtual DOM, et particulièrement agréable à utiliser.",
-        },
-        {
-          icon: "So",
-          name: "Solid.js",
-          level: "exploring",
-          description:
-            "Un framework que j'ai exploré par curiosité technique. Sa gestion granulaire de la réactivité est vraiment impressionnante.",
-        },
-        {
-          icon: "T",
-          name: "Tailwind CSS",
-          level: "mastered",
-          description:
-            "Mon outil principal pour le styling : rapide, flexible et très efficace pour construire des interfaces modernes, même si un peu de CSS pur reste parfois nécessaire.",
-        },
-        {
-          icon: "L2D",
-          name: "LÖVE2D",
-          level: "exploring",
-          description:
-            "Framework de jeu basé sur Lua que j'ai utilisé pour développer un petit prototype. Très agréable pour expérimenter rapidement des mécaniques de gameplay.",
-        },
-        {
-          icon: "F",
-          name: "Fastify",
-          level: "mastered",
-          description:
-            "Une alternative à Express que je privilégie pour sa rapidité et son système de plugins. C'est mon outil de référence pour construire des API performantes avec une excellente gestion du typage.",
-        }
-      ],
-    },
-    {
-      title: "Systèmes & Environnements",
-      tools: [
-        {
-          icon: "L",
-          name: "Linux",
-          level: "practiced",
-          description:
-            "J'utilise régulièrement Fedora et Arch Linux. J'apprécie leur philosophie et le contrôle qu'elles offrent sur l'environnement système. WSL reste une solution pratique dans certains contextes.",
-        },
-        {
-          icon: "D",
-          name: "Docker",
-          level: "practiced",
-          description:
-            "Utilisé pour isoler et gérer les environnements de développement. Très utile pour garder des setups reproductibles lorsque plusieurs technologies sont impliquées.",
-        },
-        {
-          icon: "CICD",
-          name: "CI/CD",
-          level: "practiced",
-          description:
-            "J'intègre l'automatisation dans mes projets via des workflows GitHub Actions : tests, build et déploiement pour garder des projets fiables et reproductibles.",
-        },
-      ],
-    },
-    {
-      title: "Collaboration & Versioning",
-      tools: [
-        {
-          icon: "G",
-          name: "Git",
-          level: "practiced",
-          description:
-            "Gestion de version au cœur de mon workflow. J'essaie de garder des commits clairs, des branches propres et un historique lisible.",
-        },
-        {
-          icon: "GH",
-          name: "GitHub / GitLab / Gitea",
-          level: "practiced",
-          description:
-            "Plateformes que j'utilise pour héberger mes projets, gérer les pull requests et connecter mes pipelines CI/CD.",
-        },
-      ],
-    },
-    {
-      title: "Outils de développement",
-      tools: [
-        {
-          icon: "V",
-          name: "Visual Studio Code",
-          level: "practiced",
-          description:
-            "Mon éditeur principal. Configuration minimaliste, zéro extension : juste l'essentiel pour rester rapide et concentré.",
-        },
-        {
-          icon: "Z",
-          name: "Zed",
-          level: "practiced",
-          description:
-            "Un éditeur de code moderne, extrêmement rapide et pensé pour la collaboration. Léger, réactif et très agréable à utiliser.",
-        },
-      ],
-    },
-    {
-      title: "Autres",
-      tools: [
-        {
-          icon: "G",
-          name: "Godot",
-          level: "exploring",
-          description:
-            "Moteur de jeu open-source que j'utilise aussi pour expérimenter des applications mobiles et des prototypes interactifs.",
-        },
-      ]
-    }
-  ];
+  {
+    title: "Langages",
+    tools: [
+      {
+        icon: "JS",
+        name: "JavaScript / TypeScript",
+        level: "mastered",
+        description:
+          "Mon terrain de jeu principal pour le web, aussi bien en front-end qu'en full-stack. TypeScript apporte la rigueur nécessaire pour garder un code solide sans perdre la souplesse du JavaScript.",
+      },
+      {
+        icon: "C",
+        name: "C",
+        level: "practiced",
+        description:
+          "Utilisé pour des projets embarqués, notamment un driver ESP32H2 connecté à un capteur de CO₂. J'aime le côté brut du C, quand il faut vraiment parler directement à la machine.",
+      },
+      {
+        icon: "C++",
+        name: "C++",
+        level: "practiced",
+        description:
+          "Employé sur quelques applications expérimentales, notamment avec wxWidgets. Puissant et exigeant, parfait pour comprendre la mécanique derrière les abstractions modernes.",
+      },
+      {
+        icon: "Asm",
+        name: "Assembleur (6502 / x64)",
+        level: "practiced",
+        description:
+          "Un trip purement technique : écrire de l'assembleur permet de voir comment tout fonctionne, bit par bit. C'est un peu comme démonter un moteur juste pour comprendre comment il tourne. (Merci aux cours de Gustavo Pezzi)",
+      },
+      {
+        icon: "Go",
+        name: "Go",
+        level: "exploring",
+        description:
+          "Actuellement utilisé sur quelques side-projects orientés microservices. J'expérimente encore le langage et j'apprends progressivement son écosystème.",
+      },
+      {
+        icon: "E",
+        name: "Erlang",
+        level: "exploring",
+        description:
+          "J'ai commencé à apprendre Erlang en découvrant que Discord utilise la BEAM (via Elixir) pour sa messagerie temps réel. L'approche orientée concurrence est très différente des stacks web classiques.",
+      },
+      {
+        icon: "L",
+        name: "Lua",
+        level: "practiced",
+        description:
+          "Un langage simple, léger et très flexible. Je l'utilise principalement pour expérimenter rapidement des idées ou prototyper des mécaniques de jeu.",
+      },
+    ],
+  },
+  {
+    title: "Frameworks & Bibliothèques",
+    tools: [
+      {
+        icon: "R",
+        name: "React",
+        level: "practiced",
+        description:
+          "Le framework que j'utilise le plus sérieusement côté front-end. J'apprécie sa logique déclarative et la manière dont il structure les projets.",
+      },
+      {
+        icon: "A",
+        name: "Astro",
+        level: "practiced",
+        description:
+          "Celui qui fait tourner ce site. Rapide, simple et flexible : parfait pour un portfolio ou un site statique moderne.",
+      },
+      {
+        icon: "Nx",
+        name: "Next.js",
+        level: "practiced",
+        description:
+          "Utilisé pour le rendu côté serveur et les déploiements modernes. C'est un outil très complet pour lier le front-end et le back-end avec React.",
+      },
+      {
+        icon: "Ns",
+        name: "NestJS",
+        level: "practiced",
+        description:
+          "Mon framework de référence pour bâtir des API backend structurées et évolutives. J'apprécie son architecture qui facilite la maintenance sur le long terme.",
+      },
+      {
+        icon: "S",
+        name: "Svelte",
+        level: "practiced",
+        description:
+          "Testé sur quelques projets : très fluide, sans virtual DOM, et particulièrement agréable à utiliser.",
+      },
+      {
+        icon: "So",
+        name: "Solid.js",
+        level: "exploring",
+        description:
+          "Un framework que j'ai exploré par curiosité technique. Sa gestion granulaire de la réactivité est vraiment impressionnante.",
+      },
+      {
+        icon: "T",
+        name: "Tailwind CSS",
+        level: "mastered",
+        description:
+          "Mon outil principal pour le styling : rapide, flexible et très efficace pour construire des interfaces modernes, même si un peu de CSS pur reste parfois nécessaire.",
+      },
+      {
+        icon: "L2D",
+        name: "LÖVE2D",
+        level: "exploring",
+        description:
+          "Framework de jeu basé sur Lua que j'ai utilisé pour développer un petit prototype. Très agréable pour expérimenter rapidement des mécaniques de gameplay.",
+      },
+      {
+        icon: "F",
+        name: "Fastify",
+        level: "mastered",
+        description:
+          "Une alternative à Express que je privilégie pour sa rapidité et son système de plugins. C'est mon outil de référence pour construire des API performantes avec une excellente gestion du typage.",
+      },
+    ],
+  },
+  {
+    title: "Systèmes & Environnements",
+    tools: [
+      {
+        icon: "L",
+        name: "Linux",
+        level: "practiced",
+        description:
+          "J'utilise régulièrement Fedora et Arch Linux. J'apprécie leur philosophie et le contrôle qu'elles offrent sur l'environnement système. WSL reste une solution pratique dans certains contextes.",
+      },
+      {
+        icon: "D",
+        name: "Docker",
+        level: "practiced",
+        description:
+          "Utilisé pour isoler et gérer les environnements de développement. Très utile pour garder des setups reproductibles lorsque plusieurs technologies sont impliquées.",
+      },
+      {
+        icon: "CICD",
+        name: "CI/CD",
+        level: "practiced",
+        description:
+          "J'intègre l'automatisation dans mes projets via des workflows GitHub Actions : tests, build et déploiement pour garder des projets fiables et reproductibles.",
+      },
+    ],
+  },
+  {
+    title: "Collaboration & Versioning",
+    tools: [
+      {
+        icon: "G",
+        name: "Git",
+        level: "practiced",
+        description:
+          "Gestion de version au cœur de mon workflow. J'essaie de garder des commits clairs, des branches propres et un historique lisible.",
+      },
+      {
+        icon: "GH",
+        name: "GitHub / GitLab / Gitea",
+        level: "practiced",
+        description:
+          "Plateformes que j'utilise pour héberger mes projets, gérer les pull requests et connecter mes pipelines CI/CD.",
+      },
+    ],
+  },
+  {
+    title: "Outils de développement",
+    tools: [
+      {
+        icon: "V",
+        name: "Visual Studio Code",
+        level: "practiced",
+        description:
+          "Mon éditeur principal. Configuration minimaliste, zéro extension : juste l'essentiel pour rester rapide et concentré.",
+      },
+      {
+        icon: "Z",
+        name: "Zed",
+        level: "practiced",
+        description:
+          "Un éditeur de code moderne, extrêmement rapide et pensé pour la collaboration. Léger, réactif et très agréable à utiliser.",
+      },
+    ],
+  },
+  {
+    title: "Autres",
+    tools: [
+      {
+        icon: "G",
+        name: "Godot",
+        level: "exploring",
+        description:
+          "Moteur de jeu open-source que j'utilise aussi pour expérimenter des applications mobiles et des prototypes interactifs.",
+      },
+    ],
+  },
+];
 
 interface Game {
   rank: number;
@@ -484,28 +484,32 @@ export const EXPERIENCES = [
     period: "SEPT 2024 - DÉC 2025",
     title: "Développeur Fullstack",
     context: "Startup SaaS B2C (Plateforme de services)",
-    description: "Audit et refonte technique d'un SaaS avec dette technique majeure. Optimisation des performances (-40% de chargement) via SQL et cache Redis. Conseil stratégique sur l'architecture et mise en place de CI/CD.",
+    description:
+      "Audit et refonte technique d'un SaaS avec dette technique majeure. Optimisation des performances (-40% de chargement) via SQL et cache Redis. Conseil stratégique sur l'architecture et mise en place de CI/CD.",
     tags: ["Bun", "TypeScript", "PostgreSQL", "Redis", "Docker"],
   },
   {
     period: "JUIN 2023 - AOÛT 2024",
     title: "Développeur Fullstack",
     context: "EdTech (Plateforme e-learning pour développeurs)",
-    description: "Développement avec approche SSR (AdonisJS + Inertia.js). Refonte backend avec architecture robuste (ORM, middlewares custom). Déploiement international (EN, ESP, GER) avec gestion multi-fuseaux horaires.",
+    description:
+      "Développement avec approche SSR (AdonisJS + Inertia.js). Refonte backend avec architecture robuste (ORM, middlewares custom). Déploiement international (EN, ESP, GER) avec gestion multi-fuseaux horaires.",
     tags: ["AdonisJS", "React", "InertiaJS", "Node.js", "PostgreSQL"],
   },
   {
     period: "JANV. 2022 - JUIL. 2022",
     title: "Développeur Fullstack",
     context: "IoT & Audio (Solutions professionnelles)",
-    description: "Développement d'une API REST sécurisée (JWT) et refonte front-end React avec optimisation avancée (hooks, mémoïsation). Création d'une application desktop Electron pour gestion d'imprimantes (système CUPS).",
+    description:
+      "Développement d'une API REST sécurisée (JWT) et refonte front-end React avec optimisation avancée (hooks, mémoïsation). Création d'une application desktop Electron pour gestion d'imprimantes (système CUPS).",
     tags: ["React", "TypeScript", "Express", "Electron", "MongoDB"],
   },
   {
     period: "MAI 2020 - SEPT. 2020",
     title: "Développeur Fullstack",
     context: "Secteur Médical (Gestion de données patients)",
-    description: "Conception d'une API Express pour la gestion sécurisée de données de santé avec authentification JWT. Développement d'une application desktop Electron pour usage hors-ligne sur sites médicaux.",
+    description:
+      "Conception d'une API Express pour la gestion sécurisée de données de santé avec authentification JWT. Développement d'une application desktop Electron pour usage hors-ligne sur sites médicaux.",
     tags: ["Node.js", "Express", "Electron", "PostgreSQL"],
   },
 ];
@@ -544,7 +548,7 @@ export const EXPERTISE = [
 ];
 
 export const TAB_SHORT: Record<string, string> = {
-  "Langages": "Langages",
+  Langages: "Langages",
   "Frameworks & Bibliothèques": "Frameworks",
   "Systèmes & Environnements": "Systèmes",
   "Collaboration & Versioning": "Collab",

@@ -17,6 +17,9 @@ const isEager = index < 2;
 const imageSrc = data.heroImage ?? fallBackImage;
 const imageAlt = data.heroImageDescription || data.title;
 const HeadingTag = headingLevel;
+
+const IMG_W = 800;
+const IMG_H = 450;
 ---
 
 <article class:list={["project-card", { featured: data.featured }]}>
@@ -32,8 +35,12 @@ const HeadingTag = headingLevel;
             class="card-img"
             loading={isEager ? "eager" : "lazy"}
             fetchpriority={isEager ? "high" : "auto"}
-            widths={[400, 800]}
-            sizes="(max-width: 768px) 100vw, 400px"
+            widths={[400, 600, 800]}
+            sizes="(max-width: 480px) 100vw, (max-width: 768px) 600px, 400px"
+            width={IMG_W}
+            height={IMG_H}
+            quality={65}
+            format="webp"
         />
     </a>
 

@@ -25,7 +25,7 @@ const displayProjects = allProjects
         if (!a.data.featured && b.data.featured) return 1;
         return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
     })
-    .slice(0, 3);
+    .slice(0, 2);
 
 const latestPost =
     (await getCollection("blog"))
@@ -134,8 +134,8 @@ const jsonLdProfile = {
                 <Avatar />
 
                 <div class="status-wrapper">
-                        <StatusBadge label="Ouvert aux opportunités" />
-                    </div>
+                    <StatusBadge label="Ouvert aux opportunités" />
+                </div>
 
                 <h1 class="hero-title">
                     Développeur<br />
