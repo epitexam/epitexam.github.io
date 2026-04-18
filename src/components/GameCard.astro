@@ -37,42 +37,26 @@ const isTopOne = game.rank === 1;
 >
     <div class="rank-badge">
         <span class="rank-number">#{game.rank}</span>
-        {
-            isTopOne && (
-                <span class="crown-icon" aria-label="Coup de cœur">
-                    👑
-                </span>
-            )
-        }
+        {isTopOne && <span class="crown-icon" aria-label="Coup de cœur">👑</span>}
     </div>
 
     <header class="game-header">
-        {
-            isTopOne && (
-                <div class="top-one-badge">
-                    <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        aria-hidden="true"
-                    >
-                        <path
-                            d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-                            fill="currentColor"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linejoin="round"
-                        />
-                    </svg>
-                    <span>Coup de cœur 2025</span>
-                </div>
-            )
-        }
+        {isTopOne && (
+            <div class="top-one-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                        d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                        fill="currentColor"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linejoin="round"
+                    />
+                </svg>
+                <span>Coup de cœur 2025</span>
+            </div>
+        )}
         <h2 class="game-title" itemprop="name">{game.title}</h2>
-        <p class="game-description" itemprop="description">
-            {game.description}
-        </p>
+        <p class="game-description" itemprop="description">{game.description}</p>
     </header>
 
     <figure class="game-image">
@@ -90,32 +74,22 @@ const isTopOne = game.rank === 1;
         <div class="meta-grid">
             <div class="meta-item">
                 <span class="meta-label">Développeur</span>
-                <span class="meta-value" itemprop="author"
-                    >{game.developer}</span
-                >
+                <span class="meta-value" itemprop="author">{game.developer}</span>
             </div>
-            {
-                game.publisher && (
-                    <div class="meta-item">
-                        <span class="meta-label">Éditeur</span>
-                        <span class="meta-value">{game.publisher}</span>
-                    </div>
-                )
-            }
+            {game.publisher && (
+                <div class="meta-item">
+                    <span class="meta-label">Éditeur</span>
+                    <span class="meta-value">{game.publisher}</span>
+                </div>
+            )}
             <div class="meta-item">
                 <span class="meta-label">Sortie</span>
-                <time
-                    class="meta-value"
-                    itemprop="datePublished"
-                    datetime={game.releaseDate}
-                >
-                    {
-                        new Date(game.releaseDate).toLocaleDateString("fr-FR", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                        })
-                    }
+                <time class="meta-value" itemprop="datePublished" datetime={game.releaseDate}>
+                    {new Date(game.releaseDate).toLocaleDateString("fr-FR", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                    })}
                 </time>
             </div>
             <div class="meta-item">
@@ -126,52 +100,29 @@ const isTopOne = game.rank === 1;
                 <span class="meta-label">Plateformes</span>
                 <span class="meta-value">{game.platforms.join(", ")}</span>
             </div>
-            {
-                game.engine && (
-                    <div class="meta-item">
-                        <span class="meta-label">Moteur</span>
-                        <span class="meta-value">{game.engine}</span>
-                    </div>
-                )
-            }
-            {
-                game.playtime && (
-                    <div class="meta-item">
-                        <span class="meta-label">Temps de jeu</span>
-                        <span class="meta-value">{game.playtime}</span>
-                    </div>
-                )
-            }
-            {
-                game.storeUrl && (
-                    <div class="meta-item">
-                        <span class="meta-label">Boutique</span>
-                        <a
-                            href={game.storeUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="store-link"
-                        >
-                            Voir sur Steam
-                            <svg
-                                width="13"
-                                height="13"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                aria-hidden="true"
-                            >
-                                <path
-                                    d="M7 17L17 7M17 7H7M17 7V17"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                />
-                            </svg>
-                        </a>
-                    </div>
-                )
-            }
+            {game.engine && (
+                <div class="meta-item">
+                    <span class="meta-label">Moteur</span>
+                    <span class="meta-value">{game.engine}</span>
+                </div>
+            )}
+            {game.playtime && (
+                <div class="meta-item">
+                    <span class="meta-label">Temps de jeu</span>
+                    <span class="meta-value">{game.playtime}</span>
+                </div>
+            )}
+            {game.storeUrl && (
+                <div class="meta-item">
+                    <span class="meta-label">Boutique</span>
+                    <a href={game.storeUrl} target="_blank" rel="noopener noreferrer" class="store-link">
+                        Voir sur Steam
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                            <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </a>
+                </div>
+            )}
         </div>
     </section>
 
@@ -185,55 +136,27 @@ const isTopOne = game.rank === 1;
             <div class="content-block">
                 <h3>Points forts</h3>
                 <ul class="pros-list">
-                    {
-                        game.pros.map((pro) => (
-                            <li>
-                                <svg
-                                    width="16"
-                                    height="16"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        d="M20 6L9 17l-5-5"
-                                        stroke="currentColor"
-                                        stroke-width="2.5"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    />
-                                </svg>
-                                <span>{pro}</span>
-                            </li>
-                        ))
-                    }
+                    {game.pros.map((pro) => (
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <span>{pro}</span>
+                        </li>
+                    ))}
                 </ul>
             </div>
             <div class="content-block">
                 <h3>Points faibles</h3>
                 <ul class="cons-list">
-                    {
-                        game.cons.map((con) => (
-                            <li>
-                                <svg
-                                    width="16"
-                                    height="16"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        d="M18 6L6 18M6 6l12 12"
-                                        stroke="currentColor"
-                                        stroke-width="2.5"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    />
-                                </svg>
-                                <span>{con}</span>
-                            </li>
-                        ))
-                    }
+                    {game.cons.map((con) => (
+                        <li>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <span>{con}</span>
+                        </li>
+                    ))}
                 </ul>
             </div>
         </div>
@@ -249,59 +172,92 @@ const isTopOne = game.rank === 1;
         </div>
     </section>
 
-    {
-        game.tags && game.tags.length > 0 && (
-            <footer class="game-footer">
-                <div class="game-tags">
-                    {game.tags.map((tag) => (
-                        <Tag tag={tag} />
-                    ))}
-                </div>
-            </footer>
-        )
-    }
+    {game.tags && game.tags.length > 0 && (
+        <footer class="game-footer">
+            <div class="game-tags">
+                {game.tags.map((tag) => <Tag tag={tag} />)}
+            </div>
+        </footer>
+    )}
 </article>
 
 <style>
-    ul,
-    ol,
-    li {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-    li::before,
-    li::after {
-        content: none !important;
-        display: none !important;
-    }
-
+    /* ============================================================
+       RÉINITIALISATION LOCALE & VARIABLES
+       Tous les sélecteurs sont préfixés par .game-card pour
+       garantir une spécificité élevée et éviter les interférences
+       avec global.css, même à l'intérieur de .prose.
+    ============================================================ */
     .game-card {
+        /* Variables dépendantes du thème global avec fallback */
+        --card-accent-rgb: var(--accent, 255, 255, 255);
+        --card-text-rgb: var(--text, 232, 232, 234);
+        --card-bg-rgb: var(--bg, 9, 9, 9);
+
+        --card-accent: rgb(var(--card-accent-rgb));
+        --card-text: rgb(var(--card-text-rgb));
+        --card-border: rgba(var(--card-text-rgb), 0.09);
+        --card-muted: rgba(var(--card-text-rgb), 0.72);
+        --card-tint-05: rgba(var(--card-text-rgb), 0.04);
+        --card-tint-10: rgba(var(--card-text-rgb), 0.08);
+        --card-accent-20: rgba(var(--card-accent-rgb), 0.2);
+        --card-accent-40: rgba(var(--card-accent-rgb), 0.4);
+        --card-surface: rgb(17, 17, 19);
+
+        /* Layout local */
         position: relative;
         margin: 0 0 5rem;
         padding: 2.5rem;
-        background: rgba(var(--bg), 0.9);
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-md);
-        box-shadow: var(--shadow-soft);
-        transition:
-            border-color var(--duration-base) ease,
-            box-shadow var(--duration-base) ease;
+        background: var(--card-surface);
+        border: 1px solid var(--card-border);
+        border-radius: var(--radius-md, 0.5rem);
+        box-shadow: var(--shadow-soft, 0 8px 24px rgba(0, 0, 0, 0.5));
+        transition: border-color var(--duration-base, 0.4s) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
+                    box-shadow var(--duration-base, 0.4s) ease;
     }
 
+    /* Neutralisation des animations globales appliquées aux titres */
+    .game-card :is(h1, h2, h3, h4, h5, h6) {
+        animation: none !important;
+    }
+
+    /* Suppression des marges et paddings globaux des listes */
+    .game-card ul,
+    .game-card ol {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    /* Suppression des pseudo-éléments de puce globaux */
+    .game-card li::before,
+    .game-card li::after {
+        content: none !important;
+        display: none;
+    }
+
+    /* Restauration du comportement de liste local */
+    .game-card li {
+        display: flex; /* ou block selon le besoin */
+        padding: 0;
+        margin: 0;
+    }
+
+    /* États de survol et bordures */
     .game-card:hover {
-        border-color: var(--accent-40);
-        box-shadow: var(--shadow-strong);
+        border-color: var(--card-accent-40);
+        box-shadow: var(--shadow-strong, 0 12px 32px rgba(0, 0, 0, 0.65));
     }
 
     .game-card.top-one {
-        border: 2px solid var(--accent-20);
+        border: 2px solid var(--card-accent-20);
     }
 
     .game-card.top-one:hover {
-        border-color: var(--accent-40);
+        border-color: var(--card-accent-40);
     }
 
+    /* Badge de rang */
     .rank-badge {
         position: absolute;
         top: -1rem;
@@ -310,41 +266,39 @@ const isTopOne = game.rank === 1;
         align-items: center;
         gap: 0.5rem;
         padding: 0.45rem 1.1rem;
-        background: var(--color-surface);
-        border: 1px solid var(--color-border);
+        background: var(--card-surface);
+        border: 1px solid var(--card-border);
         border-radius: 999px;
+        z-index: 10;
     }
 
     .rank-number {
-        font-family: var(--font-title);
+        font-family: var(--font-title, sans-serif);
         font-size: 1rem;
         font-weight: 700;
-        color: var(--color-text);
+        color: var(--card-text);
         letter-spacing: -0.02em;
     }
 
-    .crown-icon {
-        font-size: 1rem;
-        line-height: 1;
-    }
-
+    /* Badge coup de cœur */
     .top-one-badge {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
         padding: 0.4rem 1rem;
-        background: rgba(var(--accent), 0.06);
-        border: 1px solid rgba(var(--accent), 0.2);
+        background: var(--card-tint-05);
+        border: 1px solid var(--card-accent-20);
         border-radius: 999px;
-        font-family: var(--font-title);
+        font-family: var(--font-title, sans-serif);
         font-size: 0.7rem;
         font-weight: 600;
         letter-spacing: 0.08em;
-        color: var(--color-accent);
+        color: var(--card-accent);
         margin-bottom: 1rem;
         text-transform: uppercase;
     }
 
+    /* En-tête */
     .game-header {
         margin-bottom: 2rem;
     }
@@ -353,30 +307,25 @@ const isTopOne = game.rank === 1;
         font-size: clamp(1.8rem, 4vw, 2.5rem);
         font-weight: 800;
         margin: 0 0 1rem;
-        color: var(--color-text);
-        letter-spacing: -0.02em;
+        color: var(--card-text);
         line-height: 1.2;
     }
 
     .game-description {
         font-size: 1.05rem;
         line-height: 1.7;
-        color: var(--color-muted);
+        color: var(--card-muted);
         max-width: 800px;
+        margin: 0;
     }
 
+    /* Image */
     .game-image {
         margin: 0 0 2.5rem;
-        border-radius: var(--radius-md);
+        border-radius: var(--radius-md, 0.5rem);
         overflow: hidden;
-        border: 1px solid var(--color-border);
-        box-shadow: var(--shadow-soft);
-        background: var(--color-surface);
-        background-image: radial-gradient(
-            rgba(var(--text), 0.05) 1px,
-            transparent 1px
-        );
-        background-size: 20px 20px;
+        border: 1px solid var(--card-border);
+        background: var(--card-surface);
     }
 
     .game-img {
@@ -384,29 +333,23 @@ const isTopOne = game.rank === 1;
         height: auto;
         object-fit: cover;
         display: block;
-        filter: grayscale(10%);
-        transition:
-            transform var(--duration-base) var(--ease-spring),
-            filter var(--duration-base) ease;
+        transition: transform var(--duration-base, 0.4s) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1));
     }
 
     .game-card:hover .game-img {
-        transform: scale(1.01);
-        filter: grayscale(0%);
+        transform: scale(1.02);
     }
 
-    .game-meta {
-        margin-bottom: 2.5rem;
-    }
-
+    /* Méta-données */
     .meta-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
         gap: 1.25rem;
         padding: 1.5rem;
-        background: var(--accent-05);
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-md);
+        background: var(--card-tint-05);
+        border: 1px solid var(--card-border);
+        border-radius: var(--radius-md, 0.5rem);
+        margin-bottom: 2.5rem;
     }
 
     .meta-item {
@@ -416,18 +359,17 @@ const isTopOne = game.rank === 1;
     }
 
     .meta-label {
-        font-family: var(--font-title);
+        font-family: var(--font-title, sans-serif);
         font-size: 0.65rem;
         font-weight: 700;
-        color: var(--color-muted);
+        color: var(--card-muted);
         text-transform: uppercase;
         letter-spacing: 0.12em;
     }
 
     .meta-value {
         font-size: 0.9rem;
-        color: var(--color-text);
-        line-height: 1.5;
+        color: var(--card-text);
     }
 
     .store-link {
@@ -435,16 +377,12 @@ const isTopOne = game.rank === 1;
         align-items: center;
         gap: 0.35rem;
         font-size: 0.9rem;
-        color: var(--color-accent);
-        font-weight: 500;
+        color: var(--card-accent);
+        font-weight: 600;
         text-decoration: none;
-        transition: color var(--duration-fast) ease;
     }
 
-    .store-link:hover {
-        color: var(--color-text);
-    }
-
+    /* Contenu principal */
     .game-content {
         display: flex;
         flex-direction: column;
@@ -455,15 +393,7 @@ const isTopOne = game.rank === 1;
         font-size: 1.1rem;
         font-weight: 700;
         margin: 0 0 0.9rem;
-        color: var(--color-text);
-        letter-spacing: -0.02em;
-        animation: none;
-    }
-
-    .content-block p {
-        font-size: 0.975rem;
-        line-height: 1.7;
-        color: var(--color-muted);
+        color: var(--card-text);
     }
 
     .content-columns {
@@ -472,6 +402,7 @@ const isTopOne = game.rank === 1;
         gap: 2rem;
     }
 
+    /* Listes points forts / points faibles */
     .pros-list,
     .cons-list {
         display: flex;
@@ -485,55 +416,42 @@ const isTopOne = game.rank === 1;
         align-items: flex-start;
         gap: 0.65rem;
         padding: 0.5rem 0.75rem;
-        background: var(--accent-05);
-        border: 1px solid transparent;
-        border-radius: var(--radius-sm);
-        transition:
-            background var(--duration-fast) ease,
-            border-color var(--duration-fast) ease;
+        background: var(--card-tint-05);
+        border-radius: var(--radius-sm, 0.25rem);
+        transition: background var(--duration-fast, 0.2s) ease;
     }
 
     .pros-list li:hover,
     .cons-list li:hover {
-        background: var(--accent-10);
-        border-color: var(--color-border);
+        background: var(--card-tint-10);
     }
 
     .pros-list svg {
-        color: var(--color-accent);
+        color: var(--card-accent);
         flex-shrink: 0;
         margin-top: 0.2rem;
     }
+
     .cons-list svg {
-        color: var(--color-muted);
+        color: var(--card-muted);
         flex-shrink: 0;
         margin-top: 0.2rem;
-        opacity: 0.5;
+        opacity: 0.6;
     }
 
-    .pros-list span,
-    .cons-list span {
-        font-size: 0.9rem;
-        line-height: 1.6;
-        color: var(--color-muted);
-    }
-
+    /* Bloc mis en avant */
     .highlight-block {
         padding: 1.5rem;
-        background: var(--accent-05);
-        border-left: 2px solid var(--color-accent);
-        border-radius: var(--radius-sm);
+        background: var(--card-tint-05);
+        border-left: 3px solid var(--card-accent);
+        border-radius: 0 var(--radius-sm, 0.25rem) var(--radius-sm, 0.25rem) 0;
     }
 
-    .highlight-block h3 {
-        color: var(--color-accent);
-    }
-
-    /* ── Footer ── */
+    /* Pied de carte */
     .game-footer {
         margin-top: 2rem;
         padding-top: 1.5rem;
-        border-top: 1px solid var(--color-border);
+        border-top: 1px solid var(--card-border);
     }
 
     .game-tags {
@@ -542,46 +460,35 @@ const isTopOne = game.rank === 1;
         gap: 0.5rem;
     }
 
-    /* ── Responsive ── */
+    /* Responsive */
     @media (max-width: 768px) {
         .game-card {
             padding: 1.5rem;
-            margin: 0 0 3rem;
+            margin-bottom: 3rem;
         }
-        .rank-badge {
-            left: 1rem;
-        }
+
         .meta-grid {
             grid-template-columns: 1fr;
-            gap: 1rem;
-            padding: 1.25rem;
         }
+
         .content-columns {
             grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-        .highlight-block {
-            padding: 1.25rem;
         }
     }
 
-    @media (max-width: 480px) {
+    /* Compatibilité light mode via prefers-color-scheme */
+    @media (prefers-color-scheme: light) {
         .game-card {
-            padding: 1.25rem;
+            --card-surface: rgb(255, 255, 255);
+            --card-border: rgba(var(--card-text-rgb), 0.1);
+            --card-muted: rgba(var(--card-text-rgb), 0.7);
+            --card-tint-05: rgba(var(--card-text-rgb), 0.04);
+            --card-tint-10: rgba(var(--card-text-rgb), 0.07);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05), 0 6px 16px rgba(0, 0, 0, 0.04);
         }
-        .top-one-badge {
-            font-size: 0.65rem;
-        }
-    }
 
-    @media (prefers-reduced-motion: reduce) {
-        .game-card:hover,
-        .pros-list li:hover,
-        .cons-list li:hover {
-            transition: none;
-        }
-        .game-card:hover .game-img {
-            transform: none;
+        .game-card:hover {
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07), 0 10px 28px rgba(0, 0, 0, 0.06);
         }
     }
 </style>

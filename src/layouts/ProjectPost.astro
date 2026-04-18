@@ -29,6 +29,7 @@ const {
 const imageSrc = heroImage ?? fallBackImage;
 ---
 
+
 <html lang="fr">
     <head>
         <BaseHead
@@ -38,17 +39,21 @@ const imageSrc = heroImage ?? fallBackImage;
             ImageDescription={heroImageDescription}
         />
         <style>
-            main {
+            .project-post-layout {
                 width: 100%;
                 max-width: 900px;
                 margin-inline: auto;
                 padding: calc(var(--header-height) + 3rem) 1.5rem 5rem;
             }
 
+            .project-post-layout :is(h1, h2, h3, h4, h5, h6) {
+                animation: none !important;
+            }
+
             .project-cover {
                 display: grid;
                 grid-template-columns: 1fr 340px;
-                background: rgba(var(--bg), 0.9);
+                background: rgba(var(--bg, 9, 9, 9), 0.9);
                 border: 1px solid var(--color-border);
                 border-radius: var(--radius-md);
                 overflow: hidden;
@@ -197,7 +202,7 @@ const imageSrc = heroImage ?? fallBackImage;
                 overflow: hidden;
                 background: var(--color-surface);
                 background-image: radial-gradient(
-                    rgba(var(--text), 0.06) 1px,
+                    rgba(var(--text, 232, 232, 234), 0.06) 1px,
                     transparent 1px
                 );
                 background-size: 24px 24px;
@@ -226,13 +231,13 @@ const imageSrc = heroImage ?? fallBackImage;
                 background: linear-gradient(
                     to bottom,
                     transparent 60%,
-                    rgba(var(--bg), 0.55) 100%
+                    rgba(var(--bg, 9, 9, 9), 0.55) 100%
                 );
                 pointer-events: none;
             }
 
             .article-body {
-                background: rgba(var(--bg), 0.85);
+                background: rgba(var(--bg, 9, 9, 9), 0.85);
                 backdrop-filter: blur(10px);
                 border: 1px solid var(--color-border);
                 border-radius: var(--radius-md);
@@ -254,7 +259,7 @@ const imageSrc = heroImage ?? fallBackImage;
             }
 
             @media (max-width: 768px) {
-                main {
+                .project-post-layout {
                     padding-top: calc(var(--header-height) + 2rem);
                     padding-inline: 1rem;
                     padding-bottom: 3rem;
@@ -282,7 +287,7 @@ const imageSrc = heroImage ?? fallBackImage;
             }
 
             @media (max-width: 480px) {
-                main {
+                .project-post-layout {
                     padding-top: calc(var(--header-height) + 1.5rem);
                     padding-inline: 0.875rem;
                     padding-bottom: 2.5rem;
@@ -339,7 +344,7 @@ const imageSrc = heroImage ?? fallBackImage;
     <body>
         <Header />
 
-        <main>
+        <main class="project-post-layout">
             <div class="project-cover animate-fadeIn">
                 <div class="cover-meta">
                     <div class="cover-eyebrow">

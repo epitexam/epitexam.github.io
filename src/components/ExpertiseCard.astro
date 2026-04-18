@@ -21,8 +21,8 @@ const { title, description } = Astro.props;
         padding: 1.75rem;
         background: linear-gradient(
             145deg,
-            rgba(var(--bg), 1) 0%,
-            rgba(var(--accent), 0.05) 100%
+            rgba(var(--bg, 9, 9, 9), 1) 0%,
+            rgba(var(--accent, 255, 255, 255), 0.05) 100%
         );
         border: 1px solid var(--color-border);
         border-radius: var(--radius-md);
@@ -37,11 +37,15 @@ const { title, description } = Astro.props;
             transform var(--duration-base) var(--ease-spring);
     }
 
+    .expertise-card :is(h1, h2, h3, h4, h5, h6) {
+        animation: none !important;
+    }
+
     .expertise-card:hover {
         transform: translateY(-3px);
-        border-color: rgba(var(--accent), 0.4);
+        border-color: rgba(var(--accent, 255, 255, 255), 0.4);
         box-shadow:
-            0 10px 32px -8px rgba(var(--accent), 0.22),
+            0 10px 32px -8px rgba(var(--accent, 255, 255, 255), 0.22),
             inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
 
@@ -51,7 +55,7 @@ const { title, description } = Astro.props;
         border-radius: inherit;
         background: radial-gradient(
             ellipse at 0% 0%,
-            rgba(var(--accent), 0.14) 0%,
+            rgba(var(--accent, 255, 255, 255), 0.14) 0%,
             transparent 60%
         );
         opacity: 0;
@@ -81,7 +85,6 @@ const { title, description } = Astro.props;
         margin: 0;
         line-height: 1.2;
         transition: color var(--duration-fast) ease;
-        animation: none;
     }
 
     .expertise-card:hover .card-title {
@@ -91,12 +94,12 @@ const { title, description } = Astro.props;
     .card-desc {
         font-size: 0.875rem;
         line-height: 1.6;
-        color: rgba(var(--text), 0.82);
+        color: rgba(var(--text, 232, 232, 234), 0.82);
         margin: 0;
     }
 
     .expertise-card:hover .card-desc {
-        color: rgba(var(--text), 0.8);
+        color: rgba(var(--text, 232, 232, 234), 0.8);
     }
 
     @media (max-width: 640px) {

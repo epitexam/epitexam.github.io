@@ -18,170 +18,175 @@ const {
 } = Astro.props;
 ---
 
+
 <html lang="fr">
-	<head>
-		<BaseHead
-			title={title}
-			description={description}
-			image={heroImage}
-			ImageDescription={heroImageDescription}
-		/>
-		<style>
-			.hero-background {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 65vh;
-				overflow: hidden;
-				z-index: -1;
-				pointer-events: none;
-			}
+    <head>
+        <BaseHead
+            title={title}
+            description={description}
+            image={heroImage}
+            ImageDescription={heroImageDescription}
+        />
+        <style>
+            .blog-post-layout {
+                width: 100%;
+                margin-top: clamp(200px, 35vh, 420px);
+                margin-bottom: 0;
+                position: relative;
+            }
 
-			.hero-img {
-				width: 100%;
-				height: 100%;
-				object-fit: cover;
-				mask-image: linear-gradient(
-					to bottom,
-					black 0%,
-					black 30%,
-					transparent 100%
-				);
-				-webkit-mask-image: linear-gradient(
-					to bottom,
-					black 0%,
-					black 30%,
-					transparent 100%
-				);
-				filter: brightness(0.7);
-				opacity: 0.8;
-			}
+            .blog-post-layout :is(h1, h2, h3, h4, h5, h6) {
+                animation: none !important;
+            }
 
-			main {
-				width: 100%;
-				margin-top: clamp(200px, 35vh, 420px);
-				margin-bottom: 0;
-				position: relative;
-			}
+            .hero-background {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 65vh;
+                overflow: hidden;
+                z-index: -1;
+                pointer-events: none;
+            }
 
-			.prose {
-				max-width: 970px;
-				width: 100%;
-				margin: auto;
-				padding: 1em 0;
-				color: var(--color-text);
-				line-height: 1.7;
-			}
+            .hero-img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                mask-image: linear-gradient(
+                    to bottom,
+                    black 0%,
+                    black 30%,
+                    transparent 100%
+                );
+                -webkit-mask-image: linear-gradient(
+                    to bottom,
+                    black 0%,
+                    black 30%,
+                    transparent 100%
+                );
+                filter: brightness(0.7);
+                opacity: 0.8;
+            }
 
-			.title {
-				margin-bottom: 2em;
-				padding: 1em 0;
-				text-align: center;
-				text-shadow: var(--shadow-strong);
-			}
+            .prose {
+                max-width: 970px;
+                width: 100%;
+                margin: auto;
+                padding: 1em 0;
+                color: var(--color-text);
+                line-height: 1.7;
+            }
 
-			.title h1 {
-				margin: 0 0 0.5em 0;
-				color: var(--color-text);
-				font-size: 3em;
-				line-height: 1.1;
-			}
+            .title {
+                margin-bottom: 2em;
+                padding: 1em 0;
+                text-align: center;
+                text-shadow: var(--shadow-strong);
+            }
 
-			.date {
-				margin-bottom: 0.5em;
-				color: rgba(var(--text), 0.9);
-				font-size: 1.1em;
-				font-weight: 500;
-				text-shadow: var(--shadow-soft);
-			}
+            .title h1 {
+                margin: 0 0 0.5em 0;
+                color: var(--color-text);
+                font-size: 3em;
+                line-height: 1.1;
+            }
 
-			.last-updated-on {
-				font-style: italic;
-				font-size: 0.8em;
-				color: rgba(var(--text), 0.8);
-			}
+            .date {
+                margin-bottom: 0.5em;
+                color: rgba(var(--text, 232, 232, 234), 0.9);
+                font-size: 1.1em;
+                font-weight: 500;
+                text-shadow: var(--shadow-soft);
+            }
 
-			hr {
-				border: none;
-				height: 1px;
-				background: linear-gradient(
-					to right,
-					transparent,
-					rgba(var(--accent), 0.5),
-					transparent
-				);
-				margin: 2em auto;
-				max-width: 150px;
-			}
+            .last-updated-on {
+                font-style: italic;
+                font-size: 0.8em;
+                color: rgba(var(--text, 232, 232, 234), 0.8);
+            }
 
-			@media (max-width: 768px) {
-				.hero-background {
-					height: 50vh;
-				}
+            hr {
+                border: none;
+                height: 1px;
+                background: linear-gradient(
+                    to right,
+                    transparent,
+                    rgba(var(--accent, 255, 255, 255), 0.5),
+                    transparent
+                );
+                margin: 2em auto;
+                max-width: 150px;
+            }
 
-				main {
-					margin-top: clamp(150px, 25vh, 300px);
-				}
+            @media (max-width: 768px) {
+                .hero-background {
+                    height: 50vh;
+                }
 
-				.title h1 {
-					font-size: 2em;
-				}
-			}
+                .blog-post-layout {
+                    margin-top: clamp(150px, 25vh, 300px);
+                }
 
-			@media (prefers-reduced-motion: reduce) {
-				.hero-background,
-				main {
-					animation: none;
-					opacity: 1;
-					transform: none;
-				}
-			}
-		</style>
-	</head>
+                .title h1 {
+                    font-size: 2em;
+                }
+            }
 
-	<body>
-		<Header />
+            @media (prefers-reduced-motion: reduce) {
+                .hero-background,
+                .blog-post-layout {
+                    animation: none;
+                    opacity: 1;
+                    transform: none;
+                }
+            }
+        </style>
+    </head>
 
-		{
-			heroImage && (
-				<div class="hero-background animate-fadeIn">
-					<Image
-						src={heroImage}
-						alt={heroImageDescription ?? ""}
-						class="hero-img"
-						loading="eager"
-						fetchpriority="high"
-						decoding="sync"
-						widths={[768, 1280, 1440, 1920]}
-						sizes="100vw"
-					/>
-				</div>
-			)
-		}
+    <body>
+        <Header />
 
-		<main class="animate-fadeIn">
-			<article>
-				<div class="prose">
-					<div class="title">
-						<div class="date">
-							<FormattedDate date={pubDate} />
-							{
-								updatedDate && (
-									<div class="last-updated-on">
-										Mis à jour le{" "}
-										<FormattedDate date={updatedDate} />
-									</div>
-								)
-							}
-						</div>
-						<h1>{title}</h1>
-						<hr />
-					</div>
-					<slot />
-				</div>
-			</article>
-		</main>
-		<Footer />
-	</body>
+        {
+            heroImage && (
+                <div class="hero-background animate-fadeIn">
+                    <Image
+                        src={heroImage}
+                        alt={heroImageDescription ?? ""}
+                        class="hero-img"
+                        loading="eager"
+                        fetchpriority="high"
+                        decoding="sync"
+                        widths={[768, 1280, 1440, 1920]}
+                        sizes="100vw"
+                    />
+                </div>
+            )
+        }
+
+        <main class="blog-post-layout animate-fadeIn">
+            <article>
+                <div class="prose">
+                    <div class="title">
+                        <div class="date">
+                            <FormattedDate date={pubDate} />
+                            {
+                                updatedDate && (
+                                    <div class="last-updated-on">
+                                        Mis à jour le{" "}
+                                        <FormattedDate date={updatedDate} />
+                                    </div>
+                                )
+                            }
+                        </div>
+                        <h1>{title}</h1>
+                        <hr />
+                    </div>
+                    <slot />
+                </div>
+            </article>
+        </main>
+        <Footer />
+    </body>
 </html>

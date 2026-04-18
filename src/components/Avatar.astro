@@ -57,7 +57,7 @@ interface Props {}
         border-radius: 50%;
         background: radial-gradient(
             circle,
-            rgba(var(--accent), 0.22) 0%,
+            rgba(var(--accent, 255, 255, 255), 0.22) 0%,
             transparent 70%
         );
         opacity: 0;
@@ -75,7 +75,7 @@ interface Props {}
         position: relative;
         z-index: 1;
         border-radius: 50%;
-        border: 2px solid rgba(var(--accent), 0.22);
+        border: 2px solid rgba(var(--accent, 255, 255, 255), 0.22);
         box-shadow:
             var(--shadow-strong),
             inset 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -85,16 +85,16 @@ interface Props {}
     }
 
     .avatar-link:hover .avatar-img {
-        border-color: rgba(var(--accent), 0.6);
+        border-color: rgba(var(--accent, 255, 255, 255), 0.6);
         box-shadow:
-            0 8px 28px rgba(var(--accent), 0.25),
+            0 8px 28px rgba(var(--accent, 255, 255, 255), 0.25),
             inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
 
     .profile-handle {
         font-family: var(--font-title);
         font-size: 0.82rem;
-        color: rgba(var(--text), 0.75);
+        color: rgba(var(--text, 232, 232, 234), 0.75);
         letter-spacing: 0.06em;
         font-weight: 500;
         transition: color var(--duration-base) ease;

@@ -43,6 +43,19 @@ const sortedTools = [...tools].sort(
         width: 100%;
     }
 
+    .tool-section ul,
+    .tool-section ol {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .tool-section li::before,
+    .tool-section li::after {
+        content: none !important;
+        display: none;
+    }
+
     .tool-section-label {
         font-family: var(--font-code);
         font-size: 0.72rem;
@@ -60,9 +73,6 @@ const sortedTools = [...tools].sort(
         grid-template-columns: repeat(2, 1fr);
         gap: 1rem;
         width: 100%;
-        list-style: none;
-        padding: 0;
-        margin: 0;
     }
 
     .tool-item {

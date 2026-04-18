@@ -53,11 +53,28 @@ const jsonLd = {
       set:html={JSON.stringify(jsonLd)}
     />
     <style>
-      main {
+      .project-index {
         width: 100%;
         max-width: 1200px;
         margin: 0 auto;
         padding: calc(var(--header-height) + 3rem) 1.5rem 5rem;
+      }
+
+      .project-index :is(h1, h2, h3, h4, h5, h6) {
+        animation: none !important;
+      }
+
+      .project-index ul,
+      .project-index ol {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .project-index li::before,
+      .project-index li::after {
+        content: none !important;
+        display: none;
       }
 
       .page-header {
@@ -190,7 +207,7 @@ const jsonLd = {
       }
 
       @media (max-width: 768px) {
-        main {
+        .project-index {
           padding-top: calc(var(--header-height) + 2rem);
           padding-inline: 1rem;
           padding-bottom: 4rem;
@@ -215,7 +232,7 @@ const jsonLd = {
       }
 
       @media (max-width: 480px) {
-        main {
+        .project-index {
           padding-top: calc(var(--header-height) + 1.5rem);
           padding-inline: 0.875rem;
           padding-bottom: 3rem;
@@ -242,7 +259,7 @@ const jsonLd = {
   </head>
   <body>
     <Header />
-    <main>
+    <main class="project-index">
       <header class="page-header animate-slideIn">
         <div class="header-eyebrow">
           <span class="dot" aria-hidden="true"></span>

@@ -101,8 +101,8 @@ const { post } = Astro.props;
         width: 100%;
         background: linear-gradient(
             145deg,
-            rgba(var(--bg), 1) 0%,
-            rgba(var(--accent), 0.05) 100%
+            rgba(var(--bg, 9, 9, 9), 1) 0%,
+            rgba(var(--accent, 255, 255, 255), 0.05) 100%
         );
         border: 1px solid var(--color-border);
         border-radius: var(--radius-md);
@@ -118,11 +118,15 @@ const { post } = Astro.props;
             box-shadow var(--duration-base) var(--ease-spring);
     }
 
+    .post-card :is(h1, h2, h3, h4, h5, h6) {
+        animation: none !important;
+    }
+
     .post-card:hover {
         transform: translateY(-4px);
-        border-color: rgba(var(--accent), 0.4);
+        border-color: rgba(var(--accent, 255, 255, 255), 0.4);
         box-shadow:
-            0 14px 40px -8px rgba(var(--accent), 0.25),
+            0 14px 40px -8px rgba(var(--accent, 255, 255, 255), 0.25),
             inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
 
@@ -132,7 +136,7 @@ const { post } = Astro.props;
         border-radius: inherit;
         background: radial-gradient(
             ellipse at 50% 0%,
-            rgba(var(--accent), 0.14) 0%,
+            rgba(var(--accent, 255, 255, 255), 0.14) 0%,
             transparent 65%
         );
         opacity: 0;
@@ -175,7 +179,7 @@ const { post } = Astro.props;
         background: linear-gradient(
             to bottom,
             transparent 50%,
-            rgba(var(--bg), 0.55) 100%
+            rgba(var(--bg, 9, 9, 9), 0.55) 100%
         );
         pointer-events: none;
     }
@@ -213,7 +217,6 @@ const { post } = Astro.props;
         color: var(--color-text);
         margin: 0 0 1rem;
         transition: color var(--duration-base) ease;
-        animation: none;
     }
 
     .post-card:hover .post-title {
@@ -229,7 +232,7 @@ const { post } = Astro.props;
     }
 
     .post-card:hover .post-description {
-        color: rgba(var(--text), 0.82);
+        color: rgba(var(--text, 232, 232, 234), 0.82);
     }
 
     .read-more {

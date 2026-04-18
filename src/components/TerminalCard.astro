@@ -54,7 +54,7 @@ const command = "cat -n";
 <style>
 	.terminal-card {
 		position: relative;
-		background: rgba(var(--bg), 0.97);
+		background: rgba(var(--bg, 9, 9, 9), 0.97);
 		border: 1px solid var(--color-border);
 		border-radius: var(--radius-md);
 		box-shadow:
@@ -72,7 +72,7 @@ const command = "cat -n";
 		display: flex;
 		align-items: center;
 		padding: 10px 16px;
-		background: rgba(var(--accent), 0.04);
+		background: rgba(var(--accent, 255, 255, 255), 0.04);
 		border-bottom: 1px solid var(--color-border);
 	}
 
@@ -101,7 +101,7 @@ const command = "cat -n";
 		flex: 1;
 		text-align: center;
 		font-size: 0.7rem;
-		color: rgba(var(--text), 0.3);
+		color: rgba(var(--text, 232, 232, 234), 0.3);
 		margin-right: 35px;
 	}
 
@@ -126,16 +126,16 @@ const command = "cat -n";
 	}
 
 	.sep {
-		color: rgba(var(--text), 0.4);
+		color: rgba(var(--text, 232, 232, 234), 0.4);
 	}
 	.path {
 		color: var(--color-accent);
 	}
 	.symbol {
-		color: rgba(var(--text), 0.6);
+		color: rgba(var(--text, 232, 232, 234), 0.6);
 	}
 	.command {
-		color: rgba(var(--text), 1);
+		color: rgba(var(--text, 232, 232, 234), 1);
 	}
 
 	.file-content {
@@ -156,14 +156,14 @@ const command = "cat -n";
 		left: 0;
 		width: 2rem;
 		text-align: right;
-		color: rgba(var(--accent), 0.3);
+		color: rgba(var(--accent, 255, 255, 255), 0.3);
 		font-size: 0.75rem;
 		user-select: none;
 		padding-top: 1px;
 	}
 
 	.line-text {
-		color: rgba(var(--text), 0.85);
+		color: rgba(var(--text, 232, 232, 234), 0.85);
 		white-space: pre-wrap;
 		word-break: break-word;
 		font-size: 0.95rem;

@@ -191,6 +191,10 @@ const success = Astro.url.searchParams.get("success") === "true";
         align-items: center;
     }
 
+    .contact-main :is(h1, h2, h3, h4, h5, h6) {
+        animation: none !important;
+    }
+
     .contact-wrapper {
         width: 100%;
         max-width: 44rem;
@@ -232,8 +236,8 @@ const success = Astro.url.searchParams.get("success") === "true";
     }
 
     .success-notification {
-        background: rgba(var(--accent), 0.08);
-        border: 1px solid rgba(var(--accent), 0.28);
+        background: rgba(var(--accent, 255, 255, 255), 0.08);
+        border: 1px solid rgba(var(--accent, 255, 255, 255), 0.28);
         color: var(--color-accent);
     }
 
@@ -264,8 +268,8 @@ const success = Astro.url.searchParams.get("success") === "true";
         gap: 1.75rem;
         background: linear-gradient(
             145deg,
-            rgba(var(--bg), 1) 0%,
-            rgba(var(--accent), 0.04) 100%
+            rgba(var(--bg, 9, 9, 9), 1) 0%,
+            rgba(var(--accent, 255, 255, 255), 0.04) 100%
         );
         border: 1px solid var(--color-border);
         border-radius: var(--radius-md);
@@ -296,8 +300,8 @@ const success = Astro.url.searchParams.get("success") === "true";
     .input-field {
         width: 100%;
         box-sizing: border-box;
-        background: rgba(var(--accent), 0.03);
-        border: 1px solid rgba(var(--accent), 0.15);
+        background: rgba(var(--accent, 255, 255, 255), 0.03);
+        border: 1px solid rgba(var(--accent, 255, 255, 255), 0.15);
         border-radius: var(--radius-sm);
         padding: 0.75rem 1rem;
         color: var(--color-text);
@@ -311,14 +315,14 @@ const success = Astro.url.searchParams.get("success") === "true";
     }
 
     .input-field::placeholder {
-        color: rgba(var(--text), 0.22);
+        color: rgba(var(--text, 232, 232, 234), 0.22);
     }
 
     .input-field:focus {
         outline: none;
-        border-color: rgba(var(--accent), 0.55);
-        background: rgba(var(--accent), 0.05);
-        box-shadow: 0 0 0 3px rgba(var(--accent), 0.1);
+        border-color: rgba(var(--accent, 255, 255, 255), 0.55);
+        background: rgba(var(--accent, 255, 255, 255), 0.05);
+        box-shadow: 0 0 0 3px rgba(var(--accent, 255, 255, 255), 0.1);
     }
 
     .textarea-field {
@@ -361,8 +365,8 @@ const success = Astro.url.searchParams.get("success") === "true";
         align-items: flex-start;
         gap: 0.75rem;
         padding: 0.85rem 1rem;
-        background: rgba(var(--accent), 0.03);
-        border: 1px solid rgba(var(--accent), 0.1);
+        background: rgba(var(--accent, 255, 255, 255), 0.03);
+        border: 1px solid rgba(var(--accent, 255, 255, 255), 0.1);
         border-radius: var(--radius-sm);
     }
 
@@ -406,7 +410,7 @@ const success = Astro.url.searchParams.get("success") === "true";
 
     .submit-btn:hover:not(:disabled) {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(var(--accent), 0.35);
+        box-shadow: 0 6px 20px rgba(var(--accent, 255, 255, 255), 0.35);
         filter: brightness(1.06);
     }
 

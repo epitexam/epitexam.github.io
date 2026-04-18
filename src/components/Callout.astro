@@ -60,7 +60,6 @@ const resolvedLabel = label ?? defaultLabel;
 }
 
 <style>
-    /* ─── Callout card ─── */
     .callout {
         position: relative;
         margin: 2rem 0;
@@ -70,13 +69,16 @@ const resolvedLabel = label ?? defaultLabel;
         isolation: isolate;
     }
 
+    .callout :is(h1, h2, h3, h4, h5, h6) {
+        animation: none !important;
+    }
+
     .callout-inner {
         position: relative;
         z-index: 1;
         padding: 1.1rem 1.4rem;
     }
 
-    /* Glow de fond */
     .callout-glow {
         position: absolute;
         inset: 0;
@@ -85,7 +87,6 @@ const resolvedLabel = label ?? defaultLabel;
         border-radius: inherit;
     }
 
-    /* Stripe verticale gauche */
     .callout-stripe {
         position: absolute;
         left: 0;
@@ -96,27 +97,25 @@ const resolvedLabel = label ?? defaultLabel;
         border-radius: 3px 0 0 3px;
     }
 
-    /* ── note ── */
     .callout--note {
-        background: rgba(var(--accent), 0.04);
-        border-color: rgba(var(--accent), 0.14);
+        background: rgba(var(--accent, 255, 255, 255), 0.04);
+        border-color: rgba(var(--accent, 255, 255, 255), 0.14);
     }
     .callout--note .callout-glow {
         background: radial-gradient(
             ellipse at 0% 50%,
-            rgba(var(--accent), 0.08) 0%,
+            rgba(var(--accent, 255, 255, 255), 0.08) 0%,
             transparent 65%
         );
     }
     .callout--note .callout-stripe {
-        background: rgba(var(--accent), 0.55);
+        background: rgba(var(--accent, 255, 255, 255), 0.55);
     }
     .callout--note .callout-icon,
     .callout--note .callout-label {
         color: var(--color-accent);
     }
 
-    /* ── warning ── */
     .callout--warning {
         background: rgba(232, 160, 74, 0.04);
         border-color: rgba(232, 160, 74, 0.18);
@@ -136,15 +135,14 @@ const resolvedLabel = label ?? defaultLabel;
         color: #e8a04a;
     }
 
-    /* ── insight ── */
     .callout--insight {
-        background: rgba(var(--accent), 0.06);
-        border-color: rgba(var(--accent), 0.2);
+        background: rgba(var(--accent, 255, 255, 255), 0.06);
+        border-color: rgba(var(--accent, 255, 255, 255), 0.2);
     }
     .callout--insight .callout-glow {
         background: radial-gradient(
             ellipse at 0% 50%,
-            rgba(var(--accent), 0.13) 0%,
+            rgba(var(--accent, 255, 255, 255), 0.13) 0%,
             transparent 65%
         );
     }
@@ -156,7 +154,6 @@ const resolvedLabel = label ?? defaultLabel;
         color: var(--color-accent);
     }
 
-    /* ─── Header ─── */
     .callout-header {
         display: flex;
         align-items: center;
@@ -179,11 +176,10 @@ const resolvedLabel = label ?? defaultLabel;
         letter-spacing: 0.13em;
     }
 
-    /* ─── Body ─── */
     .callout-body {
         font-size: 0.92rem;
         line-height: 1.74;
-        color: rgba(var(--text), 0.84);
+        color: rgba(var(--text, 232, 232, 234), 0.84);
     }
 
     .callout-body :global(p) {
@@ -197,13 +193,12 @@ const resolvedLabel = label ?? defaultLabel;
         font-weight: 600;
     }
 
-    /* ─── Quote ─── */
     .callout-quote {
         position: relative;
         margin: 2.5rem 0;
         padding: 0.25rem 0 0.25rem 1.75rem;
         border: none;
-        border-left: 2px solid rgba(var(--accent), 0.3);
+        border-left: 2px solid rgba(var(--accent, 255, 255, 255), 0.3);
     }
 
     .quote-mark {
@@ -213,7 +208,7 @@ const resolvedLabel = label ?? defaultLabel;
         font-family: var(--font-title);
         font-size: 3rem;
         line-height: 1;
-        color: rgba(var(--accent), 0.18);
+        color: rgba(var(--accent, 255, 255, 255), 0.18);
         font-style: normal;
         pointer-events: none;
         user-select: none;
@@ -225,7 +220,7 @@ const resolvedLabel = label ?? defaultLabel;
         font-size: 1rem;
         font-style: italic;
         line-height: 1.7;
-        color: rgba(var(--text), 0.65);
+        color: rgba(var(--text, 232, 232, 234), 0.65);
     }
 
     .quote-body :global(p) {

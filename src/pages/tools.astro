@@ -173,6 +173,10 @@ const jsonLd = {
         gap: 5rem;
     }
 
+    .tools-main :is(h1, h2, h3, h4, h5, h6) {
+        animation: none !important;
+    }
+
     .page-header {
         display: flex;
         flex-direction: column;
@@ -185,7 +189,6 @@ const jsonLd = {
         line-height: 1.05;
         letter-spacing: -0.03em;
         margin: 0;
-        animation: none;
     }
 
     .page-desc {
@@ -216,13 +219,12 @@ const jsonLd = {
         font-weight: 700;
         letter-spacing: -0.025em;
         margin: 0;
-        animation: none;
     }
 
     .section-count {
         font-family: var(--font-code);
         font-size: 0.75rem;
-        color: rgba(var(--text), 0.85);
+        color: rgba(var(--text, 232, 232, 234), 0.85);
         letter-spacing: 0.02em;
     }
 
@@ -252,7 +254,7 @@ const jsonLd = {
         opacity: 0.6;
     }
     .legend-dot.exploring {
-        background: rgba(var(--text), 0.5);
+        background: rgba(var(--text, 232, 232, 234), 0.5);
         opacity: 0.3;
     }
 
@@ -305,13 +307,13 @@ const jsonLd = {
 
     .tab-btn:hover:not(.active) {
         color: var(--color-text);
-        border-color: rgba(var(--accent), 0.3);
-        background: rgba(var(--accent), 0.04);
+        border-color: rgba(var(--accent, 255, 255, 255), 0.3);
+        background: rgba(var(--accent, 255, 255, 255), 0.04);
     }
 
     .tab-btn.active {
-        background: rgba(var(--accent), 0.1);
-        border-color: rgba(var(--accent), 0.4);
+        background: rgba(var(--accent, 255, 255, 255), 0.1);
+        border-color: rgba(var(--accent, 255, 255, 255), 0.4);
         color: var(--color-accent);
         box-shadow: var(--glow);
     }

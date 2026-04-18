@@ -21,8 +21,8 @@ const { tag } = Astro.props;
         font-weight: 500;
         letter-spacing: 0.02em;
         color: var(--color-text);
-        background: rgba(var(--accent), 0.08);
-        border: 1px solid rgba(var(--accent), 0.2);
+        background: rgba(var(--accent, 255, 255, 255), 0.08);
+        border: 1px solid rgba(var(--accent, 255, 255, 255), 0.2);
         border-radius: 999px;
         transition: all var(--duration-fast) var(--ease-spring);
         cursor: default;
@@ -31,8 +31,8 @@ const { tag } = Astro.props;
     }
 
     .tag:hover {
-        background: rgba(var(--accent), 0.15);
-        border-color: rgba(var(--accent), 0.35);
+        background: rgba(var(--accent, 255, 255, 255), 0.15);
+        border-color: rgba(var(--accent, 255, 255, 255), 0.35);
         transform: scale(1.02);
     }
 

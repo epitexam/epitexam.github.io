@@ -95,8 +95,8 @@ const readableName = project.name.replace(/-/g, " ");
         padding: 1.5rem;
         background: linear-gradient(
             145deg,
-            rgba(var(--bg), 1) 0%,
-            rgba(var(--accent), 0.06) 100%
+            rgba(var(--bg, 9, 9, 9), 1) 0%,
+            rgba(var(--accent, 255, 255, 255), 0.06) 100%
         );
         border: 1px solid var(--color-border);
         border-radius: var(--radius-md);
@@ -113,11 +113,15 @@ const readableName = project.name.replace(/-/g, " ");
         color: inherit;
     }
 
+    .project-card :is(h1, h2, h3, h4, h5, h6) {
+        animation: none !important;
+    }
+
     .project-card:hover {
-        border-color: rgba(var(--accent), 0.45);
+        border-color: rgba(var(--accent, 255, 255, 255), 0.45);
         transform: translateY(-4px);
         box-shadow:
-            0 12px 36px -8px rgba(var(--accent), 0.28),
+            0 12px 36px -8px rgba(var(--accent, 255, 255, 255), 0.28),
             inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
 
@@ -127,7 +131,7 @@ const readableName = project.name.replace(/-/g, " ");
         border-radius: inherit;
         background: radial-gradient(
             ellipse at 100% 0%,
-            rgba(var(--accent), 0.16) 0%,
+            rgba(var(--accent, 255, 255, 255), 0.16) 0%,
             transparent 65%
         );
         opacity: 0;
@@ -149,7 +153,7 @@ const readableName = project.name.replace(/-/g, " ");
         background: linear-gradient(
             to bottom,
             transparent 0%,
-            rgba(var(--accent), 0.1) 50%,
+            rgba(var(--accent, 255, 255, 255), 0.1) 50%,
             transparent 100%
         );
         z-index: 2;
@@ -189,7 +193,7 @@ const readableName = project.name.replace(/-/g, " ");
 
     .avatar {
         border-radius: 50%;
-        border: 1px solid rgba(var(--accent), 0.25);
+        border: 1px solid rgba(var(--accent, 255, 255, 255), 0.25);
         flex-shrink: 0;
         transition:
             border-color var(--duration-base) ease,
@@ -198,7 +202,7 @@ const readableName = project.name.replace(/-/g, " ");
 
     .project-card:hover .avatar {
         border-color: var(--color-accent);
-        box-shadow: 0 0 10px rgba(var(--accent), 0.3);
+        box-shadow: 0 0 10px rgba(var(--accent, 255, 255, 255), 0.3);
     }
 
     .project-name {
@@ -219,7 +223,7 @@ const readableName = project.name.replace(/-/g, " ");
     }
 
     .project-card:hover .project-name a {
-        text-shadow: 0 0 12px rgba(var(--accent), 0.45);
+        text-shadow: 0 0 12px rgba(var(--accent, 255, 255, 255), 0.45);
     }
 
     .language-badge {
@@ -228,9 +232,9 @@ const readableName = project.name.replace(/-/g, " ");
         text-transform: lowercase;
         padding: 0.2rem 0.6rem;
         border-radius: var(--radius-sm);
-        background: rgba(var(--accent), 0.1);
+        background: rgba(var(--accent, 255, 255, 255), 0.1);
         color: var(--color-accent);
-        border: 1px solid rgba(var(--accent), 0.2);
+        border: 1px solid rgba(var(--accent, 255, 255, 255), 0.2);
         white-space: nowrap;
         flex-shrink: 0;
         transition:
@@ -239,14 +243,14 @@ const readableName = project.name.replace(/-/g, " ");
     }
 
     .project-card:hover .language-badge {
-        background: rgba(var(--accent), 0.18);
-        border-color: rgba(var(--accent), 0.45);
+        background: rgba(var(--accent, 255, 255, 255), 0.18);
+        border-color: rgba(var(--accent, 255, 255, 255), 0.45);
     }
 
     .project-description {
         flex-grow: 1;
         font-size: 0.9rem;
-        color: rgba(var(--text), 0.65);
+        color: rgba(var(--text, 232, 232, 234), 0.65);
         line-height: 1.5;
         margin-bottom: 1.5rem;
         display: -webkit-box;
@@ -259,7 +263,7 @@ const readableName = project.name.replace(/-/g, " ");
     }
 
     .project-card:hover .project-description {
-        color: rgba(var(--text), 0.82);
+        color: rgba(var(--text, 232, 232, 234), 0.82);
     }
 
     .project-footer {
@@ -269,15 +273,15 @@ const readableName = project.name.replace(/-/g, " ");
         font-family: var(--font-title);
         font-size: 0.75rem;
         padding-top: 1rem;
-        border-top: 1px solid rgba(var(--accent), 0.08);
-        color: rgba(var(--text), 0.5);
+        border-top: 1px solid rgba(var(--accent, 255, 255, 255), 0.08);
+        color: rgba(var(--text, 232, 232, 234), 0.5);
         position: relative;
         z-index: 3;
         transition: border-color var(--duration-base) ease;
     }
 
     .project-card:hover .project-footer {
-        border-top-color: rgba(var(--accent), 0.2);
+        border-top-color: rgba(var(--accent, 255, 255, 255), 0.2);
     }
 
     .stat-item {

@@ -59,7 +59,7 @@ const jsonLd = {
 	<body>
 		<Header />
 
-		<main>
+		<main class="blog-index">
 			<header class="page-header">
 				<h1 class="page-title">Blog</h1>
 			</header>
@@ -201,13 +201,7 @@ const jsonLd = {
 </html>
 
 <style>
-	body {
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-	}
-
-	main {
+	.blog-index {
 		flex-grow: 1;
 		width: 100%;
 		max-width: 960px;
@@ -217,6 +211,23 @@ const jsonLd = {
 		display: flex;
 		flex-direction: column;
 		gap: 2.5rem;
+	}
+
+	.blog-index :is(h1, h2, h3, h4, h5, h6) {
+		animation: none !important;
+	}
+
+	.blog-index ul,
+	.blog-index ol {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.blog-index li::before,
+	.blog-index li::after {
+		content: none !important;
+		display: none;
 	}
 
 	.page-header {
@@ -250,9 +261,6 @@ const jsonLd = {
 		grid-template-columns: 1fr 1fr;
 		gap: 1.75rem;
 		width: 100%;
-		list-style: none;
-		padding: 0;
-		margin: 0;
 	}
 
 	.blog-item {
@@ -272,8 +280,8 @@ const jsonLd = {
 		color: inherit;
 		background: linear-gradient(
 			145deg,
-			rgba(var(--bg), 1) 0%,
-			rgba(var(--accent), 0.05) 100%
+			rgba(var(--bg, 9, 9, 9), 1) 0%,
+			rgba(var(--accent, 255, 255, 255), 0.05) 100%
 		);
 		border: 1px solid var(--color-border);
 		border-radius: var(--radius-md);
@@ -291,30 +299,30 @@ const jsonLd = {
 	:global(html.light) a.blog-card {
 		background: linear-gradient(
 			145deg,
-			rgb(var(--bg)) 0%,
-			rgba(var(--accent), 0.06) 100%
+			rgb(var(--bg, 250, 250, 252)) 0%,
+			rgba(var(--accent, 14, 14, 16), 0.06) 100%
 		);
-		border-color: rgba(var(--accent), 0.22);
+		border-color: rgba(var(--accent, 14, 14, 16), 0.22);
 		box-shadow:
-			0 2px 10px rgba(var(--text), 0.08),
-			0 1px 3px rgba(var(--text), 0.05),
+			0 2px 10px rgba(var(--text, 14, 14, 16), 0.08),
+			0 1px 3px rgba(var(--text, 14, 14, 16), 0.05),
 			inset 0 1px 0 rgba(255, 255, 255, 0.9);
 	}
 
 	a.blog-card:hover {
 		transform: translateY(-4px);
-		border-color: rgba(var(--accent), 0.4);
+		border-color: rgba(var(--accent, 255, 255, 255), 0.4);
 		box-shadow:
-			0 12px 36px -8px rgba(var(--accent), 0.25),
+			0 12px 36px -8px rgba(var(--accent, 255, 255, 255), 0.25),
 			0 4px 12px rgba(0, 0, 0, 0.12),
 			inset 0 1px 0 rgba(255, 255, 255, 0.06);
 	}
 
 	:global(html.light) a.blog-card:hover {
-		border-color: rgba(var(--accent), 0.5);
+		border-color: rgba(var(--accent, 14, 14, 16), 0.5);
 		box-shadow:
-			0 12px 36px -8px rgba(var(--accent), 0.2),
-			0 4px 12px rgba(var(--text), 0.1),
+			0 12px 36px -8px rgba(var(--accent, 14, 14, 16), 0.2),
+			0 4px 12px rgba(var(--text, 14, 14, 16), 0.1),
 			inset 0 1px 0 rgba(255, 255, 255, 0.95);
 	}
 
@@ -332,7 +340,7 @@ const jsonLd = {
 	}
 
 	:global(html.light) .blog-item.featured .image-container {
-		border-right-color: rgba(var(--accent), 0.18);
+		border-right-color: rgba(var(--accent, 14, 14, 16), 0.18);
 	}
 
 	.blog-item.featured .card-body {
@@ -355,7 +363,7 @@ const jsonLd = {
 		border-radius: inherit;
 		background: radial-gradient(
 			ellipse at 50% 0%,
-			rgba(var(--accent), 0.12) 0%,
+			rgba(var(--accent, 255, 255, 255), 0.12) 0%,
 			transparent 65%
 		);
 		opacity: 0;
@@ -371,7 +379,7 @@ const jsonLd = {
 	:global(html.light) .card-glow {
 		background: radial-gradient(
 			ellipse at 50% 0%,
-			rgba(var(--accent), 0.22) 0%,
+			rgba(var(--accent, 14, 14, 16), 0.22) 0%,
 			transparent 65%
 		);
 	}
@@ -424,7 +432,7 @@ const jsonLd = {
 	}
 
 	:global(html.light) .card-date {
-		color: rgba(var(--text), 0.5);
+		color: rgba(var(--text, 14, 14, 16), 0.5);
 	}
 
 	.card-title {
@@ -457,11 +465,11 @@ const jsonLd = {
 	}
 
 	:global(html.light) .card-description {
-		color: rgba(var(--text), 0.62);
+		color: rgba(var(--text, 14, 14, 16), 0.62);
 	}
 
 	a.blog-card:hover .card-description {
-		color: rgba(var(--text), 0.8);
+		color: rgba(var(--text, 232, 232, 234), 0.8);
 	}
 
 	.read-more {
@@ -506,7 +514,7 @@ const jsonLd = {
 	}
 
 	@media (max-width: 768px) {
-		main {
+		.blog-index {
 			padding: calc(var(--header-height, 60px) + 2rem) 1rem 3rem;
 		}
 

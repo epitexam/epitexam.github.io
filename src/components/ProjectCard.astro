@@ -153,7 +153,7 @@ const IMG_H = 450;
 
 <style>
     .project-card {
-        background: rgba(var(--bg), 0.9);
+        background: rgba(var(--bg, 9, 9, 9), 0.9);
         border: 1px solid var(--color-border);
         border-radius: var(--radius-md);
         display: flex;
@@ -164,6 +164,23 @@ const IMG_H = 450;
             transform var(--duration-base) var(--ease-spring),
             border-color var(--duration-base) ease,
             box-shadow var(--duration-base) ease;
+    }
+
+    .project-card :is(h1, h2, h3, h4, h5, h6) {
+        animation: none !important;
+    }
+
+    .project-card ul,
+    .project-card ol {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .project-card li::before,
+    .project-card li::after {
+        content: none !important;
+        display: none;
     }
 
     @media (hover: hover) {
@@ -185,7 +202,7 @@ const IMG_H = 450;
         border-bottom: 1px solid var(--color-border);
         background: var(--color-surface);
         background-image: radial-gradient(
-            rgba(var(--text), 0.06) 1px,
+            rgba(var(--text, 232, 232, 234), 0.06) 1px,
             transparent 1px
         );
         background-size: 20px 20px;
@@ -232,14 +249,14 @@ const IMG_H = 450;
         align-items: center;
         gap: 0.35rem;
         padding: 0.25rem 0.65rem 0.25rem 0.45rem;
-        background: rgba(var(--badge-green-rgb), 0.12);
-        border: 1.5px solid rgba(var(--badge-green-rgb), 0.35);
+        background: rgba(var(--badge-green-rgb, 34, 197, 94), 0.12);
+        border: 1.5px solid rgba(var(--badge-green-rgb, 34, 197, 94), 0.35);
         border-radius: 999px;
         font-size: 0.6rem;
         font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.12em;
-        color: rgb(var(--badge-green-rgb));
+        color: rgb(var(--badge-green-rgb, 34, 197, 94));
     }
 
     .featured-dot {
@@ -247,7 +264,7 @@ const IMG_H = 450;
         height: 5px;
         border-radius: 50%;
         background: currentColor;
-        box-shadow: 0 0 6px rgba(var(--badge-green-rgb), 0.7);
+        box-shadow: 0 0 6px rgba(var(--badge-green-rgb, 34, 197, 94), 0.7);
         animation: dot-pulse 2.5s ease-in-out infinite;
     }
 
@@ -299,9 +316,6 @@ const IMG_H = 450;
         flex-wrap: wrap;
         gap: 0.35rem;
         margin-top: auto;
-        list-style: none;
-        padding: 0;
-        margin-bottom: 0;
     }
 
     .tech-tag {
@@ -361,34 +375,34 @@ const IMG_H = 450;
     }
 
     .btn-primary {
-        background: rgba(var(--text), 0.1);
-        border-color: rgba(var(--text), 0.35);
+        background: rgba(var(--text, 232, 232, 234), 0.1);
+        border-color: rgba(var(--text, 232, 232, 234), 0.35);
         color: var(--color-text);
     }
 
     @media (hover: hover) {
         .btn-primary:hover {
             transform: translateY(-2px);
-            background: rgba(var(--text), 0.18);
-            border-color: rgba(var(--text), 0.6);
-            box-shadow: 0 4px 12px rgba(var(--text), 0.12);
+            background: rgba(var(--text, 232, 232, 234), 0.18);
+            border-color: rgba(var(--text, 232, 232, 234), 0.6);
+            box-shadow: 0 4px 12px rgba(var(--text, 232, 232, 234), 0.12);
         }
     }
 
     .btn-ghost {
         padding: 0.45rem 0.9rem 0.45rem 0.75rem;
-        background: rgba(var(--text), 0.04);
-        border-color: rgba(var(--text), 0.18);
+        background: rgba(var(--text, 232, 232, 234), 0.04);
+        border-color: rgba(var(--text, 232, 232, 234), 0.18);
         color: var(--color-muted);
     }
 
     @media (hover: hover) {
         .btn-ghost:hover {
             transform: translateY(-2px);
-            background: rgba(var(--text), 0.1);
-            border-color: rgba(var(--text), 0.4);
+            background: rgba(var(--text, 232, 232, 234), 0.1);
+            border-color: rgba(var(--text, 232, 232, 234), 0.4);
             color: var(--color-text);
-            box-shadow: 0 4px 12px rgba(var(--text), 0.08);
+            box-shadow: 0 4px 12px rgba(var(--text, 232, 232, 234), 0.08);
         }
     }
 

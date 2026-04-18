@@ -51,13 +51,17 @@ const HeadingTag = level;
         padding-block: 1.5rem;
     }
 
+    .section-header :is(h1, h2, h3, h4, h5, h6) {
+        animation: none !important;
+    }
+
     .section-badge {
         display: inline-flex;
         align-items: center;
         gap: 0.6rem;
         padding: 0.5rem 1.2rem;
-        background: rgba(var(--accent), 0.05);
-        border: 1px solid rgba(var(--accent), 0.15);
+        background: rgba(var(--accent, 255, 255, 255), 0.05);
+        border: 1px solid rgba(var(--accent, 255, 255, 255), 0.15);
         border-radius: 999px;
         font-family: var(--font-title);
         font-size: 0.8rem;
@@ -135,7 +139,6 @@ const HeadingTag = level;
         }
     }
 
-    /* ── 768px ── */
     @media (max-width: 768px) {
         .section-header {
             gap: 1rem;
@@ -152,7 +155,6 @@ const HeadingTag = level;
         }
     }
 
-    /* ── 600px ── */
     @media (max-width: 600px) {
         .section-header {
             gap: 0.65rem;
@@ -182,7 +184,6 @@ const HeadingTag = level;
         }
     }
 
-    /* ── 480px : badge + lien sur la même ligne, séparateur masqué ── */
     @media (max-width: 480px) {
         .section-header {
             justify-content: space-between;
@@ -216,7 +217,6 @@ const HeadingTag = level;
         }
     }
 
-    /* ── 360px ── */
     @media (max-width: 360px) {
         .section-badge {
             padding: 0.3rem 0.65rem;
