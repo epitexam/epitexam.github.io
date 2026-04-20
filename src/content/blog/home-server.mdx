@@ -1,144 +1,226 @@
 ---
-title: 'Mon Home-server / Bientôt Disponible'
-description: 'Aperçu de mon home serveur : un espace perso pour centraliser, sécuriser et automatiser mes services et données.'
+title: "Home Server : architecture et retour d’expérience d’un développeur"
+description: "Conception d’un home server auto-hébergé pour centraliser mes services, sécuriser mes données et automatiser une infrastructure Linux complète."
 pubDate: '2025-12-23'
+updatedDate: '2026-04-20'
 heroImage: '../../assets/danny-sdt.webp'
-heroImageDescription: "Silhouette d'une personne marchant dans un champ verdoyant et brumeux vers une grange isolée qui se dessine dans le brouillard épais."
-draft: true
-tags: ['linux', 'server', 'home-server', 'podman','hébergement', 'performance', 'accessibilité', 'sécurité']
+draft: false
+tags: [linux, devops, self-hosting, podman, docker, homelab, réseau, sécurité]
 ---
 
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. 
+Avant le COVID, j’avais déjà essayé de monter un home serveur. J’ai fait du distro hopping sans jamais trouver la stabilité. À chaque fois, j’abandonnais, fatigué de tout casser ou de recommencer.
 
-Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. 
+Le déclic est venu d’une panne internet. Plus de YouTube pour ma musique, plus de Google Drive pour mes documents. Une coupure banale, mais qui m’a rappelé l’évidence : **je ne contrôlais rien.**
 
-Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+J’ai donc retenté l’aventure. Base stable, conteneurs rootless, VPN. Pas à pas. Puis sont venus la domotique et, bien plus tard, un serveur de jeu.
 
-<br/>
-## Les bases d’un home-server personnel
-<br/>
+**Cet article raconte ces choix et ce que trois ans de dev m’ont appris.** Pourquoi une infra ennuyeuse mais robuste vaut mieux qu’une veille technologique instable. Et comment, cette fois, le serveur tourne sans que j’aie à prier avant chaque mise à jour.
 
-<br/>
-### 1.1 Objectifs principaux
-<br/>
+---
 
-Centraliser (médias, backups, apps), sécuriser (accès contrôlé, chiffrement), automatiser (tâches récurrentes).  
+## Pourquoi ce projet ?
 
-<br/>
-### 1.2 Contenu et services essentiels
-<br/>
+**Réduire ma dépendance aux services cloud.**
+Pas seulement par pragmatisme : les scandales d’État et d’entreprises, passés ou présents, m’ont aussi éloigné de certaines plateformes. Une panne internet m’a rappelé le reste : je ne contrôlais ni ma musique ni mes documents.
+Je veux des **données accessibles même coupé du monde**, et **hors de portée des abus**.
 
-Stockage fichiers, médias (Jellyfin/Plex), backups, VPN, monitoring, IoT... Liste minimale viable.  
+**Expérimenter une infrastructure Linux complète en conditions réelles.**
+Un serveur qui tourne 24/7, avec des usages concrets (domotique, jeux, fichiers).
 
-<br/>
-### 1.3 Performance et consommation
-<br/>
+**Monter en compétence sur les sujets DevOps.**
+Réseau, conteneurs, sécurité, monitoring. Des bases que je croise en entreprise. Les mettre en pratique sur mon propre matériel.
 
-Optimisation énergie (matériel basse conso), refroidissement, RAID pour fiabilité.  
+**Construire un environnement stable, maintenable et évolutif.**
+Je n’ai plus envie de tout reconstruire à chaque bug. L’objectif : une infra que j’oublie pendant des semaines, mais sur laquelle j’ajoute un service en dix minutes.
 
-<br/> 
-### 1.4 Accessibilité distante
-<br/>
+**Repartir de zéro proprement.**
+Après des années de bricolage : configs foireuses, scripts morts, paquets orphelins. Ce projet m’a forcé à faire le ménage et à documenter.
 
-Accès sécurisé depuis l'extérieur (VPN, reverse proxy).  
+**Disposer d’un bac à sable pour mes projets perso.**
+Capteurs ESP32, automatisations, petits serveurs de jeu… Tout ça a besoin d’un point central fiable. Le home server est devenu cette colonne vertébrale.
 
-<br/>  
-### 1.5 Sécurité de base
-<br/>
+--- 
 
+## Architecture globale
 
-Firewall, mises à jour, isolation conteneurs.
+L’infrastructure repose sur une machine principale hébergeant l’ensemble des services via conteneurs.
 
-<br/>
-## Mon parcours : choix de la distribution Linux
-<br/>
+Flux d’accès :
 
-<br/>
-### 2.1 Les distros testées et pourquoi elles n'ont pas convaincu
-<br/>
+```
+Utilisateur → VPN → Reverse Proxy → Services conteneurisés
+```
 
-Débuts avec Ubuntu Server, puis Debian, Arch, Fedora... Avantages/inconvénients rencontrés.
+Points clés :
+- Accès distant uniquement via VPN
+- Exposition contrôlée des services
+- Isolation des applications via conteneurs rootless
+- Séparation claire entre données et configuration
 
-<br/>
-### 2.2 Choix final et justifications
-<br/>
+---
 
-Distro retenue : stabilité, communauté, compatibilité Podman.
+## Choix techniques
 
-<br/>
-## Préparation et installation
-<br/>
+### Système d’exploitation
 
-<br/>
-### 3.1 Outils clés pour l'installation
-<br/>
+J’ai retenu **Debian 12** pour sa stabilité, sa prévisibilité et son cycle de mise à jour long.
 
-Ventoy : USB multi-boot pour tester distros facilement.  
-GParted : partitionnement précis, gestion disques.  
+Ce choix privilégie :
+- la robustesse en production
+- la simplicité de maintenance
+- la compatibilité large
 
-<br/>  
-### 3.2 Processus d'installation pas à pas
-<br/>
+---
 
-Préparation USB, boot, partitionnement, installation base.  
+### Conteneurisation
 
-<br/>  
-## Architecture matérielle et logicielle
-<br/>
+J’ai choisi **Podman** plutôt que Docker.
 
+Ce choix s’explique par :
+- fonctionnement rootless natif
+- meilleure intégration avec systemd
+- surface d’attaque réduite
+- contrôle plus fin des permissions
 
-<br/>
-### 4.1 Matériel utilisé
-<br/>
+---
 
-Composants (CPU, RAM, stockage, boîtier), raisons choix (conso, prix, évolutivité).  
+### Réseau et accès distant
 
-<br/>  
-### 4.2 Conteneurisation avec Podman
-<br/>
+- VPN : WireGuard / Tailscale selon les besoins
+- Reverse proxy pour centraliser l’accès aux services
+- HTTPS via Let’s Encrypt
 
-Pourquoi Podman (rootless, sécurisé) vs Docker. Exemple configuration.
+Principe clé : **aucun service exposé directement sans contrôle d’accès**
 
-<br/>
-### 4.3 Structure globale
-<br/>
+---
 
-Système de fichiers, réseau, backups automatisés.  
+## Infrastructure matérielle
 
-<br/>  
-## Services hébergés
-<br/>
+Le serveur repose sur une machine basse consommation (type mini-PC / machine recyclée).
 
-Liste détaillée des services (exemples : Nextcloud, Jellyfin, Home Assistant, Pi-hole...).  
-Configurations clés, intégrations.
+Compromis étudiés :
+- performance suffisante pour plusieurs services
+- faible consommation énergétique
+- coût réduit
+- évolutivité via conteneurs
 
-<br/>  
-## Optimisations avancées
-<br/>
+---
 
-<br/>  
-### 6.1 Performance
-<br/>
+## Implémentation
 
-Tuning kernel, ZFS/BTRFS, monitoring.  
+### Mise en place
 
+- Installation de Debian minimal
+- Durcissement initial du système
+- Configuration réseau de base
+- Mise en place de la structure de stockage
 
-<br/>  
-### 6.2 Accessibilité externe
-<br/>
+---
 
-WireGuard/Tailscale, Nginx Proxy Manager, certificats Let's Encrypt.  
+### Organisation des services
 
-<br/>
-### 6.3 Sécurité renforcée
-<br/>
+L’ensemble des services est organisé de manière standardisée :
 
-Fail2Ban, SELinux/AppArmor, audits réguliers.  
+- séparation `config / data / compose`
+- déploiement reproductible
+- utilisation de systemd / Quadlet pour la gestion des services
 
-<br/>
+Objectif : pouvoir reconstruire l’infrastructure facilement.
+
+---
+
+### Exemple concret
+
+```bash
+podman run -d --name service \
+  -v /srv/data:/data:Z \
+  -p 8080:80 \
+  image:latest
+```
+
+---
+
+## Services déployés
+
+Quelques services clés de l’infrastructure :
+
+* **Nextcloud** : stockage et synchronisation de fichiers
+* **Jellyfin** : serveur multimédia personnel
+* **Pi-hole** : filtrage DNS et blocage publicitaire
+* **Home Assistant** : automatisation domotique
+
+Chaque service a été intégré avec une logique de sécurité et d’isolation stricte.
+
+---
+
+## Monitoring
+
+Pour superviser l’état du serveur et des conteneurs, j’ai déployé **Prometheus** et **Grafana**.
+
+- **Prometheus** collecte les métriques système (CPU, RAM, disque, réseau) et les métriques propres à chaque conteneur.
+- **Grafana** visualise ces données via des dashboards personnalisés (alertes, tendances, santé globale).
+
+Cette supervision permet de détecter rapidement des anomalies (saturation mémoire, panne de service, latence anormale) et d’anticiper les montées en charge.
+
+---
+
+## Problèmes rencontrés
+
+Ce projet a surtout été un terrain d’apprentissage.
+
+Exemples de difficultés :
+
+* instabilité de tunnels VPN dans certains cas d’usage
+* gestion des permissions en environnement rootless
+* optimisation des performances disque (I/O)
+
+Chaque problème a été analysé, corrigé et intégré dans une approche plus robuste.
+
+---
+
+## Résultats
+
+* Infrastructure stable et fonctionnelle en continu
+* Déploiement rapide de nouveaux services
+* Centralisation de plusieurs outils personnels
+* Supervision opérationnelle avec alertes Grafana
+* Amélioration nette de ma compréhension des systèmes Linux
+
+---
+
+## Sécurité
+
+Mesures mises en place :
+
+* firewall (nftables / iptables)
+* Fail2Ban pour la protection SSH
+* accès distant uniquement via VPN
+* isolation forte via conteneurs rootless
+
+---
+
+## Ce que j’ai appris
+
+Ce projet m’a permis de renforcer des compétences concrètes :
+
+* administration Linux en environnement réel
+* compréhension réseau (VPN, NAT, reverse proxy)
+* conteneurisation et isolation des services
+* debugging système en conditions réelles
+* structuration d’une petite infrastructure complète
+
+---
+
+## Améliorations futures
+
+* CI/CD pour les déploiements de services
+* sauvegardes externalisées automatisées
+* amélioration de la résilience (HA légère)
+
+---
+
 ## Conclusion
-<br/>
-  
-Bilan : infrastructure fiable, autonome, évolutive.  
-Avantages long terme d'un home-server perso.  
-Perspectives futures (upgrades, nouveaux services).
+
+Ce projet m’a permis de construire une infrastructure complète tout en développant une vision plus pratique des systèmes Linux et des architectures modernes.
+
+Il sert aujourd’hui de base d’expérimentation continue pour des sujets DevOps et systèmes.
