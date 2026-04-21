@@ -18,6 +18,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Install system packages
+        run: |
+          sudo apt update
+          sudo apt install -y curl
+          curl -fsSL https://d2lang.com/install.sh | sh -s --
       - name: Checkout your repository using git
         uses: actions/checkout@v6
       - name: Install, build, and upload your site
