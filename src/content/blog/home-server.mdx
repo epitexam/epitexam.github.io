@@ -1,226 +1,243 @@
 ---
-title: "Home Server : architecture et retour d’expérience d’un développeur"
-description: "Conception d’un home server auto-hébergé pour centraliser mes services, sécuriser mes données et automatiser une infrastructure Linux complète."
-pubDate: '2025-12-23'
-updatedDate: '2026-04-20'
+title: "Home Server : architecture et retour d'expérience d'un développeur"
+description: "Conception d'un home server auto-hébergé pour centraliser mes services, sécuriser mes données et automatiser une infrastructure Linux complète."
+pubDate: '2025-12-01'
+updatedDate: '2026-04-21'
 heroImage: '../../assets/danny-sdt.webp'
 draft: false
-tags: [linux, devops, self-hosting, podman, docker, homelab, réseau, sécurité]
+tags: ['linux', 'devops', 'self-hosting', 'docker-compose', 'docker', 'homelab', 'réseau', 'sécurité']
 ---
 
-Avant le COVID, j’avais déjà essayé de monter un home serveur. J’ai fait du distro hopping sans jamais trouver la stabilité. À chaque fois, j’abandonnais, fatigué de tout casser ou de recommencer.
+Un soir de 2022, ma box tombe. Rien de grave, vingt minutes sans internet.
+Sauf que ces vingt minutes m'ont coupé de ma musique, de mes documents, de mes notes.
 
-Le déclic est venu d’une panne internet. Plus de YouTube pour ma musique, plus de Google Drive pour mes documents. Une coupure banale, mais qui m’a rappelé l’évidence : **je ne contrôlais rien.**
+Tout était chez Google, chez YouTube, chez Dropbox. Je n'avais rien en local.
+Je ne contrôlais rien.
 
-J’ai donc retenté l’aventure. Base stable, conteneurs rootless, VPN. Pas à pas. Puis sont venus la domotique et, bien plus tard, un serveur de jeu.
+Avant le COVID, j'avais déjà tenté l'aventure : distro hopping, configs cassées, nuits à déboguer un paquet orphelin. À chaque fois, j'abandonnais.
 
-**Cet article raconte ces choix et ce que trois ans de dev m’ont appris.** Pourquoi une infra ennuyeuse mais robuste vaut mieux qu’une veille technologique instable. Et comment, cette fois, le serveur tourne sans que j’aie à prier avant chaque mise à jour.
+Cette fois, j'ai posé des contraintes avant de choisir des outils.
+Cet article raconte ce que ça change.
+
+Cet article raconte les choix que j'ai faits, pourquoi je les ai faits, et ce que cette infrastructure m'a vraiment appris.
 
 ---
 
 ## Pourquoi ce projet ?
 
-**Réduire ma dépendance aux services cloud.**
-Pas seulement par pragmatisme : les scandales d’État et d’entreprises, passés ou présents, m’ont aussi éloigné de certaines plateformes. Une panne internet m’a rappelé le reste : je ne contrôlais ni ma musique ni mes documents.
-Je veux des **données accessibles même coupé du monde**, et **hors de portée des abus**.
+La panne internet a été le déclencheur, mais pas l'unique raison. Il y avait aussi une forme de lassitude accumulée vis-à-vis des plateformes cloud. Les scandales de collecte de données, les CGU qui changent du jour au lendemain, la dépendance à des services qu'on ne contrôle pas et qui peuvent disparaître. Je voulais des données accessibles hors ligne, sur du matériel qui m'appartient.
 
-**Expérimenter une infrastructure Linux complète en conditions réelles.**
-Un serveur qui tourne 24/7, avec des usages concrets (domotique, jeux, fichiers).
+Il y avait aussi une ambition plus technique. En entreprise, je croise quotidiennement des notions de réseau, de conteneurs, de sécurité, de monitoring. Les comprendre en lisant de la documentation, c'est une chose. Les mettre en pratique sur une machine qui tourne 24h/24 avec de vrais usages (domotique, fichiers, jeux), c'en est une autre. 
 
-**Monter en compétence sur les sujets DevOps.**
-Réseau, conteneurs, sécurité, monitoring. Des bases que je croise en entreprise. Les mettre en pratique sur mon propre matériel.
+Le home server est devenu mon environnement d'apprentissage en conditions réelles.
 
-**Construire un environnement stable, maintenable et évolutif.**
-Je n’ai plus envie de tout reconstruire à chaque bug. L’objectif : une infra que j’oublie pendant des semaines, mais sur laquelle j’ajoute un service en dix minutes.
+Enfin, j'avais besoin de faire le ménage. Des années de bricolage avaient laissé derrière elles des configs foireuses, des scripts qui ne s'exécutaient plus, des paquets installés pour tester quelque chose un soir et jamais désinstallés. Repartir de zéro proprement, tout documenter, construire quelque chose de maintenable.
 
-**Repartir de zéro proprement.**
-Après des années de bricolage : configs foireuses, scripts morts, paquets orphelins. Ce projet m’a forcé à faire le ménage et à documenter.
-
-**Disposer d’un bac à sable pour mes projets perso.**
-Capteurs ESP32, automatisations, petits serveurs de jeu… Tout ça a besoin d’un point central fiable. Le home server est devenu cette colonne vertébrale.
-
---- 
+---
 
 ## Architecture globale
 
-L’infrastructure repose sur une machine principale hébergeant l’ensemble des services via conteneurs.
+L'infrastructure repose sur une machine unique. Tout accès distant passe d'abord par le VPN, puis par un reverse proxy, avant d'atteindre les services conteneurisés. Aucun port n'est ouvert directement sur Internet saut celui du VPN.
+<br/>
+```d2
+direction: right
 
-Flux d’accès :
+Utilisateur -> VPN: WireGuard
+VPN -> ReverseProxy: réseau interne
 
+ReverseProxy -> Services: HTTP(S)
+
+Services: {
+  Nextcloud
+  Jellyfin
+  HomeAssistant
+  AdGuard
+  Minecraft
+  Mumble
+}
+
+ReverseProxy -> Monitoring: HTTP(S)
+
+Monitoring: {
+  Prometheus
+  Grafana
+  Loki
+}
 ```
-Utilisateur → VPN → Reverse Proxy → Services conteneurisés
+<br/>
+Ce schéma est volontairement simple. Il n'y a pas de haute disponibilité, pas de cluster, pas de réplication automatique. C'est un choix assumé, j'y reviens plus loin.
+
+---
+
+## Le matériel
+
+Le serveur est un **Beelink MINI-S12 Pro**. Un mini-PC à processeur Intel N100, silencieux, compact, et remarquablement sobre en énergie.
+<br/>
+| Composant    | Détail                                    |
+|--------------|-------------------------------------------|
+| CPU          | Intel N100 (4 cœurs, faible consommation) |
+| RAM          | 16 Go                                     |
+| Stockage     | SSD 512 Go (système + données)            |
+| Consommation | ~10–15 W en charge                        |
+<br/>
+
+
+Pas d'ECC, pas de RAID, pas de redondance. Ce n'est pas du matériel de datacenter, et c'est très bien ainsi. Pour une dizaine de conteneurs et quelques utilisateurs simultanés, le N100 ne bronche pas.
+
+La seule limite qui commencera à se faire sentir, c'est le stockage, notamment pour Jellyfin, qui grossit avec la médiathèque. Une évolution matérielle est probable à terme, mais elle n'est pas urgente.
+
+---
+
+## Les choix techniques
+
+### Debian
+
+Le serveur tourne sous **Debian 13**. Stable, prévisible, supportée jusqu'en 2035.
+
+Pendant des années, j'ai utilisé Fedora ou Arch sur mes machines personnelles, convaincu qu'être toujours à la dernière version était une bonne pratique de sécurité.
+
+En réalité, les rolling releases m'ont surtout apporté des régressions inattendues : un noyau qui casse un driver réseau, une mise à jour qui change le comportement d'un service système.
+
+Debian stable est ennuyeuse. C'est exactement ce qu'il faut.
+
+### Docker Compose
+
+J'ai choisi **Docker** avec **Compose**, non pas par ignorance des alternatives, mais parce que c'est l'outillage le plus documenté, le plus suivi, et celui dont la courbe d'apprentissage est la moins abrupte quand on veut aller vite.
+
+Compose rend la déclaration des services lisible en un coup d'œil. Chaque service vit dans son propre répertoire, avec son `docker-compose.yml` et son fichier `.env` pour les secrets. Tout est versionné dans un dépôt Git local. Si la machine crashe demain, un `docker compose up -d` dans chaque répertoire suffit à tout reconstruire.
+
+Je connais les critiques de Docker : le daemon historiquement root, la surface d’attaque, et une gestion des secrets limitée hors Swarm. Je garde un œil sur Podman, qui apporte des réponses intéressantes à une partie de ces enjeux.
+
+Si je repartais de zéro dans un contexte plus sensible, je l'évaluerais sérieusement. Mais pour ce projet, la simplicité l'emporte.
+
+Voici à quoi ressemble un service typique :
+<br/>
+```yaml
+services:
+  nextcloud:
+    image: nextcloud:stable
+    container_name: nextcloud
+    volumes:
+      - /srv/data/nextcloud:/var/www/html/data
+    ports:
+      - "8080:80"
+    restart: unless-stopped
 ```
+<br/>
 
-Points clés :
-- Accès distant uniquement via VPN
-- Exposition contrôlée des services
-- Isolation des applications via conteneurs rootless
-- Séparation claire entre données et configuration
+La configuration est séparée des données persistantes. Les secrets ne sont jamais dans le fichier Compose, ils passent par `.env`. 
 
----
+Le `restart: unless-stopped` assure que le service redémarre automatiquement après un reboot.
+<br/>
+### WireGuard + Caddy
 
-## Choix techniques
+L'accès distant passe par **WireGuard**, avec **wg-easy** pour gérer les pairs sans se battre avec des fichiers de configuration à la main. Aucun service n'est exposé directement. Tout transite par le VPN.
 
-### Système d’exploitation
+Côté reverse proxy, j'ai choisi **Caddy** après avoir longuement hésité avec Traefik. Traefik est excellent sur le papier, mais sa configuration correcte en Docker Compose, labels, middlewares, providers, s'est révélée pénible à déboguer.
 
-J’ai retenu **Debian 12** pour sa stabilité, sa prévisibilité et son cycle de mise à jour long.
+Caddy, lui, génère automatiquement les certificats HTTPS via Let's Encrypt et se configure en quelques dizaines de lignes au total. Je n'y touche presque plus.
 
-Ce choix privilégie :
-- la robustesse en production
-- la simplicité de maintenance
-- la compatibilité large
+**Fail2Ban** complète le dispositif en bloquant les IP qui multiplient les tentatives d'authentification sur SSH et Caddy.
 
----
 
-### Conteneurisation
+<br/>
+```d2
+direction: right
 
-J’ai choisi **Podman** plutôt que Docker.
-
-Ce choix s’explique par :
-- fonctionnement rootless natif
-- meilleure intégration avec systemd
-- surface d’attaque réduite
-- contrôle plus fin des permissions
-
----
-
-### Réseau et accès distant
-
-- VPN : WireGuard / Tailscale selon les besoins
-- Reverse proxy pour centraliser l’accès aux services
-- HTTPS via Let’s Encrypt
-
-Principe clé : **aucun service exposé directement sans contrôle d’accès**
-
----
-
-## Infrastructure matérielle
-
-Le serveur repose sur une machine basse consommation (type mini-PC / machine recyclée).
-
-Compromis étudiés :
-- performance suffisante pour plusieurs services
-- faible consommation énergétique
-- coût réduit
-- évolutivité via conteneurs
-
----
-
-## Implémentation
-
-### Mise en place
-
-- Installation de Debian minimal
-- Durcissement initial du système
-- Configuration réseau de base
-- Mise en place de la structure de stockage
-
----
-
-### Organisation des services
-
-L’ensemble des services est organisé de manière standardisée :
-
-- séparation `config / data / compose`
-- déploiement reproductible
-- utilisation de systemd / Quadlet pour la gestion des services
-
-Objectif : pouvoir reconstruire l’infrastructure facilement.
-
----
-
-### Exemple concret
-
-```bash
-podman run -d --name service \
-  -v /srv/data:/data:Z \
-  -p 8080:80 \
-  image:latest
+Internet -> Fail2Ban: toutes les requêtes
+Fail2Ban -> WireGuard: IP autorisées
+WireGuard -> Caddy: réseau interne
+Caddy -> Nextcloud: :8080
+Caddy -> Jellyfin: :8096
+Caddy -> HomeAssistant: :8123
+Caddy -> "..."
 ```
-
+<br/>
 ---
 
-## Services déployés
+## Les services déployés
 
-Quelques services clés de l’infrastructure :
+Une dizaine de conteneurs tournent en permanence. Voici les principaux :
+<br/>
+| Service            | Rôle                                               |
+|--------------------|----------------------------------------------------|
+| **Nextcloud**      | Stockage et synchronisation de fichiers            |
+| **Jellyfin**       | Serveur multimédia personnel                       |
+| **Home Assistant** | Domotique : capteurs Zigbee, automatisations ESP32 |
+| **AdGuard Home**   | Filtrage DNS, blocage publicitaire sur le réseau   |
+| **Minecraft**      | Serveur de jeu pour quelques amis                  |
+| **Mumble**         | Serveur vocal léger, utilisé en local              |
+<br/>
+Chaque conteneur a ses volumes dédiés, configuration d'un côté, données persistantes de l'autre. Cette isolation garantit qu'un problème sur un service n'affecte pas les autres : redémarrer Jellyfin ne touche pas Nextcloud, mettre à jour Home Assistant ne risque pas de corrompre les données AdGuard.
 
-* **Nextcloud** : stockage et synchronisation de fichiers
-* **Jellyfin** : serveur multimédia personnel
-* **Pi-hole** : filtrage DNS et blocage publicitaire
-* **Home Assistant** : automatisation domotique
+Home Assistant mérite une mention particulière. Ce qui a commencé comme un test avec deux capteurs de CO2 s'est progressivement étendu : capteurs Zigbee, automatisations ESP32 faites maison.
 
-Chaque service a été intégré avec une logique de sécurité et d’isolation stricte.
+C'est le service qui a le plus évolué, et celui dont l'arrêt se remarque le plus vite.
 
 ---
 
 ## Monitoring
 
-Pour superviser l’état du serveur et des conteneurs, j’ai déployé **Prometheus** et **Grafana**.
+Superviser l'infrastructure, c'est la partie qu'on néglige jusqu'au jour où quelque chose tombe sans qu'on sache depuis combien de temps. J'utilise trois outils en stack :
 
-- **Prometheus** collecte les métriques système (CPU, RAM, disque, réseau) et les métriques propres à chaque conteneur.
-- **Grafana** visualise ces données via des dashboards personnalisés (alertes, tendances, santé globale).
+**Prometheus** collecte les métriques système et conteneurs. CPU, RAM, disque, réseau, état des services. Il scrape les exporters et stocke les séries temporelles localement.
 
-Cette supervision permet de détecter rapidement des anomalies (saturation mémoire, panne de service, latence anormale) et d’anticiper les montées en charge.
+**Grafana** consomme ces métriques et les affiche dans des dashboards personnalisés.
 
----
+**Loki** agrège les logs de l'ensemble des conteneurs. C'est surtout utile pour le serveur Minecraft. Retrouver la cause d'un crash ou d'une lenteur en quelques secondes plutôt qu'en épluchant des fichiers `.log` à la main.
 
-## Problèmes rencontrés
+Ce trio n'est pas léger à mettre en place, mais une fois opérationnel, il change complètement la façon dont on interagit avec l'infrastructure. 
 
-Ce projet a surtout été un terrain d’apprentissage.
-
-Exemples de difficultés :
-
-* instabilité de tunnels VPN dans certains cas d’usage
-* gestion des permissions en environnement rootless
-* optimisation des performances disque (I/O)
-
-Chaque problème a été analysé, corrigé et intégré dans une approche plus robuste.
+On passe d'une gestion réactive ("quelque chose est cassé, qu'est-ce que c'est ?") à une gestion proactive ("le disque est à 80 %, il faut nettoyer avant la semaine prochaine").
 
 ---
 
-## Résultats
+## Ce que j'ai écarté et pourquoi
 
-* Infrastructure stable et fonctionnelle en continu
-* Déploiement rapide de nouveaux services
-* Centralisation de plusieurs outils personnels
-* Supervision opérationnelle avec alertes Grafana
-* Amélioration nette de ma compréhension des systèmes Linux
+Avec un seul serveur et une dizaine de conteneurs, la tentation de surcharger la stack est réelle. Voici ce que j'ai consciemment mis de côté :
 
----
+**Kubernetes** : K3s, K8s, peu importe la déclinaison. L'orchestration de pods, la gestion du réseau overlay, les ConfigMaps, les Secrets Kubernetes... tout ça a du sens quand on gère des dizaines de services sur plusieurs nœuds. Pour un serveur unique, c'est ajouter dix couches de complexité pour résoudre des problèmes qu'on n'a pas. Un `docker compose up` suffit.
 
-## Sécurité
+**Ansible, Puppet, Chef** : l'automatisation de configuration est séduisante sur le papier. En pratique, pour une seule machine, des scripts bash bien commentés et des services systemd font exactement le même travail sans la surcharge cognitive. J'expérimente Ansible en parallèle pour monter en compétence, mais je ne l'utilise pas en production ici.
 
-Mesures mises en place :
+**Traefik** : je l'ai mentionné plus haut. Excellent outil, mais Caddy résout le même problème avec moins de configuration.
 
-* firewall (nftables / iptables)
-* Fail2Ban pour la protection SSH
-* accès distant uniquement via VPN
-* isolation forte via conteneurs rootless
+Chaque outil supplémentaire est une chose à maintenir, à mettre à jour, à déboguer. Un home server qu'on oublie pendant trois semaines et qui tourne toujours est bien plus précieux qu'une stack impressionnante qui demande une attention constante.
 
 ---
 
-## Ce que j’ai appris
+## Ce que j'envisage pour la suite
 
-Ce projet m’a permis de renforcer des compétences concrètes :
+Rien d'urgent, mais quelques pistes que je garde en tête :
+<br/>
+| Domaine                | Piste envisagée                                                                              |
+|------------------------|----------------------------------------------------------------------------------------------|
+| OS                     | Migrer vers **NixOS** pour déclarer tout le système de manière reproductible                 |
+| Sauvegardes            | Mettre en place des sauvegardes externalisées avec **restic** ou **Borg** vers un stockage distant |
+| CI/CD                  | Automatiser les déploiements via Forgejo Actions ou GitHub Actions                           |
+| Résilience             | Ajouter une réplication des volumes critiques et un basculement manuel documenté             |
+| Infrastructure as code | Expérimenter **Terraform** pour décrire les conteneurs, réseaux et volumes                   |
+<br/>
+NixOS est probablement la piste qui m'intéresse le plus. 
 
-* administration Linux en environnement réel
-* compréhension réseau (VPN, NAT, reverse proxy)
-* conteneurisation et isolation des services
-* debugging système en conditions réelles
-* structuration d’une petite infrastructure complète
-
----
-
-## Améliorations futures
-
-* CI/CD pour les déploiements de services
-* sauvegardes externalisées automatisées
-* amélioration de la résilience (HA légère)
+L'idée de décrire l'intégralité du système dans un fichier versionné et de pouvoir rejouer cette configuration sur n'importe quelle machine est exactement dans la continuité de ce que j'ai construit ici.
 
 ---
 
-## Conclusion
+## Ce que trois ans m'ont appris
 
-Ce projet m’a permis de construire une infrastructure complète tout en développant une vision plus pratique des systèmes Linux et des architectures modernes.
+Les choix ennuyeux sont souvent les bons.
 
-Il sert aujourd’hui de base d’expérimentation continue pour des sujets DevOps et systèmes.
+Debian plutôt qu'Arch. Docker plutôt que Kubernetes. Caddy plutôt que Traefik.
+
+À chaque fois, j'ai choisi la solution qui demande le moins d'attention quotidienne et à chaque fois, c'était la bonne décision.
+
+La documentation est le vrai produit.
+
+Le code, les configs, les scripts : tout ça peut se reconstruire. Ce qui prend du temps, c'est de se souvenir *pourquoi* on a fait tel choix six mois plus tôt.
+
+Aujourd'hui, chaque service a son propre `README.md` qui explique l'installation, les dépendances, et les pièges connus.
+
+Et j'ai appris qu'un home server n'est jamais vraiment "terminé" mais qu'il peut atteindre un état où on n'a plus besoin de s'en préoccuper en permanence.
+
+La prochaine panne internet peut venir. Ma musique jouera quand même.
