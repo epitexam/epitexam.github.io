@@ -9,16 +9,16 @@ import Header from "../components/Header.astro";
 type Props = CollectionEntry<"blog">["data"];
 
 const {
-	title,
-	description,
-	pubDate,
-	updatedDate,
-	heroImage,
-	heroImageDescription,
+    title,
+    description,
+    pubDate,
+    updatedDate,
+    heroImage,
+    heroImageDescription,
 } = Astro.props;
 ---
 
-
+<!doctype html>
 <html lang="fr">
     <head>
         <BaseHead
@@ -27,122 +27,6 @@ const {
             image={heroImage}
             ImageDescription={heroImageDescription}
         />
-        <style>
-            .blog-post-layout {
-                width: 100%;
-                margin-top: clamp(200px, 35vh, 420px);
-                margin-bottom: 0;
-                position: relative;
-            }
-
-            .blog-post-layout :is(h1, h2, h3, h4, h5, h6) {
-                animation: none !important;
-            }
-
-            .hero-background {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 65vh;
-                overflow: hidden;
-                z-index: -1;
-                pointer-events: none;
-            }
-
-            .hero-img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                mask-image: linear-gradient(
-                    to bottom,
-                    black 0%,
-                    black 30%,
-                    transparent 100%
-                );
-                -webkit-mask-image: linear-gradient(
-                    to bottom,
-                    black 0%,
-                    black 30%,
-                    transparent 100%
-                );
-                filter: brightness(0.7);
-                opacity: 0.8;
-            }
-
-            .prose {
-                max-width: 970px;
-                width: 100%;
-                margin: auto;
-                padding: 1em 0;
-                color: var(--color-text);
-                line-height: 1.7;
-            }
-
-            .title {
-                margin-bottom: 2em;
-                padding: 1em 0;
-                text-align: center;
-                text-shadow: var(--shadow-strong);
-            }
-
-            .title h1 {
-                margin: 0 0 0.5em 0;
-                color: var(--color-text);
-                font-size: 3em;
-                line-height: 1.1;
-            }
-
-            .date {
-                margin-bottom: 0.5em;
-                color: rgba(var(--text, 232, 232, 234), 0.9);
-                font-size: 1.1em;
-                font-weight: 500;
-                text-shadow: var(--shadow-soft);
-            }
-
-            .last-updated-on {
-                font-style: italic;
-                font-size: 0.8em;
-                color: rgba(var(--text, 232, 232, 234), 0.8);
-            }
-
-            hr {
-                border: none;
-                height: 1px;
-                background: linear-gradient(
-                    to right,
-                    transparent,
-                    rgba(var(--accent, 255, 255, 255), 0.5),
-                    transparent
-                );
-                margin: 2em auto;
-                max-width: 150px;
-            }
-
-            @media (max-width: 768px) {
-                .hero-background {
-                    height: 50vh;
-                }
-
-                .blog-post-layout {
-                    margin-top: clamp(150px, 25vh, 300px);
-                }
-
-                .title h1 {
-                    font-size: 2em;
-                }
-            }
-
-            @media (prefers-reduced-motion: reduce) {
-                .hero-background,
-                .blog-post-layout {
-                    animation: none;
-                    opacity: 1;
-                    transform: none;
-                }
-            }
-        </style>
     </head>
 
     <body>
@@ -150,7 +34,7 @@ const {
 
         {
             heroImage && (
-                <div class="hero-background animate-fadeIn">
+                <div class="hero-background">
                     <Image
                         src={heroImage}
                         alt={heroImageDescription ?? ""}
@@ -165,7 +49,7 @@ const {
             )
         }
 
-        <main class="blog-post-layout animate-fadeIn">
+        <main class="blog-post-layout">
             <article>
                 <div class="prose">
                     <div class="title">
@@ -187,6 +71,133 @@ const {
                 </div>
             </article>
         </main>
+
         <Footer />
     </body>
 </html>
+
+<style>
+    .blog-post-layout {
+        width: 100%;
+        margin-top: clamp(200px, 35vh, 420px);
+        margin-bottom: 0;
+        position: relative;
+    }
+
+    .title :is(h1, h2, h3, h4, h5, h6),
+    .prose :is(h2, h3, h4, h5, h6) {
+        animation: none;
+    }
+
+    .hero-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 65vh;
+        overflow: hidden;
+        z-index: -1;
+        pointer-events: none;
+    }
+
+    .hero-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        mask-image: linear-gradient(
+            to bottom,
+            black 0%,
+            black 30%,
+            transparent 100%
+        );
+        -webkit-mask-image: linear-gradient(
+            to bottom,
+            black 0%,
+            black 30%,
+            transparent 100%
+        );
+        filter: brightness(0.7);
+        opacity: 0.8;
+    }
+
+    .prose {
+        max-width: 970px;
+        width: 100%;
+        margin-inline: auto;
+        padding-block: 1em;
+        padding-inline: var(--content-padding);
+        color: var(--color-text);
+        line-height: 1.7;
+        overflow-x: hidden;
+    }
+
+    .title {
+        margin-bottom: 2em;
+        padding: 1em 0;
+        text-align: center;
+        text-shadow: var(--shadow-strong);
+    }
+
+    .title h1 {
+        margin: 0 0 0.5em 0;
+        color: var(--color-text);
+        font-size: 3em;
+        line-height: 1.1;
+    }
+
+    .date {
+        margin-bottom: 0.5em;
+        color: var(--color-text);
+        font-size: 1.1em;
+        font-weight: 500;
+        text-shadow: var(--shadow-soft);
+    }
+
+    .last-updated-on {
+        font-style: italic;
+        font-size: 0.8em;
+        color: var(--color-muted);
+    }
+
+    hr {
+        border: none;
+        height: 1px;
+        background: linear-gradient(
+            to right,
+            transparent,
+            rgba(var(--accent), 0.5),
+            transparent
+        );
+        margin: 2em auto;
+        max-width: 150px;
+    }
+
+    /* ── Breakpoints ─────────────────────────────────────────── */
+    @media (max-width: 768px) {
+        .hero-background {
+            height: 50vh;
+        }
+
+        .blog-post-layout {
+            margin-top: clamp(150px, 25vh, 300px);
+        }
+
+        .title h1 {
+            font-size: 2em;
+        }
+
+        .prose {
+            padding-inline: var(--content-padding-mobile);
+        }
+    }
+
+    /* ── Reduced motion ──────────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+        .hero-background,
+        .blog-post-layout {
+            animation: none;
+            opacity: 1;
+            transform: none;
+        }
+    }
+</style>

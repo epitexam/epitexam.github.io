@@ -17,7 +17,7 @@ const isExact = pathname === href || pathname === href + "/";
 	aria-current={isActive ? "page" : undefined}
 	{...attrs}
 >
-	<span class="content"><slot /></span>
+	<slot />
 </a>
 
 <style>
@@ -25,15 +25,13 @@ const isExact = pathname === href || pathname === href + "/";
 		display: inline-flex;
 		align-items: center;
 		text-decoration: none;
-		color: rgba(var(--text, 232, 232, 234), 0.72);
+		color: var(--color-muted);
 		font-family: var(--font-title);
 		font-size: 0.9rem;
 		text-transform: uppercase;
 		letter-spacing: 0.05em;
 		position: relative;
-		transition:
-			color var(--duration-fast) ease,
-			opacity var(--duration-fast) ease;
+		transition: color var(--duration-fast) ease;
 	}
 
 	@media (min-width: 769px) {
@@ -53,14 +51,14 @@ const isExact = pathname === href || pathname === href + "/";
 		}
 
 		a.active::before {
-			content: ">";
+			content: ">" / "";
 			margin-right: 0.4rem;
 			color: var(--color-accent);
 			opacity: 0.8;
 		}
 
 		a.active::after {
-			content: "<";
+			content: "<" / "";
 			margin-left: 0.4rem;
 			color: var(--color-accent);
 			opacity: 0.8;
@@ -69,6 +67,7 @@ const isExact = pathname === href || pathname === href + "/";
 
 	@media (max-width: 768px) {
 		a {
+			color: var(--color-text);
 			min-height: 44px;
 			padding: 0.5rem 0.25rem;
 			font-size: 1rem;
@@ -80,7 +79,7 @@ const isExact = pathname === href || pathname === href + "/";
 		}
 
 		a.active::after {
-			content: "";
+			content: "" / "";
 			position: absolute;
 			bottom: 0;
 			left: 0;
@@ -91,9 +90,9 @@ const isExact = pathname === href || pathname === href + "/";
 		}
 	}
 
-	@media (prefers-color-scheme: light) {
+	@media (prefers-reduced-motion: reduce) {
 		a {
-			color: rgba(var(--text, 14, 14, 16), 0.85);
+			transition: none;
 		}
 	}
 </style>

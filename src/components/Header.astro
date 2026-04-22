@@ -75,6 +75,7 @@ const navLinks = [
 		class="mobile-menu"
 		aria-label="Navigation mobile"
 		aria-hidden="true"
+		inert
 	>
 		{
 			navLinks.map(({ href, label }) => (
@@ -87,62 +88,82 @@ const navLinks = [
 </header>
 
 <script>
-	(function () {
-		const toggle = document.getElementById("menu-toggle");
-		const menu = document.getElementById("mobile-menu");
+	const toggle = document.getElementById(
+		"menu-toggle",
+	) as HTMLButtonElement | null;
+	const menu = document.getElementById("mobile-menu") as HTMLElement | null;
+	const header = document.querySelector<HTMLElement>(".site-header");
 
-		if (!toggle || !menu) return;
-		if (toggle.hasAttribute("data-menu-initialized")) return;
-		toggle.setAttribute("data-menu-initialized", "true");
+	if (!toggle || !menu || !header)
+		throw new Error("Éléments du menu introuvables.");
+	if (toggle.hasAttribute("data-menu-initialized"))
+		throw new Error("Déjà initialisé.");
+	toggle.setAttribute("data-menu-initialized", "true");
 
-		const isOpen = () => toggle.getAttribute("aria-expanded") === "true";
+	const isOpen = () => toggle.getAttribute("aria-expanded") === "true";
 
-		const open = () => {
-			toggle.setAttribute("aria-expanded", "true");
-			toggle.setAttribute("aria-label", "Fermer le menu");
-			menu.setAttribute("aria-hidden", "false");
-			menu.classList.add("is-open");
-		};
+	const open = () => {
+		menu.style.maxHeight = menu.scrollHeight + "px";
+		toggle.setAttribute("aria-expanded", "true");
+		toggle.setAttribute("aria-label", "Fermer le menu");
+		menu.setAttribute("aria-hidden", "false");
+		menu.removeAttribute("inert");
+		menu.classList.add("is-open");
+		header.classList.add("menu-is-open");
+	};
 
-		const close = () => {
-			toggle.setAttribute("aria-expanded", "false");
-			toggle.setAttribute("aria-label", "Ouvrir le menu");
-			menu.setAttribute("aria-hidden", "true");
-			menu.classList.remove("is-open");
-		};
+	const close = () => {
+		menu.style.maxHeight = "0px";
+		toggle.setAttribute("aria-expanded", "false");
+		toggle.setAttribute("aria-label", "Ouvrir le menu");
+		menu.setAttribute("aria-hidden", "true");
+		menu.setAttribute("inert", "");
+		menu.classList.remove("is-open");
+		header.classList.remove("menu-is-open");
+	};
 
-		const handleToggleClick = (e: MouseEvent) => {
-			e.stopPropagation();
-			isOpen() ? close() : open();
-		};
-		const handleLinkClick = () => close();
-		const mediaQuery = window.matchMedia("(min-width: 769px)");
-		const handleMediaChange = (e: MediaQueryListEvent) => {
-			if (e.matches) close();
-		};
+	const handleToggleClick = (e: MouseEvent) => {
+		e.stopPropagation();
+		isOpen() ? close() : open();
+	};
 
-		toggle.addEventListener("click", handleToggleClick);
-		menu.querySelectorAll("a").forEach((link) =>
-			link.addEventListener("click", handleLinkClick),
-		);
-		mediaQuery.addEventListener("change", handleMediaChange);
+	const handleLinkClick = () => close();
 
-		window.addEventListener(
-			"astro:before-swap",
-			() => {
-				toggle.removeEventListener("click", handleToggleClick);
-				menu.querySelectorAll("a").forEach((link) =>
-					link.removeEventListener("click", handleLinkClick),
-				);
-				mediaQuery.removeEventListener("change", handleMediaChange);
-				toggle.removeAttribute("data-menu-initialized");
-			},
-			{ once: true },
-		);
-	})();
+	const handleOutsideClick = (e: MouseEvent) => {
+		const target = e.target as Node;
+		if (isOpen() && !menu.contains(target) && !toggle.contains(target))
+			close();
+	};
+
+	const mediaQuery = window.matchMedia("(min-width: 769px)");
+	const handleMediaChange = (e: MediaQueryListEvent) => {
+		if (e.matches) close();
+	};
+
+	const menuLinks = [...menu.querySelectorAll("a")];
+
+	toggle.addEventListener("click", handleToggleClick);
+	menuLinks.forEach((l) => l.addEventListener("click", handleLinkClick));
+	document.addEventListener("click", handleOutsideClick);
+	mediaQuery.addEventListener("change", handleMediaChange);
+
+	window.addEventListener(
+		"astro:before-swap",
+		() => {
+			toggle.removeEventListener("click", handleToggleClick);
+			menuLinks.forEach((l) =>
+				l.removeEventListener("click", handleLinkClick),
+			);
+			document.removeEventListener("click", handleOutsideClick);
+			mediaQuery.removeEventListener("change", handleMediaChange);
+			toggle.removeAttribute("data-menu-initialized");
+		},
+		{ once: true },
+	);
 </script>
 
 <style>
+	/* ── Structure ───────────────────────────────────────────── */
 	.site-header {
 		position: fixed;
 		top: 0;
@@ -153,17 +174,74 @@ const navLinks = [
 		border-bottom: 1px solid var(--color-border);
 	}
 
+	/* ── Halo ────────────────────────────────────────────────── */
+	/*
+	 * Uniquement en dark mode.
+	 * En light mode : --accent = rgb(14,14,16) → le gradient donnerait
+	 * une tache sombre sous la barre, effet inverse de celui voulu.
+	 * On masque donc dans les deux cas où ça ne fonctionnerait pas.
+	 * Transition sur --duration-fast (0.2s) du design system.
+	 */
+	.site-header::after {
+		content: "";
+		position: absolute;
+		bottom: -28px;
+		left: 50%;
+		transform: translateX(-50%);
+		width: 80%;
+		max-width: 700px;
+		height: 28px;
+		background: radial-gradient(
+			ellipse at center top,
+			rgba(var(--accent), 0.18) 0%,
+			transparent 75%
+		);
+		pointer-events: none;
+		z-index: -1;
+		transition: opacity var(--duration-fast) ease;
+	}
+
+	.site-header.menu-is-open::after {
+		opacity: 0;
+	}
+
+	@media (max-width: 768px) {
+		.site-header::after {
+			display: none;
+		}
+	}
+
+	@media (prefers-color-scheme: light) {
+		.site-header::after {
+			display: none;
+		}
+	}
+
+	/* ── Header inner ────────────────────────────────────────── */
+	/*
+	 * Avant : max-width: 960px, padding: 0 1.25rem
+	 * Après : utilise les tokens --max-width (1000px) et
+	 * --content-padding (1.5rem) / --content-padding-mobile (1rem)
+	 * définis dans global.css — cohérence avec le layout de <main>.
+	 */
 	.header-inner {
-		height: 60px;
-		max-width: 960px;
-		margin: 0 auto;
-		padding: 0 1.25rem;
+		height: var(--header-height);
+		max-width: var(--max-width);
+		margin-inline: auto;
+		padding-inline: var(--content-padding);
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: 1rem;
 	}
 
+	@media (max-width: 768px) {
+		.header-inner {
+			padding-inline: var(--content-padding-mobile);
+		}
+	}
+
+	/* ── Brand ───────────────────────────────────────────────── */
 	.brand-link {
 		font-family: var(--font-title);
 		font-weight: 700;
@@ -178,12 +256,14 @@ const navLinks = [
 		color: var(--color-accent);
 	}
 
+	/* ── Desktop nav ─────────────────────────────────────────── */
 	.desktop-nav {
 		display: flex;
 		align-items: center;
 		gap: 1.75rem;
 	}
 
+	/* ── Right cluster ───────────────────────────────────────── */
 	.header-right {
 		display: flex;
 		align-items: center;
@@ -191,10 +271,15 @@ const navLinks = [
 		flex-shrink: 0;
 	}
 
+	/*
+	 * Avant : color: var(--color-text) + opacity: 0.72
+	 * Après : --color-muted = rgba(var(--text), 0.68) dark / 0.65 light
+	 * Token officiel pour le contenu secondaire, gère dark/light nativement.
+	 */
 	.social-link {
 		display: flex;
 		align-items: center;
-		color: rgba(var(--text, 232, 232, 234), 0.85);
+		color: var(--color-muted);
 		transition: color var(--duration-fast) ease;
 	}
 
@@ -202,56 +287,90 @@ const navLinks = [
 		color: var(--color-accent);
 	}
 
-	@media (prefers-color-scheme: light) {
-		.brand-link {
-			color: var(--color-text);
-		}
-
-		.social-link {
-			color: var(--color-text);
-		}
-
-		.brand-link:hover,
-		.social-link:hover {
-			color: var(--color-accent);
-		}
-	}
-
+	/* ── Hamburger ───────────────────────────────────────────── */
 	.menu-toggle {
 		display: none;
 		align-items: center;
 		justify-content: center;
-		width: 36px;
-		height: 36px;
+		width: 44px;
+		height: 44px;
 		padding: 0;
 		background: none;
-		border: 1px solid rgba(var(--accent, 255, 255, 255), 0.25);
+		/*
+		 * Avant : rgba(var(--accent), 0.25)
+		 * Après : --tint-20 = rgba(var(--text), 0.14)
+		 * Token le plus proche pour une bordure légère non-interactive.
+		 */
+		border: 1px solid var(--tint-20);
 		border-radius: var(--radius-sm);
 		color: var(--color-accent);
 		cursor: pointer;
 		-webkit-tap-highlight-color: transparent;
+		transition:
+			background var(--duration-fast) ease,
+			border-color var(--duration-fast) ease;
 	}
 
+	.menu-toggle:hover {
+		background: var(--tint-10); /* rgba(var(--text), 0.08) */
+		border-color: var(--tint-40); /* rgba(var(--text), 0.30) */
+	}
+
+	/*
+	 * :focus-visible est déjà défini globalement dans global.css
+	 * avec outline + box-shadow. Pas besoin de le redéclarer ici.
+	 */
+
+	/* ── Mobile menu ─────────────────────────────────────────── */
+	/*
+	 * Avant : max-height: 400px arbitraire, fallback 220ms
+	 * Après : max-height assigné via JS (scrollHeight), durées via tokens.
+	 * --ease-spring (cubic-bezier(0.16, 1, 0.3, 1)) sur max-height
+	 * pour un déroulement avec ressort, cohérent avec les autres animations.
+	 */
 	.mobile-menu {
 		display: none;
 		flex-direction: column;
 		background: var(--color-bg);
-		border-top: 1px solid rgba(var(--text, 232, 232, 234), 0.15);
+		border-top: 1px solid var(--color-border);
+		max-height: 0;
+		overflow: hidden;
+		opacity: 0;
+		transition:
+			max-height var(--duration-base) var(--ease-spring),
+			opacity var(--duration-fast) ease;
 	}
 
 	.mobile-menu.is-open {
-		display: flex;
+		opacity: 1;
+		/*
+		 * Avant : box-shadow: 0 8px 24px rgba(0,0,0,0.12) hardcodé
+		 * Après : --shadow-soft adapté dark/light dans global.css
+		 *   dark  → 0 8px 24px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3)
+		 *   light → 0 2px 8px rgba(0,0,0,0.05), 0 6px 16px rgba(0,0,0,0.04)
+		 */
+		box-shadow: var(--shadow-soft);
 	}
 
+	/*
+	 * :global nécessaire — les <a> sont générés par HeaderLink (scoped Astro).
+	 * padding-inline aligné sur --content-padding-mobile pour cohérence
+	 * avec le padding global des pages sur mobile.
+	 */
 	.mobile-menu > :global(a),
 	:global(a.mobile-link) {
 		display: block;
-		padding: 0.85rem 1.5rem;
+		padding: 0.85rem var(--content-padding-mobile);
 		font-size: 1rem;
-		border-bottom: 1px solid rgba(var(--accent, 255, 255, 255), 0.06);
+		/*
+		 * Avant : rgba(var(--accent), 0.06)
+		 * Après : --tint-05 = rgba(var(--text), 0.04) — séparateur minimal
+		 */
+		border-bottom: 1px solid var(--tint-05);
 		color: var(--color-text);
 	}
 
+	/* ── Breakpoints ─────────────────────────────────────────── */
 	@media (max-width: 768px) {
 		.desktop-nav {
 			display: none;
@@ -259,11 +378,19 @@ const navLinks = [
 		.menu-toggle {
 			display: flex;
 		}
+		.mobile-menu {
+			display: flex;
+		}
 	}
 
+	/* ── Reduced motion ──────────────────────────────────────── */
+	/*
+	 * global.css couvre déjà * { transition-duration: 0.01ms !important }
+	 * via prefers-reduced-motion. On le répète ici uniquement pour clarté
+	 * et pour que le composant reste autonome si global.css évolue.
+	 */
 	@media (prefers-reduced-motion: reduce) {
-		.brand-link,
-		.social-link {
+		.mobile-menu {
 			transition: none;
 		}
 	}

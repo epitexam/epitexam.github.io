@@ -224,7 +224,7 @@ const jsonLd = {
     .section-count {
         font-family: var(--font-code);
         font-size: 0.75rem;
-        color: rgba(var(--text, 232, 232, 234), 0.85);
+        color: rgba(var(--text), 0.85);
         letter-spacing: 0.02em;
     }
 
@@ -254,7 +254,7 @@ const jsonLd = {
         opacity: 0.6;
     }
     .legend-dot.exploring {
-        background: rgba(var(--text, 232, 232, 234), 0.5);
+        background: rgba(var(--text), 0.5);
         opacity: 0.3;
     }
 
@@ -266,7 +266,6 @@ const jsonLd = {
 
     .tabs-scroll-wrapper {
         overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
         padding-bottom: 2px;
         margin-inline: calc(-1 * var(--content-padding-mobile));
@@ -305,15 +304,17 @@ const jsonLd = {
             box-shadow var(--duration-fast) ease;
     }
 
-    .tab-btn:hover:not(.active) {
-        color: var(--color-text);
-        border-color: rgba(var(--accent, 255, 255, 255), 0.3);
-        background: rgba(var(--accent, 255, 255, 255), 0.04);
+    @media (hover: hover) {
+        .tab-btn:hover:not(.active) {
+            color: var(--color-text);
+            border-color: rgba(var(--accent), 0.3);
+            background: rgba(var(--accent), 0.04);
+        }
     }
 
     .tab-btn.active {
-        background: rgba(var(--accent, 255, 255, 255), 0.1);
-        border-color: rgba(var(--accent, 255, 255, 255), 0.4);
+        background: rgba(var(--accent), 0.1);
+        border-color: rgba(var(--accent), 0.4);
         color: var(--color-accent);
         box-shadow: var(--glow);
     }

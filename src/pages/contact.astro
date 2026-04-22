@@ -116,8 +116,7 @@ const success = Astro.url.searchParams.get("success") === "true";
                             placeholder="Décrivez votre projet, votre question…"
                             class="input-field textarea-field"
                             minlength="20"
-                            maxlength="2000"
-                            spellcheck="true"></textarea>
+                            maxlength="2000"></textarea>
                         <div class="textarea-meta">
                             <span class="field-hint">Markdown supporté.</span>
                             <span class="char-counter">
@@ -182,17 +181,14 @@ const success = Astro.url.searchParams.get("success") === "true";
 </html>
 
 <style>
-    :root {
-        --color-error: 210, 55, 55;
-    }
-
     .contact-main {
+        --warn-rgb: 220, 140, 40;
         justify-content: center;
         align-items: center;
     }
 
-    .contact-main :is(h1, h2, h3, h4, h5, h6) {
-        animation: none !important;
+    .contact-main .contact-header :is(h1, h2, h3, h4, h5, h6) {
+        animation: none;
     }
 
     .contact-wrapper {
@@ -236,15 +232,15 @@ const success = Astro.url.searchParams.get("success") === "true";
     }
 
     .success-notification {
-        background: rgba(var(--accent, 255, 255, 255), 0.08);
-        border: 1px solid rgba(var(--accent, 255, 255, 255), 0.28);
+        background: rgba(var(--accent), 0.08);
+        border: 1px solid rgba(var(--accent), 0.28);
         color: var(--color-accent);
     }
 
     .error-notification {
-        background: rgba(var(--color-error), 0.08);
-        border: 1px solid rgba(var(--color-error), 0.28);
-        color: rgb(var(--color-error));
+        background: rgba(var(--color-error-rgb), 0.08);
+        border: 1px solid rgba(var(--color-error-rgb), 0.28);
+        color: rgb(var(--color-error-rgb));
     }
 
     .notification.hidden {
@@ -268,15 +264,15 @@ const success = Astro.url.searchParams.get("success") === "true";
         gap: 1.75rem;
         background: linear-gradient(
             145deg,
-            rgba(var(--bg, 9, 9, 9), 1) 0%,
-            rgba(var(--accent, 255, 255, 255), 0.04) 100%
+            rgb(var(--bg)) 0%,
+            rgba(var(--accent), 0.04) 100%
         );
         border: 1px solid var(--color-border);
         border-radius: var(--radius-md);
         padding: 2rem;
         box-shadow:
             var(--shadow-soft),
-            inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            inset 0 1px 0 var(--tint-05);
     }
 
     .honeypot {
@@ -299,9 +295,8 @@ const success = Astro.url.searchParams.get("success") === "true";
 
     .input-field {
         width: 100%;
-        box-sizing: border-box;
-        background: rgba(var(--accent, 255, 255, 255), 0.03);
-        border: 1px solid rgba(var(--accent, 255, 255, 255), 0.15);
+        background: rgba(var(--accent), 0.03);
+        border: 1px solid rgba(var(--accent), 0.15);
         border-radius: var(--radius-sm);
         padding: 0.75rem 1rem;
         color: var(--color-text);
@@ -315,14 +310,14 @@ const success = Astro.url.searchParams.get("success") === "true";
     }
 
     .input-field::placeholder {
-        color: rgba(var(--text, 232, 232, 234), 0.22);
+        color: rgba(var(--color-text-rgb), 0.22);
     }
 
     .input-field:focus {
         outline: none;
-        border-color: rgba(var(--accent, 255, 255, 255), 0.55);
-        background: rgba(var(--accent, 255, 255, 255), 0.05);
-        box-shadow: 0 0 0 3px rgba(var(--accent, 255, 255, 255), 0.1);
+        border-color: rgba(var(--accent), 0.55);
+        background: rgba(var(--accent), 0.05);
+        box-shadow: 0 0 0 3px rgba(var(--accent), 0.1);
     }
 
     .textarea-field {
@@ -354,10 +349,10 @@ const success = Astro.url.searchParams.get("success") === "true";
     }
 
     .char-counter.near-limit {
-        color: rgb(220, 140, 40);
+        color: rgb(var(--warn-rgb));
     }
     .char-counter.at-limit {
-        color: rgb(var(--color-error));
+        color: rgb(var(--color-error-rgb));
     }
 
     .consent-row {
@@ -365,8 +360,8 @@ const success = Astro.url.searchParams.get("success") === "true";
         align-items: flex-start;
         gap: 0.75rem;
         padding: 0.85rem 1rem;
-        background: rgba(var(--accent, 255, 255, 255), 0.03);
-        border: 1px solid rgba(var(--accent, 255, 255, 255), 0.1);
+        background: rgba(var(--accent), 0.03);
+        border: 1px solid rgba(var(--accent), 0.1);
         border-radius: var(--radius-sm);
     }
 
@@ -410,13 +405,14 @@ const success = Astro.url.searchParams.get("success") === "true";
 
     .submit-btn:hover:not(:disabled) {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(var(--accent, 255, 255, 255), 0.35);
+        box-shadow: 0 6px 20px rgba(var(--accent), 0.35);
         filter: brightness(1.06);
     }
 
     .submit-btn:active:not(:disabled) {
         transform: translateY(0);
     }
+
     .submit-btn:disabled {
         opacity: 0.55;
         cursor: not-allowed;
@@ -480,80 +476,106 @@ const success = Astro.url.searchParams.get("success") === "true";
 </style>
 
 <script>
-    (function () {
-        const form = document.getElementById(
-            "contactForm",
-        ) as HTMLFormElement | null;
-        const textarea = document.getElementById(
-            "message",
-        ) as HTMLTextAreaElement | null;
-        const charCountEl = document.getElementById("charCount");
-        const charCounter = document.querySelector(".char-counter");
-        const submitBtn = document.getElementById(
-            "submitBtn",
-        ) as HTMLButtonElement | null;
-        const submitLabel = document.getElementById("submitLabel");
-        const submitArrow = document.getElementById("submitArrow");
-        const submitSpinner = document.getElementById("submitSpinner");
-        const errorNotif = document.getElementById("errorNotification");
+(() => {
+    const form = document.getElementById("contactForm") as HTMLFormElement | null;
+    const textarea = document.getElementById("message") as HTMLTextAreaElement | null;
 
-        if (!form || !textarea) return;
+    if (!form || !textarea) return;
 
-        const updateCount = () => {
-            const len = textarea.value.length;
-            if (charCountEl) charCountEl.textContent = String(len);
-            if (charCounter) {
-                charCounter.classList.toggle(
-                    "near-limit",
-                    len > 1800 && len < 2000,
-                );
-                charCounter.classList.toggle("at-limit", len >= 2000);
-            }
-        };
+    const charCountEl = document.getElementById("charCount") as HTMLElement | null;
+    const charCounter = document.querySelector(".char-counter") as HTMLElement | null;
+    const submitBtn = document.getElementById("submitBtn") as HTMLButtonElement | null;
+    const submitLabel = document.getElementById("submitLabel") as HTMLElement | null;
+    const submitArrow = document.getElementById("submitArrow") as SVGElement | null;
+    const submitSpinner = document.getElementById("submitSpinner") as SVGElement | null;
+    const errorNotif = document.getElementById("errorNotification") as HTMLElement | null;
 
-        textarea.addEventListener("input", updateCount);
-        updateCount();
+    const honeypot = form.querySelector('input[name="website"]') as HTMLInputElement | null;
+    const privacy = form.querySelector('input[name="privacy"]') as HTMLInputElement | null;
+    const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement | null;
 
-        const showError = (msg: string) => {
-            if (!errorNotif) return;
-            errorNotif.textContent = msg;
-            errorNotif.classList.remove("hidden");
-            errorNotif.scrollIntoView({ behavior: "smooth", block: "nearest" });
-            setTimeout(() => errorNotif.classList.add("hidden"), 5000);
-        };
+    let errorTimer: ReturnType<typeof setTimeout> | undefined;
+    let submitTimeout: ReturnType<typeof setTimeout> | undefined;
 
-        form.addEventListener("submit", (e) => {
-            const honeypot = form.querySelector<HTMLInputElement>(
-                'input[name="website"]',
-            );
-            if (honeypot?.value.trim()) {
-                e.preventDefault();
-                return;
-            }
+    const showError = (msg: string): void => {
+        if (!errorNotif) return;
 
-            const privacy = form.querySelector<HTMLInputElement>(
-                'input[name="privacy"]',
-            );
-            if (!privacy?.checked) {
-                e.preventDefault();
-                showError("Veuillez accepter la politique de confidentialité.");
-                privacy?.focus();
-                return;
-            }
+        if (errorTimer) clearTimeout(errorTimer);
 
-            if (textarea.value.trim().length < 20) {
-                e.preventDefault();
-                showError("Le message doit contenir au moins 20 caractères.");
-                textarea.focus();
-                return;
-            }
+        errorNotif.textContent = msg;
+        errorNotif.classList.remove("hidden");
+        errorNotif.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
-            if (submitBtn && submitLabel && submitArrow && submitSpinner) {
-                submitBtn.disabled = true;
-                submitLabel.textContent = "Envoi en cours…";
-                submitArrow.classList.add("hidden");
-                submitSpinner.classList.remove("hidden");
-            }
-        });
-    })();
+        errorTimer = setTimeout(() => {
+            errorNotif.classList.add("hidden");
+        }, 5000);
+    };
+
+    const setLoading = (loading: boolean): void => {
+        if (!submitBtn || !submitLabel || !submitArrow || !submitSpinner) return;
+
+        submitBtn.disabled = loading;
+        submitLabel.textContent = loading ? "Envoi en cours…" : "Envoyer";
+
+        submitArrow.classList.toggle("hidden", loading);
+        submitSpinner.classList.toggle("hidden", !loading);
+    };
+
+    const updateCount = (): void => {
+        const len = textarea.value.length;
+
+        if (charCountEl) {
+            charCountEl.textContent = String(len);
+        }
+
+        if (charCounter) {
+            charCounter.classList.toggle("near-limit", len > 1800 && len < 2000);
+            charCounter.classList.toggle("at-limit", len >= 2000);
+        }
+    };
+
+    textarea.addEventListener("input", updateCount);
+    window.addEventListener("pageshow", updateCount);
+
+    updateCount();
+
+    form.addEventListener("submit", (e: SubmitEvent) => {
+        if (honeypot?.value.trim()) {
+            e.preventDefault();
+            return;
+        }
+
+        if (!privacy?.checked) {
+            e.preventDefault();
+            showError("Veuillez accepter la politique de confidentialité.");
+            privacy?.focus();
+            return;
+        }
+
+        const emailRegex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+
+        if (!emailInput || !emailRegex.test(emailInput.value.trim())) {
+            e.preventDefault();
+            showError("Veuillez saisir une adresse email valide.");
+            emailInput?.focus();
+            return;
+        }
+
+        if (textarea.value.trim().length < 20) {
+            e.preventDefault();
+            showError("Le message doit contenir au moins 20 caractères.");
+            textarea.focus();
+            return;
+        }
+
+        setLoading(true);
+
+        if (submitTimeout) clearTimeout(submitTimeout);
+
+        submitTimeout = setTimeout(() => {
+            setLoading(false);
+            showError("La soumission a pris trop de temps. Veuillez réessayer.");
+        }, 10000);
+    });
+})();
 </script>
