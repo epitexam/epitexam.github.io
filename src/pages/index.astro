@@ -344,8 +344,8 @@ const jsonLdProfile = {
     .title-accent {
         background: linear-gradient(
             135deg,
-            rgb(var(--accent, 255, 255, 255)),
-            rgba(var(--accent, 255, 255, 255), 0.55)
+            rgb(var(--accent)),
+            rgba(var(--accent), 0.55)
         );
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -391,26 +391,26 @@ const jsonLdProfile = {
         background: var(--color-accent);
         color: var(--color-bg);
         border: 1px solid transparent;
-        box-shadow: 0 2px 12px rgba(var(--accent, 255, 255, 255), 0.25);
+        box-shadow: 0 2px 12px rgba(var(--accent), 0.25);
     }
 
     .btn-solid:hover {
         transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(var(--accent, 255, 255, 255), 0.35);
+        box-shadow: 0 6px 20px rgba(var(--accent), 0.35);
         filter: brightness(1.06);
     }
 
     .btn-outline {
         background: transparent;
         color: var(--color-text);
-        border: 1px solid rgba(var(--accent, 255, 255, 255), 0.25);
+        border: 1px solid rgba(var(--accent), 0.25);
     }
 
     .btn-outline:hover {
         transform: translateY(-3px);
-        border-color: rgba(var(--accent, 255, 255, 255), 0.55);
-        background: rgba(var(--accent, 255, 255, 255), 0.06);
-        box-shadow: 0 4px 14px rgba(var(--accent, 255, 255, 255), 0.15);
+        border-color: rgba(var(--accent), 0.55);
+        background: rgba(var(--accent), 0.06);
+        box-shadow: 0 4px 14px rgba(var(--accent), 0.15);
     }
 
     .btn-ghost {
@@ -461,7 +461,7 @@ const jsonLdProfile = {
         align-items: center;
         gap: 1.5rem;
         padding: 2.5rem 2rem;
-        background: rgba(var(--accent, 255, 255, 255), 0.02);
+        background: rgba(var(--accent), 0.02);
         border: 1px solid var(--color-border);
         border-radius: var(--radius-md);
         text-align: center;
@@ -487,10 +487,10 @@ const jsonLdProfile = {
 
     .github-fallback {
         padding: 3rem 2rem;
-        border: 1px dashed rgba(var(--accent, 255, 255, 255), 0.2);
+        border: 1px dashed rgba(var(--accent), 0.2);
         border-radius: var(--radius-md);
         text-align: center;
-        background: rgba(var(--accent, 255, 255, 255), 0.02);
+        background: rgba(var(--accent), 0.02);
     }
 
     .github-fallback p {

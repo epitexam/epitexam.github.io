@@ -244,7 +244,6 @@ const jsonLd = {
         gap: 5rem;
         display: flex;
         flex-direction: column;
-        margin: 0 auto;
     }
 
     .about-main :is(h1, h2, h3, h4, h5, h6) {
@@ -267,7 +266,7 @@ const jsonLd = {
     .journey-label {
         font-family: var(--font-code);
         font-size: 1rem;
-        font-weight: bold;
+        font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.1em;
         color: var(--color-accent);
@@ -282,16 +281,17 @@ const jsonLd = {
     }
 
     .journey-item {
-        padding: 0.75rem 0 0.75rem 1.5rem;
-        border-left: 2px solid var(--color-border);
+        padding: 0.75rem 0 0.75rem 0;
+        padding-inline-start: 1.5rem;
+        border-inline-start: 2px solid var(--color-border);
         transition:
             border-color var(--duration-base) ease,
-            padding-left var(--duration-base) var(--ease-spring);
+            padding-inline-start var(--duration-base) var(--ease-spring);
     }
 
     .journey-item:hover {
-        border-left-color: var(--color-accent);
-        padding-left: 1.85rem;
+        border-inline-start-color: var(--color-accent);
+        padding-inline-start: 1.85rem;
     }
 
     .journey-header {
@@ -337,7 +337,7 @@ const jsonLd = {
     .journey-desc {
         font-size: 0.9rem;
         line-height: 1.7;
-        color: rgba(var(--text, 232, 232, 234), 0.75);
+        color: rgba(var(--text), 0.75);
         margin: 0;
     }
 
@@ -358,7 +358,7 @@ const jsonLd = {
 
     .interests-content p {
         margin: 0;
-        color: rgba(var(--text, 232, 232, 234), 0.8);
+        color: rgba(var(--text), 0.8);
     }
 
     .contact-section {
@@ -374,7 +374,7 @@ const jsonLd = {
         align-items: center;
         gap: 1.5rem;
         padding: 2.5rem 2rem;
-        background: rgba(var(--accent, 255, 255, 255), 0.02);
+        background: rgba(var(--accent), 0.02);
         border: 1px solid var(--color-border);
         border-radius: var(--radius-md);
         text-align: center;
@@ -414,12 +414,12 @@ const jsonLd = {
         background: var(--color-accent);
         color: var(--color-bg);
         border: 1px solid transparent;
-        box-shadow: 0 2px 12px rgba(var(--accent, 255, 255, 255), 0.25);
+        box-shadow: 0 2px 12px rgba(var(--accent), 0.25);
     }
 
     .btn-solid:hover {
         transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(var(--accent, 255, 255, 255), 0.35);
+        box-shadow: 0 6px 20px rgba(var(--accent), 0.35);
         filter: brightness(1.06);
     }
 
@@ -434,7 +434,7 @@ const jsonLd = {
         }
 
         .journey-item:hover {
-            padding-left: 1.5rem;
+            padding-inline-start: 1.5rem;
         }
     }
 
@@ -444,7 +444,7 @@ const jsonLd = {
         }
 
         .journey-item {
-            padding-left: 1.1rem;
+            padding-inline-start: 1.1rem;
         }
         .journey-title {
             font-size: 0.95rem;
@@ -468,7 +468,7 @@ const jsonLd = {
             transition: none;
         }
         .journey-item:hover {
-            padding-left: 1.5rem;
+            padding-inline-start: 1.5rem;
         }
         .btn-pill:hover {
             transform: none;
