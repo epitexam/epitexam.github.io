@@ -9,7 +9,6 @@ tags: ['portfolio', 'dev junior', 'astro', 'hugo', 'jekyll', 'gratuit', 'héberg
 ---
 
 Bienvenue sur le champ de bataille de l’emploi tech en 2026. Entre l'éclatement de la bulle covid et l’IA qui filtre automatiquement les candidatures, les postes juniors sont plus difficiles à atteindre. 
-
 Ton portfolio n’est pas juste un site web : c’est ton armure, ton bouclier et ton épée pour convaincre recruteurs et clients.
 
 Bonne nouvelle : tu n’as pas besoin de vider ton porte-monnaie pour ça. 
@@ -23,19 +22,14 @@ Avec un peu de stratégie, un design clair, tu peux créer un portfolio rapide, 
 ### 1.1 Objectif du portfolio
 
 À l’origine, le portfolio, c’était l’arme secrète des artistes : graphistes, UI/UX designers, motion designers, illustrateurs, photographes… bref, toutes les personnes qui impressionnent visuellement avant même d’ouvrir la bouche. 
-
 Et puis, petit à petit, les devs se sont retrouvé dans la mêlée.
-
 Le portfolio est devenu l'extension de son CV et la pratique s'est généralisé à tous les milieux. 
-
 L’objectif est clair : prouver que tu sais faire ce que tu dis savoir faire.
 
 <br/>
 ### 1.2 Contenu minimal indispensable
 
 Bonne nouvelle : un portfolio n’a pas besoin de 14 pages et d’un menu animé en 3D (À part, si tu t'appelles [Bruno Simon](https://bruno-simon.com/)).
-
-Quelques sections bien pensées suffisent largement. 
 
 L'essentiel c'est :
 
@@ -50,9 +44,7 @@ L'essentiel c'est :
 Même si ton site ne fait que quelques pages, la vitesse reste essentielle.
 
 En 2026, si une page met plus de 2 secondes à charger, l’utilisateur disparaît plus vite qu'un stagiaire un vendredi à 17h. 
-
 Il se peut que le recruteur qui ouvre ton site entre deux réunions soit sur mobile et en 4G.
-
 Évite le JavaScript inutile, optimise tes images en WebP, active le lazy loading.
 
 <br/>
@@ -67,7 +59,6 @@ Pas besoin de magie ou d'outil payant. Les meilleurs gains coûtent 0 € et te 
 ### 1.4 Accessibilité de base
 
 L’accessibilité n’est pas réservée aux grosses plateformes : c’est nécessaire meme pour les petits projets. 
-
 Contrastes lisibles, navigation au clavier, alt text utiles, structure sémantique propre… ce sont des bonnes pratiques qui ne coûtent rien et qui montrent que tu es un dev qui pense aux utilisateurs, tous les utilisateurs.
 
 <br/>
@@ -89,7 +80,6 @@ Quelques bonnes pratiques suffisent :
 ### 2.1 Les critères vraiment importants
 
 Avant de choisir un générateur, pose-toi les bonnes questions : combien de pages ton portfolio va contenir, combien d’interactivité tu veux ajouter, et combien de maintenance tu es prêt à assumer.
-
 Regarde aussi la facilité de déploiement gratuit (Cloudflare, GitHub Pages), le temps de build, la quantité de JavaScript produite et la possibilité d’intégrer un mini-projet interactif sans transformer ton site en fusée SpaceX.
 
 En résumé : pense long terme, simplicité, et efficacité.
@@ -126,8 +116,7 @@ const projects = await getCollection('projects');
 
 Ça fonctionne avec React, Svelte, Vue… ou sans framework du tout.
 
-Astro brille particulièrement pour les portfolios un peu stylés, avec transitions propres, composants réutilisables et Markdown intégré (un peu comme le mien non ?).
-
+Astro brille particulièrement pour les portfolios un peu stylés, avec transitions propres, composants réutilisables et Markdown intégré (un peu comme le mien non ?). 
 La contrepartie : tu touches forcément un peu au JavaScript et à la config (installer Tailwind, MDX, etc.). Ce n’est pas sorcier, mais ce n’est pas “plug-and-play”.
 
 Si tu veux un site moderne, Astro est un excellent choix.
@@ -137,7 +126,6 @@ Si tu veux un site moderne, Astro est un excellent choix.
 ### 2.3 Hugo : minimal, ultra rapide, zéro stress
 
 Hugo, c’est le champion du build le plus rapide du marché. Les pages sortent quasi instantanément, même quand ton site devient massif.
-
 Il produit du HTML statique pur, sauf si tu ajoutes toi-même du JS. Pas d’écosystème compliqué, pas de dépendances exotiques.
 
 <br/>
@@ -150,9 +138,7 @@ Il produit du HTML statique pur, sauf si tu ajoutes toi-même du JS. Pas d’éc
 <br/>
 
 Les templates Go demandent un petit temps d’adaptation, mais une fois compris, c’est clair et stable.
-
 Et oui, certains thèmes peuvent vite alourdir le dossier ou complexifier l’installation. Je suis déjà passé par là.
-
 Hugo est parfait si tu veux un portfolio rapide, robuste et simple à maintenir, sans plonger dans l’univers JavaScript.
 
 <br/>
@@ -200,7 +186,6 @@ Il existe évidemment d’autres outils pour créer un site, mais ils ne sont pa
 
 Comparatif rapide des meilleures options (2025-2026)
 
-<br/>
 | Hébergement                          | Points forts                                              | Limites / Attention                                      | Free tier (déc. 2025)                                                                 | Idéal pour…                              |
 |--------------------------------------|-----------------------------------------------------------|----------------------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------|
 | [**GitHub Pages**](https://pages.github.com/)         | Simple, Jekyll natif, SSL gratuit, domaine custom        | Peu de plugins/server-side, 1 Go stockage/site           | 100 % gratuit – 100 Go bande passante/mois (soft limit) – 1 Go stockage/site         | Sites statiques, blogs Jekyll, docs      |
@@ -218,8 +203,6 @@ Comparatif rapide des meilleures options (2025-2026)
 
 <br/>
 ### 4.1 Les failles classiques d’un site statique
-
-<br/>
 | Failles courantes       | Exemple concret                    | Comment éviter                    |
 | ----------------------- | ---------------------------------- | --------------------------------- |
 | Mauvaise config         | Headers manquants, HTTPS non forcé | Activer HSTS / HTTPS              |
@@ -230,8 +213,6 @@ Comparatif rapide des meilleures options (2025-2026)
 <br/>
 
 ### 4.2 Headers de sécurité essentiels
-
-<br/>
 | Header                 | Ce qu’il bloque            | Exemple                   |
 | ---------------------- | -------------------------- | ------------------------- |
 | **CSP**                | Scripts non autorisés, XSS | `script-src 'self'`       |
@@ -240,8 +221,6 @@ Comparatif rapide des meilleures options (2025-2026)
 <br/>
 
 ### 4.3 JavaScript & formulaires : risques et bonnes pratiques
-
-<br/>
 | Risque                       | Exemple                   | Solution rapide                   |
 | ---------------------------- | ------------------------- | --------------------------------- |
 | Surface d’attaque trop large | Trop de JS, libs inutiles | Réduire, minifier, supprimer      |
@@ -259,7 +238,6 @@ On ne va pas ici rentrer en détail de la cybersécurité ou présenter des bout
 
 L’essentiel est de restez vigilant avec des mises à jour régulières.
 
-<br/>
 | Élément                | Vulnérabilité Astro                                                                 | Vulnérabilité React RSC                                                                 |
 |:-----------------------|:------------------------------------------------------------------------------------|:----------------------------------------------------------------------------------------|
 | **Référence**          | [CVE-2025-61925](https://nvd.nist.gov/vuln/detail/CVE-2025-61925)                   | [CVE-2025-55182](https://nvd.nist.gov/vuln/detail/CVE-2025-55182) ([Annonce critique](https://react.dev/blog/2025/12/03/critical-security-vulnerability-in-react-server-components)) |
@@ -289,7 +267,6 @@ En résumé, les CVEs sont courantes en dev web, mais une veille légère et des
 Ton portfolio est enfin prêt : rapide, propre, gratuit et blindé.
 
 Ce qui compte vraiment, ce n’est pas la quantité de frameworks ou de plugins que tu utilises, mais ce que ton travail raconte sur toi et tes compétences.
-
 Même dans un marché du dev chamboulé par l’IA et l’automatisation, un portfolio bien fait reste ton arme secrète pour sortir du lot et montrer que tu sais te battre pour tes projets.
 
 ---

@@ -20,6 +20,7 @@ import type { Project } from "../types/github";
 
 const allProjects = await getCollection("projects");
 const displayProjects = allProjects
+    .filter((p) => !p.data.draft)
     .sort((a, b) => {
         if (a.data.featured && !b.data.featured) return -1;
         if (!a.data.featured && b.data.featured) return 1;
@@ -134,7 +135,7 @@ const jsonLdProfile = {
                 <Avatar />
 
                 <div class="status-wrapper">
-                    <StatusBadge label="Ouvert aux opportunités" />
+                    <StatusBadge label="Ouvert aux opportunités" href="/contact"/>
                 </div>
 
                 <h1 class="hero-title">
