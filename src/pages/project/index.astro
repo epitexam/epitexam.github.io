@@ -10,9 +10,10 @@ const projects = (await getCollection("projects")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 
-const featured = projects.filter((p) => p.data.featured);
-const others = projects.filter((p) => !p.data.featured);
-const isEmpty = projects.length === 0;
+const publishedProjects = projects.filter((p) => !p.data.draft);
+const featured = publishedProjects.filter((p) => p.data.featured);
+const others = publishedProjects.filter((p) => !p.data.featured);
+const isEmpty = publishedProjects.length === 0;
 
 const PROJECT_META_DESCRIPTION =
   `Réalisations techniques d'Epitexam — projets fullstack, applications web et expérimentations en TypeScript, React, Node.js et Go.`;

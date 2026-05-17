@@ -29,7 +29,6 @@ const {
 const imageSrc = heroImage ?? fallBackImage;
 ---
 
-
 <html lang="fr">
     <head>
         <BaseHead
@@ -436,8 +435,10 @@ const imageSrc = heroImage ?? fallBackImage;
                         alt={heroImageDescription ?? ""}
                         loading="eager"
                         fetchpriority="high"
-                        widths={[400, 680, 800]}
+                        widths={[240, 320, 400, 480]}
                         sizes="(max-width: 768px) 100vw, 340px"
+                        quality={70}
+                        format="webp"
                     />
                 </div>
             </div>

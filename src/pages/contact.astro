@@ -47,7 +47,7 @@ const success = Astro.url.searchParams.get("success") === "true";
                             >
                                 <polyline points="20 6 9 17 4 12" />
                             </svg>
-                            Message envoyé : je vous réponds dès que possible.
+                            Message envoyé — je vous réponds dès que possible.
                         </div>
                     )
                 }
@@ -58,121 +58,235 @@ const success = Astro.url.searchParams.get("success") === "true";
                     role="alert"
                     aria-live="assertive"
                 >
+                    <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        aria-hidden="true"
+                        class="notif-icon"
+                    >
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <span id="errorMessage"></span>
                 </div>
 
-                <form
-                    id="contactForm"
-                    action="https://formspree.io/f/xovgkrbn"
-                    method="POST"
-                    class="contact-form"
-                    autocomplete="on"
-                    novalidate
-                >
-                    <input
-                        type="hidden"
-                        name="_next"
-                        value={`${Astro.url.origin}${Astro.url.pathname}?success=true`}
-                    />
-                    <input
-                        type="hidden"
-                        name="_subject"
-                        value={`Nouveau message - ${SITE_TITLE}`}
-                    />
-
-                    <div class="honeypot" aria-hidden="true">
-                        <input
-                            type="text"
-                            name="website"
-                            tabindex="-1"
-                            autocomplete="off"
-                        />
-                    </div>
-
-                    <div class="field-group">
-                        <label for="email" class="field-label"
-                            >Votre email</label
-                        >
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            required
-                            placeholder="nom@domaine.com"
-                            class="input-field"
-                            autocomplete="email"
-                        />
-                        <p class="field-hint">Ne sera jamais partagé.</p>
-                    </div>
-
-                    <div class="field-group">
-                        <label for="message" class="field-label"
-                            >Votre message</label
-                        >
-                        <textarea
-                            id="message"
-                            name="message"
-                            required
-                            rows="6"
-                            placeholder="Décrivez votre projet, votre question…"
-                            class="input-field textarea-field"
-                            minlength="20"
-                            maxlength="2000"></textarea>
-                        <div class="textarea-meta">
-                            <span class="field-hint">Markdown supporté.</span>
-                            <span class="char-counter">
-                                <span id="charCount">0</span><span
-                                    class="char-max">/2000</span
+                {
+                    success ? (
+                        <div class="success-body">
+                            <p class="success-detail">
+                                Merci pour votre message. Vous recevrez une
+                                réponse à l'adresse indiquée.
+                            </p>
+                            <a id="backLink" href="/" class="back-link">
+                                <svg
+                                    width="14"
+                                    height="14"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
                                 >
-                            </span>
+                                    <line x1="19" y1="12" x2="5" y2="12" />
+                                    <polyline points="12 19 5 12 12 5" />
+                                </svg>
+                                <span id="backLinkLabel">
+                                    Retour à l'accueil
+                                </span>
+                            </a>
                         </div>
-                    </div>
-
-                    <div class="consent-row">
-                        <input
-                            type="checkbox"
-                            id="privacy"
-                            name="privacy"
-                            required
-                            class="consent-checkbox"
-                        />
-                        <label for="privacy" class="consent-label">
-                            J'accepte que mes données soient utilisées
-                            uniquement pour répondre à mon message.
-                        </label>
-                    </div>
-
-                    <button id="submitBtn" type="submit" class="submit-btn">
-                        <span id="submitLabel">Envoyer</span>
-                        <svg
-                            id="submitArrow"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            aria-hidden="true"
+                    ) : (
+                        <form
+                            id="contactForm"
+                            action="https://formspree.io/f/xovgkrbn"
+                            method="POST"
+                            class="contact-form"
+                            autocomplete="on"
+                            novalidate
                         >
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                            <polyline points="12 5 19 12 12 19"></polyline>
-                        </svg>
-                        <svg
-                            id="submitSpinner"
-                            class="spinner hidden"
-                            width="16"
-                            height="16"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            aria-hidden="true"
-                        >
-                            <path d="M21 12a9 9 0 1 1-6.219-8.56"></path>
-                        </svg>
-                    </button>
-                </form>
+                            <input
+                                type="hidden"
+                                name="_next"
+                                value={`${Astro.url.origin}${Astro.url.pathname}?success=true`}
+                            />
+                            <input
+                                type="hidden"
+                                name="_subject"
+                                value={`Nouveau message - ${SITE_TITLE}`}
+                            />
+
+                            <div class="honeypot" aria-hidden="true">
+                                <input
+                                    type="text"
+                                    name="website"
+                                    tabindex="-1"
+                                    autocomplete="off"
+                                />
+                            </div>
+
+                            <div class="field-group">
+                                <label for="name" class="field-label">
+                                    Votre nom
+                                </label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    required
+                                    placeholder="Prénom Nom"
+                                    class="input-field"
+                                    autocomplete="name"
+                                    aria-describedby="name-error"
+                                />
+                                <p
+                                    class="field-error hidden"
+                                    id="name-error"
+                                    role="alert"
+                                />
+                            </div>
+
+                            <div class="field-group">
+                                <label for="email" class="field-label">
+                                    Votre email
+                                </label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    required
+                                    placeholder="nom@domaine.com"
+                                    class="input-field"
+                                    autocomplete="email"
+                                    aria-describedby="email-hint email-error"
+                                />
+                                <div class="field-meta">
+                                    <p class="field-hint" id="email-hint">
+                                        Ne sera jamais partagé.
+                                    </p>
+                                    <p
+                                        class="field-error hidden"
+                                        id="email-error"
+                                        role="alert"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="field-group">
+                                <label for="message" class="field-label">
+                                    Votre message
+                                </label>
+                                <textarea
+                                    id="message"
+                                    name="message"
+                                    required
+                                    rows="6"
+                                    placeholder="Décrivez votre projet, votre question…"
+                                    class="input-field textarea-field"
+                                    minlength="20"
+                                    maxlength="2000"
+                                    aria-describedby="message-hint message-error"
+                                />
+                                <div class="textarea-meta">
+                                    <div class="field-meta-left">
+                                        <span
+                                            class="field-hint"
+                                            id="message-hint"
+                                        >
+                                            Markdown supporté.
+                                        </span>
+                                        <p
+                                            class="field-error hidden"
+                                            id="message-error"
+                                            role="alert"
+                                        />
+                                    </div>
+                                    <span class="char-counter">
+                                        <>
+                                            <span id="charCount">0</span>
+                                            <span class="char-max">/2000</span>
+                                        </>
+                                    </span>
+                                </div>
+
+                                <div
+                                    class="char-progress-track"
+                                    aria-hidden="true"
+                                >
+                                    <div
+                                        class="char-progress-bar"
+                                        id="charProgress"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="consent-row">
+                                <input
+                                    type="checkbox"
+                                    id="privacy"
+                                    name="privacy"
+                                    required
+                                    class="consent-checkbox"
+                                    aria-describedby="privacy-error"
+                                />
+                                <div class="consent-right">
+                                    <label for="privacy" class="consent-label">
+                                        J'accepte que mes données soient
+                                        utilisées uniquement pour répondre à mon
+                                        message.
+                                    </label>
+                                    <p
+                                        class="field-error hidden"
+                                        id="privacy-error"
+                                        role="alert"
+                                    />
+                                </div>
+                            </div>
+
+                            <button
+                                id="submitBtn"
+                                type="submit"
+                                class="submit-btn"
+                            >
+                                <span id="submitLabel">Envoyer</span>
+                                <svg
+                                    id="submitArrow"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    aria-hidden="true"
+                                >
+                                    <line x1="5" y1="12" x2="19" y2="12" />
+                                    <polyline points="12 5 19 12 12 19" />
+                                </svg>
+                                <svg
+                                    id="submitSpinner"
+                                    class="spinner hidden"
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    aria-hidden="true"
+                                >
+                                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                                </svg>
+                            </button>
+                        </form>
+                    )
+                }
             </div>
         </main>
 
@@ -231,6 +345,10 @@ const success = Astro.url.searchParams.get("success") === "true";
         animation: slideDown var(--duration-base) var(--ease-spring) both;
     }
 
+    .notif-icon {
+        flex-shrink: 0;
+    }
+
     .success-notification {
         background: rgba(var(--accent), 0.08);
         border: 1px solid rgba(var(--accent), 0.28);
@@ -256,6 +374,35 @@ const success = Astro.url.searchParams.get("success") === "true";
             opacity: 1;
             transform: translateY(0);
         }
+    }
+
+    .success-body {
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    .success-detail {
+        font-size: 0.9rem;
+        color: var(--color-muted);
+        line-height: 1.7;
+        margin: 0;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--color-accent);
+        text-decoration: none;
+        letter-spacing: 0.02em;
+        transition: gap var(--duration-fast) ease;
+    }
+
+    .back-link:hover {
+        gap: 0.65rem;
     }
 
     .contact-form {
@@ -294,6 +441,7 @@ const success = Astro.url.searchParams.get("success") === "true";
     }
 
     .input-field {
+        box-sizing: border-box;
         width: 100%;
         background: rgba(var(--accent), 0.03);
         border: 1px solid rgba(var(--accent), 0.15);
@@ -320,21 +468,57 @@ const success = Astro.url.searchParams.get("success") === "true";
         box-shadow: 0 0 0 3px rgba(var(--accent), 0.1);
     }
 
+    .input-field.invalid {
+        border-color: rgba(var(--color-error-rgb), 0.55);
+        background: rgba(var(--color-error-rgb), 0.04);
+        box-shadow: 0 0 0 3px rgba(var(--color-error-rgb), 0.08);
+    }
+
+    .input-field.valid {
+        border-color: rgba(var(--accent), 0.45);
+    }
+
     .textarea-field {
         resize: vertical;
         min-height: 140px;
     }
 
+    .field-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
     .field-hint {
-        font-size: 0.7rem;
+        font-size: 0.75rem;
         color: var(--color-muted);
         margin: 0;
+    }
+
+    .field-error {
+        font-size: 0.75rem;
+        color: rgb(var(--color-error-rgb));
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+    }
+
+    .field-error.hidden {
+        display: none !important;
     }
 
     .textarea-meta {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .field-meta-left {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
     }
 
     .char-counter {
@@ -342,6 +526,7 @@ const success = Astro.url.searchParams.get("success") === "true";
         font-size: 0.68rem;
         color: var(--color-muted);
         transition: color var(--duration-fast) ease;
+        white-space: nowrap;
     }
 
     .char-max {
@@ -351,8 +536,35 @@ const success = Astro.url.searchParams.get("success") === "true";
     .char-counter.near-limit {
         color: rgb(var(--warn-rgb));
     }
+
     .char-counter.at-limit {
         color: rgb(var(--color-error-rgb));
+    }
+
+    .char-progress-track {
+        height: 2px;
+        background: rgba(var(--accent), 0.1);
+        border-radius: 999px;
+        overflow: hidden;
+        margin-top: -0.25rem;
+    }
+
+    .char-progress-bar {
+        height: 100%;
+        width: 0%;
+        background: rgba(var(--accent), 0.5);
+        border-radius: 999px;
+        transition:
+            width var(--duration-fast) ease,
+            background var(--duration-fast) ease;
+    }
+
+    .char-progress-bar.near-limit {
+        background: rgb(var(--warn-rgb));
+    }
+
+    .char-progress-bar.at-limit {
+        background: rgb(var(--color-error-rgb));
     }
 
     .consent-row {
@@ -363,6 +575,12 @@ const success = Astro.url.searchParams.get("success") === "true";
         background: rgba(var(--accent), 0.03);
         border: 1px solid rgba(var(--accent), 0.1);
         border-radius: var(--radius-sm);
+    }
+
+    .consent-right {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
     }
 
     .consent-checkbox {
@@ -472,110 +690,319 @@ const success = Astro.url.searchParams.get("success") === "true";
         .submit-btn:hover:not(:disabled) {
             transform: none;
         }
+        .char-progress-bar {
+            transition: none;
+        }
     }
 </style>
 
 <script>
-(() => {
-    const form = document.getElementById("contactForm") as HTMLFormElement | null;
-    const textarea = document.getElementById("message") as HTMLTextAreaElement | null;
+    (() => {
+        const params = new URLSearchParams(window.location.search);
+        if (!params.has("success")) return;
 
-    if (!form || !textarea) return;
+        history.replaceState(null, "", window.location.pathname);
 
-    const charCountEl = document.getElementById("charCount") as HTMLElement | null;
-    const charCounter = document.querySelector(".char-counter") as HTMLElement | null;
-    const submitBtn = document.getElementById("submitBtn") as HTMLButtonElement | null;
-    const submitLabel = document.getElementById("submitLabel") as HTMLElement | null;
-    const submitArrow = document.getElementById("submitArrow") as SVGElement | null;
-    const submitSpinner = document.getElementById("submitSpinner") as SVGElement | null;
-    const errorNotif = document.getElementById("errorNotification") as HTMLElement | null;
+        const backLink = document.getElementById(
+            "backLink",
+        ) as HTMLAnchorElement | null;
+        const backLabel = document.getElementById(
+            "backLinkLabel",
+        ) as HTMLElement | null;
 
-    const honeypot = form.querySelector('input[name="website"]') as HTMLInputElement | null;
-    const privacy = form.querySelector('input[name="privacy"]') as HTMLInputElement | null;
-    const emailInput = form.querySelector('input[name="email"]') as HTMLInputElement | null;
+        if (backLink && backLabel) {
+            const referrer = document.referrer;
+            const isSameOrigin =
+                referrer && referrer.startsWith(window.location.origin);
+            const isNotContact =
+                referrer && !new URL(referrer).pathname.includes("contact");
 
-    let errorTimer: ReturnType<typeof setTimeout> | undefined;
-    let submitTimeout: ReturnType<typeof setTimeout> | undefined;
-
-    const showError = (msg: string): void => {
-        if (!errorNotif) return;
-
-        if (errorTimer) clearTimeout(errorTimer);
-
-        errorNotif.textContent = msg;
-        errorNotif.classList.remove("hidden");
-        errorNotif.scrollIntoView({ behavior: "smooth", block: "nearest" });
-
-        errorTimer = setTimeout(() => {
-            errorNotif.classList.add("hidden");
-        }, 5000);
-    };
-
-    const setLoading = (loading: boolean): void => {
-        if (!submitBtn || !submitLabel || !submitArrow || !submitSpinner) return;
-
-        submitBtn.disabled = loading;
-        submitLabel.textContent = loading ? "Envoi en cours…" : "Envoyer";
-
-        submitArrow.classList.toggle("hidden", loading);
-        submitSpinner.classList.toggle("hidden", !loading);
-    };
-
-    const updateCount = (): void => {
-        const len = textarea.value.length;
-
-        if (charCountEl) {
-            charCountEl.textContent = String(len);
+            if (isSameOrigin && isNotContact) {
+                backLink.href = referrer;
+                backLabel.textContent = "Retour à la page précédente";
+            }
         }
+    })();
+</script>
 
-        if (charCounter) {
-            charCounter.classList.toggle("near-limit", len > 1800 && len < 2000);
-            charCounter.classList.toggle("at-limit", len >= 2000);
-        }
-    };
+<script>
+    (() => {
+        const form = document.getElementById(
+            "contactForm",
+        ) as HTMLFormElement | null;
+        const textarea = document.getElementById(
+            "message",
+        ) as HTMLTextAreaElement | null;
 
-    textarea.addEventListener("input", updateCount);
-    window.addEventListener("pageshow", updateCount);
+        if (!form || !textarea) return;
 
-    updateCount();
+        const nameInput = form.querySelector(
+            'input[name="name"]',
+        ) as HTMLInputElement | null;
+        const emailInput = form.querySelector(
+            'input[name="email"]',
+        ) as HTMLInputElement | null;
+        const honeypot = form.querySelector(
+            'input[name="website"]',
+        ) as HTMLInputElement | null;
+        const privacy = form.querySelector(
+            'input[name="privacy"]',
+        ) as HTMLInputElement | null;
 
-    form.addEventListener("submit", (e: SubmitEvent) => {
-        if (honeypot?.value.trim()) {
-            e.preventDefault();
-            return;
-        }
+        const charCountEl = document.getElementById(
+            "charCount",
+        ) as HTMLElement | null;
+        const charCounter = document.querySelector(
+            ".char-counter",
+        ) as HTMLElement | null;
+        const charProgress = document.getElementById(
+            "charProgress",
+        ) as HTMLElement | null;
+        const submitBtn = document.getElementById(
+            "submitBtn",
+        ) as HTMLButtonElement | null;
+        const submitLabel = document.getElementById(
+            "submitLabel",
+        ) as HTMLElement | null;
+        const submitArrow = document.getElementById(
+            "submitArrow",
+        ) as SVGElement | null;
+        const submitSpinner = document.getElementById(
+            "submitSpinner",
+        ) as SVGElement | null;
+        const errorNotif = document.getElementById(
+            "errorNotification",
+        ) as HTMLElement | null;
+        const errorMessage = document.getElementById(
+            "errorMessage",
+        ) as HTMLElement | null;
 
-        if (!privacy?.checked) {
-            e.preventDefault();
-            showError("Veuillez accepter la politique de confidentialité.");
-            privacy?.focus();
-            return;
-        }
+        let errorTimer: ReturnType<typeof setTimeout> | undefined;
+        let submitTimeout: ReturnType<typeof setTimeout> | undefined;
 
-        const emailRegex = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+        const showError = (msg: string): void => {
+            if (!errorNotif || !errorMessage) return;
+            if (errorTimer) clearTimeout(errorTimer);
 
-        if (!emailInput || !emailRegex.test(emailInput.value.trim())) {
-            e.preventDefault();
-            showError("Veuillez saisir une adresse email valide.");
-            emailInput?.focus();
-            return;
-        }
+            errorMessage.textContent = msg;
+            errorNotif.classList.remove("hidden");
+            errorNotif.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
-        if (textarea.value.trim().length < 20) {
-            e.preventDefault();
-            showError("Le message doit contenir au moins 20 caractères.");
-            textarea.focus();
-            return;
-        }
+            errorTimer = setTimeout(() => {
+                errorNotif.classList.add("hidden");
+            }, 6000);
+        };
 
-        setLoading(true);
+        const showFieldError = (
+            errorEl: HTMLElement | null,
+            msg: string,
+            inputEl?: HTMLElement | null,
+        ): void => {
+            if (!errorEl) return;
+            errorEl.textContent = msg;
+            errorEl.classList.remove("hidden");
+            inputEl?.classList.add("invalid");
+            inputEl?.classList.remove("valid");
+        };
 
-        if (submitTimeout) clearTimeout(submitTimeout);
+        const clearFieldError = (
+            errorEl: HTMLElement | null,
+            inputEl?: HTMLElement | null,
+        ): void => {
+            if (!errorEl) return;
+            errorEl.classList.add("hidden");
+            errorEl.textContent = "";
+            inputEl?.classList.remove("invalid");
+        };
 
-        submitTimeout = setTimeout(() => {
-            setLoading(false);
-            showError("La soumission a pris trop de temps. Veuillez réessayer.");
-        }, 10000);
-    });
-})();
+        const markValid = (inputEl: HTMLElement | null): void => {
+            inputEl?.classList.add("valid");
+            inputEl?.classList.remove("invalid");
+        };
+
+        const EMAIL_REGEX =
+            /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+
+        const validateName = (): boolean => {
+            const errorEl = document.getElementById("name-error");
+            const val = nameInput?.value.trim() ?? "";
+            if (!val) {
+                showFieldError(
+                    errorEl,
+                    "Veuillez indiquer votre nom.",
+                    nameInput,
+                );
+                return false;
+            }
+            clearFieldError(errorEl, nameInput);
+            markValid(nameInput);
+            return true;
+        };
+
+        const validateEmail = (): boolean => {
+            const errorEl = document.getElementById("email-error");
+            const val = emailInput?.value.trim() ?? "";
+            if (!val || !EMAIL_REGEX.test(val)) {
+                showFieldError(errorEl, "Adresse email invalide.", emailInput);
+                return false;
+            }
+            clearFieldError(errorEl, emailInput);
+            markValid(emailInput);
+            return true;
+        };
+
+        const validateMessage = (): boolean => {
+            const errorEl = document.getElementById("message-error");
+            const len = textarea.value.trim().length;
+            if (len < 20) {
+                showFieldError(
+                    errorEl,
+                    `Encore ${20 - len} caractère${20 - len > 1 ? "s" : ""} minimum.`,
+                    textarea,
+                );
+                return false;
+            }
+            clearFieldError(errorEl, textarea);
+            markValid(textarea);
+            return true;
+        };
+
+        const validatePrivacy = (): boolean => {
+            const errorEl = document.getElementById("privacy-error");
+            if (!privacy?.checked) {
+                showFieldError(
+                    errorEl,
+                    "Veuillez accepter la politique de confidentialité.",
+                    null,
+                );
+                return false;
+            }
+            clearFieldError(errorEl, null);
+            return true;
+        };
+
+        nameInput?.addEventListener("blur", () => {
+            if (nameInput.value.trim()) validateName();
+        });
+
+        emailInput?.addEventListener("blur", () => {
+            if (emailInput.value.trim()) validateEmail();
+        });
+
+        textarea.addEventListener("blur", () => {
+            if (textarea.value.trim()) validateMessage();
+        });
+
+        nameInput?.addEventListener("input", () => {
+            if (nameInput.classList.contains("invalid")) validateName();
+        });
+
+        emailInput?.addEventListener("input", () => {
+            if (emailInput.classList.contains("invalid")) validateEmail();
+        });
+
+        textarea.addEventListener("input", () => {
+            updateCount();
+            if (textarea.classList.contains("invalid")) validateMessage();
+        });
+
+        privacy?.addEventListener("change", () => {
+            if (privacy.checked)
+                clearFieldError(document.getElementById("privacy-error"), null);
+        });
+
+        const updateCount = (): void => {
+            const len = textarea.value.length;
+            const pct = (len / 2000) * 100;
+
+            if (charCountEl) charCountEl.textContent = String(len);
+
+            if (charCounter) {
+                charCounter.classList.toggle(
+                    "near-limit",
+                    len > 1800 && len < 2000,
+                );
+                charCounter.classList.toggle("at-limit", len >= 2000);
+            }
+
+            if (charProgress) {
+                charProgress.style.width = `${Math.min(pct, 100)}%`;
+                charProgress.classList.toggle(
+                    "near-limit",
+                    len > 1800 && len < 2000,
+                );
+                charProgress.classList.toggle("at-limit", len >= 2000);
+            }
+        };
+
+        window.addEventListener("pageshow", updateCount);
+        updateCount();
+
+        const setLoading = (loading: boolean): void => {
+            if (!submitBtn || !submitLabel || !submitArrow || !submitSpinner)
+                return;
+            submitBtn.disabled = loading;
+            submitLabel.textContent = loading ? "Envoi en cours…" : "Envoyer";
+            submitArrow.classList.toggle("hidden", loading);
+            submitSpinner.classList.toggle("hidden", !loading);
+        };
+
+        window.addEventListener("pageshow", (e: PageTransitionEvent) => {
+            if (e.persisted) setLoading(false);
+        });
+
+        form.addEventListener("submit", (e: SubmitEvent) => {
+            if (honeypot?.value.trim()) {
+                e.preventDefault();
+                return;
+            }
+
+            const nameOk = validateName();
+            const emailOk = validateEmail();
+            const messageOk = validateMessage();
+            const privacyOk = validatePrivacy();
+
+            if (!nameOk || !emailOk || !messageOk || !privacyOk) {
+                e.preventDefault();
+
+                if (!nameOk) {
+                    nameInput?.focus();
+                    return;
+                }
+                if (!emailOk) {
+                    emailInput?.focus();
+                    return;
+                }
+                if (!messageOk) {
+                    textarea.focus();
+                    return;
+                }
+                if (!privacyOk) {
+                    privacy?.focus();
+                    return;
+                }
+
+                return;
+            }
+
+            setLoading(true);
+
+            if (submitTimeout) clearTimeout(submitTimeout);
+
+            submitTimeout = setTimeout(() => {
+                setLoading(false);
+                showError(
+                    "La soumission a pris trop de temps. Veuillez réessayer.",
+                );
+            }, 10000);
+
+            window.addEventListener(
+                "pagehide",
+                () => {
+                    if (submitTimeout) clearTimeout(submitTimeout);
+                },
+                { once: true },
+            );
+        });
+    })();
 </script>
