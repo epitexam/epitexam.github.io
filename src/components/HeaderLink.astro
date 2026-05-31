@@ -2,7 +2,7 @@
 import type { HTMLAttributes } from "astro/types";
 
 interface Props extends HTMLAttributes<"a"> {
-	href: string;
+    href: string;
 }
 
 const { href, class: className, ...attrs } = Astro.props;
@@ -12,87 +12,86 @@ const isExact = pathname === href || pathname === href + "/";
 ---
 
 <a
-	href={href}
-	class:list={[className, { active: isActive, exact: isExact }]}
-	aria-current={isActive ? "page" : undefined}
-	{...attrs}
+    href={href}
+    class:list={[className, { active: isActive, exact: isExact }]}
+    aria-current={isActive ? "page" : undefined}
+    {...attrs}
 >
-	<slot />
+    <slot />
 </a>
 
 <style>
-	a {
-		display: inline-flex;
-		align-items: center;
-		text-decoration: none;
-		color: var(--color-muted);
-		font-family: var(--font-title);
-		font-size: 0.9rem;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		position: relative;
-		transition: color var(--duration-fast) ease;
-	}
+    a {
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
+        color: rgba(var(--text), 0.45);
+        font-family: var(--font-title);
+        font-size: 0.95rem;
+        font-weight: 400;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        position: relative;
+        transition: color var(--duration-fast) ease;
+    }
 
-	@media (min-width: 769px) {
-		a:hover {
-			color: var(--color-accent);
-		}
+    @media (min-width: 769px) {
+        a:hover {
+            color: var(--color-muted);
+        }
 
-		a.active {
-			color: var(--color-accent);
-			font-weight: 700;
-			pointer-events: none;
-		}
+        a.active {
+            color: var(--color-text);
+            font-weight: 500;
+            pointer-events: none;
+        }
 
-		a.active:not(.exact) {
-			pointer-events: auto;
-			cursor: pointer;
-		}
+        a.active:not(.exact) {
+            pointer-events: auto;
+            cursor: pointer;
+        }
 
-		a.active::before {
-			content: ">" / "";
-			margin-right: 0.4rem;
-			color: var(--color-accent);
-			opacity: 0.8;
-		}
+        a.active::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--color-accent);
+            opacity: 0.5;
+            border-radius: 1px;
+        }
+    }
 
-		a.active::after {
-			content: "<" / "";
-			margin-left: 0.4rem;
-			color: var(--color-accent);
-			opacity: 0.8;
-		}
-	}
+    @media (max-width: 768px) {
+        a {
+            color: var(--color-muted);
+            min-height: 44px;
+            padding: 0.5rem 0.25rem;
+            font-size: 0.875rem;
+        }
 
-	@media (max-width: 768px) {
-		a {
-			color: var(--color-text);
-			min-height: 44px;
-			padding: 0.5rem 0.25rem;
-			font-size: 1rem;
-		}
+        a.active {
+            color: var(--color-text);
+            font-weight: 500;
+        }
 
-		a.active {
-			color: var(--color-accent);
-			font-weight: 700;
-		}
+        a.active::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: rgba(var(--accent), 0.4);
+            border-radius: 1px;
+        }
+    }
 
-		a.active::after {
-			content: "" / "";
-			position: absolute;
-			bottom: 0;
-			left: 0;
-			width: 100%;
-			height: 2px;
-			background-color: var(--color-accent);
-			border-radius: 2px;
-		}
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		a {
-			transition: none;
-		}
-	}
+    @media (prefers-reduced-motion: reduce) {
+        a {
+            transition: none;
+        }
+    }
 </style>
