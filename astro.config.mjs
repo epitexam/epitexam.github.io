@@ -1,18 +1,20 @@
 // astro.config.mjs
+import { defineConfig, fontProviders } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-import { defineConfig, fontProviders } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import d2 from "astro-d2";
 
 export default defineConfig({
   site: "https://epitexam.github.io",
   base: "/",
+
   build: {
     format: "directory",
     assets: "_assets",
     inlineStylesheets: "always",
   },
+
   fonts: [
     {
       name: "Geist",
@@ -33,13 +35,21 @@ export default defineConfig({
       weights: ["400"],
     },
   ],
-  integrations: [mdx({
-    optimize: true,
-  }), sitemap({
-    changefreq: "weekly",
-    priority: 0.7,
-    lastmod: new Date(),
-  }), d2({ sketch: true })],
+
+  integrations: [
+    mdx({
+      optimize: true,
+    }),
+    sitemap({
+      changefreq: "weekly",
+      priority: 0.7,
+      lastmod: new Date(),
+    }),
+    d2({
+      sketch: true,
+    }),
+  ],
+
   image: {
     service: {
       entrypoint: "astro/assets/services/sharp",
@@ -52,37 +62,29 @@ export default defineConfig({
       },
     ],
   },
+
   vite: {
     plugins: [tailwindcss()],
-    build: {
-      cssMinify: "lightningcss",
-      cssCodeSplit: true,
-      minify: "esbuild",
-      target: "esnext",
-      chunkSizeWarningLimit: 500,
-      modulePreload: {
-        polyfill: true,
-      },
-      rollupOptions: {
-        output: {
-          entryFileNames: "entry.[hash].js",
-          chunkFileNames: "chunks/[name].[hash].js",
-          assetFileNames: "assets/[name].[hash][extname]",
-        },
-      },
-    },
+    build:{
+      cssMinify:"lightningcss",
+      minify:"esbuild",
+    }
   },
+
   prefetch: {
     prefetchAll: true,
     defaultStrategy: "hover",
   },
+
   compressHTML: true,
+
   markdown: {
     shikiConfig: {
       theme: "css-variables",
       wrap: false,
     },
   },
+
   server: {
     headers: {
       "X-Content-Type-Options": "nosniff",
