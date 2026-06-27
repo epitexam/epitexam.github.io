@@ -39,30 +39,34 @@ Enfin, j'avais besoin de faire le ménage. Des années de bricolage avaient lais
 
 L'infrastructure repose sur une machine unique. Tout accès distant passe d'abord par le VPN, puis par un reverse proxy, avant d'atteindre les services conteneurisés. Aucun port n'est ouvert directement sur Internet saut celui du VPN.
 <br/>
-```d2
-direction: right
+```mermaid
+graph LR
+    %% Noeuds principaux
+    Utilisateur -->|"WireGuard"| VPN
+    VPN -->|"réseau interne"| ReverseProxy
 
-Utilisateur -> VPN: WireGuard
-VPN -> ReverseProxy: réseau interne
+    %% Liens vers les conteneurs (sous-graphes)
+    ReverseProxy -->|"HTTP(S)"| Services
+    ReverseProxy -->|"HTTP(S)"| Monitoring
 
-ReverseProxy -> Services: HTTP(S)
+    %% Structure du groupe Services
+    subgraph Services ["Services"]
+        direction TB
+        Nextcloud
+        Jellyfin
+        HomeAssistant
+        AdGuard
+        Minecraft
+        Mumble
+    end
 
-Services: {
-  Nextcloud
-  Jellyfin
-  HomeAssistant
-  AdGuard
-  Minecraft
-  Mumble
-}
-
-ReverseProxy -> Monitoring: HTTP(S)
-
-Monitoring: {
-  Prometheus
-  Grafana
-  Loki
-}
+    %% Structure du groupe Monitoring
+    subgraph Monitoring ["Monitoring"]
+        direction TB
+        Prometheus
+        Grafana
+        Loki
+    end
 ```
 <br/>
 Ce schéma est volontairement simple. Il n'y a pas de haute disponibilité, pas de cluster, pas de réplication automatique. C'est un choix assumé, j'y reviens plus loin.
@@ -141,16 +145,16 @@ Caddy, lui, génère automatiquement les certificats HTTPS via Let's Encrypt et 
 
 
 <br/>
-```d2
-direction: right
-
-Internet -> Fail2Ban: toutes les requêtes
-Fail2Ban -> WireGuard: IP autorisées
-WireGuard -> Caddy: réseau interne
-Caddy -> Nextcloud: :8080
-Caddy -> Jellyfin: :8096
-Caddy -> HomeAssistant: :8123
-Caddy -> "..."
+```mermaid
+graph LR
+  Internet -->|toutes les requêtes| Fail2Ban
+  Fail2Ban -->|IP autorisées| WireGuard
+  WireGuard -->|réseau interne| Caddy
+    
+  Caddy -->|:8080| Nextcloud
+  Caddy -->|:8096| Jellyfin
+  Caddy -->|:8123| HomeAssistant
+  Caddy -->|...| PointsSuspensions["..."]
 ```
 <br/>
 ---

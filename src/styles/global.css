@@ -1233,3 +1233,129 @@
         border: 1px solid #ccc;
     }
 }
+
+/* ============================================================
+   MERMAID DIAGRAMS HARMONIZATION
+   ============================================================ 
+*/
+.mermaid {
+    background: var(--color-surface) !important;
+    border: 1px solid var(--tint-30) !important;
+    border-radius: var(--radius-md) !important;
+    padding: 2rem !important;
+    margin-block: 2.5rem !important;
+    box-shadow: var(--shadow-strong) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+.mermaid svg {
+    font-family: var(--font-title) !important;
+    overflow: visible !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    font-size: 17px !important;
+}
+
+.mermaid .label foreignObject,
+.mermaid foreignObject {
+    overflow: visible !important;
+    width: 100% !important;
+}
+
+.mermaid g.node rect,
+.mermaid g.node circle,
+.mermaid g.node polygon,
+.mermaid g.node path,
+.mermaid .node .main-gradient-element {
+    fill: var(--tint-08) !important;
+    stroke: var(--color-text) !important;
+    stroke-width: 2px !important;
+    filter: none !important;
+}
+
+.mermaid .cluster rect,
+.mermaid rect.cluster,
+.mermaid .subgraph-border {
+    fill: transparent !important;
+    stroke: var(--tint-30) !important;
+    stroke-width: 2px !important;
+    filter: none !important;
+}
+
+.mermaid text,
+.mermaid tspan,
+.mermaid .label,
+.mermaid .cluster-label text {
+    color: var(--color-text) !important;
+    fill: var(--color-text) !important;
+    font-weight: 700 !important;
+    font-size: 16px !important;
+    letter-spacing: normal !important;
+}
+
+.mermaid .cluster-label text,
+.mermaid .cluster-label span {
+    font-size: 19px !important;
+    letter-spacing: 0.02em !important;
+}
+
+
+.mermaid .edgePath .path,
+.mermaid .flowchart-link,
+.mermaid path.link,
+.mermaid path.connection,
+.mermaid .transition {
+    stroke: var(--color-text) !important;
+    stroke-width: 2.5px !important;
+    opacity: 1 !important;
+}
+
+
+.mermaid [id^="mermaid-"] .edgeArrowMarker,
+.mermaid marker,
+.mermaid marker path,
+.mermaid .arrowheadPath,
+.mermaid #arrowhead,
+.mermaid [class*="arrowhead"] {
+    fill: var(--color-text) !important;
+    stroke: var(--color-text) !important;
+    stroke-width: 1.5px !important;
+    transform: scale(1.2);
+}
+
+
+.mermaid .edgeLabel rect,
+.mermaid .labelBox {
+    fill: var(--color-surface) !important;
+    stroke: transparent !important;
+}
+
+.mermaid .edgeLabel text,
+.mermaid .edgeLabel tspan {
+    fill: var(--color-text) !important;
+    color: var(--color-text) !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+}
+
+@media (prefers-color-scheme: light) {
+
+    .mermaid .edgeLabel text,
+    .mermaid .edgeLabel tspan {
+        fill: rgb(58, 58, 56) !important;
+        color: rgb(58, 58, 56) !important;
+    }
+
+    .mermaid .edgeLabel {
+        opacity: 1 !important;
+    }
+
+    .mermaid .edgeLabel rect {
+        fill: rgb(250, 250, 247) !important;
+        opacity: 0.95 !important;
+    }
+}

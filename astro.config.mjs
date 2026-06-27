@@ -3,7 +3,7 @@ import { defineConfig, fontProviders } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
-import d2 from "astro-d2";
+import mermaid from 'astro-mermaid';
 
 export default defineConfig({
   site: "https://epitexam.github.io",
@@ -45,9 +45,24 @@ export default defineConfig({
       priority: 0.7,
       lastmod: new Date(),
     }),
-    d2({
-      sketch: true,
-    }),
+    mermaid({
+      theme: 'dark',
+      themeVariables: {
+        fontFamily: 'sans-serif',
+        background: 'transparent',
+        primaryColor: 'transparent',
+        primaryTextColor: 'rgb(232, 232, 234)',
+        primaryBorderColor: 'rgba(232, 232, 234, 0.11)',
+        lineColor: 'rgba(232, 232, 234, 0.30)',
+      },
+      flowchart: {
+        htmlLabels: false,
+        useMaxWidth: true,
+        nodeSpacing: 60,
+        rankSpacing: 80,
+        padding: 20,
+      }
+    })
   ],
 
   image: {
@@ -65,9 +80,15 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
-    build:{
-      cssMinify:"lightningcss",
-      minify:"esbuild",
+    build: {
+      cssMinify: "lightningcss",
+      minify: "esbuild",
+      chunkSizeWarningLimit: 1000,
+      rolldownOptions: {
+        output: {
+          codeSplitting: true,
+        }
+      }
     }
   },
 
