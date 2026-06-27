@@ -83,6 +83,12 @@ export default defineConfig({
     build: {
       cssMinify: "lightningcss",
       minify: "esbuild",
+      chunkSizeWarningLimit: 1000,
+      rolldownOptions: {
+        output: {
+          codeSplitting: true,
+        }
+      }
     }
   },
 
