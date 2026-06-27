@@ -3,7 +3,6 @@ import { defineConfig, fontProviders } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwindcss from "@tailwindcss/vite";
-import d2 from "astro-d2";
 
 export default defineConfig({
   site: "https://epitexam.github.io",
@@ -44,9 +43,6 @@ export default defineConfig({
       changefreq: "weekly",
       priority: 0.7,
       lastmod: new Date(),
-    }),
-    d2({
-      sketch: true,
     }),
   ],
 
