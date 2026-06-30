@@ -37,26 +37,42 @@ const isTopOne = game.rank === 1;
 >
     <div class="rank-badge">
         <span class="rank-number">#{game.rank}</span>
-        {isTopOne && <span class="crown-icon" aria-label="Coup de cœur">👑</span>}
+        {
+            isTopOne && (
+                <span class="crown-icon" aria-label="Coup de cœur">
+                    👑
+                </span>
+            )
+        }
     </div>
 
     <header class="game-header">
-        {isTopOne && (
-            <div class="top-one-badge">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                    <path
-                        d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
-                        fill="currentColor"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linejoin="round"
-                    />
-                </svg>
-                <span>Coup de cœur 2025</span>
-            </div>
-        )}
+        {
+            isTopOne && (
+                <div class="top-one-badge">
+                    <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"
+                            fill="currentColor"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linejoin="round"
+                        />
+                    </svg>
+                    <span>Coup de cœur 2025</span>
+                </div>
+            )
+        }
         <h2 class="game-title" itemprop="name">{game.title}</h2>
-        <p class="game-description" itemprop="description">{game.description}</p>
+        <p class="game-description" itemprop="description">
+            {game.description}
+        </p>
     </header>
 
     <figure class="game-image">
@@ -74,22 +90,32 @@ const isTopOne = game.rank === 1;
         <div class="meta-grid">
             <div class="meta-item">
                 <span class="meta-label">Développeur</span>
-                <span class="meta-value" itemprop="author">{game.developer}</span>
+                <span class="meta-value" itemprop="author"
+                    >{game.developer}</span
+                >
             </div>
-            {game.publisher && (
-                <div class="meta-item">
-                    <span class="meta-label">Éditeur</span>
-                    <span class="meta-value">{game.publisher}</span>
-                </div>
-            )}
+            {
+                game.publisher && (
+                    <div class="meta-item">
+                        <span class="meta-label">Éditeur</span>
+                        <span class="meta-value">{game.publisher}</span>
+                    </div>
+                )
+            }
             <div class="meta-item">
                 <span class="meta-label">Sortie</span>
-                <time class="meta-value" itemprop="datePublished" datetime={game.releaseDate}>
-                    {new Date(game.releaseDate).toLocaleDateString("fr-FR", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                    })}
+                <time
+                    class="meta-value"
+                    itemprop="datePublished"
+                    datetime={game.releaseDate}
+                >
+                    {
+                        new Date(game.releaseDate).toLocaleDateString("fr-FR", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                        })
+                    }
                 </time>
             </div>
             <div class="meta-item">
@@ -100,29 +126,52 @@ const isTopOne = game.rank === 1;
                 <span class="meta-label">Plateformes</span>
                 <span class="meta-value">{game.platforms.join(", ")}</span>
             </div>
-            {game.engine && (
-                <div class="meta-item">
-                    <span class="meta-label">Moteur</span>
-                    <span class="meta-value">{game.engine}</span>
-                </div>
-            )}
-            {game.playtime && (
-                <div class="meta-item">
-                    <span class="meta-label">Temps de jeu</span>
-                    <span class="meta-value">{game.playtime}</span>
-                </div>
-            )}
-            {game.storeUrl && (
-                <div class="meta-item">
-                    <span class="meta-label">Boutique</span>
-                    <a href={game.storeUrl} target="_blank" rel="noopener noreferrer" class="store-link">
-                        Voir sur Steam
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                            <path d="M7 17L17 7M17 7H7M17 7V17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                    </a>
-                </div>
-            )}
+            {
+                game.engine && (
+                    <div class="meta-item">
+                        <span class="meta-label">Moteur</span>
+                        <span class="meta-value">{game.engine}</span>
+                    </div>
+                )
+            }
+            {
+                game.playtime && (
+                    <div class="meta-item">
+                        <span class="meta-label">Temps de jeu</span>
+                        <span class="meta-value">{game.playtime}</span>
+                    </div>
+                )
+            }
+            {
+                game.storeUrl && (
+                    <div class="meta-item">
+                        <span class="meta-label">Boutique</span>
+                        <a
+                            href={game.storeUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="store-link"
+                        >
+                            Voir sur Steam
+                            <svg
+                                width="13"
+                                height="13"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                aria-hidden="true"
+                            >
+                                <path
+                                    d="M7 17L17 7M17 7H7M17 7V17"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                />
+                            </svg>
+                        </a>
+                    </div>
+                )
+            }
         </div>
     </section>
 
@@ -136,27 +185,55 @@ const isTopOne = game.rank === 1;
             <div class="content-block">
                 <h3>Points forts</h3>
                 <ul class="pros-list">
-                    {game.pros.map((pro) => (
-                        <li>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                            <span>{pro}</span>
-                        </li>
-                    ))}
+                    {
+                        game.pros.map((pro) => (
+                            <li>
+                                <svg
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M20 6L9 17l-5-5"
+                                        stroke="currentColor"
+                                        stroke-width="2.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                </svg>
+                                <span>{pro}</span>
+                            </li>
+                        ))
+                    }
                 </ul>
             </div>
             <div class="content-block">
                 <h3>Points faibles</h3>
                 <ul class="cons-list">
-                    {game.cons.map((con) => (
-                        <li>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                            <span>{con}</span>
-                        </li>
-                    ))}
+                    {
+                        game.cons.map((con) => (
+                            <li>
+                                <svg
+                                    width="16"
+                                    height="16"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    aria-hidden="true"
+                                >
+                                    <path
+                                        d="M18 6L6 18M6 6l12 12"
+                                        stroke="currentColor"
+                                        stroke-width="2.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                    />
+                                </svg>
+                                <span>{con}</span>
+                            </li>
+                        ))
+                    }
                 </ul>
             </div>
         </div>
@@ -172,13 +249,17 @@ const isTopOne = game.rank === 1;
         </div>
     </section>
 
-    {game.tags && game.tags.length > 0 && (
-        <footer class="game-footer">
-            <div class="game-tags">
-                {game.tags.map((tag) => <Tag tag={tag} />)}
-            </div>
-        </footer>
-    )}
+    {
+        game.tags && game.tags.length > 0 && (
+            <footer class="game-footer">
+                <div class="game-tags">
+                    {game.tags.map((tag) => (
+                        <Tag tag={tag} />
+                    ))}
+                </div>
+            </footer>
+        )
+    }
 </article>
 
 <style>
@@ -212,8 +293,10 @@ const isTopOne = game.rank === 1;
         border: 1px solid var(--card-border);
         border-radius: var(--radius-md, 0.5rem);
         box-shadow: var(--shadow-soft, 0 8px 24px rgba(0, 0, 0, 0.5));
-        transition: border-color var(--duration-base, 0.4s) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
-                    box-shadow var(--duration-base, 0.4s) ease;
+        transition:
+            border-color var(--duration-base, 0.4s)
+                var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
+            box-shadow var(--duration-base, 0.4s) ease;
     }
 
     /* Neutralisation des animations globales appliquées aux titres */
@@ -333,7 +416,8 @@ const isTopOne = game.rank === 1;
         height: auto;
         object-fit: cover;
         display: block;
-        transition: transform var(--duration-base, 0.4s) var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1));
+        transition: transform var(--duration-base, 0.4s)
+            var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1));
     }
 
     .game-card:hover .game-img {
@@ -362,7 +446,7 @@ const isTopOne = game.rank === 1;
         font-family: var(--font-title, sans-serif);
         font-size: 0.65rem;
         font-weight: 700;
-        color: var(--card-muted);
+        color: rgba(var(--card-text-rgb), 0.85);
         text-transform: uppercase;
         letter-spacing: 0.12em;
     }
@@ -476,7 +560,6 @@ const isTopOne = game.rank === 1;
         }
     }
 
-    /* Compatibilité light mode via prefers-color-scheme */
     @media (prefers-color-scheme: light) {
         .game-card {
             --card-surface: rgb(255, 255, 255);
@@ -484,11 +567,19 @@ const isTopOne = game.rank === 1;
             --card-muted: rgba(var(--card-text-rgb), 0.7);
             --card-tint-05: rgba(var(--card-text-rgb), 0.04);
             --card-tint-10: rgba(var(--card-text-rgb), 0.07);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05), 0 6px 16px rgba(0, 0, 0, 0.04);
+            box-shadow:
+                0 2px 8px rgba(0, 0, 0, 0.05),
+                0 6px 16px rgba(0, 0, 0, 0.04);
+        }
+
+        .meta-label {
+            color: rgba(var(--card-text-rgb), 0.9);
         }
 
         .game-card:hover {
-            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07), 0 10px 28px rgba(0, 0, 0, 0.06);
+            box-shadow:
+                0 4px 14px rgba(0, 0, 0, 0.07),
+                0 10px 28px rgba(0, 0, 0, 0.06);
         }
     }
 </style>

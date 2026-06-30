@@ -17,25 +17,24 @@ export default defineConfig({
 
   fonts: [
     {
-      name: "Geist",
+      name: "Inter",
       cssVariable: "--font-body",
       provider: fontProviders.google(),
-      weights: ["400", "500", "600"],
+      weights: ["400", "500"]
     },
     {
-      name: "Hanken Grotesk",
+      name: "Geist",
       cssVariable: "--font-title",
-      provider: fontProviders.fontsource(),
-      weights: ["600", "700", "800"],
+      provider: fontProviders.google(),
+      weights: ["500", "700"]
     },
     {
-      name: "JetBrains Mono",
+      name: "Intel One Mono",
       cssVariable: "--font-code",
-      provider: fontProviders.fontsource(),
-      weights: ["400"],
-    },
+      provider: fontProviders.google(),
+      weights: ["400", "500"]
+    }
   ],
-
   integrations: [
     mdx({
       optimize: true,
@@ -83,12 +82,7 @@ export default defineConfig({
     build: {
       cssMinify: "lightningcss",
       minify: "esbuild",
-      chunkSizeWarningLimit: 1000,
-      rolldownOptions: {
-        output: {
-          codeSplitting: true,
-        }
-      }
+      chunkSizeWarningLimit: 2500,
     }
   },
 

@@ -33,10 +33,10 @@ const { post } = Astro.props;
                         alt={post.data.heroImageDescription || post.data.title}
                         width={800}
                         height={400}
-                        widths={[400, 640, 800]}
+                        widths={[400, 640, 800, 1024, 1280, 1600]}
                         sizes="(max-width: 480px) 100vw, (max-width: 768px) calc(100vw - 2rem), 800px"
                         class="post-image"
-                        loading="lazy"
+                        loading="eager"
                     />
                     <div class="image-overlay" />
                 </div>

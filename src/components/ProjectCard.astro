@@ -22,398 +22,319 @@ const IMG_W = 800;
 const IMG_H = 450;
 ---
 
-<article class:list={["project-card", { featured: data.featured }]}>
-    <a
-        href={`/project/${id}/`}
-        class="image-link"
-        tabindex="-1"
-        aria-hidden="true"
-    >
+<a
+    href={`/project/${id}/`}
+    class="project-card"
+    aria-label={`Voir les détails du projet : ${data.title}`}
+>
+    <div class="card-media">
         <Image
             src={imageSrc}
             alt={imageAlt}
-            class="card-img"
-            loading={isEager ? "eager" : "lazy"}
-            fetchpriority={isEager ? "high" : "auto"}
-            widths={[240, 360, 480, 640, 800]}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             width={IMG_W}
+            widths={[400, 800, 1200, 1600, 2000]}
             height={IMG_H}
-            quality={80}
-            format="webp"
+            loading={isEager ? "eager" : "lazy"}
+            decoding={isEager ? "sync" : "async"}
+            class="card-image"
         />
-    </a>
+        {data.featured && <span class="badge-featured">Featured</span>}
+    </div>
 
-    <div class="card-content">
-        <header class="card-header">
-            <div class="card-eyebrow">
-                <FormattedDate date={data.pubDate} />
-                {
-                    data.featured && (
-                        <span
-                            class="featured-badge"
-                            aria-label="Projet mis en avant"
-                        >
-                            <span class="featured-dot" aria-hidden="true" />
-                            Featured
-                        </span>
-                    )
-                }
-            </div>
+    <div class="card-body">
+        <HeadingTag class="card-title">
+            {data.title}
+        </HeadingTag>
 
-            <HeadingTag class="project-title">
-                <a href={`/project/${id}/`} class="title-link">
-                    {data.title}
-                </a>
-            </HeadingTag>
-
-            <p class="desc">{data.description}</p>
-        </header>
+        <p class="card-description">{data.description}</p>
 
         {
             data.technologies.length > 0 && (
-                <ul class="tech-stack" aria-label="Technologies utilisées">
+                <ul class="tech-stack">
                     {data.technologies.slice(0, 4).map((tech) => (
-                        <li class="tech-tag">{tech}</li>
+                        <li class="tech-stack-item">{tech}</li>
                     ))}
                 </ul>
             )
         }
 
-        <footer class="card-actions">
-            <a
-                href={`/project/${id}/`}
-                class="btn btn-primary"
-                aria-label={`Voir les détails de ${data.title}`}
-            >
-                Détails
-            </a>
-
+        <div class="card-footer">
+            <span class="btn-primary">Détails</span>
             {
                 (data.liveUrl || data.sourceUrl) && (
-                    <div class="external-links">
+                    <div class="card-links">
                         {data.liveUrl && (
-                            <a
-                                href={data.liveUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="btn btn-ghost"
-                                aria-label={`Voir la démo en ligne de ${data.title}`}
-                            >
-                                Live
-                                <svg
-                                    width="9"
-                                    height="9"
-                                    viewBox="0 0 12 12"
-                                    fill="none"
-                                    aria-hidden="true"
+                            <object>
+                                <a
+                                    href={data.liveUrl}
+                                    class="btn-secondary"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onclick="event.stopPropagation();"
                                 >
-                                    <path
-                                        d="M1 11L11 1M11 1H1M11 1V11"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    />
-                                </svg>
-                            </a>
+                                    Live
+                                </a>
+                            </object>
                         )}
                         {data.sourceUrl && (
-                            <a
-                                href={data.sourceUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="btn btn-ghost"
-                                aria-label={`Voir le code source de ${data.title}`}
-                            >
-                                Code
-                                <svg
-                                    width="9"
-                                    height="9"
-                                    viewBox="0 0 12 12"
-                                    fill="none"
-                                    aria-hidden="true"
+                            <object>
+                                <a
+                                    href={data.sourceUrl}
+                                    class="btn-secondary"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onclick="event.stopPropagation();"
                                 >
-                                    <path
-                                        d="M1 11L11 1M11 1H1M11 1V11"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                    />
-                                </svg>
-                            </a>
+                                    Code
+                                </a>
+                            </object>
                         )}
                     </div>
                 )
             }
-        </footer>
+        </div>
     </div>
-</article>
+</a>
 
 <style>
     .project-card {
-        background: rgba(var(--bg, 9, 9, 9), 0.9);
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-md);
         display: flex;
         flex-direction: column;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
         overflow: hidden;
         box-shadow: var(--shadow-soft);
+        text-decoration: none;
+        color: inherit;
+        height: 100%;
         transition:
             transform var(--duration-base) var(--ease-spring),
-            border-color var(--duration-base) ease,
-            box-shadow var(--duration-base) ease;
+            box-shadow var(--duration-base) var(--ease-spring),
+            border-color var(--duration-base) ease;
     }
 
     .project-card :is(h1, h2, h3, h4, h5, h6) {
         animation: none !important;
     }
 
-    .project-card ul,
-    .project-card ol {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
-
-    .project-card li::before,
-    .project-card li::after {
-        content: none !important;
-        display: none;
-    }
-
     @media (hover: hover) {
         .project-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--accent-40);
+            transform: translateY(-4px);
             box-shadow: var(--shadow-strong);
+            border-color: rgba(var(--accent), 0.3);
         }
     }
 
-    .project-card.featured {
-        border-color: var(--accent-20);
-    }
-
-    .image-link {
-        display: block;
+    .card-media {
+        position: relative;
         aspect-ratio: 16 / 9;
         overflow: hidden;
-        border-bottom: 1px solid var(--color-border);
-        background: var(--color-surface);
-        background-image: radial-gradient(
-            rgba(var(--text, 232, 232, 234), 0.06) 1px,
-            transparent 1px
-        );
-        background-size: 20px 20px;
+        background: var(--tint-08);
     }
 
-    .card-img {
+    .card-image {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        filter: grayscale(20%);
-        transition:
-            transform var(--duration-slow) var(--ease-spring),
-            filter var(--duration-base) ease;
+        transition: transform var(--duration-slow) var(--ease-spring);
     }
 
     @media (hover: hover) {
-        .project-card:hover .card-img {
-            transform: scale(1.04);
-            filter: grayscale(0%);
+        .project-card:hover .card-image {
+            transform: scale(1.05);
         }
     }
 
-    .card-content {
-        padding: 1.5rem;
+    .badge-featured {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: var(--badge-featured-bg);
+        color: var(--badge-featured-text);
+        font-family: var(--font-title);
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        padding: 0.35rem 0.75rem;
+        border-radius: var(--radius-sm);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        border: 1px solid var(--color-border);
+        z-index: 2;
+    }
+
+    .card-body {
         display: flex;
         flex-direction: column;
         flex: 1;
+        padding: 1.5rem;
         gap: 1rem;
     }
 
-    .card-eyebrow {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-family: var(--font-title);
-        font-size: 0.65rem;
-        color: var(--color-muted);
-        letter-spacing: 0.06em;
-        margin-bottom: 0.4rem;
-    }
-
-    .featured-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.35rem;
-        padding: 0.25rem 0.65rem 0.25rem 0.45rem;
-        background: rgba(var(--badge-green-rgb, 34, 197, 94), 0.12);
-        border: 1.5px solid rgba(var(--badge-green-rgb, 34, 197, 94), 0.35);
-        border-radius: 999px;
-        font-size: 0.6rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-        color: rgb(var(--badge-green-rgb, 34, 197, 94));
-    }
-
-    .featured-dot {
-        width: 5px;
-        height: 5px;
-        border-radius: 50%;
-        background: currentColor;
-        box-shadow: 0 0 6px rgba(var(--badge-green-rgb, 34, 197, 94), 0.7);
-        animation: dot-pulse 2.5s ease-in-out infinite;
-    }
-
-    @keyframes dot-pulse {
-        0%,
-        100% {
-            opacity: 1;
-        }
-        50% {
-            opacity: 0.3;
-        }
-    }
-
-    .project-title {
-        margin: 0 0 0.5rem;
-        padding: 0;
-        font-size: 1.15rem;
-        font-weight: 800;
-        line-height: 1.2;
-        letter-spacing: -0.025em;
+    .card-title {
+        margin: 0;
+        font-size: clamp(1.1rem, 2vw, 1.35rem);
+        line-height: 1.3;
         color: var(--color-text);
-    }
-
-    .title-link {
-        text-decoration: none;
-        color: inherit;
         transition: color var(--duration-fast) ease;
     }
 
     @media (hover: hover) {
-        .title-link:hover {
+        .project-card:hover .card-title {
             color: var(--color-accent);
         }
     }
 
-    .desc {
-        font-size: 0.875rem;
+    .card-description {
+        font-size: 0.95rem;
+        line-height: 1.6;
         color: var(--color-muted);
-        line-height: 1.55;
         margin: 0;
         display: -webkit-box;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
     }
 
     .tech-stack {
+        list-style: none;
+        padding: 0;
+        margin: 0;
         display: flex;
         flex-wrap: wrap;
-        gap: 0.35rem;
-        margin-top: auto;
+        align-items: center;
+        gap: 0.4rem 0.75rem;
+        font-family: var(--font-code);
+        font-size: 0.75rem;
+        line-height: 1.4;
+        color: var(--color-muted);
     }
 
-    .tech-tag {
-        font-size: 0.62rem;
-        font-weight: 700;
-        padding: 0.2rem 0.55rem;
-        background: var(--accent-05);
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-sm);
-        color: var(--color-muted);
-        text-transform: uppercase;
-        letter-spacing: 0.07em;
-        transition:
-            border-color var(--duration-fast) ease,
-            color var(--duration-fast) ease;
+    .tech-stack-item {
+        display: inline-flex;
+        align-items: center;
+        position: relative;
+        margin: 0 !important;
+        padding: 0;
+        line-height: 1.4;
+        transition: color var(--duration-fast) ease;
+    }
+
+    .tech-stack-item:not(:last-child)::after {
+        content: "";
+        display: block;
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: var(--tint-30);
+        margin-left: 0.75rem;
+        flex-shrink: 0;
+        align-self: center;
     }
 
     @media (hover: hover) {
-        .project-card:hover .tech-tag {
-            border-color: var(--accent-20);
-            color: var(--color-text);
+        .tech-stack-item:hover {
+            color: var(--color-accent);
+        }
+        .tech-stack-item:hover::after {
+            background: rgba(var(--accent), 0.6);
         }
     }
 
-    .card-actions {
+    .card-footer {
         display: flex;
-        justify-content: space-between;
         align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-top: auto;
         padding-top: 1rem;
         border-top: 1px solid var(--color-border);
     }
 
-    .external-links {
+    .btn-primary,
+    .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-title);
+        font-size: 0.85rem;
+        font-weight: 600;
+        padding: 0.5rem 1rem;
+        border-radius: var(--radius-sm);
+        text-decoration: none;
+        transition:
+            background var(--duration-fast) ease,
+            color var(--duration-fast) ease,
+            border-color var(--duration-fast) ease,
+            transform var(--duration-fast) ease;
+        cursor: pointer;
+    }
+
+    .btn-primary {
+        background: var(--color-accent);
+        color: var(--color-bg);
+        border: 1px solid transparent;
+    }
+
+    @media (hover: hover) {
+        .project-card:hover .btn-primary {
+            background: rgba(var(--accent), 0.85);
+            transform: translateY(-1px);
+        }
+    }
+
+    .btn-primary:active {
+        transform: scale(0.98);
+    }
+
+    .card-links {
         display: flex;
         gap: 0.5rem;
     }
 
-    .btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        padding: 0.45rem 1.1rem;
-        border-radius: 999px;
-        border: 1.5px solid transparent;
-        backdrop-filter: blur(10px) saturate(160%);
-        -webkit-backdrop-filter: blur(10px) saturate(160%);
-
-        font-family: var(--font-title);
-        font-size: 0.75rem;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        text-decoration: none;
-        white-space: nowrap;
-
-        transition: all var(--duration-base) var(--ease-spring);
-    }
-
-    .btn-primary {
-        background: rgba(var(--text, 232, 232, 234), 0.1);
-        border-color: rgba(var(--text, 232, 232, 234), 0.35);
-        color: var(--color-text);
+    .btn-secondary {
+        background: transparent;
+        color: var(--color-muted);
+        border: 1px solid var(--color-border);
     }
 
     @media (hover: hover) {
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            background: rgba(var(--text, 232, 232, 234), 0.18);
-            border-color: rgba(var(--text, 232, 232, 234), 0.6);
-            box-shadow: 0 4px 12px rgba(var(--text, 232, 232, 234), 0.12);
+        .btn-secondary:hover {
+            color: var(--color-accent);
+            border-color: rgba(var(--accent), 0.4);
+            background: rgba(var(--accent), 0.05);
         }
     }
 
-    .btn-ghost {
-        padding: 0.45rem 0.9rem 0.45rem 0.75rem;
-        background: rgba(var(--text, 232, 232, 234), 0.04);
-        border-color: rgba(var(--text, 232, 232, 234), 0.18);
-        color: var(--color-muted);
-    }
+    @media (max-width: 480px) {
+        .card-body {
+            padding: 1.25rem;
+        }
 
-    @media (hover: hover) {
-        .btn-ghost:hover {
-            transform: translateY(-2px);
-            background: rgba(var(--text, 232, 232, 234), 0.1);
-            border-color: rgba(var(--text, 232, 232, 234), 0.4);
-            color: var(--color-text);
-            box-shadow: 0 4px 12px rgba(var(--text, 232, 232, 234), 0.08);
+        .card-footer {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0.75rem;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            width: 100%;
+            text-align: center;
+        }
+
+        .card-links {
+            width: 100%;
         }
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .featured-dot {
-            animation: none;
+        .project-card:hover {
+            transform: none;
         }
-
-        .project-card,
-        .btn {
-            transition: none;
+        .project-card:hover .card-image {
+            transform: none;
         }
     }
 </style>

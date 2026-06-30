@@ -21,12 +21,13 @@ import type { Project } from "../types/github";
 const allProjects = await getCollection("projects");
 const displayProjects = allProjects
     .filter((p) => !p.data.draft)
+    .filter((p) => p.data.featured)
     .sort((a, b) => {
         if (a.data.featured && !b.data.featured) return -1;
         if (!a.data.featured && b.data.featured) return 1;
         return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
     })
-    .slice(0, 2);
+    .slice(0, 1);
 
 const latestPost =
     (await getCollection("blog"))
@@ -135,7 +136,10 @@ const jsonLdProfile = {
                 <Avatar />
 
                 <div class="status-wrapper">
-                    <StatusBadge label="Ouvert aux opportunités" href="/contact"/>
+                    <StatusBadge
+                        label="Ouvert aux opportunités"
+                        href="/contact"
+                    />
                 </div>
 
                 <h1 class="hero-title">
@@ -416,7 +420,7 @@ const jsonLdProfile = {
 
     .btn-ghost {
         background: transparent;
-        color: var(--color-muted);
+        color: rgba(255, 255, 255, 0.8);
         border: 1px solid var(--color-border);
     }
 
@@ -653,6 +657,25 @@ const jsonLdProfile = {
     @media (prefers-reduced-motion: reduce) {
         .btn-pill:hover {
             transform: none;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        .btn-ghost {
+            color: rgba(10, 10, 12, 0.85);
+            border-color: rgba(10, 10, 12, 0.2);
+        }
+
+        .hero-description {
+            color: rgba(10, 10, 12, 0.75) !important;
+        }
+
+        .section-link {
+            color: rgba(10, 10, 12, 0.8) !important;
+        }
+
+        .section-link:hover {
+            color: rgb(10, 10, 12) !important;
         }
     }
 </style>
