@@ -17,25 +17,24 @@ export default defineConfig({
 
   fonts: [
     {
-      name: "Geist",
+      name: "Plus Jakarta Sans",
       cssVariable: "--font-body",
       provider: fontProviders.google(),
-      weights: ["400", "500", "600"],
+      weights: ["400", "500", "600"]
     },
     {
-      name: "Hanken Grotesk",
+      name: "Space Grotesk",
       cssVariable: "--font-title",
-      provider: fontProviders.fontsource(),
-      weights: ["600", "700", "800"],
+      provider: fontProviders.google(),
+      weights: ["500", "700", "800"]
     },
     {
-      name: "JetBrains Mono",
+      name: "Martian Mono",
       cssVariable: "--font-code",
-      provider: fontProviders.fontsource(),
-      weights: ["400"],
-    },
+      provider: fontProviders.google(),
+      weights: ["400", "600"]
+    }
   ],
-
   integrations: [
     mdx({
       optimize: true,
