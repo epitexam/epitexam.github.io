@@ -53,18 +53,14 @@ const jsonLd = {
 
                 <div class="interests-content">
                     <p>
-                        Développeur Fullstack avec <strong
-                            >3 ans d'expérience</strong
-                        >
+                        Développeur Fullstack avec <strong>3 ans d'expérience</strong>
                         acquise en startup SaaS et EdTech, je conçois des applications
                         robustes en m'appuyant sur <strong>TypeScript</strong>,
                         <strong>Node.js</strong> et des architectures pensées pour
                         durer.
                     </p>
                     <p>
-                        J'accorde autant d'importance à la <strong
-                            >lisibilité du code</strong
-                        >
+                        J'accorde autant d'importance à la <strong>lisibilité du code</strong>
                         qu'à ses performances. Chaque décision technique doit pouvoir
                         s'expliquer et s'assumer dans le temps.
                     </p>
@@ -78,86 +74,46 @@ const jsonLd = {
             </section>
 
             <section class="content-section" aria-labelledby="parcours-heading">
-                <SectionHeader
-                    label="Parcours"
-                    level="h2"
-                    id="parcours-heading"
-                />
+                <SectionHeader label="Parcours" level="h2" id="parcours-heading" />
 
                 <div class="journey-block">
                     <h3 class="journey-label">Formation</h3>
                     <div class="journey-list">
-                        {
-                            EDUCATION.map((item) => (
-                                <div class="journey-item">
-                                    <div class="journey-header">
-                                        <time class="journey-period">
-                                            {item.period}
-                                        </time>
-                                        <p class="journey-title">
-                                            {item.title}
-                                        </p>
-                                    </div>
-                                    {item.subtitle && (
-                                        <p class="journey-subtitle-text">
-                                            {item.subtitle}
-                                        </p>
-                                    )}
-                                    <p class="journey-desc">
-                                        {item.description}
-                                    </p>
+                        {EDUCATION.map((item) => (
+                            <div class="journey-item">
+                                <div class="journey-header">
+                                    <time class="journey-period">{item.period}</time>
+                                    <p class="journey-title">{item.title}</p>
                                 </div>
-                            ))
-                        }
+                                {item.subtitle && <p class="journey-subtitle-text">{item.subtitle}</p>}
+                                <p class="journey-desc">{item.description}</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
                 <div class="journey-block">
                     <h3 class="journey-label">Expériences professionnelles</h3>
                     <div class="journey-list">
-                        {
-                            EXPERIENCES.map((item) => (
-                                <div class="journey-item">
-                                    <div class="journey-header">
-                                        <time class="journey-period">
-                                            {item.period}
-                                        </time>
-                                        <p class="journey-title">
-                                            {item.title}
-                                        </p>
-                                    </div>
-
-                                    {item.context && (
-                                        <p class="journey-context">
-                                            {item.context}
-                                        </p>
-                                    )}
-
-                                    <p class="journey-desc">
-                                        {item.description}
-                                    </p>
-
-                                    <div class="journey-tags">
-                                        {item.tags.map((tag) => (
-                                            <Tag tag={tag} />
-                                        ))}
-                                    </div>
+                        {EXPERIENCES.map((item) => (
+                            <div class="journey-item">
+                                <div class="journey-header">
+                                    <time class="journey-period">{item.period}</time>
+                                    <p class="journey-title">{item.title}</p>
                                 </div>
-                            ))
-                        }
+                                {item.context && <p class="journey-context">{item.context}</p>}
+                                <p class="journey-desc">{item.description}</p>
+                                <div class="journey-tags">
+                                    {item.tags.map((tag) => <Tag tag={tag} />)}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </section>
 
-            <section
-                class="content-section"
-                aria-labelledby="recherche-heading"
-            >
-                <SectionHeader
-                    label="Ce que je recherche"
-                    level="h2"
-                    id="recherche-heading"
-                />
+            <section class="content-section" aria-labelledby="recherche-heading">
+                <SectionHeader label="Ce que je recherche" level="h2" id="recherche-heading" />
 
                 <div class="interests-content">
                     <p>
@@ -178,29 +134,20 @@ const jsonLd = {
                 </div>
             </section>
 
-            <section
-                class="content-section"
-                aria-labelledby="interests-heading"
-            >
-                <SectionHeader
-                    label="Centres d'intérêt"
-                    level="h2"
-                    id="interests-heading"
-                />
+            <section class="content-section" aria-labelledby="interests-heading">
+                <SectionHeader label="Centres d'intérêt" level="h2" id="interests-heading" />
 
                 <div class="interests-content">
                     <p>
-                        Passionné de <strong>jeux vidéo</strong> et de <strong
-                            >game design</strong
-                        >, j'aime observer les mécaniques de gameplay pour voir
+                        Passionné de <strong>jeux vidéo</strong> et de <strong>game design</strong>, 
+                        j'aime observer les mécaniques de gameplay pour voir
                         ce qui rend une expérience agréable. Ça influence
                         directement ma façon de concevoir des interfaces simples
                         et intuitives.
                     </p>
                     <p>
-                        L'<strong>émulation</strong> et la <strong
-                            >rétro-informatique</strong
-                        > (Atari 2600, 6502) alimentent ma curiosité pour les contraintes
+                        L'<strong>émulation</strong> et la <strong>rétro-informatique</strong>
+                        (Atari 2600, 6502) alimentent ma curiosité pour les contraintes
                         hardware et l'optimisation bas niveau. Observer comment les
                         anciens programmeurs faisaient tenir un jeu dans seulement
                         4 Ko reste un bon exercice pour comprendre l'efficacité et
@@ -217,19 +164,11 @@ const jsonLd = {
             </section>
 
             <aside class="contact-section" aria-labelledby="contact-heading">
-                <SectionHeader
-                    label="Contact"
-                    href="/contact"
-                    linkText="Me contacter"
-                    level="h2"
-                    id="contact-heading"
-                />
+                <SectionHeader label="Contact" href="/contact" linkText="Me contacter" level="h2" id="contact-heading" />
 
                 <div class="contact-card">
                     <p>Vous recrutez ? Intéressé par une collaboration ?</p>
-                    <a href="/contact" class="btn-pill btn-solid"
-                        >Envoyer un message</a
-                    >
+                    <a href="/contact" class="btn-pill btn-solid">Envoyer un message</a>
                 </div>
             </aside>
         </main>
@@ -246,9 +185,7 @@ const jsonLd = {
         flex-direction: column;
     }
 
-    .about-main :is(h1, h2, h3, h4, h5, h6) {
-        animation: none !important;
-    }
+    .about-main :is(h1, h2, h3, h4, h5, h6) { animation: none !important; }
 
     .content-section {
         display: flex;
@@ -264,13 +201,11 @@ const jsonLd = {
     }
 
     .journey-label {
-        font-family: var(--font-code);
-        font-size: 1rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--color-accent);
-        opacity: 0.9;
+        font-family: var(--font-title);
+        font-size: 1.1rem;
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        color: var(--color-text);
         margin: 0;
     }
 
@@ -281,16 +216,13 @@ const jsonLd = {
     }
 
     .journey-item {
-        padding: 0.75rem 0 0.75rem 0;
-        padding-inline-start: 1.5rem;
+        padding: 0.75rem 0 0.75rem 1.5rem;
         border-inline-start: 2px solid var(--color-border);
-        transition:
-            border-color var(--duration-base) ease,
-            padding-inline-start var(--duration-base) var(--ease-spring);
+        transition: border-color var(--duration-base) ease, padding-inline-start var(--duration-base) var(--ease-spring);
     }
 
     .journey-item:hover {
-        border-inline-start-color: var(--color-accent);
+        border-inline-start-color: rgba(var(--accent), 0.5);
         padding-inline-start: 1.85rem;
     }
 
@@ -299,12 +231,12 @@ const jsonLd = {
         align-items: baseline;
         gap: 0.75rem;
         flex-wrap: wrap;
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.5rem;
     }
 
     .journey-period {
         font-family: var(--font-code);
-        font-size: 0.75rem;
+        font-size: 0.8rem;
         color: var(--color-muted);
         white-space: nowrap;
         flex-shrink: 0;
@@ -312,7 +244,7 @@ const jsonLd = {
 
     .journey-title {
         font-family: var(--font-title);
-        font-size: 1rem;
+        font-size: 1.05rem;
         font-weight: 600;
         color: var(--color-text);
         margin: 0;
@@ -320,45 +252,45 @@ const jsonLd = {
     }
 
     .journey-context {
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         font-weight: 500;
         color: var(--color-accent);
-        margin: 0.2rem 0 0.3rem;
+        margin: 0.2rem 0 0.5rem;
         opacity: 0.9;
     }
 
     .journey-subtitle-text {
-        font-size: 0.875rem;
+        font-size: 0.9rem;
         color: var(--color-muted);
         font-style: italic;
         margin: 0 0 0.3rem;
     }
 
     .journey-desc {
-        font-size: 0.9rem;
+        font-size: 0.95rem;
         line-height: 1.7;
-        color: rgba(var(--text), 0.75);
+        color: var(--color-muted);
         margin: 0;
     }
 
     .journey-tags {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.4rem;
-        margin-top: 0.75rem;
+        gap: 0.5rem;
+        margin-top: 1rem;
     }
 
     .interests-content {
-        font-size: 1rem;
+        font-size: 1.05rem;
         line-height: 1.8;
         display: flex;
         flex-direction: column;
-        gap: 1.2rem;
+        gap: 1.5rem;
     }
 
     .interests-content p {
         margin: 0;
-        color: rgba(var(--text), 0.8);
+        color: var(--color-muted);
     }
 
     .contact-section {
@@ -373,11 +305,12 @@ const jsonLd = {
         flex-direction: column;
         align-items: center;
         gap: 1.5rem;
-        padding: 2.5rem 2rem;
-        background: rgba(var(--accent), 0.02);
+        padding: 3rem 2rem;
+        background: var(--color-surface);
         border: 1px solid var(--color-border);
-        border-radius: var(--radius-md);
+        border-radius: var(--radius-lg);
         text-align: center;
+        box-shadow: var(--shadow-soft);
     }
 
     .contact-card p {
@@ -386,92 +319,52 @@ const jsonLd = {
         margin: 0;
     }
 
-    .contact-card .btn-pill {
-        min-width: 200px;
-        justify-content: center;
-    }
+    .contact-card .btn-pill { min-width: 200px; justify-content: center; }
 
     .btn-pill {
         display: inline-flex;
         align-items: center;
-        gap: 0.55rem;
+        gap: 0.5rem;
         font-family: var(--font-title);
-        font-weight: 600;
-        font-size: 0.84rem;
-        letter-spacing: 0.02em;
-        padding: 0.7rem 1.6rem;
+        font-weight: 500;
+        font-size: 0.95rem;
+        letter-spacing: -0.01em;
+        padding: 0.75rem 1.5rem;
         border-radius: 999px;
         text-decoration: none;
-        transition:
-            transform var(--duration-base) var(--ease-spring),
-            box-shadow var(--duration-base) ease,
-            filter var(--duration-fast) ease,
-            border-color var(--duration-fast) ease,
-            background var(--duration-fast) ease;
+        transition: all var(--duration-fast) var(--ease-spring);
     }
 
     .btn-solid {
         background: var(--color-accent);
         color: var(--color-bg);
         border: 1px solid transparent;
-        box-shadow: 0 2px 12px rgba(var(--accent), 0.25);
+        box-shadow: var(--shadow-soft);
     }
 
     .btn-solid:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(var(--accent), 0.35);
-        filter: brightness(1.06);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-strong);
     }
 
     @media (max-width: 768px) {
-        .about-main {
-            gap: 3.5rem;
-        }
-
-        .journey-header {
-            flex-direction: column;
-            gap: 0.2rem;
-        }
-
-        .journey-item:hover {
-            padding-inline-start: 1.5rem;
-        }
+        .about-main { gap: 3.5rem; }
+        .journey-header { flex-direction: column; gap: 0.2rem; }
+        .journey-item:hover { padding-inline-start: 1.5rem; }
     }
 
     @media (max-width: 480px) {
-        .about-main {
-            gap: 2.5rem;
-        }
-
-        .journey-item {
-            padding-inline-start: 1.1rem;
-        }
-        .journey-title {
-            font-size: 0.95rem;
-        }
-
-        .interests-content {
-            font-size: 0.925rem;
-        }
-
-        .contact-card {
-            padding: 1.5rem;
-        }
-
-        .contact-card .btn-pill {
-            min-width: 100%;
-        }
+        .about-main { gap: 2.5rem; }
+        .journey-item { padding-inline-start: 1.1rem; }
+        .journey-title { font-size: 1rem; }
+        .interests-content { font-size: 0.95rem; }
+        .contact-card { padding: 2rem 1.5rem; }
+        .contact-card .btn-pill { min-width: 100%; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .journey-item {
-            transition: none;
-        }
-        .journey-item:hover {
-            padding-inline-start: 1.5rem;
-        }
-        .btn-pill:hover {
-            transform: none;
-        }
+        .journey-item { transition: none; }
+        .journey-item:hover { padding-inline-start: 1.5rem; }
+        .btn-pill:hover { transform: none; }
     }
 </style>

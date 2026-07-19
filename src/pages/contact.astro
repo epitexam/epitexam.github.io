@@ -296,7 +296,7 @@ const success = Astro.url.searchParams.get("success") === "true";
 
 <style>
     .contact-main {
-        --warn-rgb: 220, 140, 40;
+        --warn-rgb: 251, 146, 60;
         justify-content: center;
         align-items: center;
     }
@@ -320,7 +320,7 @@ const success = Astro.url.searchParams.get("success") === "true";
     }
 
     .contact-title {
-        font-size: clamp(1.75rem, 5vw, 2.5rem);
+        font-size: clamp(2rem, 5vw, 3rem);
         font-weight: 700;
         line-height: 1.1;
         letter-spacing: -0.03em;
@@ -328,7 +328,7 @@ const success = Astro.url.searchParams.get("success") === "true";
     }
 
     .contact-intro {
-        font-size: 0.95rem;
+        font-size: 1.05rem;
         line-height: 1.75;
         color: var(--color-muted);
         margin: 0;
@@ -338,9 +338,9 @@ const success = Astro.url.searchParams.get("success") === "true";
         display: flex;
         align-items: center;
         gap: 0.75rem;
-        padding: 0.9rem 1.1rem;
+        padding: 1rem 1.25rem;
         border-radius: var(--radius-md);
-        font-size: 0.875rem;
+        font-size: 0.95rem;
         font-weight: 500;
         animation: slideDown var(--duration-base) var(--ease-spring) both;
     }
@@ -351,13 +351,13 @@ const success = Astro.url.searchParams.get("success") === "true";
 
     .success-notification {
         background: rgba(var(--accent), 0.08);
-        border: 1px solid rgba(var(--accent), 0.28);
+        border: 1px solid rgba(var(--accent), 0.2);
         color: var(--color-accent);
     }
 
     .error-notification {
         background: rgba(var(--color-error-rgb), 0.08);
-        border: 1px solid rgba(var(--color-error-rgb), 0.28);
+        border: 1px solid rgba(var(--color-error-rgb), 0.2);
         color: rgb(var(--color-error-rgb));
     }
 
@@ -383,7 +383,7 @@ const success = Astro.url.searchParams.get("success") === "true";
     }
 
     .success-detail {
-        font-size: 0.9rem;
+        font-size: 1rem;
         color: var(--color-muted);
         line-height: 1.7;
         margin: 0;
@@ -393,11 +393,10 @@ const success = Astro.url.searchParams.get("success") === "true";
         display: inline-flex;
         align-items: center;
         gap: 0.45rem;
-        font-size: 0.8rem;
-        font-weight: 600;
+        font-size: 0.95rem;
+        font-weight: 500;
         color: var(--color-accent);
         text-decoration: none;
-        letter-spacing: 0.02em;
         transition: gap var(--duration-fast) ease;
     }
 
@@ -409,17 +408,11 @@ const success = Astro.url.searchParams.get("success") === "true";
         display: flex;
         flex-direction: column;
         gap: 1.75rem;
-        background: linear-gradient(
-            145deg,
-            rgb(var(--bg)) 0%,
-            rgba(var(--accent), 0.04) 100%
-        );
+        background: var(--color-surface);
         border: 1px solid var(--color-border);
-        border-radius: var(--radius-md);
-        padding: 2rem;
-        box-shadow:
-            var(--shadow-soft),
-            inset 0 1px 0 var(--tint-05);
+        border-radius: var(--radius-lg);
+        padding: 2.5rem;
+        box-shadow: var(--shadow-soft);
     }
 
     .honeypot {
@@ -434,17 +427,17 @@ const success = Astro.url.searchParams.get("success") === "true";
 
     .field-label {
         font-family: var(--font-title);
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
+        font-size: 0.9rem;
+        font-weight: 500;
+        letter-spacing: -0.01em;
         color: var(--color-text);
     }
 
     .input-field {
         box-sizing: border-box;
         width: 100%;
-        background: rgba(var(--accent), 0.03);
-        border: 1px solid rgba(var(--accent), 0.15);
+        background: var(--color-bg);
+        border: 1px solid var(--color-border);
         border-radius: var(--radius-sm);
         padding: 0.75rem 1rem;
         color: var(--color-text);
@@ -453,29 +446,27 @@ const success = Astro.url.searchParams.get("success") === "true";
         line-height: 1.5;
         transition:
             border-color var(--duration-fast) ease,
-            background var(--duration-fast) ease,
             box-shadow var(--duration-fast) ease;
     }
 
     .input-field::placeholder {
-        color: rgba(var(--color-text-rgb), 0.22);
+        color: var(--color-muted);
+        opacity: 0.6;
     }
 
     .input-field:focus {
         outline: none;
-        border-color: rgba(var(--accent), 0.55);
-        background: rgba(var(--accent), 0.05);
-        box-shadow: 0 0 0 3px rgba(var(--accent), 0.1);
+        border-color: rgba(var(--accent), 0.5);
+        box-shadow: 0 0 0 4px rgba(var(--accent), 0.1);
     }
 
     .input-field.invalid {
-        border-color: rgba(var(--color-error-rgb), 0.55);
-        background: rgba(var(--color-error-rgb), 0.04);
-        box-shadow: 0 0 0 3px rgba(var(--color-error-rgb), 0.08);
+        border-color: rgba(var(--color-error-rgb), 0.5);
+        box-shadow: 0 0 0 4px rgba(var(--color-error-rgb), 0.1);
     }
 
     .input-field.valid {
-        border-color: rgba(var(--accent), 0.45);
+        border-color: rgba(var(--accent), 0.4);
     }
 
     .textarea-field {
@@ -490,13 +481,13 @@ const success = Astro.url.searchParams.get("success") === "true";
     }
 
     .field-hint {
-        font-size: 0.75rem;
+        font-size: 0.85rem;
         color: var(--color-muted);
         margin: 0;
     }
 
     .field-error {
-        font-size: 0.75rem;
+        font-size: 0.85rem;
         color: rgb(var(--color-error-rgb));
         margin: 0;
         display: flex;
@@ -523,7 +514,7 @@ const success = Astro.url.searchParams.get("success") === "true";
 
     .char-counter {
         font-family: var(--font-code);
-        font-size: 0.68rem;
+        font-size: 0.8rem;
         color: var(--color-muted);
         transition: color var(--duration-fast) ease;
         white-space: nowrap;
@@ -536,14 +527,13 @@ const success = Astro.url.searchParams.get("success") === "true";
     .char-counter.near-limit {
         color: rgb(var(--warn-rgb));
     }
-
     .char-counter.at-limit {
         color: rgb(var(--color-error-rgb));
     }
 
     .char-progress-track {
         height: 2px;
-        background: rgba(var(--accent), 0.1);
+        background: var(--tint-10);
         border-radius: 999px;
         overflow: hidden;
         margin-top: -0.25rem;
@@ -562,7 +552,6 @@ const success = Astro.url.searchParams.get("success") === "true";
     .char-progress-bar.near-limit {
         background: rgb(var(--warn-rgb));
     }
-
     .char-progress-bar.at-limit {
         background: rgb(var(--color-error-rgb));
     }
@@ -571,9 +560,9 @@ const success = Astro.url.searchParams.get("success") === "true";
         display: flex;
         align-items: flex-start;
         gap: 0.75rem;
-        padding: 0.85rem 1rem;
-        background: rgba(var(--accent), 0.03);
-        border: 1px solid rgba(var(--accent), 0.1);
+        padding: 1rem 1.25rem;
+        background: var(--tint-05);
+        border: 1px solid var(--color-border);
         border-radius: var(--radius-sm);
     }
 
@@ -588,43 +577,39 @@ const success = Astro.url.searchParams.get("success") === "true";
         accent-color: var(--color-accent);
         flex-shrink: 0;
         cursor: pointer;
-        width: 15px;
-        height: 15px;
+        width: 16px;
+        height: 16px;
     }
 
     .consent-label {
-        font-size: 0.78rem;
+        font-size: 0.9rem;
         color: var(--color-muted);
         cursor: pointer;
-        line-height: 1.6;
+        line-height: 1.5;
     }
 
     .submit-btn {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 0.6rem;
+        gap: 0.5rem;
         padding: 0.85rem 1.5rem;
         background: var(--color-accent);
         color: var(--color-bg);
-        border: none;
+        border: 1px solid transparent;
         border-radius: var(--radius-sm);
         font-family: var(--font-title);
-        font-size: 0.8rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
+        font-size: 0.95rem;
+        font-weight: 500;
+        letter-spacing: -0.01em;
         cursor: pointer;
-        transition:
-            transform var(--duration-base) var(--ease-spring),
-            box-shadow var(--duration-base) ease,
-            filter var(--duration-fast) ease;
+        transition: all var(--duration-fast) var(--ease-spring);
+        box-shadow: var(--shadow-soft);
     }
 
     .submit-btn:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(var(--accent), 0.35);
-        filter: brightness(1.06);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-strong);
     }
 
     .submit-btn:active:not(:disabled) {
@@ -632,7 +617,7 @@ const success = Astro.url.searchParams.get("success") === "true";
     }
 
     .submit-btn:disabled {
-        opacity: 0.55;
+        opacity: 0.5;
         cursor: not-allowed;
     }
 
@@ -659,7 +644,7 @@ const success = Astro.url.searchParams.get("success") === "true";
             justify-content: flex-start;
         }
         .contact-form {
-            padding: 1.5rem;
+            padding: 2rem;
             gap: 1.5rem;
         }
     }
@@ -669,11 +654,11 @@ const success = Astro.url.searchParams.get("success") === "true";
             gap: 1.25rem;
         }
         .contact-form {
-            padding: 1.1rem;
+            padding: 1.5rem;
             gap: 1.25rem;
         }
         .contact-title {
-            font-size: 1.6rem;
+            font-size: 1.75rem;
         }
         .submit-btn {
             width: 100%;
@@ -884,11 +869,9 @@ const success = Astro.url.searchParams.get("success") === "true";
         nameInput?.addEventListener("blur", () => {
             if (nameInput.value.trim()) validateName();
         });
-
         emailInput?.addEventListener("blur", () => {
             if (emailInput.value.trim()) validateEmail();
         });
-
         textarea.addEventListener("blur", () => {
             if (textarea.value.trim()) validateMessage();
         });
@@ -896,11 +879,9 @@ const success = Astro.url.searchParams.get("success") === "true";
         nameInput?.addEventListener("input", () => {
             if (nameInput.classList.contains("invalid")) validateName();
         });
-
         emailInput?.addEventListener("input", () => {
             if (emailInput.classList.contains("invalid")) validateEmail();
         });
-
         textarea.addEventListener("input", () => {
             updateCount();
             if (textarea.classList.contains("invalid")) validateMessage();

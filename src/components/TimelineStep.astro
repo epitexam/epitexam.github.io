@@ -10,15 +10,15 @@ const { phase, title, status = "done" } = Astro.props;
 const statusMeta: Record<string, { label: string; icon: string }> = {
     done: {
         label: "Réalisé",
-        icon: `<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+        icon: `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
     },
     planned: {
         label: "Planifié",
-        icon: `<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/></svg>`,
+        icon: `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/></svg>`,
     },
     dream: {
         label: "Vision",
-        icon: `<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`,
+        icon: `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>`,
     },
 };
 
@@ -58,7 +58,7 @@ const { label, icon } = statusMeta[status] ?? statusMeta.done;
     .timeline-step {
         display: grid;
         grid-template-columns: 2rem 1fr;
-        gap: 0 1.1rem;
+        gap: 0 1.25rem;
         margin-bottom: 0;
     }
 
@@ -87,7 +87,7 @@ const { label, icon } = statusMeta[status] ?? statusMeta.done;
         width: 10px;
         height: 10px;
         border-radius: 50%;
-        border: 1.5px solid rgba(var(--accent, 255, 255, 255), 0.25);
+        border: 1.5px solid var(--color-border);
         background: var(--color-bg);
         position: relative;
         z-index: 1;
@@ -98,7 +98,7 @@ const { label, icon } = statusMeta[status] ?? statusMeta.done;
         position: absolute;
         inset: 0;
         border-radius: 50%;
-        background: rgba(var(--accent, 255, 255, 255), 0.15);
+        background: rgba(var(--accent), 0.15);
         animation: dot-pulse 2.8s ease-in-out infinite;
     }
 
@@ -118,17 +118,17 @@ const { label, icon } = statusMeta[status] ?? statusMeta.done;
         background: var(--color-accent);
         border-color: var(--color-accent);
         box-shadow:
-            0 0 0 3px rgba(var(--accent, 255, 255, 255), 0.15),
-            0 0 10px rgba(var(--accent, 255, 255, 255), 0.3);
+            0 0 0 3px rgba(var(--accent), 0.15),
+            0 0 8px rgba(var(--accent), 0.3);
     }
 
     .timeline-step--planned .step-dot {
-        border-color: rgba(var(--accent, 255, 255, 255), 0.4);
-        background: rgba(var(--accent, 255, 255, 255), 0.06);
+        border-color: var(--tint-20);
+        background: var(--tint-05);
     }
 
     .timeline-step--dream .step-dot {
-        border-color: rgba(var(--text, 232, 232, 234), 0.15);
+        border-color: var(--tint-10);
         opacity: 0.4;
     }
 
@@ -137,20 +137,12 @@ const { label, icon } = statusMeta[status] ?? statusMeta.done;
         width: 1px;
         margin-top: 4px;
         min-height: 2rem;
-        background: linear-gradient(
-            to bottom,
-            rgba(var(--accent, 255, 255, 255), 0.2),
-            rgba(var(--accent, 255, 255, 255), 0.04)
-        );
+        background: linear-gradient(to bottom, var(--tint-20), var(--tint-05));
     }
 
     .timeline-step--planned .step-line,
     .timeline-step--dream .step-line {
-        background: linear-gradient(
-            to bottom,
-            rgba(var(--text, 232, 232, 234), 0.1),
-            transparent
-        );
+        background: linear-gradient(to bottom, var(--tint-10), transparent);
     }
 
     .timeline-step:last-child .step-line {
@@ -158,52 +150,50 @@ const { label, icon } = statusMeta[status] ?? statusMeta.done;
     }
 
     .step-content {
-        padding-bottom: 2rem;
+        padding-bottom: 2.5rem;
     }
 
     .step-header {
         display: flex;
         align-items: center;
-        gap: 0.6rem;
-        margin-bottom: 0.35rem;
+        gap: 0.75rem;
+        margin-bottom: 0.5rem;
         padding-top: 0.1rem;
     }
 
     .step-phase {
         font-family: var(--font-title);
-        font-size: 0.6rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.14em;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
         color: var(--color-accent);
     }
 
     .timeline-step--planned .step-phase {
-        color: rgba(var(--accent, 255, 255, 255), 0.5);
+        color: var(--color-muted);
     }
     .timeline-step--dream .step-phase {
-        color: rgba(var(--text, 232, 232, 234), 0.3);
+        color: var(--color-muted);
+        opacity: 0.6;
     }
 
     .step-badge {
         display: inline-flex;
         align-items: center;
-        gap: 0.3rem;
-        padding: 0.12rem 0.55rem;
+        gap: 0.35rem;
+        padding: 0.2rem 0.65rem;
         border-radius: 999px;
-        border: 1px solid rgba(var(--accent, 255, 255, 255), 0.15);
-        background: rgba(var(--accent, 255, 255, 255), 0.04);
+        border: 1px solid var(--color-border);
+        background: var(--tint-05);
         font-family: var(--font-title);
-        font-size: 0.57rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: rgba(var(--text, 232, 232, 234), 0.4);
+        font-size: 0.7rem;
+        font-weight: 500;
+        color: var(--color-muted);
     }
 
     .timeline-step--done .step-badge {
-        border-color: rgba(var(--accent, 255, 255, 255), 0.28);
-        background: rgba(var(--accent, 255, 255, 255), 0.08);
+        border-color: rgba(var(--accent), 0.2);
+        background: rgba(var(--accent), 0.05);
         color: var(--color-accent);
     }
 
@@ -216,12 +206,12 @@ const { label, icon } = statusMeta[status] ?? statusMeta.done;
 
     .step-title {
         font-family: var(--font-title);
-        font-size: 1.05rem;
-        font-weight: 700;
+        font-size: 1.1rem;
+        font-weight: 600;
         letter-spacing: -0.02em;
         color: var(--color-text);
-        margin: 0 0 0.75rem;
-        line-height: 1.25;
+        margin: 0 0 1rem;
+        line-height: 1.3;
     }
 
     .timeline-step--planned .step-title,
@@ -233,20 +223,28 @@ const { label, icon } = statusMeta[status] ?? statusMeta.done;
         position: relative;
         border: 1px solid var(--color-border);
         border-radius: var(--radius-md);
-        padding: 1rem 1.25rem;
+        padding: 1.25rem 1.5rem;
         overflow: hidden;
         isolation: isolate;
-        background: rgba(var(--bg, 9, 9, 9), 0.5);
+        background: var(--color-surface);
+        box-shadow: var(--shadow-soft);
+        transition:
+            box-shadow var(--duration-base) ease,
+            border-color var(--duration-base) ease;
     }
 
     .timeline-step--done .step-card {
-        border-color: rgba(var(--accent, 255, 255, 255), 0.14);
-        background: rgba(var(--accent, 255, 255, 255), 0.03);
+        border-color: var(--color-border);
     }
 
     .timeline-step--planned .step-card,
     .timeline-step--dream .step-card {
         opacity: 0.55;
+    }
+
+    .timeline-step--done .step-card:hover {
+        border-color: rgba(var(--accent), 0.2);
+        box-shadow: var(--shadow-strong);
     }
 
     .step-card-glow {
@@ -256,7 +254,7 @@ const { label, icon } = statusMeta[status] ?? statusMeta.done;
         border-radius: inherit;
         background: radial-gradient(
             ellipse at 0% 0%,
-            rgba(var(--accent, 255, 255, 255), 0.07) 0%,
+            rgba(var(--accent), 0.06) 0%,
             transparent 65%
         );
         opacity: 0;
@@ -270,9 +268,9 @@ const { label, icon } = statusMeta[status] ?? statusMeta.done;
     .step-body {
         position: relative;
         z-index: 1;
-        font-size: 0.9rem;
-        line-height: 1.74;
-        color: rgba(var(--text, 232, 232, 234), 0.75);
+        font-size: 0.95rem;
+        line-height: 1.75;
+        color: var(--color-muted);
     }
 
     .step-body :global(p) {
@@ -289,10 +287,10 @@ const { label, icon } = statusMeta[status] ?? statusMeta.done;
     @media (max-width: 640px) {
         .timeline-step {
             grid-template-columns: 1.75rem 1fr;
-            gap: 0 0.85rem;
+            gap: 0 1rem;
         }
         .step-card {
-            padding: 0.9rem 1rem;
+            padding: 1rem 1.25rem;
         }
     }
 

@@ -8,15 +8,15 @@ const { type = "note", label } = Astro.props;
 
 const config: Record<string, { icon: string; defaultLabel: string }> = {
     note: {
-        icon: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+        icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
         defaultLabel: "Note",
     },
     warning: {
-        icon: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+        icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
         defaultLabel: "Attention",
     },
     insight: {
-        icon: `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`,
+        icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`,
         defaultLabel: "Ce que j'ai appris",
     },
     quote: { icon: "", defaultLabel: "" },
@@ -64,9 +64,11 @@ const resolvedLabel = label ?? defaultLabel;
         position: relative;
         margin: 2rem 0;
         border-radius: var(--radius-md);
-        border: 1px solid transparent;
+        border: 1px solid var(--color-border);
+        background: var(--color-surface);
         overflow: hidden;
         isolation: isolate;
+        box-shadow: var(--shadow-soft);
     }
 
     .callout :is(h1, h2, h3, h4, h5, h6) {
@@ -76,7 +78,7 @@ const resolvedLabel = label ?? defaultLabel;
     .callout-inner {
         position: relative;
         z-index: 1;
-        padding: 1.1rem 1.4rem;
+        padding: 1.25rem 1.5rem;
     }
 
     .callout-glow {
@@ -97,19 +99,15 @@ const resolvedLabel = label ?? defaultLabel;
         border-radius: 3px 0 0 3px;
     }
 
-    .callout--note {
-        background: rgba(var(--accent, 255, 255, 255), 0.04);
-        border-color: rgba(var(--accent, 255, 255, 255), 0.14);
-    }
     .callout--note .callout-glow {
         background: radial-gradient(
             ellipse at 0% 50%,
-            rgba(var(--accent, 255, 255, 255), 0.08) 0%,
+            rgba(var(--accent), 0.06) 0%,
             transparent 65%
         );
     }
     .callout--note .callout-stripe {
-        background: rgba(var(--accent, 255, 255, 255), 0.55);
+        background: rgba(var(--accent), 0.5);
     }
     .callout--note .callout-icon,
     .callout--note .callout-label {
@@ -117,32 +115,27 @@ const resolvedLabel = label ?? defaultLabel;
     }
 
     .callout--warning {
-        background: rgba(232, 160, 74, 0.04);
-        border-color: rgba(232, 160, 74, 0.18);
+        border-color: rgba(251, 146, 60, 0.2);
     }
     .callout--warning .callout-glow {
         background: radial-gradient(
             ellipse at 0% 50%,
-            rgba(232, 160, 74, 0.1) 0%,
+            rgba(251, 146, 60, 0.08) 0%,
             transparent 65%
         );
     }
     .callout--warning .callout-stripe {
-        background: #e8a04a;
+        background: rgb(251, 146, 60);
     }
     .callout--warning .callout-icon,
     .callout--warning .callout-label {
-        color: #e8a04a;
+        color: rgb(251, 146, 60);
     }
 
-    .callout--insight {
-        background: rgba(var(--accent, 255, 255, 255), 0.06);
-        border-color: rgba(var(--accent, 255, 255, 255), 0.2);
-    }
     .callout--insight .callout-glow {
         background: radial-gradient(
             ellipse at 0% 50%,
-            rgba(var(--accent, 255, 255, 255), 0.13) 0%,
+            rgba(var(--accent), 0.1) 0%,
             transparent 65%
         );
     }
@@ -157,8 +150,8 @@ const resolvedLabel = label ?? defaultLabel;
     .callout-header {
         display: flex;
         align-items: center;
-        gap: 0.45rem;
-        margin-bottom: 0.5rem;
+        gap: 0.5rem;
+        margin-bottom: 0.6rem;
     }
 
     .callout-icon {
@@ -170,16 +163,16 @@ const resolvedLabel = label ?? defaultLabel;
 
     .callout-label {
         font-family: var(--font-title);
-        font-size: 0.62rem;
-        font-weight: 700;
+        font-size: 0.75rem;
+        font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.13em;
+        letter-spacing: 0.05em;
     }
 
     .callout-body {
-        font-size: 0.92rem;
-        line-height: 1.74;
-        color: rgba(var(--text, 232, 232, 234), 0.84);
+        font-size: 0.95rem;
+        line-height: 1.75;
+        color: var(--color-muted);
     }
 
     .callout-body :global(p) {
@@ -196,9 +189,11 @@ const resolvedLabel = label ?? defaultLabel;
     .callout-quote {
         position: relative;
         margin: 2.5rem 0;
-        padding: 0.25rem 0 0.25rem 1.75rem;
+        padding: 1rem 1.5rem;
         border: none;
-        border-left: 2px solid rgba(var(--accent, 255, 255, 255), 0.3);
+        background: var(--tint-05);
+        border-left: 3px solid rgba(var(--accent), 0.3);
+        border-radius: 0 var(--radius-md) var(--radius-md) 0;
     }
 
     .quote-mark {
@@ -208,7 +203,7 @@ const resolvedLabel = label ?? defaultLabel;
         font-family: var(--font-title);
         font-size: 3rem;
         line-height: 1;
-        color: rgba(var(--accent, 255, 255, 255), 0.18);
+        color: rgba(var(--accent), 0.2);
         font-style: normal;
         pointer-events: none;
         user-select: none;
@@ -220,7 +215,7 @@ const resolvedLabel = label ?? defaultLabel;
         font-size: 1rem;
         font-style: italic;
         line-height: 1.7;
-        color: rgba(var(--text, 232, 232, 234), 0.65);
+        color: var(--color-muted);
     }
 
     .quote-body :global(p) {
@@ -232,10 +227,10 @@ const resolvedLabel = label ?? defaultLabel;
 
     @media (max-width: 640px) {
         .callout-inner {
-            padding: 1rem 1.2rem;
+            padding: 1rem 1.25rem;
         }
         .callout-quote {
-            padding-left: 1.4rem;
+            padding: 1rem 1.25rem;
         }
         .quote-mark {
             font-size: 2.5rem;

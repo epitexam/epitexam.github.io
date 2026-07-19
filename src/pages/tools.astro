@@ -39,10 +39,7 @@ const jsonLd = {
 <!doctype html>
 <html lang="fr">
     <head>
-        <BaseHead
-            title={`Stack & Expertise - ${SITE_TITLE}`}
-            description={TOOLS_META_DESCRIPTION}
-        />
+        <BaseHead title={`Stack & Expertise - ${SITE_TITLE}`} description={TOOLS_META_DESCRIPTION} />
         <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     </head>
     <body>
@@ -57,109 +54,61 @@ const jsonLd = {
                 </p>
             </header>
 
-            <section
-                class="content-section"
-                aria-labelledby="expertise-heading"
-            >
+            <section class="content-section" aria-labelledby="expertise-heading">
                 <div class="section-heading">
-                    <h2 id="expertise-heading" class="section-title">
-                        Domaines d'expertise
-                    </h2>
-                    <span class="section-count"
-                        >{EXPERTISE.length} domaines</span
-                    >
+                    <h2 id="expertise-heading" class="section-title">Domaines d'expertise</h2>
+                    <span class="section-count">{EXPERTISE.length} domaines</span>
                 </div>
                 <div class="expertise-grid">
-                    {
-                        EXPERTISE.map((item) => (
-                            <ExpertiseCard
-                                title={item.title}
-                                description={item.description}
-                            />
-                        ))
-                    }
+                    {EXPERTISE.map((item) => <ExpertiseCard title={item.title} description={item.description} />)}
                 </div>
             </section>
 
             <section class="content-section" aria-labelledby="stack-heading">
                 <div class="section-heading">
-                    <h2 id="stack-heading" class="section-title">
-                        Stack technique
-                    </h2>
+                    <h2 id="stack-heading" class="section-title">Stack technique</h2>
                     <span class="section-count">{totalTools} outils</span>
                 </div>
 
-                <div
-                    class="level-legend"
-                    aria-label="Légende des niveaux de maîtrise"
-                >
-                    <span>
-                        <span class="legend-dot mastered" aria-hidden="true"
-                        ></span>
-                        Maîtrisé
-                    </span>
-                    <span>
-                        <span class="legend-dot practiced" aria-hidden="true"
-                        ></span>
-                        Pratiqué
-                    </span>
-                    <span>
-                        <span class="legend-dot exploring" aria-hidden="true"
-                        ></span>
-                        En exploration
-                    </span>
+                <div class="level-legend" aria-label="Légende des niveaux de maîtrise">
+                    <span><span class="legend-dot mastered" aria-hidden="true"></span>Maîtrisé</span>
+                    <span><span class="legend-dot practiced" aria-hidden="true"></span>Pratiqué</span>
+                    <span><span class="legend-dot exploring" aria-hidden="true"></span>En exploration</span>
                 </div>
 
                 <div class="tabs-scroll-wrapper">
-                    <div
-                        class="tabs-nav"
-                        role="tablist"
-                        aria-label="Catégories de technologies"
-                    >
-                        {
-                            SECTIONS.map((section, i) => (
-                                <button
-                                    class:list={[
-                                        "tab-btn",
-                                        { active: i === 0 },
-                                    ]}
-                                    role="tab"
-                                    aria-selected={i === 0 ? "true" : "false"}
-                                    aria-controls={`panel-${i}`}
-                                    id={`tab-${i}`}
-                                    data-tab={i}
-                                    aria-label={section.title}
-                                >
-                                    <span class="tab-label-full">
-                                        {section.title}
-                                    </span>
-                                    <span
-                                        class="tab-label-short"
-                                        aria-hidden="true"
-                                    >
-                                        {TAB_SHORT[section.title] ??
-                                            section.title}
-                                    </span>
-                                </button>
-                            ))
-                        }
+                    <div class="tabs-nav" role="tablist" aria-label="Catégories de technologies">
+                        {SECTIONS.map((section, i) => (
+                            <button
+                                class:list={["tab-btn", { active: i === 0 }]}
+                                role="tab"
+                                aria-selected={i === 0 ? "true" : "false"}
+                                aria-controls={`panel-${i}`}
+                                id={`tab-${i}`}
+                                data-tab={i}
+                                aria-label={section.title}
+                            >
+                                <span class="tab-label-full">{section.title}</span>
+                                <span class="tab-label-short" aria-hidden="true">
+                                    {TAB_SHORT[section.title] ?? section.title}
+                                </span>
+                            </button>
+                        ))}
                     </div>
                 </div>
 
                 <div class="panels">
-                    {
-                        SECTIONS.map((section, i) => (
-                            <div
-                                class:list={["tab-panel", { active: i === 0 }]}
-                                role="tabpanel"
-                                id={`panel-${i}`}
-                                aria-labelledby={`tab-${i}`}
-                                hidden={i !== 0}
-                            >
-                                <ToolSection title="" tools={section.tools} />
-                            </div>
-                        ))
-                    }
+                    {SECTIONS.map((section, i) => (
+                        <div
+                            class:list={["tab-panel", { active: i === 0 }]}
+                            role="tabpanel"
+                            id={`panel-${i}`}
+                            aria-labelledby={`tab-${i}`}
+                            hidden={i !== 0}
+                        >
+                            <ToolSection title="" tools={section.tools} />
+                        </div>
+                    ))}
                 </div>
             </section>
         </main>
@@ -169,30 +118,25 @@ const jsonLd = {
 </html>
 
 <style>
-    .tools-main {
-        gap: 5rem;
-    }
-
-    .tools-main :is(h1, h2, h3, h4, h5, h6) {
-        animation: none !important;
-    }
+    .tools-main { gap: 5rem; }
+    .tools-main :is(h1, h2, h3, h4, h5, h6) { animation: none !important; }
 
     .page-header {
         display: flex;
         flex-direction: column;
-        gap: 0.65rem;
+        gap: 0.75rem;
     }
 
     .page-title {
-        font-size: clamp(2rem, 6vw, 3rem);
+        font-size: clamp(2.25rem, 6vw, 3.5rem);
         font-weight: 700;
-        line-height: 1.05;
+        line-height: 1.1;
         letter-spacing: -0.03em;
         margin: 0;
     }
 
     .page-desc {
-        font-size: 1rem;
+        font-size: 1.05rem;
         color: var(--color-muted);
         max-width: 480px;
         line-height: 1.7;
@@ -210,21 +154,21 @@ const jsonLd = {
         display: flex;
         align-items: baseline;
         gap: 1rem;
-        padding-bottom: 0.75rem;
+        padding-bottom: 1rem;
         border-bottom: 1px solid var(--color-border);
     }
 
     .section-title {
-        font-size: clamp(1.1rem, 3vw, 1.4rem);
-        font-weight: 700;
-        letter-spacing: -0.025em;
+        font-size: clamp(1.25rem, 3vw, 1.5rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
         margin: 0;
     }
 
     .section-count {
         font-family: var(--font-code);
-        font-size: 0.75rem;
-        color: rgba(var(--text), 0.85);
+        font-size: 0.8rem;
+        color: var(--color-muted);
         letter-spacing: 0.02em;
     }
 
@@ -232,8 +176,8 @@ const jsonLd = {
         display: flex;
         gap: 1.5rem;
         justify-content: flex-end;
-        font-size: 0.7rem;
-        font-family: var(--font-code);
+        font-size: 0.8rem;
+        font-family: var(--font-title);
         color: var(--color-muted);
         margin-top: -0.5rem;
         margin-bottom: 0.5rem;
@@ -243,25 +187,16 @@ const jsonLd = {
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        margin-right: 0.3rem;
+        margin-right: 0.4rem;
     }
-    .legend-dot.mastered {
-        background: var(--color-accent);
-        box-shadow: 0 0 6px var(--color-accent);
-    }
-    .legend-dot.practiced {
-        background: var(--color-accent);
-        opacity: 0.6;
-    }
-    .legend-dot.exploring {
-        background: rgba(var(--text), 0.5);
-        opacity: 0.3;
-    }
+    .legend-dot.mastered { background: var(--color-accent); box-shadow: 0 0 6px var(--color-accent); }
+    .legend-dot.practiced { background: var(--color-accent); opacity: 0.6; }
+    .legend-dot.exploring { background: var(--color-muted); opacity: 0.4; }
 
     .expertise-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 1rem;
+        gap: 1.25rem;
     }
 
     .tabs-scroll-wrapper {
@@ -271,10 +206,7 @@ const jsonLd = {
         margin-inline: calc(-1 * var(--content-padding-mobile));
         padding-inline: var(--content-padding-mobile);
     }
-
-    .tabs-scroll-wrapper::-webkit-scrollbar {
-        display: none;
-    }
+    .tabs-scroll-wrapper::-webkit-scrollbar { display: none; }
 
     .tabs-nav {
         display: flex;
@@ -286,106 +218,65 @@ const jsonLd = {
 
     .tab-btn {
         font-family: var(--font-title);
-        font-size: 0.72rem;
-        font-weight: 600;
-        letter-spacing: 0.04em;
-        padding: 0.4rem 0.9rem;
+        font-size: 0.85rem;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        padding: 0.5rem 1.1rem;
         border-radius: 999px;
         border: 1px solid var(--color-border);
-        background: transparent;
+        background: var(--color-surface);
         color: var(--color-muted);
         cursor: pointer;
         flex-shrink: 0;
         white-space: nowrap;
-        transition:
-            color var(--duration-fast) ease,
-            background var(--duration-fast) ease,
-            border-color var(--duration-fast) ease,
-            box-shadow var(--duration-fast) ease;
+        transition: all var(--duration-fast) ease;
     }
 
     @media (hover: hover) {
         .tab-btn:hover:not(.active) {
             color: var(--color-text);
             border-color: rgba(var(--accent), 0.3);
-            background: rgba(var(--accent), 0.04);
+            background: var(--tint-05);
         }
     }
 
     .tab-btn.active {
-        background: rgba(var(--accent), 0.1);
+        background: var(--color-bg);
         border-color: rgba(var(--accent), 0.4);
         color: var(--color-accent);
-        box-shadow: var(--glow);
+        box-shadow: var(--shadow-soft);
     }
 
-    .tab-label-short {
-        display: none;
-    }
-    .tab-label-full {
-        display: inline;
-    }
+    .tab-label-short { display: none; }
+    .tab-label-full { display: inline; }
 
     .tab-panel {
         display: none;
         animation: fadePanel var(--duration-fast) var(--ease-spring) both;
     }
-
-    .tab-panel.active {
-        display: block;
-    }
+    .tab-panel.active { display: block; }
 
     @keyframes fadePanel {
-        from {
-            opacity: 0;
-            transform: translateY(5px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 768px) {
-        .tools-main {
-            gap: 3.5rem;
-        }
-        .expertise-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-        .tabs-nav {
-            flex-wrap: nowrap;
-        }
-
-        .tab-label-full {
-            display: none;
-        }
-        .tab-label-short {
-            display: inline;
-        }
+        .tools-main { gap: 3.5rem; }
+        .expertise-grid { grid-template-columns: repeat(2, 1fr); }
+        .tabs-nav { flex-wrap: nowrap; }
+        .tab-label-full { display: none; }
+        .tab-label-short { display: inline; }
     }
 
     @media (max-width: 480px) {
-        .expertise-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .tab-btn {
-            font-size: 0.68rem;
-            padding: 0.35rem 0.8rem;
-        }
-
-        .level-legend {
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
+        .expertise-grid { grid-template-columns: 1fr; }
+        .tab-btn { font-size: 0.8rem; padding: 0.45rem 0.9rem; }
+        .level-legend { justify-content: center; flex-wrap: wrap; gap: 1rem; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .tab-panel {
-            animation: none;
-        }
+        .tab-panel { animation: none; }
     }
 </style>
 

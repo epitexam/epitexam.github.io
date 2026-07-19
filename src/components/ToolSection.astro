@@ -39,7 +39,7 @@ const sortedTools = [...tools].sort(
     .tool-section {
         display: flex;
         flex-direction: column;
-        gap: 1.1rem;
+        gap: 1.5rem;
         width: 100%;
     }
 
@@ -57,13 +57,11 @@ const sortedTools = [...tools].sort(
     }
 
     .tool-section-label {
-        font-family: var(--font-code);
-        font-size: 0.72rem;
+        font-family: var(--font-title);
+        font-size: 0.95rem;
         font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--color-accent);
-        opacity: 0.85;
+        letter-spacing: -0.02em;
+        color: var(--color-text);
         margin: 0;
         padding-left: 0.1rem;
     }
@@ -71,7 +69,7 @@ const sortedTools = [...tools].sort(
     .tool-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        gap: 1.25rem;
         width: 100%;
     }
 

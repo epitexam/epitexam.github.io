@@ -99,19 +99,13 @@ const { post } = Astro.props;
         display: flex;
         flex-direction: column;
         width: 100%;
-        background: linear-gradient(
-            145deg,
-            rgba(var(--bg, 9, 9, 9), 1) 0%,
-            rgba(var(--accent, 255, 255, 255), 0.05) 100%
-        );
+        background: var(--color-surface);
         border: 1px solid var(--color-border);
-        border-radius: var(--radius-md);
+        border-radius: var(--radius-lg);
         overflow: hidden;
         isolation: isolate;
         color: inherit;
-        box-shadow:
-            var(--shadow-soft),
-            inset 0 1px 0 rgba(255, 255, 255, 0.04);
+        box-shadow: var(--shadow-soft);
         transition:
             transform var(--duration-base) var(--ease-spring),
             border-color var(--duration-base) var(--ease-spring),
@@ -123,21 +117,19 @@ const { post } = Astro.props;
     }
 
     .post-card:hover {
-        transform: translateY(-4px);
-        border-color: rgba(var(--accent, 255, 255, 255), 0.4);
-        box-shadow:
-            0 14px 40px -8px rgba(var(--accent, 255, 255, 255), 0.25),
-            inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        transform: translateY(-2px);
+        border-color: rgba(var(--accent), 0.25);
+        box-shadow: var(--shadow-strong);
     }
 
     .card-glow {
         position: absolute;
-        inset: -1px;
+        inset: 0;
         border-radius: inherit;
         background: radial-gradient(
             ellipse at 50% 0%,
-            rgba(var(--accent, 255, 255, 255), 0.14) 0%,
-            transparent 65%
+            rgba(var(--accent), 0.08) 0%,
+            transparent 60%
         );
         opacity: 0;
         z-index: 0;
@@ -179,7 +171,7 @@ const { post } = Astro.props;
         background: linear-gradient(
             to bottom,
             transparent 50%,
-            rgba(var(--bg, 9, 9, 9), 0.55) 100%
+            rgba(var(--bg), 0.4) 100%
         );
         pointer-events: none;
     }
@@ -187,7 +179,7 @@ const { post } = Astro.props;
     .post-content {
         position: relative;
         z-index: 2;
-        padding: 2rem 2.5rem 2.5rem;
+        padding: 1.75rem 2rem 2rem;
         display: flex;
         flex-direction: column;
     }
@@ -211,9 +203,9 @@ const { post } = Astro.props;
     .post-title {
         font-family: var(--font-title);
         font-size: clamp(1.4rem, 3.5vw, 1.9rem);
-        font-weight: 700;
+        font-weight: 600;
         line-height: 1.2;
-        letter-spacing: -0.025em;
+        letter-spacing: -0.03em;
         color: var(--color-text);
         margin: 0 0 1rem;
         transition: color var(--duration-base) ease;
@@ -224,7 +216,7 @@ const { post } = Astro.props;
     }
 
     .post-description {
-        font-size: 0.975rem;
+        font-size: 0.95rem;
         line-height: 1.7;
         color: var(--color-muted);
         margin: 0 0 1.75rem;
@@ -232,7 +224,7 @@ const { post } = Astro.props;
     }
 
     .post-card:hover .post-description {
-        color: rgba(var(--text, 232, 232, 234), 0.82);
+        color: rgba(var(--text), 0.85);
     }
 
     .read-more {
@@ -242,8 +234,8 @@ const { post } = Astro.props;
         color: var(--color-accent);
         font-family: var(--font-title);
         font-size: 0.85rem;
-        font-weight: 600;
-        letter-spacing: 0.03em;
+        font-weight: 500;
+        letter-spacing: -0.01em;
         width: fit-content;
         position: relative;
         padding-bottom: 2px;
