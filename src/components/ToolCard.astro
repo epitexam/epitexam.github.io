@@ -48,11 +48,8 @@ const levelLabel = LEVEL_LABELS[level] ?? level;
       <p class="tool-description">{description}</p>
     </div>
   </div>
-  <span
-    class="level-indicator"
-    aria-label={`Niveau : ${levelLabel}`}
-    role="img"
-  />
+  <span class="level-indicator" aria-label={`Niveau : ${levelLabel}`} role="img"
+  ></span>
 </CardTag>
 
 <style>
@@ -60,17 +57,11 @@ const levelLabel = LEVEL_LABELS[level] ?? level;
     position: relative;
     width: 100%;
     height: 100%;
-    padding: 1.25rem;
-    background: linear-gradient(
-      145deg,
-      rgba(var(--bg, 9, 9, 9), 1) 0%,
-      rgba(var(--accent, 255, 255, 255), 0.06) 100%
-    );
+    padding: 1.5rem;
+    background: var(--color-surface);
     border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    box-shadow:
-      var(--shadow-soft),
-      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
     transition:
       transform var(--duration-base) var(--ease-spring),
       border-color var(--duration-base) var(--ease-spring),
@@ -85,32 +76,28 @@ const levelLabel = LEVEL_LABELS[level] ?? level;
   .tool-card :is(h1, h2, h3, h4, h5, h6) {
     animation: none !important;
   }
-
   a.tool-card {
     cursor: pointer;
   }
-
   a.tool-card:focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 2px;
   }
 
   .tool-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(var(--accent, 255, 255, 255), 0.45);
-    box-shadow:
-      0 12px 36px -8px rgba(var(--accent, 255, 255, 255), 0.28),
-      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    transform: translateY(-2px);
+    border-color: rgba(var(--accent), 0.2);
+    box-shadow: var(--shadow-strong);
   }
 
   .card-glow {
     position: absolute;
-    inset: -1px;
+    inset: 0;
     border-radius: inherit;
     background: radial-gradient(
       ellipse at 50% 0%,
-      rgba(var(--accent, 255, 255, 255), 0.18) 0%,
-      transparent 65%
+      rgba(var(--accent), 0.08) 0%,
+      transparent 60%
     );
     opacity: 0;
     z-index: 0;
@@ -135,12 +122,12 @@ const levelLabel = LEVEL_LABELS[level] ?? level;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 3rem;
-    height: 3rem;
-    min-width: 3rem;
-    min-height: 3rem;
-    background: rgba(var(--accent, 255, 255, 255), 0.08);
-    border: 1px solid rgba(var(--accent, 255, 255, 255), 0.28);
+    width: 2.75rem;
+    height: 2.75rem;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    background: var(--tint-05);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
     flex-shrink: 0;
     transition:
@@ -158,17 +145,17 @@ const levelLabel = LEVEL_LABELS[level] ?? level;
   }
 
   .tool-card[data-level="mastered"] .tool-icon-container {
-    border-color: rgba(var(--accent, 255, 255, 255), 0.8);
-    background: rgba(var(--accent, 255, 255, 255), 0.15);
+    border-color: rgba(var(--accent), 0.4);
+    background: rgba(var(--accent), 0.08);
   }
   .tool-card[data-level="practiced"] .tool-icon-container {
-    border-color: rgba(var(--accent, 255, 255, 255), 0.4);
-    background: rgba(var(--accent, 255, 255, 255), 0.08);
+    border-color: var(--color-border);
+    background: var(--tint-05);
   }
   .tool-card[data-level="exploring"] .tool-icon-container {
-    border-color: rgba(var(--accent, 255, 255, 255), 0.2);
-    background: rgba(var(--accent, 255, 255, 255), 0.03);
-    opacity: 0.8;
+    border-color: var(--color-border);
+    background: var(--color-surface);
+    opacity: 0.7;
   }
 
   .tool-content {
@@ -179,10 +166,11 @@ const levelLabel = LEVEL_LABELS[level] ?? level;
   .tool-title {
     margin: 0 0 0.35rem;
     font-family: var(--font-title);
-    font-size: 1.1rem;
+    font-size: 1.05rem;
+    font-weight: 600;
     color: var(--color-text);
-    letter-spacing: -0.01em;
-    line-height: 1.2;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
     display: flex;
     align-items: center;
     gap: 0.4rem;
@@ -201,7 +189,7 @@ const levelLabel = LEVEL_LABELS[level] ?? level;
 
   a.tool-card:hover .external-link-icon {
     opacity: 1;
-    transform: translateY(-2px) translateX(0);
+    transform: translateY(0) translateX(0);
   }
 
   .tool-card:hover .tool-title {
@@ -211,21 +199,21 @@ const levelLabel = LEVEL_LABELS[level] ?? level;
   .tool-description {
     margin: 0;
     font-size: 0.9rem;
-    line-height: 1.5;
-    color: rgba(var(--text, 232, 232, 234), 0.82);
+    line-height: 1.65;
+    color: var(--color-muted);
     word-wrap: break-word;
     white-space: normal;
     transition: color var(--duration-base) ease;
   }
 
   a.tool-card:hover .tool-description {
-    color: rgba(var(--text, 232, 232, 234), 0.8);
+    color: rgba(var(--text), 0.85);
   }
 
   .level-indicator {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
+    top: 1rem;
+    right: 1rem;
     width: 8px;
     height: 8px;
     border-radius: 50%;
@@ -234,22 +222,20 @@ const levelLabel = LEVEL_LABELS[level] ?? level;
   }
 
   .tool-card[data-level="mastered"] .level-indicator {
-    background: var(--color-accent);
     opacity: 1;
-    box-shadow: 0 0 6px var(--color-accent);
+    box-shadow: 0 0 8px rgba(var(--accent), 0.4);
   }
   .tool-card[data-level="practiced"] .level-indicator {
-    background: var(--color-accent);
     opacity: 0.6;
   }
   .tool-card[data-level="exploring"] .level-indicator {
-    background: rgba(var(--text, 232, 232, 234), 0.5);
+    background: var(--color-muted);
     opacity: 0.3;
   }
 
   @media (max-width: 640px) {
     .tool-card {
-      padding: 1rem;
+      padding: 1.25rem;
     }
     .tool-inner {
       gap: 1rem;
@@ -260,17 +246,11 @@ const levelLabel = LEVEL_LABELS[level] ?? level;
       min-width: 2.5rem;
       min-height: 2.5rem;
     }
-    .tool-icon-text {
-      font-size: 0.9rem;
-    }
     .tool-title {
       font-size: 1rem;
     }
     .tool-description {
       font-size: 0.85rem;
-    }
-    .external-link-icon {
-      font-size: 0.8rem;
     }
   }
 

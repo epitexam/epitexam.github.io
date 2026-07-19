@@ -17,19 +17,19 @@ export default defineConfig({
 
   fonts: [
     {
-      name: "Inter",
+      name: "Geist",
       cssVariable: "--font-body",
       provider: fontProviders.google(),
-      weights: ["400", "500"]
+      weights: ["400", "500", "600"]
     },
     {
       name: "Geist",
       cssVariable: "--font-title",
       provider: fontProviders.google(),
-      weights: ["500", "700"]
+      weights: ["500", "600", "700"]
     },
     {
-      name: "Intel One Mono",
+      name: "Geist Mono",
       cssVariable: "--font-code",
       provider: fontProviders.google(),
       weights: ["400", "500"]
