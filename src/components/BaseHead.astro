@@ -25,10 +25,11 @@ const imageURL = new URL(image.src, Astro.site).toString();
 const ogImageType = image.format ? `image/${image.format}` : "image/webp";
 ---
 
-<!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
     rel="alternate"
@@ -38,22 +39,16 @@ const ogImageType = image.format ? `image/${image.format}` : "image/webp";
 />
 <meta name="generator" content={Astro.generator} />
 
-<!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 
-<!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="description" content={description} />
 <meta name="theme-color" content={SITE_THEME_COLOR} />
-<meta
-    name="keywords"
-    content="développeur fullstack, TypeScript, React, Node.js, PostgreSQL, Docker, portfolio, développeur web"
-/>
+<meta name="robots" content="index, follow" />
 <meta name="author" content={SITE_TITLE} />
 <meta name="color-scheme" content="dark light" />
 <meta name="referrer" content="strict-origin-when-cross-origin" />
 
-<!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={canonicalURL.toString()} />
 <meta property="og:title" content={title} />
@@ -66,14 +61,13 @@ const ogImageType = image.format ? `image/${image.format}` : "image/webp";
 <meta property="og:locale" content="fr_FR" />
 <meta property="og:site_name" content={SITE_TITLE} />
 
-<!-- Twitter / X Cards -->
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@tonHandle" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={imageURL} />
 <meta name="twitter:image:alt" content={ImageDescription} />
 
-<!-- Fonts (self-hosted via Astro 6 Fonts API) -->
-<Font cssVariable="--font-title"/>
+<Font cssVariable="--font-title" />
 <Font cssVariable="--font-body" />
 <Font cssVariable="--font-code" />

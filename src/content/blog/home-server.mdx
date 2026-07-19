@@ -8,30 +8,21 @@ draft: false
 tags: ['linux', 'devops', 'self-hosting', 'docker-compose', 'docker', 'homelab', 'réseau', 'sécurité']
 ---
 
-Un soir de 2022, ma box tombe. Rien de grave, vingt minutes sans internet.
-Sauf que ces vingt minutes m'ont coupé de ma musique, de mes documents, de mes notes.
+Un soir de 2022, ma box est tombée. Rien de dramatique en soi, juste une vingtaine de minutes d'interruption. Le problème, c'est ce que cette coupure a révélé : en un instant, je me suis retrouvé privé de ma musique, de mes documents et de mes prises de notes. Tout était chez Google, Spotify ou Dropbox. Je ne possédais plus rien en local, je ne contrôlais plus rien.
 
-Tout était chez Google, chez YouTube, chez Dropbox. Je n'avais rien en local.
-Je ne contrôlais rien.
+J'avais déjà tenté l'aventure du serveur perso avant le COVID, mais sans méthode : du distro hopping compulsif, des configs bancales et des nuits entières à passer au peigne fin des paquets orphelins. Résultat, je finissais toujours par tout abandonner.
 
-Avant le COVID, j'avais déjà tenté l'aventure : distro hopping, configs cassées, nuits à déboguer un paquet orphelin. À chaque fois, j'abandonnais.
-
-Cette fois, j'ai posé des contraintes avant de choisir des outils.
-Cet article raconte ce que ça change.
-
-Cet article raconte les choix que j'ai faits, pourquoi je les ai faits, et ce que cette infrastructure m'a vraiment appris.
+Cette fois, j'ai abordé le problème autrement. Plutôt que de foncer tête baissée sur des outils, j'ai d'abord posé mes contraintes. Cet article retrace la construction de cette infrastructure, les choix d'architecture qui en ont découlé, et ce que cette aventure m'a réellement appris sur le terrain.
 
 ---
 
 ## Pourquoi ce projet ?
 
-La panne internet a été le déclencheur, mais pas l'unique raison. Il y avait aussi une forme de lassitude accumulée vis-à-vis des plateformes cloud. Les scandales de collecte de données, les CGU qui changent du jour au lendemain, la dépendance à des services qu'on ne contrôle pas et qui peuvent disparaître. Je voulais des données accessibles hors ligne, sur du matériel qui m'appartient.
+Cette panne d'internet a été l'étincelle, mais le problème venait de plus loin. Une vraie saturation vis-à-vis du cloud : les scandales de données, les CGU modifiées en douce, cette impression désagréable de dépendre de services qui peuvent fermer du jour au lendemain. J'avais simplement envie de réintroduire du local, du physique, du matériel qui m'appartient et fonctionne sans connexion.
 
-Il y avait aussi une ambition plus technique. En entreprise, je croise quotidiennement des notions de réseau, de conteneurs, de sécurité, de monitoring. Les comprendre en lisant de la documentation, c'est une chose. Les mettre en pratique sur une machine qui tourne 24h/24 avec de vrais usages (domotique, fichiers, jeux), c'en est une autre. 
+C'était aussi l'occasion de franchir un cap technique. En entreprise, le réseau, les conteneurs, la sécurité ou le monitoring font partie du décor. Mais lire la doc ne suffira jamais : rien ne vaut la pratique sur une machine qui tourne H24 avec du vrai trafic dessus (domotique, stockage, serveurs de jeu). Mon homelab est devenu mon bac à sable ultime, en conditions réelles.
 
-Le home server est devenu mon environnement d'apprentissage en conditions réelles.
-
-Enfin, j'avais besoin de faire le ménage. Des années de bricolage avaient laissé derrière elles des configs foireuses, des scripts qui ne s'exécutaient plus, des paquets installés pour tester quelque chose un soir et jamais désinstallés. Repartir de zéro proprement, tout documenter, construire quelque chose de maintenable.
+Et puis, soyons honnêtes : mon installation était un champ de ruines. Des années de bidouille avaient accumulé des configs bancales, des scripts fantômes et des paquets oubliés après un test d'un soir. Il fallait tout raser pour reconstruire proprement, documenter et enfin avoir un système maintenable.
 
 ---
 
@@ -106,13 +97,13 @@ Debian stable est ennuyeuse. C'est exactement ce qu'il faut.
 <br/>
 ### Docker Compose
 
-J'ai choisi **Docker** avec **Compose**, non pas par ignorance des alternatives, mais parce que c'est l'outillage le plus documenté, le plus suivi, et celui dont la courbe d'apprentissage est la moins abrupte quand on veut aller vite.
+J'ai tranché pour **Docker** et **Compose**. Pas par méconnaissance du reste, mais pour l'écosystème : c'est ultra-documenté, éprouvé, et le ticket d'entrée est imbattable quand on veut avancer vite.
 
-Compose rend la déclaration des services lisible en un coup d'œil. Chaque service vit dans son propre répertoire, avec son `docker-compose.yml` et son fichier `.env` pour les secrets. Tout est versionné dans un dépôt Git local. Si la machine crashe demain, un `docker compose up -d` dans chaque répertoire suffit à tout reconstruire.
+L'immense force de Compose, c'est la clarté. Chaque service a son propre dossier, son `docker-compose.yml`, ses secrets isolés dans un `.env`, et le tout est versionné dans un repo Git local. Si la machine explose demain ? Je réinjecte mon dépôt, un coup de `docker compose up -d` dans chaque dossier, et tout repart exactement comme avant.
 
-Je connais les critiques de Docker : le daemon historiquement root, la surface d’attaque, et une gestion des secrets limitée hors Swarm. Je garde un œil sur Podman, qui apporte des réponses intéressantes à une partie de ces enjeux.
+Évidemment, Docker n'est pas parfait. Le daemon qui tourne historiquement en root, la surface d'attaque, la gestion des secrets un peu rustique sans Swarm... ce sont des vrais sujets. Je surveille Podman de près, qui corrige pas mal de ces défauts.
 
-Si je repartais de zéro dans un contexte plus sensible, je l'évaluerais sérieusement. Mais pour ce projet, la simplicité l'emporte.
+Sur un projet plus critique, la question se poserait sérieusement. Mais ici, j'ai privilégié l'efficacité et la simplicité brute.
 
 Voici à quoi ressemble un service typique :
 <br/>
@@ -132,6 +123,7 @@ services:
 La configuration est séparée des données persistantes. Les secrets ne sont jamais dans le fichier Compose, ils passent par `.env`. 
 
 Le `restart: unless-stopped` assure que le service redémarre automatiquement après un reboot.
+
 <br/>
 ### WireGuard + Caddy
 

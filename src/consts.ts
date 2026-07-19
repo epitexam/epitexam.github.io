@@ -74,6 +74,13 @@ export const SECTIONS: {
           description:
             "Un langage simple, léger et très flexible. Je l'utilise principalement pour expérimenter rapidement des idées ou prototyper des mécaniques de jeu.",
         },
+        {
+          icon: "P",
+          name: "Python",
+          level: "practiced",
+          description:
+            "J’ai utilisé Python pour l’automatisation, l’analyse de données et certains projets de jeux vidéo. Sa syntaxe claire et ses nombreuses bibliothèques en font un outil polyvalent."
+        }
       ],
     },
     {
@@ -413,8 +420,8 @@ export const GAMES: Game[] = [
     image:
       "https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1486630/ss_3b8b9b535a4c883bad2ab47f50453a815ee651fe.1920x1080.jpg?t=1757946721",
     imageAlt: "Infiltration en vue de dessus dans Intravenous",
-    developer: "Explosive Dinosaurs",
-    publisher: "Explosive Dinosaurs",
+    developer: "Explosive Squat Games",
+    publisher: "Explosive Squat Games",
     engine: "Love2D",
     releaseDate: "2021-07-26",
     genre: "Stealth / Top-Down Shooter",
@@ -467,21 +474,10 @@ export const GAMES: Game[] = [
   },
 ];
 
-export const EDUCATION = [
-  {
-    period: "2023",
-    title: "Cursus Ingénieur",
-    subtitle: "Software Engineer Web / Mobile - Bachelor",
-    description:
-      "Formation supérieure orientées vers le développement web, mobile et bas niveau. Ce cursus m'a permis d'acquérir des bases solides en architecture logicielle et d'adopter les bonnes pratiques de programmation.",
-  },
-];
-
 export const SITE_THEME_COLOR = "rgb(9, 9, 9)";
 
 export const EXPERIENCES = [
   {
-    period: "SEPT 2024 - DÉC 2025",
     title: "Développeur Fullstack",
     context: "Startup SaaS B2C (Plateforme de services)",
     description:
@@ -489,7 +485,6 @@ export const EXPERIENCES = [
     tags: ["Bun", "TypeScript", "PostgreSQL", "Redis", "Docker"],
   },
   {
-    period: "JUIN 2023 - AOÛT 2024",
     title: "Développeur Fullstack",
     context: "EdTech (Plateforme e-learning pour développeurs)",
     description:
@@ -497,7 +492,6 @@ export const EXPERIENCES = [
     tags: ["AdonisJS", "React", "InertiaJS", "Node.js", "PostgreSQL"],
   },
   {
-    period: "JANV. 2022 - JUIL. 2022",
     title: "Développeur Fullstack",
     context: "IoT & Audio (Solutions professionnelles)",
     description:
@@ -505,7 +499,6 @@ export const EXPERIENCES = [
     tags: ["React", "TypeScript", "Express", "Electron", "MongoDB"],
   },
   {
-    period: "MAI 2020 - SEPT. 2020",
     title: "Développeur Fullstack",
     context: "Secteur Médical (Gestion de données patients)",
     description:

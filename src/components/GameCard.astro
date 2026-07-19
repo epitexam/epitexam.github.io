@@ -263,48 +263,23 @@ const isTopOne = game.rank === 1;
 </article>
 
 <style>
-    /* ============================================================
-       RÉINITIALISATION LOCALE & VARIABLES
-       Tous les sélecteurs sont préfixés par .game-card pour
-       garantir une spécificité élevée et éviter les interférences
-       avec global.css, même à l'intérieur de .prose.
-    ============================================================ */
     .game-card {
-        /* Variables dépendantes du thème global avec fallback */
-        --card-accent-rgb: var(--accent, 255, 255, 255);
-        --card-text-rgb: var(--text, 232, 232, 234);
-        --card-bg-rgb: var(--bg, 9, 9, 9);
-
-        --card-accent: rgb(var(--card-accent-rgb));
-        --card-text: rgb(var(--card-text-rgb));
-        --card-border: rgba(var(--card-text-rgb), 0.09);
-        --card-muted: rgba(var(--card-text-rgb), 0.72);
-        --card-tint-05: rgba(var(--card-text-rgb), 0.04);
-        --card-tint-10: rgba(var(--card-text-rgb), 0.08);
-        --card-accent-20: rgba(var(--card-accent-rgb), 0.2);
-        --card-accent-40: rgba(var(--card-accent-rgb), 0.4);
-        --card-surface: rgb(17, 17, 19);
-
-        /* Layout local */
         position: relative;
         margin: 0 0 5rem;
         padding: 2.5rem;
-        background: var(--card-surface);
-        border: 1px solid var(--card-border);
-        border-radius: var(--radius-md, 0.5rem);
-        box-shadow: var(--shadow-soft, 0 8px 24px rgba(0, 0, 0, 0.5));
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-soft);
         transition:
-            border-color var(--duration-base, 0.4s)
-                var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1)),
-            box-shadow var(--duration-base, 0.4s) ease;
+            border-color var(--duration-base) var(--ease-spring),
+            box-shadow var(--duration-base) ease;
     }
 
-    /* Neutralisation des animations globales appliquées aux titres */
     .game-card :is(h1, h2, h3, h4, h5, h6) {
         animation: none !important;
     }
 
-    /* Suppression des marges et paddings globaux des listes */
     .game-card ul,
     .game-card ol {
         margin: 0;
@@ -312,35 +287,21 @@ const isTopOne = game.rank === 1;
         list-style: none;
     }
 
-    /* Suppression des pseudo-éléments de puce globaux */
     .game-card li::before,
     .game-card li::after {
         content: none !important;
         display: none;
     }
 
-    /* Restauration du comportement de liste local */
-    .game-card li {
-        display: flex; /* ou block selon le besoin */
-        padding: 0;
-        margin: 0;
-    }
-
-    /* États de survol et bordures */
     .game-card:hover {
-        border-color: var(--card-accent-40);
-        box-shadow: var(--shadow-strong, 0 12px 32px rgba(0, 0, 0, 0.65));
+        border-color: rgba(var(--accent), 0.2);
+        box-shadow: var(--shadow-strong);
     }
 
     .game-card.top-one {
-        border: 2px solid var(--card-accent-20);
+        border: 1px solid rgba(var(--accent), 0.2);
     }
 
-    .game-card.top-one:hover {
-        border-color: var(--card-accent-40);
-    }
-
-    /* Badge de rang */
     .rank-badge {
         position: absolute;
         top: -1rem;
@@ -349,66 +310,65 @@ const isTopOne = game.rank === 1;
         align-items: center;
         gap: 0.5rem;
         padding: 0.45rem 1.1rem;
-        background: var(--card-surface);
-        border: 1px solid var(--card-border);
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
         border-radius: 999px;
         z-index: 10;
+        box-shadow: var(--shadow-soft);
     }
 
     .rank-number {
-        font-family: var(--font-title, sans-serif);
+        font-family: var(--font-title);
         font-size: 1rem;
-        font-weight: 700;
-        color: var(--card-text);
+        font-weight: 600;
+        color: var(--color-text);
         letter-spacing: -0.02em;
     }
 
-    /* Badge coup de cœur */
     .top-one-badge {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
         padding: 0.4rem 1rem;
-        background: var(--card-tint-05);
-        border: 1px solid var(--card-accent-20);
+        background: var(--tint-05);
+        border: 1px solid rgba(var(--accent), 0.2);
         border-radius: 999px;
-        font-family: var(--font-title, sans-serif);
-        font-size: 0.7rem;
+        font-family: var(--font-title);
+        font-size: 0.75rem;
         font-weight: 600;
-        letter-spacing: 0.08em;
-        color: var(--card-accent);
+        letter-spacing: 0.02em;
+        color: var(--color-accent);
         margin-bottom: 1rem;
         text-transform: uppercase;
     }
 
-    /* En-tête */
     .game-header {
         margin-bottom: 2rem;
     }
 
     .game-title {
         font-size: clamp(1.8rem, 4vw, 2.5rem);
-        font-weight: 800;
+        font-weight: 700;
         margin: 0 0 1rem;
-        color: var(--card-text);
+        color: var(--color-text);
         line-height: 1.2;
+        letter-spacing: -0.03em;
     }
 
     .game-description {
         font-size: 1.05rem;
         line-height: 1.7;
-        color: var(--card-muted);
+        color: var(--color-muted);
         max-width: 800px;
         margin: 0;
     }
 
-    /* Image */
     .game-image {
         margin: 0 0 2.5rem;
-        border-radius: var(--radius-md, 0.5rem);
+        border-radius: var(--radius-md);
         overflow: hidden;
-        border: 1px solid var(--card-border);
-        background: var(--card-surface);
+        border: 1px solid var(--color-border);
+        background: var(--color-bg);
     }
 
     .game-img {
@@ -416,44 +376,42 @@ const isTopOne = game.rank === 1;
         height: auto;
         object-fit: cover;
         display: block;
-        transition: transform var(--duration-base, 0.4s)
-            var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1));
+        transition: transform var(--duration-base) var(--ease-spring);
     }
 
     .game-card:hover .game-img {
         transform: scale(1.02);
     }
 
-    /* Méta-données */
     .meta-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 1.25rem;
+        gap: 1.5rem;
         padding: 1.5rem;
-        background: var(--card-tint-05);
-        border: 1px solid var(--card-border);
-        border-radius: var(--radius-md, 0.5rem);
+        background: var(--tint-05);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
         margin-bottom: 2.5rem;
     }
 
     .meta-item {
         display: flex;
         flex-direction: column;
-        gap: 0.3rem;
+        gap: 0.35rem;
     }
 
     .meta-label {
-        font-family: var(--font-title, sans-serif);
-        font-size: 0.65rem;
-        font-weight: 700;
-        color: rgba(var(--card-text-rgb), 0.85);
+        font-family: var(--font-title);
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--color-muted);
         text-transform: uppercase;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.05em;
     }
 
     .meta-value {
         font-size: 0.9rem;
-        color: var(--card-text);
+        color: var(--color-text);
     }
 
     .store-link {
@@ -461,12 +419,15 @@ const isTopOne = game.rank === 1;
         align-items: center;
         gap: 0.35rem;
         font-size: 0.9rem;
-        color: var(--card-accent);
-        font-weight: 600;
+        color: var(--color-accent);
+        font-weight: 500;
         text-decoration: none;
+        transition: color var(--duration-fast) ease;
+    }
+    .store-link:hover {
+        color: var(--color-text);
     }
 
-    /* Contenu principal */
     .game-content {
         display: flex;
         flex-direction: column;
@@ -475,9 +436,14 @@ const isTopOne = game.rank === 1;
 
     .content-block h3 {
         font-size: 1.1rem;
-        font-weight: 700;
+        font-weight: 600;
         margin: 0 0 0.9rem;
-        color: var(--card-text);
+        color: var(--color-text);
+    }
+
+    .content-block p {
+        color: var(--color-muted);
+        line-height: 1.7;
     }
 
     .content-columns {
@@ -486,7 +452,6 @@ const isTopOne = game.rank === 1;
         gap: 2rem;
     }
 
-    /* Listes points forts / points faibles */
     .pros-list,
     .cons-list {
         display: flex;
@@ -499,43 +464,43 @@ const isTopOne = game.rank === 1;
         display: flex;
         align-items: flex-start;
         gap: 0.65rem;
-        padding: 0.5rem 0.75rem;
-        background: var(--card-tint-05);
-        border-radius: var(--radius-sm, 0.25rem);
-        transition: background var(--duration-fast, 0.2s) ease;
+        padding: 0.65rem 0.85rem;
+        background: var(--tint-05);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        transition: background var(--duration-fast) ease;
     }
 
     .pros-list li:hover,
     .cons-list li:hover {
-        background: var(--card-tint-10);
+        background: var(--tint-10);
     }
 
     .pros-list svg {
-        color: var(--card-accent);
+        color: var(--color-accent);
         flex-shrink: 0;
-        margin-top: 0.2rem;
+        margin-top: 0.15rem;
     }
 
     .cons-list svg {
-        color: var(--card-muted);
+        color: var(--color-muted);
         flex-shrink: 0;
-        margin-top: 0.2rem;
-        opacity: 0.6;
+        margin-top: 0.15rem;
+        opacity: 0.7;
     }
 
-    /* Bloc mis en avant */
     .highlight-block {
         padding: 1.5rem;
-        background: var(--card-tint-05);
-        border-left: 3px solid var(--card-accent);
-        border-radius: 0 var(--radius-sm, 0.25rem) var(--radius-sm, 0.25rem) 0;
+        background: var(--tint-05);
+        border: 1px solid var(--color-border);
+        border-left: 3px solid var(--color-accent);
+        border-radius: 0 var(--radius-md) var(--radius-md) 0;
     }
 
-    /* Pied de carte */
     .game-footer {
-        margin-top: 2rem;
+        margin-top: 1rem;
         padding-top: 1.5rem;
-        border-top: 1px solid var(--card-border);
+        border-top: 1px solid var(--color-border);
     }
 
     .game-tags {
@@ -544,42 +509,16 @@ const isTopOne = game.rank === 1;
         gap: 0.5rem;
     }
 
-    /* Responsive */
     @media (max-width: 768px) {
         .game-card {
             padding: 1.5rem;
             margin-bottom: 3rem;
         }
-
         .meta-grid {
             grid-template-columns: 1fr;
         }
-
         .content-columns {
             grid-template-columns: 1fr;
-        }
-    }
-
-    @media (prefers-color-scheme: light) {
-        .game-card {
-            --card-surface: rgb(255, 255, 255);
-            --card-border: rgba(var(--card-text-rgb), 0.1);
-            --card-muted: rgba(var(--card-text-rgb), 0.7);
-            --card-tint-05: rgba(var(--card-text-rgb), 0.04);
-            --card-tint-10: rgba(var(--card-text-rgb), 0.07);
-            box-shadow:
-                0 2px 8px rgba(0, 0, 0, 0.05),
-                0 6px 16px rgba(0, 0, 0, 0.04);
-        }
-
-        .meta-label {
-            color: rgba(var(--card-text-rgb), 0.9);
-        }
-
-        .game-card:hover {
-            box-shadow:
-                0 4px 14px rgba(0, 0, 0, 0.07),
-                0 10px 28px rgba(0, 0, 0, 0.06);
         }
     }
 </style>
