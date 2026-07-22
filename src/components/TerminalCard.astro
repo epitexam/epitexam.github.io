@@ -1,643 +1,516 @@
 ---
 interface Props {
-    user?: string;
-    machine?: string;
+  user?: string;
+  machine?: string;
+  title?: string;
 }
 
-const { user = "guest", machine = "epitexam.io" } = Astro.props;
+const {
+  user = "guest",
+  machine = "epitexam.io",
+  title = "terminal",
+} = Astro.props;
 
-const wsUrl = import.meta.env.WS_API_URL || "wss://echo.websocket.org";
+const terminalId = `terminal-${Math.random().toString(36).slice(2, 9)}`;
+const wsApiUrl = import.meta.env.WS_API_URL ?? "wss://echo.websocket.org";
 ---
 
-<div class="terminal-card" id="terminal-wrapper">
-    <div class="terminal-header">
-        <div class="dots">
-            <span class="dot red"></span>
-            <span class="dot yellow"></span>
-            <span class="dot green" id="ws-status-dot"></span>
-        </div>
-        <span class="terminal-title">{user}@{machine}: ~</span>
+<div class="terminal-card" id={terminalId} data-ws-url={wsApiUrl}>
+  <div class="terminal-header">
+    <div class="terminal-dots">
+      <span class="dot dot-red"></span>
+      <span class="dot dot-yellow"></span>
+      <span class="dot dot-green"></span>
+    </div>
+    <div class="terminal-title">{title}</div>
+    <div class="terminal-status" data-status></div>
+  </div>
+
+  <div class="terminal-body">
+    <div class="terminal-output" data-output>
+      <div class="terminal-line">
+        <span class="terminal-muted">Bienvenue sur {machine}. Tapez </span>
+        <code class="terminal-code">help</code>
+        <span class="terminal-muted"> pour voir les commandes.</span>
+      </div>
     </div>
 
-    <div class="terminal-body" id="terminal-output"></div>
-
-    <div class="terminal-input-line" id="terminal-input-wrapper">
-        <span class="prompt-content">
-            <span class="user">{user}@{machine}</span><span class="sep">:</span
-            ><span class="path">~</span><span class="symbol">$</span>&nbsp;
-        </span>
-        <input
-            type="text"
-            id="terminal-input"
-            class="terminal-input"
-            placeholder="Tapez 'help' pour commencer..."
-            autocomplete="off"
-            spellcheck="false"
-        />
+    <div class="terminal-input-line">
+      <span class="terminal-prompt" data-prompt>{user}@{machine}:~$</span>
+      <input
+        type="text"
+        class="terminal-input"
+        data-input
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        autofocus
+      />
     </div>
+  </div>
 </div>
 
-<style>
-    .terminal-card {
-        position: relative;
-        background: var(--color-surface);
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-md);
-        box-shadow: var(--shadow-strong);
-        font-family: var(--font-code);
-        width: 100%;
-        margin: 2.5rem 0;
-        overflow: hidden;
-        animation: terminalEntry 0.8s var(--ease-spring) backwards;
-        transform-origin: center top;
+<script>
+  document
+    .querySelectorAll<HTMLElement>(".terminal-card")
+    .forEach(initTerminal);
+
+  function initTerminal(container: HTMLElement) {
+    const output = container.querySelector<HTMLElement>("[data-output]")!;
+    const input = container.querySelector<HTMLInputElement>("[data-input]")!;
+    const promptEl = container.querySelector<HTMLElement>("[data-prompt]")!;
+    const statusEl = container.querySelector<HTMLElement>("[data-status]")!;
+
+    const defaultPrompt = promptEl.textContent ?? "";
+    const defaultPlaceholder = "tapez 'help'...";
+    const wsApiUrl = container.dataset.wsUrl ?? "";
+    let socket: WebSocket | null = null;
+
+    let currentMode: "shell" | "program" = "shell";
+    let currentProgram: string | null = null;
+
+    const history: string[] = [];
+    let historyIdx = -1;
+    let tempInput = "";
+
+    input.placeholder = defaultPlaceholder;
+
+    function setStatus(state: "idle" | "connecting" | "connected" | "error") {
+      if (state === "idle") {
+        statusEl.innerHTML = "";
+        return;
+      }
+      const labels: Record<string, string> = {
+        connecting: "connexion",
+        connected: "connecté",
+        error: "erreur",
+      };
+      statusEl.innerHTML = `<span class="status-dot status-${state}"></span><span>${labels[state]}</span>`;
     }
 
-    .terminal-header {
-        display: flex;
-        align-items: center;
-        padding: 0.75rem 1.25rem;
-        background: var(--tint-05);
-        border-bottom: 1px solid var(--color-border);
-        cursor: pointer;
-        backdrop-filter: blur(4px);
-    }
+    const programs: Record<
+      string,
+      {
+        start: () => void;
+        handleInput: (cmd: string) => void;
+      }
+    > = {
+      ws: {
+        start() {
+          if (!wsApiUrl) {
+            printLine("Erreur : WS_API_URL n'est pas configurée.");
+            return;
+          }
 
-    .dots {
-        display: flex;
-        gap: 7px;
-    }
+          currentMode = "program";
+          currentProgram = "ws";
+          promptEl.textContent = "ws>";
+          input.placeholder = "écrire un message...";
+          setStatus("connecting");
+          printLine(`Connexion à ${wsApiUrl}...`);
 
-    .dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        transition:
-            background-color 0.3s ease,
-            box-shadow 0.3s ease;
-    }
+          try {
+            socket = new WebSocket(wsApiUrl);
+          } catch {
+            printLine("Erreur : URL WebSocket invalide.");
+            setStatus("idle");
+            exitProgram();
+            return;
+          }
 
-    .dot.red {
-        background: #ff5f56;
-    }
-    .dot.yellow {
-        background: #ffbd2e;
-    }
-
-    .dot.green {
-        background: rgb(var(--color-error-rgb));
-    }
-    .dot.green.connected {
-        background: rgb(var(--badge-green-rgb));
-        box-shadow: 0 0 8px rgba(var(--badge-green-rgb), 0.8);
-    }
-    .dot.green.connecting {
-        background: #ffbd2e;
-        animation: pulse-dot 1s infinite;
-    }
-
-    @keyframes pulse-dot {
-        0%,
-        100% {
-            opacity: 1;
-            box-shadow: 0 0 4px rgba(255, 189, 46, 0.5);
-        }
-        50% {
-            opacity: 0.4;
-            box-shadow: 0 0 8px rgba(255, 189, 46, 0.8);
-        }
-    }
-
-    .terminal-title {
-        flex: 1;
-        text-align: center;
-        font-size: 0.75rem;
-        color: var(--color-muted);
-        letter-spacing: 0.05em;
-    }
-
-    .terminal-body {
-        padding: 1rem 1.5rem;
-        height: 600px;
-        overflow-y: auto;
-        scroll-behavior: smooth;
-        background:
-            linear-gradient(var(--tint-05) 50%, transparent 50%),
-            var(--color-surface);
-        background-size:
-            100% 4px,
-            100% 100%;
-        position: relative;
-    }
-
-    .terminal-body::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: repeating-linear-gradient(
-            0deg,
-            rgba(0, 0, 0, 0) 0px,
-            rgba(0, 0, 0, 0) 2px,
-            rgba(0, 0, 0, 0.15) 3px,
-            rgba(0, 0, 0, 0.15) 4px
-        );
-        pointer-events: none;
-        z-index: 2;
-    }
-
-    .terminal-body::-webkit-scrollbar {
-        width: 4px;
-    }
-    .terminal-body::-webkit-scrollbar-track {
-        background: transparent;
-    }
-    .terminal-body::-webkit-scrollbar-thumb {
-        background: var(--tint-20);
-        border-radius: 3px;
-    }
-
-    .line {
-        display: block;
-        line-height: 1.6;
-        font-size: 0.875rem;
-        margin-bottom: 4px;
-        word-break: break-word;
-        white-space: pre-wrap;
-        text-shadow: 0 0 5px rgba(var(--accent), 0.3);
-    }
-
-    .user {
-        color: var(--color-accent);
-        font-weight: 600;
-        text-shadow: 0 0 8px rgba(var(--accent), 0.5);
-    }
-    .sep {
-        color: var(--color-muted);
-    }
-    .path {
-        color: var(--color-accent);
-        opacity: 0.8;
-    }
-    .symbol {
-        color: var(--color-muted);
-    }
-    .command-text {
-        color: var(--color-text);
-    }
-
-    .system-msg {
-        color: var(--color-muted);
-        font-style: italic;
-        text-shadow: none;
-    }
-    .error-msg {
-        color: rgb(var(--color-error-rgb));
-        text-shadow: 0 0 5px rgba(var(--color-error-rgb), 0.5);
-    }
-    .success-msg {
-        color: rgb(var(--badge-green-rgb));
-        text-shadow: 0 0 5px rgba(var(--badge-green-rgb), 0.5);
-        font-style: italic;
-    }
-    .ws-prefix {
-        color: rgb(var(--badge-green-rgb));
-        margin-right: 8px;
-        text-shadow: 0 0 5px rgba(var(--badge-green-rgb), 0.5);
-    }
-
-    .terminal-input-line {
-        display: flex;
-        align-items: center;
-        padding: 1rem 1.5rem;
-        font-size: 0.875rem;
-        background: var(--tint-05);
-        border-top: 1px solid var(--color-border);
-    }
-
-    .prompt-content {
-        flex-shrink: 0;
-        white-space: nowrap;
-    }
-
-    .help-table {
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-        margin: 4px 0 8px;
-    }
-
-    .help-row {
-        display: grid;
-        grid-template-columns: 120px auto 1fr;
-        gap: 0.5rem;
-        align-items: baseline;
-        padding: 2px 6px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.15s ease;
-    }
-    .help-row:hover {
-        background: var(--tint-10, rgba(var(--accent), 0.1));
-    }
-
-    .help-cmd {
-        color: var(--color-accent);
-        font-weight: 600;
-    }
-    .help-aliases {
-        color: var(--color-muted);
-        font-size: 0.75rem;
-    }
-    .help-desc {
-        color: var(--color-muted);
-        font-style: italic;
-    }
-
-    @media (max-width: 600px) {
-        .help-row {
-            grid-template-columns: 1fr;
-            gap: 0;
-        }
-    }
-
-    .terminal-input {
-        flex: 1;
-        background: transparent;
-        border: none;
-        outline: none;
-        color: var(--color-text);
-        font-family: var(--font-code);
-        font-size: 0.875rem;
-        caret-color: var(--color-accent);
-        padding: 0;
-        margin: 0;
-        text-shadow: 0 0 5px rgba(var(--accent), 0.3);
-    }
-
-    @keyframes terminalEntry {
-        0% {
-            opacity: 0;
-            transform: translateY(20px) scale(0.98);
-            filter: brightness(2);
-        }
-        100% {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            filter: brightness(1);
-        }
-    }
-
-    @media (prefers-color-scheme: light) {
-        .terminal-body::before {
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 0, 0, 0) 0px,
-                rgba(0, 0, 0, 0) 2px,
-                rgba(0, 0, 0, 0.03) 3px,
-                rgba(0, 0, 0, 0.03) 4px
+          socket.addEventListener("open", () => {
+            setStatus("connected");
+            printLine(
+              "Connecté. Tapez 'exit' pour quitter, Ctrl+L pour effacer.",
             );
-        }
-        .line,
-        .user,
-        .terminal-input {
-            text-shadow: none;
-        }
-        .error-msg,
-        .success-msg,
-        .ws-prefix {
-            text-shadow: none;
-        }
-    }
-
-    @media (max-width: 600px) {
-        .terminal-body {
-            padding: 1rem 1.25rem;
-            height: 350px;
-        }
-        .terminal-input-line {
-            padding: 1rem 1.25rem;
-        }
-        .line,
-        .terminal-input-line {
-            font-size: 0.8rem;
-        }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .terminal-card {
-            animation: none;
-        }
-    }
-</style>
-
-<script is:inline define:vars={{ wsUrl, user, machine }}>
-    (function () {
-        const wrapper = document.getElementById("terminal-wrapper");
-        if (!wrapper) return;
-
-        const output = document.getElementById("terminal-output");
-        const input = document.getElementById("terminal-input");
-        const statusDot = document.getElementById("ws-status-dot");
-
-        let ws = null;
-        let history = [];
-        let historyIndex = -1;
-
-        const COMMANDS_INFO = [
-            {
-                name: "connect",
-                args: "",
-                aliases: [],
-                desc: "Initie le tunnel WebSocket",
-            },
-            {
-                name: "disconnect",
-                args: "",
-                aliases: ["quit", "exit"],
-                desc: "Ferme le tunnel actif",
-            },
-            {
-                name: "clear",
-                args: "",
-                aliases: ["cls"],
-                desc: "Nettoie le terminal",
-            },
-            {
-                name: "send",
-                args: "[msg]",
-                aliases: [],
-                desc: "Transmet la charge utile (payload) au serveur",
-            },
-            {
-                name: "help",
-                args: "",
-                aliases: ["?", "h"],
-                desc: "Affiche cette liste",
-            },
-        ];
-
-        const COMMANDS = COMMANDS_INFO.map((c) => c.name);
-        const ALIASES = Object.fromEntries(
-            COMMANDS_INFO.flatMap((c) => c.aliases.map((a) => [a, c.name])),
-        );
-
-        function levenshtein(a, b) {
-            const m = a.length,
-                n = b.length;
-            const d = Array.from({ length: m + 1 }, (_, i) => [
-                i,
-                ...Array(n).fill(0),
-            ]);
-            for (let j = 0; j <= n; j++) d[0][j] = j;
-            for (let i = 1; i <= m; i++) {
-                for (let j = 1; j <= n; j++) {
-                    d[i][j] =
-                        a[i - 1] === b[j - 1]
-                            ? d[i - 1][j - 1]
-                            : 1 +
-                              Math.min(
-                                  d[i - 1][j],
-                                  d[i][j - 1],
-                                  d[i - 1][j - 1],
-                              );
-                }
-            }
-            return d[m][n];
-        }
-
-        function closestCommand(cmd) {
-            let best = null;
-            let bestDist = Infinity;
-            for (const c of COMMANDS) {
-                const dist = levenshtein(cmd, c);
-                if (dist < bestDist) {
-                    bestDist = dist;
-                    best = c;
-                }
-            }
-            return bestDist <= 2 ? best : null;
-        }
-
-        function print(html, className = "") {
-            const div = document.createElement("div");
-            div.className = `line ${className}`;
-            div.innerHTML = html;
-            output.appendChild(div);
-            output.scrollTop = output.scrollHeight;
-        }
-
-        function printPrompt(cmd) {
-            const safeCmd = escapeHtml(cmd);
-            print(
-                `<span class="user">${user}@${machine}</span><span class="sep">:</span><span class="path">~</span><span class="symbol">$</span>&nbsp;<span class="command-text">${safeCmd}</span>`,
-            );
-        }
-
-        function printHelpTable() {
-            const div = document.createElement("div");
-            div.className = "line help-table";
-            div.innerHTML = COMMANDS_INFO.map((c) => {
-                const label = c.args ? `${c.name} ${c.args}` : c.name;
-                const aliases = c.aliases.length
-                    ? `<span class="help-aliases">(${c.aliases.join(", ")})</span>`
-                    : "";
-                return `<span class="help-row" data-cmd="${c.name}">
-                    <span class="help-cmd">${label}</span>${aliases}
-                    <span class="help-desc">${c.desc}</span>
-                </span>`;
-            }).join("");
-            output.appendChild(div);
-            output.scrollTop = output.scrollHeight;
-        }
-
-        function setConnectionState(state) {
-            statusDot.classList.remove("connected", "connecting");
-            if (state === "connected") statusDot.classList.add("connected");
-            if (state === "connecting") statusDot.classList.add("connecting");
-        }
-
-        wrapper.addEventListener("click", (e) => {
-            const row = e.target.closest(".help-row");
-            if (row) {
-                input.value = row.dataset.cmd + " ";
-                input.focus();
-                return;
-            }
             input.focus();
-        });
+          });
 
-        input.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-                const cmd = input.value.trim();
-                if (cmd) {
-                    history.push(cmd);
-                    historyIndex = history.length;
-                    handleCommand(cmd);
-                }
-                input.value = "";
-            } else if (e.key === "ArrowUp") {
-                e.preventDefault();
-                if (historyIndex > 0) {
-                    historyIndex--;
-                    input.value = history[historyIndex];
-                }
-            } else if (e.key === "ArrowDown") {
-                e.preventDefault();
-                if (historyIndex < history.length - 1) {
-                    historyIndex++;
-                    input.value = history[historyIndex];
-                } else {
-                    historyIndex = history.length;
-                    input.value = "";
-                }
-            } else if (e.key === "Tab") {
-                e.preventDefault();
-                const partial = input.value.trim().toLowerCase();
-                if (!partial) return;
-                const matches = COMMANDS.filter((c) => c.startsWith(partial));
-                if (matches.length === 1) {
-                    input.value = matches[0] + " ";
-                } else if (matches.length > 1) {
-                    print(
-                        `<span class="system-msg">> ${matches.join("  ")}</span>`,
-                    );
-                }
+          socket.addEventListener("message", (event) => {
+            const data =
+              typeof event.data === "string"
+                ? event.data
+                : "[message binaire reçu]";
+            printLine(data, false, "terminal-ws-in");
+          });
+
+          socket.addEventListener("close", () => {
+            if (currentProgram === "ws") {
+              printLine("Connexion fermée.");
+              setStatus("idle");
+              exitProgram();
             }
-        });
+          });
 
-        function handleCommand(cmd) {
-            printPrompt(cmd);
+          socket.addEventListener("error", () => {
+            setStatus("error");
+            printLine("Erreur de connexion WebSocket.");
+          });
+        },
+        handleInput(cmd) {
+          if (cmd === "exit" || cmd === "quit") {
+            socket?.close();
+            socket = null;
+            setStatus("idle");
+            exitProgram();
+            return;
+          }
+          if (!cmd) return;
+          if (socket && socket.readyState === WebSocket.OPEN) {
+            socket.send(cmd);
+          } else {
+            printLine("Non connecté.");
+          }
+        },
+      },
+    };
 
-            const args = cmd.trim().split(/\s+/);
-            const raw = args[0].toLowerCase();
-            const command = ALIASES[raw] || raw;
+    const shellCommands = ["help", "clear", "exit", ...Object.keys(programs)];
 
-            switch (command) {
-                case "help":
-                    print(
-                        '<span class="system-msg">> Commandes disponibles:</span>',
-                    );
-                    printHelpTable();
-                    break;
+    function exitProgram() {
+      currentMode = "shell";
+      currentProgram = null;
+      promptEl.textContent = defaultPrompt;
+      input.placeholder = defaultPlaceholder;
+    }
 
-                case "clear":
-                    output.innerHTML = "";
-                    break;
+    function printLine(text: string, isHtml = false, extraClass = "") {
+      const line = document.createElement("div");
+      line.className = extraClass
+        ? `terminal-line ${extraClass}`
+        : "terminal-line";
+      if (isHtml) line.innerHTML = text;
+      else line.textContent = text;
+      output.appendChild(line);
+      scrollToBottom();
+    }
 
-                case "connect":
-                    if (
-                        ws &&
-                        (ws.readyState === WebSocket.OPEN ||
-                            ws.readyState === WebSocket.CONNECTING)
-                    ) {
-                        print(
-                            '<span class="error-msg">> Erreur: Tunnel déjà actif.</span>',
-                        );
-                        return;
-                    }
-                    connectWs();
-                    break;
+    function scrollToBottom() {
+      output.scrollTop = output.scrollHeight;
+    }
 
-                case "disconnect":
-                    if (ws) {
-                        ws.close();
-                    } else {
-                        print(
-                            '<span class="error-msg">> Erreur: Aucun tunnel actif.</span>',
-                        );
-                    }
-                    break;
-
-                case "send":
-                    if (!ws || ws.readyState !== WebSocket.OPEN) {
-                        print(
-                            '<span class="error-msg">> Erreur: Tunnel inactif. Tapez "connect" d\'abord.</span>',
-                        );
-                        return;
-                    }
-                    const msgToSend = args.slice(1).join(" ");
-                    if (!msgToSend) {
-                        print(
-                            '<span class="error-msg">> Usage: send [payload]</span>',
-                        );
-                        return;
-                    }
-                    ws.send(msgToSend);
-                    print(
-                        `<span class="ws-prefix">[TX]</span>${escapeHtml(msgToSend)}`,
-                    );
-                    break;
-
-                default:
-                    const suggestion = closestCommand(command);
-                    print(
-                        `<span class="error-msg">> Commande inconnue: ${escapeHtml(command)}.${suggestion ? ` Vouliez-vous dire '${suggestion}' ?` : ""} Tapez 'help' pour la liste des commandes.</span>`,
-                    );
-            }
-        }
-
-        function connectWs() {
-            print(
-                '<span class="system-msg">> Initialisation de la connexion sécurisée...</span>',
-            );
-            setConnectionState("connecting");
-
-            try {
-                ws = new WebSocket(wsUrl);
-
-                ws.onopen = () => {
-                    setConnectionState("connected");
-                    print(
-                        '<span class="success-msg">> Tunnel établi. Prêt à transmettre.</span>',
-                    );
-                };
-
-                ws.onmessage = (event) => {
-                    let msg = event.data;
-                    if (msg instanceof Blob) {
-                        msg.text().then((text) =>
-                            print(
-                                `<span class="ws-prefix">[RX]</span>${escapeHtml(text)}`,
-                            ),
-                        );
-                    } else {
-                        print(
-                            `<span class="ws-prefix">[RX]</span>${escapeHtml(msg)}`,
-                        );
-                    }
-                };
-
-                ws.onerror = () => {
-                    print(
-                        '<span class="error-msg">> Alerte: Erreur de protocole ou connexion refusée.</span>',
-                    );
-                };
-
-                ws.onclose = () => {
-                    setConnectionState("disconnected");
-                    print(
-                        '<span class="system-msg">> Tunnel terminé. Déconnecté.</span>',
-                    );
-                    ws = null;
-                };
-            } catch (err) {
-                setConnectionState("disconnected");
-                print(
-                    `<span class="error-msg">> Erreur fatale: ${err.message}</span>`,
-                );
-            }
-        }
-
-        function escapeHtml(str) {
-            const div = document.createElement("div");
-            div.textContent = str;
-            return div.innerHTML;
-        }
-
-        print('<span class="system-msg">> Système initialisé.</span>');
-        print('<span class="system-msg">> Interface réseau prête.</span>');
-        print(
-            "<span class=\"system-msg\">> Tapez 'help' pour lister les commandes disponibles.</span>",
+    function handleShellCommand(cmd: string) {
+      if (cmd === "help") {
+        printLine("Commandes disponibles :");
+        printLine(
+          "  <span class='terminal-code'>help</span>    - Affiche cette aide",
+          true,
         );
-        input.focus();
-    })();
+        printLine(
+          "  <span class='terminal-code'>clear</span>   - Efface l'écran (Ctrl+L)",
+          true,
+        );
+        printLine(
+          "  <span class='terminal-code'>ws</span>      - Connexion WebSocket",
+          true,
+        );
+        printLine(
+          "  <span class='terminal-code'>exit</span>    - Ferme la connexion",
+          true,
+        );
+      } else if (cmd === "clear") {
+        output.innerHTML = "";
+      } else if (cmd === "exit") {
+        printLine("Connection closed.");
+      } else if (programs[cmd]) {
+        programs[cmd].start();
+      } else if (cmd) {
+        printLine(`bash: ${cmd}: command not found`);
+      }
+    }
+
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        const cmd = input.value.trim();
+
+        const historyLine = document.createElement("div");
+        historyLine.className = "terminal-line terminal-history";
+        historyLine.textContent = `${promptEl.textContent} ${cmd}`;
+        output.appendChild(historyLine);
+
+        if (
+          cmd &&
+          (history.length === 0 || history[history.length - 1] !== cmd)
+        ) {
+          history.push(cmd);
+        }
+        historyIdx = -1;
+        tempInput = "";
+
+        if (currentMode === "program" && currentProgram) {
+          programs[currentProgram].handleInput(cmd);
+        } else {
+          handleShellCommand(cmd);
+        }
+
+        input.value = "";
+        scrollToBottom();
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        if (history.length > 0) {
+          if (historyIdx === -1) {
+            tempInput = input.value;
+            historyIdx = history.length - 1;
+          } else if (historyIdx > 0) {
+            historyIdx--;
+          }
+          input.value = history[historyIdx];
+        }
+      } else if (e.key === "ArrowDown") {
+        e.preventDefault();
+        if (historyIdx !== -1) {
+          if (historyIdx < history.length - 1) {
+            historyIdx++;
+            input.value = history[historyIdx];
+          } else {
+            historyIdx = -1;
+            input.value = tempInput;
+          }
+        }
+      } else if (e.key === "Tab" && currentMode === "shell") {
+        e.preventDefault();
+        const current = input.value.trim();
+        if (!current) return;
+
+        const matches = shellCommands.filter((cmd) => cmd.startsWith(current));
+        if (matches.length === 1) {
+          input.value = matches[0] + " ";
+        } else if (matches.length > 1) {
+          printLine(matches.join("  "));
+        }
+      } else if (e.ctrlKey) {
+        if (e.key === "c" || e.key === "C") {
+          e.preventDefault();
+          const interruptLine = document.createElement("div");
+          interruptLine.className = "terminal-line terminal-history";
+          interruptLine.textContent = `${promptEl.textContent} ${input.value}^C`;
+          output.appendChild(interruptLine);
+
+          if (currentMode === "program") {
+            if (currentProgram === "ws") {
+              socket?.close();
+              socket = null;
+              setStatus("idle");
+            }
+            printLine("Programme interrompu.");
+            exitProgram();
+          }
+          input.value = "";
+          scrollToBottom();
+        } else if (e.key === "l" || e.key === "L") {
+          e.preventDefault();
+          output.innerHTML = "";
+          scrollToBottom();
+        }
+      }
+    });
+
+    container.addEventListener("click", () => input.focus());
+  }
 </script>
+
+<style>
+  .terminal-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-strong);
+    overflow: hidden;
+    font-family: var(--font-code);
+    transition:
+      border-color var(--duration-base) ease,
+      box-shadow var(--duration-base) ease;
+  }
+
+  @media (hover: hover) {
+    .terminal-card:hover {
+      border-color: rgba(var(--accent), 0.2);
+      box-shadow: var(--shadow-strong), var(--glow);
+    }
+  }
+
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    background: var(--tint-05);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .terminal-dots {
+    display: flex;
+    gap: 0.4rem;
+  }
+  .dot {
+    width: 0.75rem;
+    height: 0.75rem;
+    border-radius: 50%;
+    background: var(--tint-20);
+  }
+  .dot-red {
+    background: rgba(248, 113, 113, 0.7);
+  }
+  .dot-yellow {
+    background: rgba(251, 191, 36, 0.7);
+  }
+  .dot-green {
+    background: rgba(134, 239, 172, 0.7);
+  }
+
+  .terminal-title {
+    flex: 1;
+    text-align: center;
+    font-size: 0.8rem;
+    font-family: var(--font-title);
+    color: var(--color-muted);
+    letter-spacing: 0.02em;
+  }
+
+  .terminal-status {
+    min-width: 3.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.35rem;
+    font-size: 0.7rem;
+    color: var(--color-muted);
+    white-space: nowrap;
+  }
+
+  .status-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--tint-20);
+    flex-shrink: 0;
+  }
+
+  .status-connecting {
+    background: rgba(251, 191, 36, 0.85);
+    animation: status-pulse 1.2s ease-in-out infinite;
+  }
+
+  .status-connected {
+    background: rgb(var(--badge-green-rgb));
+  }
+
+  .status-error {
+    background: rgb(var(--color-error-rgb));
+  }
+
+  @keyframes status-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+
+  .terminal-body {
+    padding: 1.25rem 1.25rem 1rem;
+    min-height: 40rem;
+    max-height: 55vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .terminal-output {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--color-text);
+    scrollbar-width: thin;
+  }
+
+  .terminal-output::-webkit-scrollbar {
+    width: 6px;
+  }
+  .terminal-output::-webkit-scrollbar-thumb {
+    background: var(--tint-20);
+    border-radius: 999px;
+  }
+
+  .terminal-line {
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .terminal-line + .terminal-line {
+    margin-block-start: 0.15rem;
+  }
+  .terminal-history {
+    color: var(--color-muted);
+  }
+  .terminal-muted {
+    color: var(--color-muted);
+  }
+
+  .terminal-ws-in {
+    color: var(--color-text);
+  }
+  .terminal-ws-in::before {
+    content: "← ";
+    color: var(--color-muted);
+  }
+
+  .terminal-code {
+    font-family: var(--font-code);
+    font-size: 0.85em;
+    padding: 0.1em 0.35em;
+    background: var(--tint-10);
+    border: 1px solid var(--tint-14);
+    border-radius: var(--radius-sm);
+    color: var(--color-text);
+  }
+
+  .terminal-input-line {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-top: 0.25rem;
+  }
+
+  .terminal-prompt {
+    color: var(--color-accent);
+    font-weight: 500;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .terminal-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--color-text);
+    font-family: var(--font-code);
+    font-size: 0.9rem;
+    padding: 0;
+    caret-color: var(--color-accent);
+  }
+
+  .terminal-input::placeholder {
+    color: var(--color-muted);
+    opacity: 0.3;
+  }
+
+  @media (max-width: 480px) {
+    .terminal-body {
+      padding: 1rem;
+      min-height: 20rem;
+      max-height: 60vh;
+    }
+    .terminal-title {
+      display: none;
+    }
+  }
+</style>
