@@ -1,0 +1,77 @@
+---
+import WindowMockup from "./WindowMockup.astro";
+import StatGrid from "./StatGrid.astro";
+
+const stats = [
+    { label: "Expérience", value: "6 ans", sub: "Depuis 2019" },
+    { label: "Projets livrés", value: "47", sub: "↑ 6 cette année", up: true },
+    {
+        label: "Technologies maîtrisées",
+        value: "18",
+        sub: "↑ 3 cette année",
+        up: true,
+    },
+    { label: "Certifications", value: "5", sub: "Depuis 2019" },
+];
+
+const rows = [
+    {
+        name: "▪ Refonte plateforme e-commerce",
+        tag: "Next.js · Stripe · PostgreSQL",
+    },
+    {
+        name: '▪ Publié "Optimiser les performances React"',
+        tag: "Il y a 2 semaines · Blog personnel",
+    },
+    { name: "▪ Certification AWS Solutions Architect", tag: "Obtenue en 2024" },
+    { name: "▪ Mentorat de développeurs juniors", tag: "En cours" },
+];
+---
+
+<section class="band center-band">
+    <div class="am-container">
+        <div class="center-head">
+            <span class="am-badge">• Profil</span>
+            <h2 class="band-title">
+                Un profil,<br />une expertise complète.
+            </h2>
+            <p class="band-desc center-desc">
+                Du cahier des charges à la mise en production, je prends en
+                charge l'ensemble du cycle de développement — interface,
+                API, base de données et déploiement.
+            </p>
+        </div>
+
+        <div class="crm-wrap">
+            <i class="x x-tl" aria-hidden="true">+</i>
+            <i class="x x-tr" aria-hidden="true">+</i>
+            <i class="x x-bl" aria-hidden="true">+</i>
+            <i class="x x-br" aria-hidden="true">+</i>
+
+            <WindowMockup title="Alex Martin — alex@devfolio.fr">
+                <Fragment slot="tags">
+                    <span class="win-tags">
+                        <span class="tag t-green">● Disponible</span>
+                        <span class="tag t-purple">• Freelance &amp; CDI</span>
+                    </span>
+                </Fragment>
+                <div class="crm-body">
+                    <div class="crm-plan">FULL-STACK SENIOR</div>
+                    <StatGrid stats={stats} columns={4} />
+
+                    <div class="seq-label">PARCOURS RÉCENT</div>
+                    <div class="seq-rows">
+                        {
+                            rows.map((r) => (
+                                <div class="seq-row">
+                                    <span class="seq-name">{r.name}</span>
+                                    <span class="seq-tag">{r.tag}</span>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
+            </WindowMockup>
+        </div>
+    </div>
+</section>

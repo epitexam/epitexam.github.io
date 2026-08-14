@@ -1,0 +1,33 @@
+---
+interface Row {
+    label: string;
+    value: string;
+    percent: number;
+}
+interface Props {
+    title: string;
+    rows: Row[];
+    variant: "a" | "b";
+}
+const { title, rows, variant } = Astro.props;
+---
+
+<div class={`float-card float-${variant}`}>
+    <div class="win-bar small">
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="win-title">{title}</span>
+    </div>
+    {
+        rows.map((row) => (
+            <div class="float-row">
+                <div class="float-line">
+                    <span>{row.label}</span>
+                    <b>{row.value}</b>
+                </div>
+                <span class="prog">
+                    <i style={`--p:${row.percent}%`} />
+                </span>
+            </div>
+        ))
+    }
+</div>

@@ -1,0 +1,17 @@
+---
+interface Props {
+    title: string;
+    small?: boolean;
+    class?: string;
+}
+const { title, small = false, class: className } = Astro.props;
+---
+
+<div class:list={["window", className]}>
+    <div class:list={["win-bar", { small }]}>
+        <span class="dots"><i></i><i></i><i></i></span>
+        <span class="win-title">{title}</span>
+        <slot name="tags" />
+    </div>
+    <slot />
+</div>

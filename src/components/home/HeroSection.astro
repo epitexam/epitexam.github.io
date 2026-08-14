@@ -1,0 +1,197 @@
+---
+import WindowMockup from "./WindowMockup.astro";
+import StatGrid from "./StatGrid.astro";
+import Bars from "./Bars.astro";
+import FloatingCard from "./FloatingCard.astro";
+
+const stats = [
+    { label: "Projects Shipped", value: "42", sub: "↑ 6 this year", up: true },
+    {
+        label: "GitHub Stars",
+        value: "1.2K",
+        sub: "↑ 180 vs last year",
+        up: true,
+    },
+    { label: "Years Experience", value: "6+" },
+];
+
+const bars = [14, 22, 28, 34, 30, 52, 88, 62];
+
+const floatRows = [
+    { label: "React / TypeScript", value: "92%", percent: 92 },
+    { label: "Node.js / APIs", value: "85%", percent: 85 },
+];
+---
+
+<section class="am-hero">
+    <canvas id="am-canvas" aria-hidden="true"></canvas>
+
+    <div class="am-container hero-content">
+        <span class="am-badge"> Available for freelance</span>
+        <h1 class="hero-title">
+            Full-Stack Developer<br />Building for the Web
+        </h1>
+        <p class="hero-sub">
+            I'm Alex Rivera, a full-stack developer who designs, builds, and
+            ships production-grade web applications end to end — from database
+            schema to pixel-perfect UI.
+        </p>
+        <a href="#cta" class="am-bracket-btn">View My Work</a>
+    </div>
+
+    <div class="am-container">
+        <div class="mock-wrap">
+            <i class="x x-tl" aria-hidden="true">+</i>
+            <i class="x x-tr" aria-hidden="true">+</i>
+            <i class="x x-bl" aria-hidden="true">+</i>
+            <i class="x x-br" aria-hidden="true">+</i>
+
+            <WindowMockup title="alexrivera.dev — Dashboard">
+                <div class="hero-body">
+                    <aside class="side">
+                        <span class="side-item active"> Overview</span>
+                        <!-- <span class="side-item"> Projects</span>
+                        <span class="side-item"> Skills</span>
+                        <span class="side-item"> Experience</span>
+                        <span class="side-item"> Blog</span>
+                        <span class="side-item"> Contact</span> -->
+                    </aside>
+
+                    <div class="dash">
+                        <div class="dash-head">
+                            <span class="dash-hello">Welcome, I'm Alex</span>
+                            <span class="tag t-green">● Open to work</span>
+                        </div>
+
+                        <StatGrid stats={stats} columns={3} />
+
+                        <div class="seq-label">
+                            ACTIVE PROJECT — SAAS DASHBOARD REBUILD
+                        </div>
+
+                        <div class="chart-card">
+                            <div class="chart-head">
+                                <span>GitHub Contributions — Last 30 days</span>
+                                <span class="tag t-green tip-tag"
+                                    >Best: Nov 4</span
+                                >
+                            </div>
+                            <Bars values={bars} hotIndex={6} />
+                        </div>
+                    </div>
+                </div>
+            </WindowMockup>
+
+            <FloatingCard
+                title="alexrivera.dev — Skills"
+                rows={floatRows}
+                variant="a"
+            />
+            <FloatingCard
+                title="alexrivera.dev — Skills"
+                rows={floatRows}
+                variant="b"
+            />
+        </div>
+    </div>
+</section>
+
+<script>
+    const canvas = document.getElementById(
+        "am-canvas",
+    ) as HTMLCanvasElement | null;
+    if (canvas) {
+        const ctx = canvas.getContext("2d");
+        const hero = canvas.parentElement;
+
+        if (ctx && hero) {
+            type RGB = { r: number; g: number; b: number };
+
+            const getTextColor = (): RGB => {
+                const root = document.documentElement;
+                const style = getComputedStyle(root);
+                const textRgb = style.getPropertyValue("--text").trim();
+                if (textRgb) {
+                    const [r, g, b] = textRgb
+                        .split(",")
+                        .map((v) => parseInt(v.trim(), 10));
+                    if (!isNaN(r) && !isNaN(g) && !isNaN(b)) return { r, g, b };
+                }
+                return { r: 237, g: 237, b: 237 };
+            };
+
+            const planet = (
+                cx: number,
+                cy: number,
+                r: number,
+                light: number[],
+                tilt: number,
+                color: RGB,
+            ) => {
+                const n = Math.floor(r * r * 0.55);
+                for (let i = 0; i < n; i++) {
+                    const a = Math.random() * Math.PI * 2;
+                    const rr = Math.sqrt(Math.random()) * r;
+                    const x = Math.cos(a) * rr;
+                    const y = Math.sin(a) * rr;
+                    const lum = Math.max(
+                        0,
+                        (x / r) * light[0] + (y / r) * light[1],
+                    );
+                    const rim = 1 - Math.sqrt(Math.max(0, 1 - (rr / r) ** 2));
+                    const alpha = 0.04 + 0.5 * lum * lum * (0.3 + 0.7 * rim);
+                    if (alpha < 0.06) continue;
+                    ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${alpha})`;
+                    ctx.fillRect(cx + x, cy + y, 1.2, 1.2);
+                }
+                const dots = r * 5;
+                for (let i = 0; i < dots; i++) {
+                    const t = Math.random() * Math.PI * 2;
+                    const rad = r * (1.5 + Math.random() * 0.35);
+                    const x = Math.cos(t) * rad;
+                    const y = Math.sin(t) * rad * 0.22;
+                    const xr = x * Math.cos(tilt) - y * Math.sin(tilt);
+                    const yr = x * Math.sin(tilt) + y * Math.cos(tilt);
+                    if (xr * xr + yr * yr < r * r && yr < 0) continue;
+                    ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${0.08 + Math.random() * 0.35})`;
+                    ctx.fillRect(cx + xr, cy + yr, 1.1, 1.1);
+                }
+            };
+
+            const draw = () => {
+                const dpr = Math.min(2, window.devicePixelRatio || 1);
+                const w = hero.clientWidth;
+                const h = hero.clientHeight;
+                canvas.width = w * dpr;
+                canvas.height = h * dpr;
+                canvas.style.width = w + "px";
+                canvas.style.height = h + "px";
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                ctx.clearRect(0, 0, w, h);
+
+                const color = getTextColor();
+
+                for (let i = 0; i < Math.floor((w * h) / 9000); i++) {
+                    ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${0.05 + Math.random() * 0.25})`;
+                    ctx.fillRect(Math.random() * w, Math.random() * h, 1, 1);
+                }
+                const m = Math.min(w, h);
+                planet(
+                    w * 0.94,
+                    h * 0.4,
+                    m * 0.42,
+                    [-0.55, -0.35],
+                    -0.16,
+                    color,
+                );
+                planet(w * 0.04, h * 0.74, m * 0.3, [0.55, -0.4], -0.14, color);
+            };
+
+            draw();
+            window.addEventListener("resize", draw);
+            window
+                .matchMedia("(prefers-color-scheme: light)")
+                .addEventListener("change", draw);
+        }
+    }
+</script>

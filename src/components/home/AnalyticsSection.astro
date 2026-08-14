@@ -1,0 +1,51 @@
+---
+import FeatureBand from "./FeatureBand.astro";
+import WindowMockup from "./WindowMockup.astro";
+import StatGrid from "./StatGrid.astro";
+import Bars from "./Bars.astro";
+
+const features = [
+    {
+        title: "Scores Lighthouse",
+        desc: "Performance, accessibilité et SEO optimisés au-delà de 90 sur chaque projet livré.",
+    },
+    {
+        title: "Suivi en production",
+        desc: "Monitoring des erreurs et du temps de réponse en temps réel après chaque déploiement.",
+    },
+    {
+        title: "Rapports de qualité",
+        desc: "Couverture de tests, dette technique et revues de code documentées à chaque étape.",
+    },
+];
+
+const stats = [
+    { label: "Score Lighthouse", value: "96/100", sub: "↑ 4 pts vs dernier audit", up: true },
+    { label: "Temps de chargement", value: "1.2s", sub: "↓ 0.3s vs dernier audit", up: true },
+    { label: "Couverture de tests", value: "87%", sub: "↑ 12% ce trimestre", up: true },
+    { label: "Taux d'erreur", value: "0.02%", sub: "↓ 0.01% ce trimestre", up: true },
+];
+
+const bars = [16, 24, 30, 38, 34, 56, 86, 60];
+---
+
+<FeatureBand
+    badge="Qualité &amp; performance"
+    description="Performance, accessibilité et fiabilité ne sont pas des options : chaque projet est audité et optimisé avant la mise en ligne."
+    features={features}
+>
+    <Fragment slot="title">Des résultats mesurables,<br />pas des promesses.</Fragment>
+    <WindowMockup slot="mock" title="alex.dev — Rapport qualité">
+        <div class="seg-body">
+            <div class="seg-title">Indicateurs actifs</div>
+            <StatGrid stats={stats} columns={2} />
+            <div class="chart-card">
+                <div class="chart-head">
+                    <span>Commits — 30 derniers jours</span>
+                    <span class="tag t-blue tip-tag">Pic : 14 nov.</span>
+                </div>
+                <Bars values={bars} hotIndex={6} />
+            </div>
+        </div>
+    </WindowMockup>
+</FeatureBand>

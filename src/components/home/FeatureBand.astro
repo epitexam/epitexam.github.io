@@ -1,0 +1,52 @@
+---
+interface Feature {
+    title: string;
+    desc: string;
+}
+interface Props {
+    badge: string;
+    description: string;
+    features: Feature[];
+    dotted?: boolean;
+    reverse?: boolean;
+}
+const { badge, description, features, dotted = false, reverse = false } =
+    Astro.props;
+---
+
+<section class:list={["band", { dotted }]}>
+    <div class="am-container band-grid">
+        <i class="x x-tl" aria-hidden="true">+</i>
+        <i class="x x-tr" aria-hidden="true">+</i>
+        <i class="x x-bl" aria-hidden="true">+</i>
+        <i class="x x-br" aria-hidden="true">+</i>
+
+        {reverse && (
+            <div class="band-mock">
+                <slot name="mock" />
+            </div>
+        )}
+
+        <div class="band-text">
+            <span class="am-badge"> {badge}</span>
+            <h2 class="band-title"><slot name="title" /></h2>
+            <p class="band-desc">{description}</p>
+            <ul class="features">
+                {
+                    features.map((f) => (
+                        <li>
+                            <h3> {f.title}</h3>
+                            <p>{f.desc}</p>
+                        </li>
+                    ))
+                }
+            </ul>
+        </div>
+
+        {!reverse && (
+            <div class="band-mock">
+                <slot name="mock" />
+            </div>
+        )}
+    </div>
+</section>

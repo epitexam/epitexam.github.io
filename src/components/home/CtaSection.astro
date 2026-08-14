@@ -1,0 +1,29 @@
+---
+interface Props {
+    badge?: string;
+    title?: string;
+    description?: string;
+    ctaText?: string;
+    ctaHref?: string;
+}
+const {
+    badge = "Let's Work Together",
+    title = "Got a Project<br />in Mind?",
+    description = "I'm currently open to new freelance work and full-time opportunities. Let's talk about what you're building.",
+    ctaText = "Get In Touch",
+    ctaHref = "mailto:alex@alexrivera.dev",
+} = Astro.props;
+---
+
+<section class="band cta-band" id="cta">
+    <div class="am-container cta-grid">
+        <div>
+            <span class="am-badge"> {badge}</span>
+            <h2 class="band-title cta-title" set:html={title} />
+        </div>
+        <div class="cta-right">
+            <p>{description}</p>
+            <a href={ctaHref} class="am-bracket-btn">{ctaText}</a>
+        </div>
+    </div>
+</section>
