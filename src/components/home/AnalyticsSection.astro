@@ -7,7 +7,7 @@ import Bars from "./Bars.astro";
 const features = [
     {
         title: "Sécurité intégrée",
-        desc: "Authentification JWT/OAuth2, gestion des rôles et tests automatisés pour fiabiliser chaque application.",
+        desc: "Authentification sécurisée (JWT/OAuth2) et gestion fine des permissions selon le rôle, l'utilisateur ou le contexte (RBAC, ABAC, PBAC).",
     },
     {
         title: "Systèmes bas niveau",
@@ -39,7 +39,7 @@ const bars = [89, 100, 33, 22, 22, 11];
     features={features}
 >
     <Fragment slot="title">Une expertise structurée.</Fragment>
-    <WindowMockup slot="mock" title="epitexam  Rapport de compétences">
+    <WindowMockup slot="mock" title="Rapport de compétences">
         <div class="seg-body">
             <div class="seg-title">Répartition par catégorie</div>
             <StatGrid stats={stats} columns={2} />

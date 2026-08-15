@@ -4,58 +4,58 @@ import WindowMockup from "./WindowMockup.astro";
 
 const features = [
     {
-        title: "CI/CD systématique",
-        desc: "Workflows GitHub Actions pour lancer tests, build et déploiement à chaque push, sans étape manuelle.",
+        title: "Code fiable",
+        desc: "Tests automatisés, linting et vérifications continues pour réduire les régressions et garder une base de code saine.",
     },
     {
-        title: "Conteneurisation",
-        desc: "Environnements Docker reproductibles, pour garder des setups identiques du poste de dev à la production.",
+        title: "Architecture durable",
+        desc: "Des applications structurées pour rester lisibles et évolutives, avec une attention particulière portée à la séparation des responsabilités.",
     },
     {
-        title: "Refonte & optimisation",
-        desc: "Audit de dette technique et optimisation des performances sur une précédente refonte SaaS (requêtes SQL, cache Redis).",
+        title: "Performance & production",
+        desc: "Optimisation des requêtes, gestion du cache et configuration des environnements pour garantir des applications rapides et stables.",
     },
 ];
 ---
 
 <FeatureBand
-    badge="DevOps & Intégration continue"
-    description="Les mêmes exigences DevOps appliquées à chaque projet, de l'audit initial à la mise en production, avec des déploiements automatisés et reproductibles."
+    badge="Qualité & mise en production"
+    description="Construire une application ne s'arrête pas au code : chaque projet est pensé pour être fiable, maintenable et prêt à évoluer."
     features={features}
 >
-    <Fragment slot="title">Un pipeline pensé pour la fiabilité.</Fragment>
-    <WindowMockup slot="mock" title="epitexam  Pipeline CI/CD">
+    <Fragment slot="title">Du code à une application fiable.</Fragment>
+    <WindowMockup slot="mock" title="Qualité & Production">
         <div class="flow">
             <div class="flow-row">
-                <span class="node n-purple"> AUDIT SAAS B2C</span>
+                <span class="node n-purple"> APPLICATION FULLSTACK</span>
                 <div class="flow-stats">
                     <div>
-                        <span>Dette technique</span><b>Auditée</b>
+                        <span>Architecture</span><b>Structurée</b>
                     </div>
                     <div>
-                        <span>Temps de chargement</span><b>Optimisé</b>
+                        <span>Performance</span><b>Optimisée</b>
                     </div>
                     <div>
-                        <span>Stack</span><b>Bun · PostgreSQL · Redis</b>
+                        <span>Code</span><b>Testé &amp; maintenable</b>
                     </div>
                 </div>
             </div>
             <i class="vline"></i>
-            <span class="node n-blue"> TESTS AUTOMATISÉS (GITHUB ACTIONS)</span>
+            <span class="node n-blue"> TESTS &amp; VÉRIFICATIONS</span>
             <i class="vline"></i>
-            <span class="node n-orange"> BUILD &amp; LINT</span>
+            <span class="node n-orange"> BUILD &amp; VALIDATION</span>
             <i class="vline"></i>
-            <span class="node n-teal"> TOUS LES TESTS PASSENT ?</span>
+            <span class="node n-teal"> APPLICATION PRÊTE ?</span>
             <div class="branch">
                 <div class="branch-col">
                     <span class="branch-label">Oui</span>
                     <i class="vline"></i>
-                    <span class="node n-green"> DÉPLOIEMENT PRODUCTION</span>
+                    <span class="node n-green"> MISE EN PRODUCTION</span>
                 </div>
                 <div class="branch-col">
                     <span class="branch-label">Non</span>
                     <i class="vline"></i>
-                    <span class="node n-red"> NOTIFICATION &amp; ROLLBACK</span>
+                    <span class="node n-red"> CORRECTION &amp; ITÉRATION</span>
                 </div>
             </div>
         </div>

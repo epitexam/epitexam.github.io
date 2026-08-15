@@ -10,22 +10,24 @@ interface Props {
     dotted?: boolean;
     reverse?: boolean;
 }
-const { badge, description, features, dotted = false, reverse = false } =
-    Astro.props;
+const {
+    badge,
+    description,
+    features,
+    dotted = false,
+    reverse = false,
+} = Astro.props;
 ---
 
 <section class:list={["band", { dotted }]}>
     <div class="am-container band-grid">
-        <i class="x x-tl" aria-hidden="true">+</i>
-        <i class="x x-tr" aria-hidden="true">+</i>
-        <i class="x x-bl" aria-hidden="true">+</i>
-        <i class="x x-br" aria-hidden="true">+</i>
-
-        {reverse && (
-            <div class="band-mock">
-                <slot name="mock" />
-            </div>
-        )}
+        {
+            reverse && (
+                <div class="band-mock">
+                    <slot name="mock" />
+                </div>
+            )
+        }
 
         <div class="band-text">
             <span class="am-badge"> {badge}</span>
@@ -43,10 +45,12 @@ const { badge, description, features, dotted = false, reverse = false } =
             </ul>
         </div>
 
-        {!reverse && (
-            <div class="band-mock">
-                <slot name="mock" />
-            </div>
-        )}
+        {
+            !reverse && (
+                <div class="band-mock">
+                    <slot name="mock" />
+                </div>
+            )
+        }
     </div>
 </section>

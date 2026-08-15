@@ -1,0 +1,69 @@
+---
+import FeatureBand from "./FeatureBand.astro";
+import WindowMockup from "./WindowMockup.astro";
+
+const features = [
+    {
+        title: "Backend & architecture",
+        desc: "APIs Node.js modulaires, architectures DDD et hexagonale pour des projets qui restent lisibles en grandissant.",
+    },
+    {
+        title: "Frontend engineering",
+        desc: "Interfaces React et Svelte pensées pour la performance et l'accessibilité.",
+    },
+    {
+        title: "Code fiable & CI/CD",
+        desc: "Tests automatisés, linting et pipelines de déploiement pour livrer sans mauvaise surprise.",
+    },
+];
+---
+
+<FeatureBand
+    badge="Stack & fiabilité"
+    description="Une architecture claire, une base de code testée et une stack choisie pour sa fiabilité plus que pour l'effet de mode."
+    features={features}
+    dotted
+>
+    <Fragment slot="title">Une stack pensée pour durer en production.</Fragment>
+    <WindowMockup slot="mock" title="Pipeline de livraison">
+        <div class="pipeline">
+            <div class="pipe-step">
+                <div class="pipe-node n-purple">APPLICATION FULLSTACK</div>
+                <div class="pipe-details">
+                    <div><span>Architecture</span><b>Structurée</b></div>
+                    <div><span>Frontend</span><b>React / Svelte</b></div>
+                    <div><span>Backend</span><b>Node.js modulaire</b></div>
+                </div>
+            </div>
+            <div class="pipe-connector"></div>
+
+            <div class="pipe-step">
+                <div class="pipe-node n-blue">TESTS & VÉRIFICATIONS</div>
+            </div>
+            <div class="pipe-connector"></div>
+
+            <div class="pipe-step">
+                <div class="pipe-node n-orange">BUILD & VALIDATION</div>
+            </div>
+            <div class="pipe-connector"></div>
+
+            <div class="pipe-step pipe-decision">
+                <div class="pipe-node n-teal">APPLICATION PRÊTE ?</div>
+                <div class="pipe-branches">
+                    <div class="pipe-branch">
+                        <span class="pipe-label">Oui</span>
+                        <div class="pipe-connector short"></div>
+                        <div class="pipe-node n-green">MISE EN PRODUCTION</div>
+                    </div>
+                    <div class="pipe-branch">
+                        <span class="pipe-label">Non</span>
+                        <div class="pipe-connector short"></div>
+                        <div class="pipe-node n-red">
+                            CORRECTION & ITÉRATION
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </WindowMockup>
+</FeatureBand>

@@ -47,6 +47,13 @@ export const SECTIONS: {
             "Employé sur quelques applications expérimentales, notamment avec wxWidgets. Puissant et exigeant, parfait pour comprendre la mécanique derrière les abstractions modernes.",
         },
         {
+          icon: "Rs",
+          name: "Rust",
+          level: "exploring",
+          description:
+            "Un langage que j'explore pour sa sécurité mémoire, son système de types et ses performances. J'aime particulièrement le compromis entre contrôle bas niveau et garanties offertes par le compilateur.",
+        },
+        {
           icon: "Asm",
           name: "Assembleur (6502 / x64)",
           level: "practiced",
@@ -89,7 +96,7 @@ export const SECTIONS: {
         {
           icon: "R",
           name: "React",
-          level: "practiced",
+          level: "mastered",
           description:
             "Le framework que j'utilise le plus sérieusement côté front-end. J'apprécie sa logique déclarative et la manière dont il structure les projets.",
         },
@@ -103,14 +110,21 @@ export const SECTIONS: {
         {
           icon: "Nx",
           name: "Next.js",
-          level: "practiced",
+          level: "mastered",
           description:
             "Utilisé pour le rendu côté serveur et les déploiements modernes. C'est un outil très complet pour lier le front-end et le back-end avec React.",
         },
         {
+          icon: "TQ",
+          name: "TanStack",
+          level: "mastered",
+          description:
+            "Une suite d'outils que j'utilise avec React pour gérer efficacement les données côté client. TanStack Query m'aide notamment à structurer le fetching, le cache et la synchronisation avec les API.",
+        },
+        {
           icon: "Ns",
           name: "NestJS",
-          level: "practiced",
+          level: "mastered",
           description:
             "Mon framework de référence pour bâtir des API backend structurées et évolutives. J'apprécie son architecture qui facilite la maintenance sur le long terme.",
         },

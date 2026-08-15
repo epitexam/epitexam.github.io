@@ -7,14 +7,15 @@ import FloatingCard from "./FloatingCard.astro";
 const stats = [
     { label: "Expérience", value: "3 ans", sub: "SaaS · EdTech · IoT · Santé" },
     { label: "Missions", value: "4", sub: "Réalisées à ce jour" },
-    { label: "Technologies", value: "25+", sub: "Maîtrisées & pratiquées" },
+    { label: "Stack", value: "Fullstack", sub: "Frontend · Backend · DevOps" },
 ];
 
 const bars = [14, 22, 28, 34, 30, 52, 88, 62];
 
 const floatRows = [
     { label: "TypeScript", value: "Maîtrisé", percent: 100 },
-    { label: "React / Next.js", value: "Pratiqué", percent: 65 },
+    { label: "React / Next.js / Tanstack", value: "Maîtrisé", percent: 100 },
+    { label: "NestJS", value: "Maîtrisé", percent: 100 },
 ];
 ---
 
@@ -22,7 +23,7 @@ const floatRows = [
     <canvas id="am-canvas" aria-hidden="true"></canvas>
 
     <div class="am-container hero-content">
-        <span class="am-badge"> Portfolio Développeur Full-Stack</span>
+        <span class="am-badge">Développeur Full-Stack</span>
         <h1 class="hero-title">
             Je conçois des produits<br />qui tiennent la route
         </h1>
@@ -34,160 +35,383 @@ const floatRows = [
     </div>
 
     <div class="am-container">
-        <div class="mock-wrap">
-            <i class="x x-tl" aria-hidden="true">+</i>
-            <i class="x x-tr" aria-hidden="true">+</i>
-            <i class="x x-bl" aria-hidden="true">+</i>
-            <i class="x x-br" aria-hidden="true">+</i>
+        <WindowMockup title="Tableau de bord">
+            <div class="hero-body">
+                <aside class="side">
+                    <a href="/" class="side-item active">Aperçu</a>
+                    <a href="/project" class="side-item">Projets</a>
+                    <a href="/tools" class="side-item">Stack</a>
+                    <a href="/about" class="side-item">Parcours</a>
+                    <a href="/blog" class="side-item">Blog</a>
+                    <a href="/contact" class="side-item">Contact</a>
+                </aside>
 
-            <WindowMockup title="epitexam.dev  Tableau de bord">
-                <div class="hero-body">
-                    <aside class="side">
-                        <a href="/" class="side-item active"> Aperçu</a>
-                        <a href="/project" class="side-item"> Projets</a>
-                        <a href="/tools" class="side-item"> Stack</a>
-                        <a href="/about" class="side-item"> Parcours</a>
-                        <a href="/blog" class="side-item"> Blog</a>
-                        <a href="/contact" class="side-item"> Contact</a>
-                    </aside>
+                <div class="dash">
+                    <div class="dash-head">
+                        <span class="dash-hello">Vue d'ensemble</span>
+                        <span class="tag t-green">Ouvert aux opportunités</span>
+                    </div>
 
-                    <div class="dash">
-                        <div class="dash-head">
-                            <span class="dash-hello"
-                                >epitexam vue d'ensemble</span
-                            >
-                            <span class="tag t-green">
-                                Ouvert aux opportunités</span
+                    <StatGrid stats={stats} columns={3} />
+
+                    <div class="seq-label">DERNIÈRE MISSION SAAS B2C</div>
+
+                    <div class="chart-card">
+                        <div class="chart-head">
+                            <span>Activité récente</span>
+                            <span class="tag t-green tip-tag"
+                                >4 missions clients</span
                             >
                         </div>
-
-                        <StatGrid stats={stats} columns={3} />
-
-                        <div class="seq-label">DERNIÈRE MISSION SAAS B2C</div>
-
-                        <div class="chart-card">
-                            <div class="chart-head">
-                                <span>Activité récente</span>
-                                <span class="tag t-green tip-tag"
-                                    >4 missions clients</span
-                                >
-                            </div>
-                            <Bars values={bars} hotIndex={6} />
-                        </div>
+                        <Bars values={bars} hotIndex={6} />
                     </div>
                 </div>
-            </WindowMockup>
+            </div>
+        </WindowMockup>
 
-            <FloatingCard
-                title="epitexam.dev  Compétences clés"
-                rows={floatRows}
-                variant="a"
-            />
-            <FloatingCard
-                title="epitexam.dev  Compétences clés"
-                rows={floatRows}
-                variant="b"
-            />
-        </div>
+        <FloatingCard title="Compétences clés" rows={floatRows} variant="b" />
     </div>
 </section>
 
 <script>
-    const canvas = document.getElementById(
-        "am-canvas",
-    ) as HTMLCanvasElement | null;
-    if (canvas) {
-        const ctx = canvas.getContext("2d");
-        const hero = canvas.parentElement;
+    const initHeroCanvas = () => {
+        const canvas = document.getElementById(
+            "am-canvas",
+        ) as HTMLCanvasElement | null;
+        const hero = canvas?.parentElement;
+        const ctx = canvas?.getContext("2d");
 
-        if (ctx && hero) {
-            type RGB = { r: number; g: number; b: number };
+        const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
+        const isWideEnough = window.innerWidth > 1024;
+        const isValidDesktop = hasFinePointer && isWideEnough;
 
-            const getTextColor = (): RGB => {
-                const root = document.documentElement;
-                const style = getComputedStyle(root);
-                const textRgb = style.getPropertyValue("--text").trim();
-                if (textRgb) {
-                    const [r, g, b] = textRgb
-                        .split(",")
-                        .map((v) => parseInt(v.trim(), 10));
-                    if (!isNaN(r) && !isNaN(g) && !isNaN(b)) return { r, g, b };
-                }
-                return { r: 237, g: 237, b: 237 };
-            };
+        if (!canvas || !hero || !ctx || !isValidDesktop) return;
 
-            const planet = (
-                cx: number,
-                cy: number,
-                r: number,
-                light: number[],
-                tilt: number,
-                color: RGB,
-            ) => {
-                const n = Math.floor(r * r * 0.55);
-                for (let i = 0; i < n; i++) {
-                    const a = Math.random() * Math.PI * 2;
-                    const rr = Math.sqrt(Math.random()) * r;
-                    const x = Math.cos(a) * rr;
-                    const y = Math.sin(a) * rr;
-                    const lum = Math.max(
-                        0,
-                        (x / r) * light[0] + (y / r) * light[1],
-                    );
-                    const rim = 1 - Math.sqrt(Math.max(0, 1 - (rr / r) ** 2));
-                    const alpha = 0.04 + 0.5 * lum * lum * (0.3 + 0.7 * rim);
-                    if (alpha < 0.06) continue;
-                    ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${alpha})`;
-                    ctx.fillRect(cx + x, cy + y, 1.2, 1.2);
-                }
-                const dots = r * 5;
-                for (let i = 0; i < dots; i++) {
-                    const t = Math.random() * Math.PI * 2;
-                    const rad = r * (1.5 + Math.random() * 0.35);
-                    const x = Math.cos(t) * rad;
-                    const y = Math.sin(t) * rad * 0.22;
-                    const xr = x * Math.cos(tilt) - y * Math.sin(tilt);
-                    const yr = x * Math.sin(tilt) + y * Math.cos(tilt);
-                    if (xr * xr + yr * yr < r * r && yr < 0) continue;
-                    ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${0.08 + Math.random() * 0.35})`;
-                    ctx.fillRect(cx + xr, cy + yr, 1.1, 1.1);
-                }
-            };
+        type RGB = { r: number; g: number; b: number };
+        type RingPoint = { baseT: number; rad: number; alpha: number };
+        type Star = {
+            x: number;
+            y: number;
+            a: number;
+            speed: number;
+            phase: number;
+        };
 
-            const draw = () => {
-                const dpr = Math.min(2, window.devicePixelRatio || 1);
-                const w = hero.clientWidth;
-                const h = hero.clientHeight;
-                canvas.width = w * dpr;
-                canvas.height = h * dpr;
-                canvas.style.width = w + "px";
-                canvas.style.height = h + "px";
-                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-                ctx.clearRect(0, 0, w, h);
+        const getTextColor = (): RGB => {
+            const style = getComputedStyle(document.documentElement);
+            const textRgb = style.getPropertyValue("--text").trim();
+            if (textRgb) {
+                const [r, g, b] = textRgb
+                    .split(",")
+                    .map((v) => parseInt(v.trim(), 10));
+                if (!isNaN(r) && !isNaN(g) && !isNaN(b)) return { r, g, b };
+            }
+            return { r: 237, g: 237, b: 237 };
+        };
 
-                const color = getTextColor();
+        const isLightMode = () =>
+            window.matchMedia("(prefers-color-scheme: light)").matches;
 
-                for (let i = 0; i < Math.floor((w * h) / 9000); i++) {
-                    ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${0.05 + Math.random() * 0.25})`;
-                    ctx.fillRect(Math.random() * w, Math.random() * h, 1, 1);
-                }
-                const m = Math.min(w, h);
-                planet(
-                    w * 0.94,
-                    h * 0.4,
-                    m * 0.42,
-                    [-0.55, -0.35],
-                    -0.16,
-                    color,
+        const generateSphereCanvas = (
+            radius: number,
+            light: number[],
+            color: RGB,
+            alphaBoost: number,
+        ): HTMLCanvasElement => {
+            const padding = radius * 0.2;
+            const size = Math.ceil(radius * 2 + padding * 2);
+            const sphereCanvas = document.createElement("canvas");
+            sphereCanvas.width = size;
+            sphereCanvas.height = size;
+            const sphereCtx = sphereCanvas.getContext("2d")!;
+            const centerX = size / 2;
+            const centerY = size / 2;
+
+            const dotCount = Math.floor(radius * radius * 0.15);
+            for (let i = 0; i < dotCount; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const dotRadius = Math.sqrt(Math.random()) * radius;
+                const x = Math.cos(angle) * dotRadius;
+                const y = Math.sin(angle) * dotRadius;
+                const lum = Math.max(
+                    0,
+                    (x / radius) * light[0] + (y / radius) * light[1],
                 );
-                planet(w * 0.04, h * 0.74, m * 0.3, [0.55, -0.4], -0.14, color);
-            };
+                const rim =
+                    1 - Math.sqrt(Math.max(0, 1 - (dotRadius / radius) ** 2));
 
-            draw();
-            window.addEventListener("resize", draw);
-            window
-                .matchMedia("(prefers-color-scheme: light)")
-                .addEventListener("change", draw);
+                let alpha =
+                    (0.04 + 0.5 * lum * lum * (0.3 + 0.7 * rim)) * alphaBoost;
+                if (alpha < 0.06) continue;
+                if (alpha > 1) alpha = 1;
+
+                sphereCtx.fillStyle = `rgba(${color.r},${color.g},${color.b},${alpha})`;
+                sphereCtx.fillRect(centerX + x, centerY + y, 2.2, 2.2);
+            }
+            return sphereCanvas;
+        };
+
+        const generateRingData = (
+            radius: number,
+            alphaBoost: number,
+        ): RingPoint[] => {
+            const points: RingPoint[] = [];
+            const dotCount = Math.floor(radius * 3);
+            for (let i = 0; i < dotCount; i++) {
+                let ringAlpha = (0.08 + Math.random() * 0.35) * alphaBoost;
+                if (ringAlpha > 1) ringAlpha = 1;
+                points.push({
+                    baseT: Math.random() * Math.PI * 2,
+                    rad: radius * (1.5 + Math.random() * 0.35),
+                    alpha: ringAlpha,
+                });
+            }
+            return points;
+        };
+
+        const drawRing = (
+            points: RingPoint[],
+            centerX: number,
+            centerY: number,
+            radius: number,
+            tilt: number,
+            rotationSpeed: number,
+            time: number,
+            color: RGB,
+            renderBack: boolean,
+        ) => {
+            const sinTilt = Math.sin(tilt);
+            const cosTilt = Math.cos(tilt);
+
+            for (let i = 0; i < points.length; i++) {
+                const point = points[i];
+                const angle = point.baseT + time * rotationSpeed;
+
+                const x = Math.cos(angle) * point.rad;
+                const z = Math.sin(angle) * point.rad;
+
+                const projectedY = -z * sinTilt;
+                const depthZ = z * cosTilt;
+
+                if (renderBack) {
+                    if (depthZ >= 0) continue;
+                    if (x * x + projectedY * projectedY < radius * radius)
+                        continue;
+                } else {
+                    if (depthZ < 0) continue;
+                }
+
+                ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${point.alpha})`;
+                ctx.fillRect(centerX + x, centerY + projectedY, 2.0, 2.0);
+            }
+        };
+
+        let w = 0,
+            h = 0,
+            dpr = 1;
+        let color: RGB = { r: 237, g: 237, b: 237 };
+        let isLight = false;
+        let alphaBoost = 1;
+        let stars: Star[] = [];
+
+        let sphere1Canvas: HTMLCanvasElement;
+        let rings1Data: RingPoint[] = [];
+        let sphere2Canvas: HTMLCanvasElement;
+        let rings2Data: RingPoint[] = [];
+
+        let animFrame = 0;
+        let targetMouseX = 0,
+            targetMouseY = 0;
+        let mouseX = 0,
+            mouseY = 0;
+        let startTime = 0;
+
+        const setupScene = () => {
+            dpr = Math.min(2, window.devicePixelRatio || 1);
+            w = hero.clientWidth;
+            h = hero.clientHeight;
+            canvas.width = w * dpr;
+            canvas.height = h * dpr;
+            canvas.style.width = w + "px";
+            canvas.style.height = h + "px";
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+            color = getTextColor();
+            isLight = isLightMode();
+            alphaBoost = isLight ? 2.5 : 1;
+
+            stars = [];
+            const starCount = Math.floor((w * h) / 12000);
+            for (let i = 0; i < starCount; i++) {
+                stars.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    a: isLight
+                        ? 0.1 + Math.random() * 0.2
+                        : 0.05 + Math.random() * 0.25,
+                    speed: 0.5 + Math.random() * 2,
+                    phase: Math.random() * Math.PI * 2,
+                });
+            }
+
+            const m = Math.min(w, h);
+
+            const r1 = m * 0.42;
+            sphere1Canvas = generateSphereCanvas(
+                r1,
+                [-0.55, -0.35],
+                color,
+                alphaBoost,
+            );
+            rings1Data = generateRingData(r1, alphaBoost);
+
+            const r2 = m * 0.3;
+            sphere2Canvas = generateSphereCanvas(
+                r2,
+                [0.55, -0.4],
+                color,
+                alphaBoost,
+            );
+            rings2Data = generateRingData(r2, alphaBoost);
+
+            startTime = performance.now();
+        };
+
+        const animate = (time: number) => {
+            const relativeTime = time - startTime;
+            ctx.clearRect(0, 0, w, h);
+
+            const px = (mouseX - w / 2) / w;
+            const py = (mouseY - h / 2) / h;
+
+            for (let i = 0; i < stars.length; i++) {
+                const star = stars[i];
+                const twinkle =
+                    0.5 +
+                    0.5 *
+                        Math.sin(
+                            relativeTime * 0.001 * star.speed + star.phase,
+                        );
+                ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${star.a * twinkle})`;
+                ctx.fillRect(star.x - px * 10, star.y - py * 10, 1, 1);
+            }
+
+            const p1X = w * 0.94 - px * 40 + Math.sin(relativeTime / 3000) * 8;
+            const p1Y = h * 0.4 - py * 40 + Math.cos(relativeTime / 3000) * 8;
+            const r1 = Math.min(w, h) * 0.42;
+
+            drawRing(
+                rings1Data,
+                p1X,
+                p1Y,
+                r1,
+                -0.25,
+                0.00008,
+                relativeTime,
+                color,
+                true,
+            );
+            ctx.drawImage(
+                sphere1Canvas,
+                p1X - sphere1Canvas.width / 2,
+                p1Y - sphere1Canvas.height / 2,
+            );
+            drawRing(
+                rings1Data,
+                p1X,
+                p1Y,
+                r1,
+                -0.25,
+                0.00008,
+                relativeTime,
+                color,
+                false,
+            );
+
+            const p2X =
+                w * 0.04 - px * 25 + Math.sin(relativeTime / 4000 + 1) * 6;
+            const p2Y =
+                h * 0.74 - py * 25 + Math.cos(relativeTime / 4000 + 1) * 6;
+            const r2 = Math.min(w, h) * 0.3;
+
+            drawRing(
+                rings2Data,
+                p2X,
+                p2Y,
+                r2,
+                -0.22,
+                -0.00012,
+                relativeTime,
+                color,
+                true,
+            );
+            ctx.drawImage(
+                sphere2Canvas,
+                p2X - sphere2Canvas.width / 2,
+                p2Y - sphere2Canvas.height / 2,
+            );
+            drawRing(
+                rings2Data,
+                p2X,
+                p2Y,
+                r2,
+                -0.22,
+                -0.00012,
+                relativeTime,
+                color,
+                false,
+            );
+
+            mouseX += (targetMouseX - mouseX) * 0.05;
+            mouseY += (targetMouseY - mouseY) * 0.05;
+
+            animFrame = requestAnimationFrame(animate);
+        };
+
+        const startAnimation = () => {
+            cancelAnimationFrame(animFrame);
+            setupScene();
+            animFrame = requestAnimationFrame(animate);
+        };
+
+        let resizeTimeout: number;
+        const debouncedDraw = () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = window.setTimeout(startAnimation, 150);
+        };
+
+        const onMouseMove = (e: MouseEvent) => {
+            targetMouseX = e.clientX;
+            targetMouseY = e.clientY;
+        };
+
+        const onThemeChange = () => startAnimation();
+
+        window.addEventListener("resize", debouncedDraw);
+        window.addEventListener("mousemove", onMouseMove);
+        const themeMedia = window.matchMedia("(prefers-color-scheme: light)");
+        themeMedia.addEventListener("change", onThemeChange);
+
+        if ("requestIdleCallback" in window) {
+            (window as any).requestIdleCallback(startAnimation, {
+                timeout: 300,
+            });
+        } else {
+            requestAnimationFrame(startAnimation);
         }
-    }
+
+        return () => {
+            cancelAnimationFrame(animFrame);
+            clearTimeout(resizeTimeout);
+            window.removeEventListener("resize", debouncedDraw);
+            window.removeEventListener("mousemove", onMouseMove);
+            themeMedia.removeEventListener("change", onThemeChange);
+        };
+    };
+
+    const cleanupHeroCanvas = initHeroCanvas();
+
+    document.addEventListener("astro:before-swap", () => {
+        if (cleanupHeroCanvas) cleanupHeroCanvas();
+    });
 </script>
