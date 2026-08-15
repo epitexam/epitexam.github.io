@@ -481,7 +481,7 @@ export const EXPERIENCES = [
     title: "Développeur Fullstack",
     context: "Startup SaaS B2C (Plateforme de services)",
     description:
-      "Audit et refonte technique d'un SaaS avec dette technique majeure. Optimisation des performances (-40% de chargement) via SQL et cache Redis. Conseil stratégique sur l'architecture et mise en place de CI/CD.",
+      "Audit et refonte technique d'un SaaS avec dette technique. Optimisation des performances (-40% de chargement) via SQL et cache Redis. Conseil stratégique sur l'architecture et mise en place de CI/CD.",
     tags: ["Bun", "TypeScript", "PostgreSQL", "Redis", "Docker"],
   },
   {
@@ -549,7 +549,7 @@ export const TAB_SHORT: Record<string, string> = {
 };
 
 export const ABOUT_META_DESCRIPTION =
-  "Découvrez le parcours d'Epitexam, développeur Full-Stack (Web, Backend, Embarqué). 3 ans d'expérience en SaaS, EdTech et optimisation de performances.";
+  "Découvrez le parcours d'Epitexam, développeur Full-Stack (Web, Backend, Embarqué). 3 ans d'expérience.";
 
 export const TOOLS_META_DESCRIPTION =
   "Stack technique d'epitexam : TypeScript, React, Node.js, PostgreSQL, Docker. Langages, frameworks et environnements utilisés en production.";

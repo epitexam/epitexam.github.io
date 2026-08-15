@@ -4,50 +4,50 @@ import WindowMockup from "./WindowMockup.astro";
 
 const features = [
     {
-        title: "Frontend moderne",
-        desc: "React, Next.js et TypeScript pour des interfaces rapides, accessibles et maintenables.",
+        title: "Backend & architecture",
+        desc: "APIs robustes et scalables avec Node.js, architectures modulaires et patterns avancés (DDD, hexagonale).",
     },
     {
-        title: "Backend robuste",
-        desc: "Node.js, PostgreSQL et API REST/GraphQL conçues pour tenir la charge.",
+        title: "Frontend engineering",
+        desc: "Interfaces modernes avec React et Svelte, avec une attention particulière portée à la performance et à l'accessibilité.",
     },
     {
-        title: "DevOps intégré",
-        desc: "Docker, CI/CD et infrastructure cloud gérés de bout en bout, sans dépendre d'une équipe externe.",
+        title: "Databases & performance",
+        desc: "Bases SQL et NoSQL, optimisation de requêtes et gestion du cache pour des données efficaces à grande échelle.",
     },
 ];
 ---
 
 <FeatureBand
-    badge="Stack &amp; compétences"
-    description="Chaque outil de ma stack est choisi pour sa fiabilité et sa pertinence, pas par effet de mode. Voici les briques que j'utilise au quotidien."
+    badge="Stack technique"
+    description="Un socle choisi pour sa fiabilité, pas pour l'effet de mode. Voici les briques que j'utilise le plus sérieusement au quotidien."
     features={features}
     dotted
     reverse
 >
     <Fragment slot="title">Une stack choisie avec précision.</Fragment>
-    <WindowMockup slot="mock" title="alex.dev — Sélecteur de stack">
+    <WindowMockup slot="mock" title="epitexam  Stack principale">
         <div class="seg-body">
-            <div class="seg-title">Technologies actives</div>
+            <div class="seg-title">Technologies clés</div>
             <div class="chips">
-                <span class="node n-purple">• REACT / NEXT.JS</span>
-                <span class="node n-blue">• TYPESCRIPT</span>
-                <span class="node n-orange">• NODE.JS / EXPRESS</span>
-                <span class="node n-teal">• POSTGRESQL</span>
-                <span class="node n-red">• DOCKER &amp; CI/CD</span>
+                <span class="node n-purple"> TYPESCRIPT</span>
+                <span class="node n-blue"> REACT / NEXT.JS</span>
+                <span class="node n-orange"> NESTJS</span>
+                <span class="node n-teal"> POSTGRESQL / REDIS</span>
+                <span class="node n-red"> DOCKER</span>
             </div>
             <div class="seg-add">
                 <span class="seg-input">Ajouter une techno...</span>
-                <span class="seg-btn">+ Ajouter</span>
+                <span class="seg-btn">+ Voir toute la stack</span>
             </div>
             <div class="seg-match">
                 <div>
-                    <span class="m-label">▪ Projets correspondants</span>
-                    <span class="m-sub">Mis à jour à l'instant</span>
+                    <span class="m-label">▪ Stack complète</span>
+                    <span class="m-sub">Détail sur la page dédiée</span>
                 </div>
                 <div class="m-right">
-                    <b>24</b>
-                    <span>projets</span>
+                    <b>25+</b>
+                    <span>technologies</span>
                 </div>
             </div>
         </div>

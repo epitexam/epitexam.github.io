@@ -4,58 +4,58 @@ import WindowMockup from "./WindowMockup.astro";
 
 const features = [
     {
-        title: "Tests automatisés",
-        desc: "Suite de tests unitaires et d'intégration exécutée à chaque push pour éviter les régressions.",
+        title: "CI/CD systématique",
+        desc: "Workflows GitHub Actions pour lancer tests, build et déploiement à chaque push, sans étape manuelle.",
     },
     {
-        title: "Déploiements multi-environnements",
-        desc: "Preview, staging et production, avec rollback instantané en cas de problème.",
+        title: "Conteneurisation",
+        desc: "Environnements Docker reproductibles, pour garder des setups identiques du poste de dev à la production.",
     },
     {
-        title: "Monitoring en temps réel",
-        desc: "Alertes automatiques et logs centralisés pour détecter les anomalies avant les utilisateurs.",
+        title: "Refonte & optimisation",
+        desc: "Audit de dette technique et optimisation des performances sur une précédente refonte SaaS (requêtes SQL, cache Redis).",
     },
 ];
 ---
 
 <FeatureBand
-    badge="Intégration continue"
-    description="Chaque projet est livré avec un pipeline CI/CD automatisé : tests, build et déploiement s'enchaînent sans intervention manuelle, du commit à la production."
+    badge="DevOps & Intégration continue"
+    description="Les mêmes exigences DevOps appliquées à chaque projet, de l'audit initial à la mise en production, avec des déploiements automatisés et reproductibles."
     features={features}
 >
     <Fragment slot="title">Un pipeline pensé pour la fiabilité.</Fragment>
-    <WindowMockup slot="mock" title="alex.dev — Pipeline CI/CD">
+    <WindowMockup slot="mock" title="epitexam  Pipeline CI/CD">
         <div class="flow">
             <div class="flow-row">
-                <span class="node n-purple">• PUSH SUR MAIN</span>
+                <span class="node n-purple"> AUDIT SAAS B2C</span>
                 <div class="flow-stats">
                     <div>
-                        <span>Commits ce mois</span><b>86</b>
+                        <span>Dette technique</span><b>Auditée</b>
                     </div>
                     <div>
-                        <span>Tests réussis</span><b>312 (100%)</b>
+                        <span>Temps de chargement</span><b>Optimisé</b>
                     </div>
                     <div>
-                        <span>Durée build</span><b>3m 42s</b>
+                        <span>Stack</span><b>Bun · PostgreSQL · Redis</b>
                     </div>
                 </div>
             </div>
             <i class="vline"></i>
-            <span class="node n-blue">• LANCEMENT DES TESTS</span>
+            <span class="node n-blue"> TESTS AUTOMATISÉS (GITHUB ACTIONS)</span>
             <i class="vline"></i>
-            <span class="node n-orange">• BUILD &amp; LINT</span>
+            <span class="node n-orange"> BUILD &amp; LINT</span>
             <i class="vline"></i>
-            <span class="node n-teal">• TOUS LES TESTS PASSENT ?</span>
+            <span class="node n-teal"> TOUS LES TESTS PASSENT ?</span>
             <div class="branch">
                 <div class="branch-col">
                     <span class="branch-label">Oui</span>
                     <i class="vline"></i>
-                    <span class="node n-green">• DÉPLOIEMENT PRODUCTION</span>
+                    <span class="node n-green"> DÉPLOIEMENT PRODUCTION</span>
                 </div>
                 <div class="branch-col">
                     <span class="branch-label">Non</span>
                     <i class="vline"></i>
-                    <span class="node n-red">• NOTIFICATION ÉQUIPE</span>
+                    <span class="node n-red"> NOTIFICATION &amp; ROLLBACK</span>
                 </div>
             </div>
         </div>

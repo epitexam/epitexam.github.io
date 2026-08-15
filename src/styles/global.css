@@ -23,7 +23,7 @@
 
     --color-border: rgba(255, 255, 255, 0.08);
     --color-border-glare: rgba(255, 255, 255, 0.16);
-    --color-muted: rgba(var(--text), 0.7);
+    --color-muted: rgba(var(--text), 0.85);
 
     --tint-05: rgba(255, 255, 255, 0.03);
     --tint-10: rgba(255, 255, 255, 0.06);
@@ -81,7 +81,7 @@
         --color-surface-elevated: rgb(255, 255, 255);
         --color-border: rgba(20, 20, 20, 0.08);
         --color-border-glare: rgba(20, 20, 20, 0.12);
-        --color-muted: rgba(var(--text), 0.7);
+        --color-muted: rgba(var(--text), 0.85);
 
         --tint-05: rgba(20, 20, 20, 0.02);
         --tint-10: rgba(20, 20, 20, 0.04);

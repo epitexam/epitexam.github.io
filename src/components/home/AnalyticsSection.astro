@@ -6,45 +6,49 @@ import Bars from "./Bars.astro";
 
 const features = [
     {
-        title: "Scores Lighthouse",
-        desc: "Performance, accessibilité et SEO optimisés au-delà de 90 sur chaque projet livré.",
+        title: "Sécurité intégrée",
+        desc: "Authentification JWT/OAuth2, gestion des rôles et tests automatisés pour fiabiliser chaque application.",
     },
     {
-        title: "Suivi en production",
-        desc: "Monitoring des erreurs et du temps de réponse en temps réel après chaque déploiement.",
+        title: "Systèmes bas niveau",
+        desc: "Développement en C et expérimentation avec des objets connectés (ESP32, Arduino) pour explorer au-delà du web classique.",
     },
     {
-        title: "Rapports de qualité",
-        desc: "Couverture de tests, dette technique et revues de code documentées à chaque étape.",
+        title: "Infrastructure fiable",
+        desc: "Déploiements automatisés, conteneurisation Docker et environnements Linux pensés pour la reproductibilité.",
     },
 ];
 
 const stats = [
-    { label: "Score Lighthouse", value: "96/100", sub: "↑ 4 pts vs dernier audit", up: true },
-    { label: "Temps de chargement", value: "1.2s", sub: "↓ 0.3s vs dernier audit", up: true },
-    { label: "Couverture de tests", value: "87%", sub: "↑ 12% ce trimestre", up: true },
-    { label: "Taux d'erreur", value: "0.02%", sub: "↓ 0.01% ce trimestre", up: true },
+    { label: "Langages", value: "8", sub: "JS/TS, Go, Python, C…" },
+    { label: "Frameworks", value: "9", sub: "React, NestJS, Astro…" },
+    {
+        label: "Systèmes & DevOps",
+        value: "4",
+        sub: "Linux, Docker, CI/CD, Ansible",
+    },
+    { label: "Outils & Collab", value: "4", sub: "Git, VS Code, Zed…" },
 ];
 
-const bars = [16, 24, 30, 38, 34, 56, 86, 60];
+const bars = [89, 100, 33, 22, 22, 11];
 ---
 
 <FeatureBand
-    badge="Qualité &amp; performance"
-    description="Performance, accessibilité et fiabilité ne sont pas des options : chaque projet est audité et optimisé avant la mise en ligne."
+    badge="Qualité & expertise"
+    description="De l'authentification sécurisée aux tests automatisés, la qualité fait partie du cahier des charges, pas d'une étape optionnelle en fin de projet."
     features={features}
 >
-    <Fragment slot="title">Des résultats mesurables,<br />pas des promesses.</Fragment>
-    <WindowMockup slot="mock" title="alex.dev — Rapport qualité">
+    <Fragment slot="title">Une expertise structurée.</Fragment>
+    <WindowMockup slot="mock" title="epitexam  Rapport de compétences">
         <div class="seg-body">
-            <div class="seg-title">Indicateurs actifs</div>
+            <div class="seg-title">Répartition par catégorie</div>
             <StatGrid stats={stats} columns={2} />
             <div class="chart-card">
                 <div class="chart-head">
-                    <span>Commits — 30 derniers jours</span>
-                    <span class="tag t-blue tip-tag">Pic : 14 nov.</span>
+                    <span>Répartition des technologies</span>
+                    <span class="tag t-blue tip-tag">25+ au total</span>
                 </div>
-                <Bars values={bars} hotIndex={6} />
+                <Bars values={bars} hotIndex={1} />
             </div>
         </div>
     </WindowMockup>

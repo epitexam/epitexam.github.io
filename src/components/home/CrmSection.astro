@@ -3,42 +3,41 @@ import WindowMockup from "./WindowMockup.astro";
 import StatGrid from "./StatGrid.astro";
 
 const stats = [
-    { label: "Expérience", value: "6 ans", sub: "Depuis 2019" },
-    { label: "Projets livrés", value: "47", sub: "↑ 6 cette année", up: true },
     {
-        label: "Technologies maîtrisées",
-        value: "18",
-        sub: "↑ 3 cette année",
-        up: true,
+        label: "Optimisation",
+        value: "SQL & Redis",
+        sub: "Requêtes & mise en cache",
     },
-    { label: "Certifications", value: "5", sub: "Depuis 2019" },
+    {
+        label: "Stack utilisée",
+        value: "5 technos",
+        sub: "Bun · TS · PostgreSQL · Redis · Docker",
+    },
+    { label: "Périmètre", value: "Full-stack", sub: "Audit, refonte, CI/CD" },
+    {
+        label: "Type de mission",
+        value: "Conseil + dev",
+        sub: "Architecture & exécution",
+    },
 ];
 
 const rows = [
-    {
-        name: "▪ Refonte plateforme e-commerce",
-        tag: "Next.js · Stripe · PostgreSQL",
-    },
-    {
-        name: '▪ Publié "Optimiser les performances React"',
-        tag: "Il y a 2 semaines · Blog personnel",
-    },
-    { name: "▪ Certification AWS Solutions Architect", tag: "Obtenue en 2024" },
-    { name: "▪ Mentorat de développeurs juniors", tag: "En cours" },
+    { name: "▪ Audit technique", tag: "Dette technique identifiée" },
+    { name: "▪ Optimisation", tag: "SQL + cache Redis" },
+    { name: "▪ Conseil architecture", tag: "Recommandations stratégiques" },
+    { name: "▪ CI/CD", tag: "Mise en place complète" },
 ];
 ---
 
 <section class="band center-band">
     <div class="am-container">
         <div class="center-head">
-            <span class="am-badge">• Profil</span>
+            <span class="am-badge"> Parcours</span>
             <h2 class="band-title">
-                Un profil,<br />une expertise complète.
+                Une mission,<br />un aperçu concret.
             </h2>
             <p class="band-desc center-desc">
-                Du cahier des charges à la mise en production, je prends en
-                charge l'ensemble du cycle de développement — interface,
-                API, base de données et déploiement.
+                Un aperçu d'une mission récente.
             </p>
         </div>
 
@@ -48,18 +47,18 @@ const rows = [
             <i class="x x-bl" aria-hidden="true">+</i>
             <i class="x x-br" aria-hidden="true">+</i>
 
-            <WindowMockup title="Alex Martin — alex@devfolio.fr">
+            <WindowMockup title="epitexam  SaaS B2C, Plateforme de services">
                 <Fragment slot="tags">
                     <span class="win-tags">
-                        <span class="tag t-green">● Disponible</span>
-                        <span class="tag t-purple">• Freelance &amp; CDI</span>
+                        <span class="tag t-green"> Mission terminée</span>
+                        <span class="tag t-purple"> Développeur Fullstack</span>
                     </span>
                 </Fragment>
                 <div class="crm-body">
-                    <div class="crm-plan">FULL-STACK SENIOR</div>
+                    <div class="crm-plan">DÉVELOPPEUR FULLSTACK</div>
                     <StatGrid stats={stats} columns={4} />
 
-                    <div class="seq-label">PARCOURS RÉCENT</div>
+                    <div class="seq-label">DÉTAILS DE LA MISSION</div>
                     <div class="seq-rows">
                         {
                             rows.map((r) => (

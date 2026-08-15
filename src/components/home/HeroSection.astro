@@ -5,21 +5,16 @@ import Bars from "./Bars.astro";
 import FloatingCard from "./FloatingCard.astro";
 
 const stats = [
-    { label: "Projects Shipped", value: "42", sub: "↑ 6 this year", up: true },
-    {
-        label: "GitHub Stars",
-        value: "1.2K",
-        sub: "↑ 180 vs last year",
-        up: true,
-    },
-    { label: "Years Experience", value: "6+" },
+    { label: "Expérience", value: "3 ans", sub: "SaaS · EdTech · IoT · Santé" },
+    { label: "Missions", value: "4", sub: "Réalisées à ce jour" },
+    { label: "Technologies", value: "25+", sub: "Maîtrisées & pratiquées" },
 ];
 
 const bars = [14, 22, 28, 34, 30, 52, 88, 62];
 
 const floatRows = [
-    { label: "React / TypeScript", value: "92%", percent: 92 },
-    { label: "Node.js / APIs", value: "85%", percent: 85 },
+    { label: "TypeScript", value: "Maîtrisé", percent: 100 },
+    { label: "React / Next.js", value: "Pratiqué", percent: 65 },
 ];
 ---
 
@@ -27,16 +22,15 @@ const floatRows = [
     <canvas id="am-canvas" aria-hidden="true"></canvas>
 
     <div class="am-container hero-content">
-        <span class="am-badge"> Available for freelance</span>
+        <span class="am-badge"> Portfolio Développeur Full-Stack</span>
         <h1 class="hero-title">
-            Full-Stack Developer<br />Building for the Web
+            Je conçois des produits<br />qui tiennent la route
         </h1>
         <p class="hero-sub">
-            I'm Alex Rivera, a full-stack developer who designs, builds, and
-            ships production-grade web applications end to end — from database
-            schema to pixel-perfect UI.
+            Développeur Full-Stack TypeScript, Node.js et interfaces modernes.
+            Du backend au frontend, sur des projets SaaS et EdTech et autre.
         </p>
-        <a href="#cta" class="am-bracket-btn">View My Work</a>
+        <a href="/project" class="am-bracket-btn">Voir mes projets</a>
     </div>
 
     <div class="am-container">
@@ -46,34 +40,36 @@ const floatRows = [
             <i class="x x-bl" aria-hidden="true">+</i>
             <i class="x x-br" aria-hidden="true">+</i>
 
-            <WindowMockup title="alexrivera.dev — Dashboard">
+            <WindowMockup title="epitexam.dev  Tableau de bord">
                 <div class="hero-body">
                     <aside class="side">
-                        <span class="side-item active"> Overview</span>
-                        <!-- <span class="side-item"> Projects</span>
-                        <span class="side-item"> Skills</span>
-                        <span class="side-item"> Experience</span>
-                        <span class="side-item"> Blog</span>
-                        <span class="side-item"> Contact</span> -->
+                        <a href="/" class="side-item active"> Aperçu</a>
+                        <a href="/project" class="side-item"> Projets</a>
+                        <a href="/tools" class="side-item"> Stack</a>
+                        <a href="/about" class="side-item"> Parcours</a>
+                        <a href="/blog" class="side-item"> Blog</a>
+                        <a href="/contact" class="side-item"> Contact</a>
                     </aside>
 
                     <div class="dash">
                         <div class="dash-head">
-                            <span class="dash-hello">Welcome, I'm Alex</span>
-                            <span class="tag t-green">● Open to work</span>
+                            <span class="dash-hello"
+                                >epitexam vue d'ensemble</span
+                            >
+                            <span class="tag t-green">
+                                Ouvert aux opportunités</span
+                            >
                         </div>
 
                         <StatGrid stats={stats} columns={3} />
 
-                        <div class="seq-label">
-                            ACTIVE PROJECT — SAAS DASHBOARD REBUILD
-                        </div>
+                        <div class="seq-label">DERNIÈRE MISSION SAAS B2C</div>
 
                         <div class="chart-card">
                             <div class="chart-head">
-                                <span>GitHub Contributions — Last 30 days</span>
+                                <span>Activité récente</span>
                                 <span class="tag t-green tip-tag"
-                                    >Best: Nov 4</span
+                                    >4 missions clients</span
                                 >
                             </div>
                             <Bars values={bars} hotIndex={6} />
@@ -83,12 +79,12 @@ const floatRows = [
             </WindowMockup>
 
             <FloatingCard
-                title="alexrivera.dev — Skills"
+                title="epitexam.dev  Compétences clés"
                 rows={floatRows}
                 variant="a"
             />
             <FloatingCard
-                title="alexrivera.dev — Skills"
+                title="epitexam.dev  Compétences clés"
                 rows={floatRows}
                 variant="b"
             />
