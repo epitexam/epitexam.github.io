@@ -52,9 +52,9 @@ const navLinks = [
                 aria-expanded="false"
                 aria-controls="mobile-menu"
             >
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
+                <span class="menu-bar"></span>
+                <span class="menu-bar"></span>
+                <span class="menu-bar"></span>
             </button>
         </div>
     </div>
@@ -275,7 +275,7 @@ const navLinks = [
         color: var(--color-text);
     }
 
-    .bar {
+    .menu-bar {
         display: block;
         width: var(--bar-w);
         height: var(--bar-h);
@@ -286,14 +286,14 @@ const navLinks = [
             opacity var(--duration-fast) ease;
     }
 
-    .menu-toggle[aria-expanded="true"] .bar:nth-child(1) {
+    .menu-toggle[aria-expanded="true"] .menu-bar:nth-child(1) {
         transform: translateY(calc(var(--bar-gap) + var(--bar-h))) rotate(45deg);
     }
-    .menu-toggle[aria-expanded="true"] .bar:nth-child(2) {
+    .menu-toggle[aria-expanded="true"] .menu-bar:nth-child(2) {
         opacity: 0;
         transform: scaleX(0);
     }
-    .menu-toggle[aria-expanded="true"] .bar:nth-child(3) {
+    .menu-toggle[aria-expanded="true"] .menu-bar:nth-child(3) {
         transform: translateY(calc(-1 * (var(--bar-gap) + var(--bar-h))))
             rotate(-45deg);
     }
@@ -414,7 +414,7 @@ const navLinks = [
     @media (prefers-reduced-motion: reduce) {
         .site-header,
         .mobile-menu,
-        .bar {
+        .menu-bar {
             transition: none;
         }
         .mobile-menu.is-open :global(a.mobile-link) {

@@ -10,20 +10,22 @@ import CrmSection from "../components/home/CrmSection.astro";
 import AnalyticsSection from "../components/home/AnalyticsSection.astro";
 import CtaSection from "../components/home/CtaSection.astro";
 import "../styles/home.css";
+import Stacksection from "../components/home/Stacksection.astro";
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="fr">
     <head>
         <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
     </head>
     <body>
+        <Header />
         <div class="am-root">
             <main class="am-main">
-                <Header />
                 <HeroSection />
-                <AutomationSection />
-                <SegmentationSection />
+                <!-- <AutomationSection /> -->
+                <!-- <SegmentationSection /> -->
+                <Stacksection/>
                 <CrmSection />
                 <AnalyticsSection />
                 <CtaSection />

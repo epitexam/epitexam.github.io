@@ -1,29 +1,138 @@
 ---
 interface Props {
-    badge?: string;
-    title?: string;
-    description?: string;
-    ctaText?: string;
-    ctaHref?: string;
+  badge?: string;
+  title?: string;
+  description?: string;
+  ctaText?: string;
+  ctaHref?: string;
 }
+
 const {
-    badge = "Travaillons ensemble",
-    title = "Un projet en tête ?<br />Discutons-en.",
-    description = "Freelance ou poste en CDI, je réponds à tous les messages sous 48h.",
-    ctaText = "Me contacter",
-    ctaHref = "/contact",
+  badge = "Travaillons ensemble",
+  title = "Un projet en tête ?<br />Discutons-en.",
+  description = "Vous avez une opportunité, un projet ou une collaboration en tête ?<br />Échangeons !",
+  ctaText = "Me contacter",
+  ctaHref = "/contact",
 } = Astro.props;
 ---
 
-<section class="band cta-band" id="cta">
-    <div class="am-container cta-grid">
-        <div>
-            <span class="am-badge"> {badge}</span>
-            <h2 class="band-title cta-title" set:html={title} />
-        </div>
-        <div class="cta-right">
-            <p>{description}</p>
-            <a href={ctaHref} class="am-bracket-btn">{ctaText}</a>
-        </div>
-    </div>
+<section class="cta-section">
+  <div class="am-container cta-container">
+    {badge && <span class="am-badge cta-badge">{badge}</span>}
+    <h2 class="cta-title" set:html={title} />
+    <p class="cta-description" set:html={description} />
+    <a href={ctaHref} class="am-bracket-btn cta-button">{ctaText}</a>
+  </div>
 </section>
+
+<style>
+  .cta-section {
+    padding: clamp(4rem, 8vw, 7rem) 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    text-align: center;
+  }
+
+  .cta-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 680px;
+    margin-inline: auto;
+  }
+
+  .cta-badge {
+    margin-bottom: 0.25rem;
+  }
+
+  .cta-title {
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .cta-description {
+    max-width: 540px;
+    font-size: clamp(1rem, 0.9vw + 0.8rem, 1.125rem);
+    line-height: 1.7;
+    color: var(--color-muted);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .cta-button {
+    margin-top: 0.5rem;
+    font-size: 1.05rem;
+    padding: 0.9rem 2.5rem;
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-soft);
+    transition: all var(--duration-fast) var(--ease-spring);
+  }
+
+  .cta-button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-strong);
+  }
+
+  @media (max-width: 768px) {
+    .cta-container {
+      gap: 1.25rem;
+      max-width: 100%;
+    }
+    .cta-button {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .cta-section {
+      padding: 3rem 0;
+    }
+    .cta-title {
+      font-size: 1.75rem;
+    }
+    .cta-button {
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+    }
+  }
+
+  @media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
+    .cta-container > * {
+      opacity: 0;
+      animation: am-fade-up 0.7s var(--ease-spring) forwards;
+    }
+    .cta-badge {
+      animation-delay: 0.05s;
+    }
+    .cta-title {
+      animation-delay: 0.15s;
+    }
+    .cta-description {
+      animation-delay: 0.25s;
+    }
+    .cta-button {
+      animation-delay: 0.35s;
+    }
+  }
+
+  @keyframes am-fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

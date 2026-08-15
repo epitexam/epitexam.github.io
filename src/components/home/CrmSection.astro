@@ -41,36 +41,29 @@ const rows = [
             </p>
         </div>
 
-        <div class="crm-wrap">
-            <i class="x x-tl" aria-hidden="true">+</i>
-            <i class="x x-tr" aria-hidden="true">+</i>
-            <i class="x x-bl" aria-hidden="true">+</i>
-            <i class="x x-br" aria-hidden="true">+</i>
+        <WindowMockup title="SaaS B2C, Plateforme de services">
+            <Fragment slot="tags">
+                <span class="win-tags">
+                    <span class="tag t-green"> Mission terminée</span>
+                    <span class="tag t-purple"> Développeur Fullstack</span>
+                </span>
+            </Fragment>
+            <div class="crm-body">
+                <div class="crm-plan">DÉVELOPPEUR FULLSTACK</div>
+                <StatGrid stats={stats} columns={4} />
 
-            <WindowMockup title="epitexam  SaaS B2C, Plateforme de services">
-                <Fragment slot="tags">
-                    <span class="win-tags">
-                        <span class="tag t-green"> Mission terminée</span>
-                        <span class="tag t-purple"> Développeur Fullstack</span>
-                    </span>
-                </Fragment>
-                <div class="crm-body">
-                    <div class="crm-plan">DÉVELOPPEUR FULLSTACK</div>
-                    <StatGrid stats={stats} columns={4} />
-
-                    <div class="seq-label">DÉTAILS DE LA MISSION</div>
-                    <div class="seq-rows">
-                        {
-                            rows.map((r) => (
-                                <div class="seq-row">
-                                    <span class="seq-name">{r.name}</span>
-                                    <span class="seq-tag">{r.tag}</span>
-                                </div>
-                            ))
-                        }
-                    </div>
+                <div class="seq-label">DÉTAILS DE LA MISSION</div>
+                <div class="seq-rows">
+                    {
+                        rows.map((r) => (
+                            <div class="seq-row">
+                                <span class="seq-name">{r.name}</span>
+                                <span class="seq-tag">{r.tag}</span>
+                            </div>
+                        ))
+                    }
                 </div>
-            </WindowMockup>
-        </div>
+            </div>
+        </WindowMockup>
     </div>
 </section>
