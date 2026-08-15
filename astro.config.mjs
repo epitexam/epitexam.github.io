@@ -19,19 +19,19 @@ export default defineConfig({
     {
       name: "Geist",
       cssVariable: "--font-body",
-      provider: fontProviders.google(),
+      provider: fontProviders.bunny(),
       weights: ["400", "500", "600"]
     },
     {
       name: "Geist",
       cssVariable: "--font-title",
-      provider: fontProviders.google(),
+      provider: fontProviders.bunny(),
       weights: ["500", "600", "700"]
     },
     {
       name: "Geist Mono",
       cssVariable: "--font-code",
-      provider: fontProviders.google(),
+      provider: fontProviders.bunny(),
       weights: ["400", "500"]
     }
   ],

@@ -1,0 +1,76 @@
+---
+import WindowMockup from "./WindowMockup.astro";
+import StatGrid from "./StatGrid.astro";
+
+const stats = [
+    {
+        label: "Optimisation",
+        value: "SQL & Redis",
+        sub: "Requêtes & mise en cache",
+    },
+    {
+        label: "Stack utilisée",
+        value: "5 technos",
+        sub: "Bun · TS · PostgreSQL · Redis · Docker",
+    },
+    { label: "Périmètre", value: "Full-stack", sub: "Audit, refonte, CI/CD" },
+    {
+        label: "Type de mission",
+        value: "Conseil + dev",
+        sub: "Architecture & exécution",
+    },
+];
+
+const rows = [
+    { name: "▪ Audit technique", tag: "Dette technique identifiée" },
+    { name: "▪ Optimisation", tag: "SQL + cache Redis" },
+    { name: "▪ Conseil architecture", tag: "Recommandations stratégiques" },
+    { name: "▪ CI/CD", tag: "Mise en place complète" },
+];
+---
+
+<section class="band center-band">
+    <div class="am-container">
+        <div class="center-head">
+            <span class="am-badge"> Parcours</span>
+            <h2 class="band-title">
+                Une mission,<br />un aperçu concret.
+            </h2>
+            <p class="band-desc center-desc">
+                Un aperçu d'une mission récente.
+            </p>
+        </div>
+
+        <div class="crm-wrap">
+            <i class="x x-tl" aria-hidden="true">+</i>
+            <i class="x x-tr" aria-hidden="true">+</i>
+            <i class="x x-bl" aria-hidden="true">+</i>
+            <i class="x x-br" aria-hidden="true">+</i>
+
+            <WindowMockup title="epitexam  SaaS B2C, Plateforme de services">
+                <Fragment slot="tags">
+                    <span class="win-tags">
+                        <span class="tag t-green"> Mission terminée</span>
+                        <span class="tag t-purple"> Développeur Fullstack</span>
+                    </span>
+                </Fragment>
+                <div class="crm-body">
+                    <div class="crm-plan">DÉVELOPPEUR FULLSTACK</div>
+                    <StatGrid stats={stats} columns={4} />
+
+                    <div class="seq-label">DÉTAILS DE LA MISSION</div>
+                    <div class="seq-rows">
+                        {
+                            rows.map((r) => (
+                                <div class="seq-row">
+                                    <span class="seq-name">{r.name}</span>
+                                    <span class="seq-tag">{r.tag}</span>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div>
+            </WindowMockup>
+        </div>
+    </div>
+</section>

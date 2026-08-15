@@ -17,12 +17,12 @@ const posts = (await getCollection("blog"))
 
 const EAGER_LIMIT = 3;
 const BLOG_META_DESCRIPTION =
-	"Articles et réflexions sur le développement logiciel par Epitexam — architecture, performance, outillage et retours d'expérience.";
+	"Articles et réflexions sur le développement logiciel par Epitexam  architecture, performance, outillage et retours d'expérience.";
 
 const jsonLd = {
 	"@context": "https://schema.org",
 	"@type": "Blog",
-	name: `Blog — ${SITE_TITLE}`,
+	name: `Blog  ${SITE_TITLE}`,
 	description: BLOG_META_DESCRIPTION,
 	url: "https://epitexam.github.io/blog",
 	author: {

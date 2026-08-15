@@ -1,0 +1,55 @@
+---
+import FeatureBand from "./FeatureBand.astro";
+import WindowMockup from "./WindowMockup.astro";
+import StatGrid from "./StatGrid.astro";
+import Bars from "./Bars.astro";
+
+const features = [
+    {
+        title: "Sécurité intégrée",
+        desc: "Authentification JWT/OAuth2, gestion des rôles et tests automatisés pour fiabiliser chaque application.",
+    },
+    {
+        title: "Systèmes bas niveau",
+        desc: "Développement en C et expérimentation avec des objets connectés (ESP32, Arduino) pour explorer au-delà du web classique.",
+    },
+    {
+        title: "Infrastructure fiable",
+        desc: "Déploiements automatisés, conteneurisation Docker et environnements Linux pensés pour la reproductibilité.",
+    },
+];
+
+const stats = [
+    { label: "Langages", value: "8", sub: "JS/TS, Go, Python, C…" },
+    { label: "Frameworks", value: "9", sub: "React, NestJS, Astro…" },
+    {
+        label: "Systèmes & DevOps",
+        value: "4",
+        sub: "Linux, Docker, CI/CD, Ansible",
+    },
+    { label: "Outils & Collab", value: "4", sub: "Git, VS Code, Zed…" },
+];
+
+const bars = [89, 100, 33, 22, 22, 11];
+---
+
+<FeatureBand
+    badge="Qualité & expertise"
+    description="De l'authentification sécurisée aux tests automatisés, la qualité fait partie du cahier des charges, pas d'une étape optionnelle en fin de projet."
+    features={features}
+>
+    <Fragment slot="title">Une expertise structurée.</Fragment>
+    <WindowMockup slot="mock" title="epitexam  Rapport de compétences">
+        <div class="seg-body">
+            <div class="seg-title">Répartition par catégorie</div>
+            <StatGrid stats={stats} columns={2} />
+            <div class="chart-card">
+                <div class="chart-head">
+                    <span>Répartition des technologies</span>
+                    <span class="tag t-blue tip-tag">25+ au total</span>
+                </div>
+                <Bars values={bars} hotIndex={1} />
+            </div>
+        </div>
+    </WindowMockup>
+</FeatureBand>

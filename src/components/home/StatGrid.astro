@@ -1,0 +1,29 @@
+---
+interface Stat {
+    label: string;
+    value: string;
+    sub?: string;
+    up?: boolean;
+}
+interface Props {
+    stats: Stat[];
+    columns?: 2 | 3 | 4;
+}
+const { stats, columns = 3 } = Astro.props;
+---
+
+<div class={`stats-${columns}`}>
+    {
+        stats.map((stat) => (
+            <div class="stat">
+                <span class="s-label">{stat.label}</span>
+                <span class="s-value">{stat.value}</span>
+                {stat.sub && (
+                    <span class:list={["s-sub", { up: stat.up }]}>
+                        {stat.sub}
+                    </span>
+                )}
+            </div>
+        ))
+    }
+</div>

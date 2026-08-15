@@ -15,12 +15,12 @@ const featured = publishedProjects.filter((p) => p.data.featured);
 const others = publishedProjects.filter((p) => !p.data.featured);
 const isEmpty = publishedProjects.length === 0;
 
-const PROJECT_META_DESCRIPTION = `Réalisations techniques d'Epitexam — projets fullstack, applications web et expérimentations en TypeScript, React, Node.js et Go.`;
+const PROJECT_META_DESCRIPTION = `Réalisations techniques d'Epitexam  projets fullstack, applications web et expérimentations en TypeScript, React, Node.js et Go.`;
 
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "ItemList",
-  name: `Projets — ${SITE_TITLE}`,
+  name: `Projets  ${SITE_TITLE}`,
   description: PROJECT_META_DESCRIPTION,
   url: "https://epitexam.github.io/project",
   author: {
@@ -45,7 +45,7 @@ const jsonLd = {
 <html lang="fr">
   <head>
     <BaseHead
-      title={`Projets — ${SITE_TITLE}`}
+      title={`Projets  ${SITE_TITLE}`}
       description={PROJECT_META_DESCRIPTION}
     />
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

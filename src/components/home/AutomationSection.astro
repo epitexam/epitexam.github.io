@@ -1,0 +1,63 @@
+---
+import FeatureBand from "./FeatureBand.astro";
+import WindowMockup from "./WindowMockup.astro";
+
+const features = [
+    {
+        title: "CI/CD systématique",
+        desc: "Workflows GitHub Actions pour lancer tests, build et déploiement à chaque push, sans étape manuelle.",
+    },
+    {
+        title: "Conteneurisation",
+        desc: "Environnements Docker reproductibles, pour garder des setups identiques du poste de dev à la production.",
+    },
+    {
+        title: "Refonte & optimisation",
+        desc: "Audit de dette technique et optimisation des performances sur une précédente refonte SaaS (requêtes SQL, cache Redis).",
+    },
+];
+---
+
+<FeatureBand
+    badge="DevOps & Intégration continue"
+    description="Les mêmes exigences DevOps appliquées à chaque projet, de l'audit initial à la mise en production, avec des déploiements automatisés et reproductibles."
+    features={features}
+>
+    <Fragment slot="title">Un pipeline pensé pour la fiabilité.</Fragment>
+    <WindowMockup slot="mock" title="epitexam  Pipeline CI/CD">
+        <div class="flow">
+            <div class="flow-row">
+                <span class="node n-purple"> AUDIT SAAS B2C</span>
+                <div class="flow-stats">
+                    <div>
+                        <span>Dette technique</span><b>Auditée</b>
+                    </div>
+                    <div>
+                        <span>Temps de chargement</span><b>Optimisé</b>
+                    </div>
+                    <div>
+                        <span>Stack</span><b>Bun · PostgreSQL · Redis</b>
+                    </div>
+                </div>
+            </div>
+            <i class="vline"></i>
+            <span class="node n-blue"> TESTS AUTOMATISÉS (GITHUB ACTIONS)</span>
+            <i class="vline"></i>
+            <span class="node n-orange"> BUILD &amp; LINT</span>
+            <i class="vline"></i>
+            <span class="node n-teal"> TOUS LES TESTS PASSENT ?</span>
+            <div class="branch">
+                <div class="branch-col">
+                    <span class="branch-label">Oui</span>
+                    <i class="vline"></i>
+                    <span class="node n-green"> DÉPLOIEMENT PRODUCTION</span>
+                </div>
+                <div class="branch-col">
+                    <span class="branch-label">Non</span>
+                    <i class="vline"></i>
+                    <span class="node n-red"> NOTIFICATION &amp; ROLLBACK</span>
+                </div>
+            </div>
+        </div>
+    </WindowMockup>
+</FeatureBand>

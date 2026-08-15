@@ -1,0 +1,55 @@
+---
+import FeatureBand from "./FeatureBand.astro";
+import WindowMockup from "./WindowMockup.astro";
+
+const features = [
+    {
+        title: "Backend & architecture",
+        desc: "APIs robustes et scalables avec Node.js, architectures modulaires et patterns avancés (DDD, hexagonale).",
+    },
+    {
+        title: "Frontend engineering",
+        desc: "Interfaces modernes avec React et Svelte, avec une attention particulière portée à la performance et à l'accessibilité.",
+    },
+    {
+        title: "Databases & performance",
+        desc: "Bases SQL et NoSQL, optimisation de requêtes et gestion du cache pour des données efficaces à grande échelle.",
+    },
+];
+---
+
+<FeatureBand
+    badge="Stack technique"
+    description="Un socle choisi pour sa fiabilité, pas pour l'effet de mode. Voici les briques que j'utilise le plus sérieusement au quotidien."
+    features={features}
+    dotted
+    reverse
+>
+    <Fragment slot="title">Une stack choisie avec précision.</Fragment>
+    <WindowMockup slot="mock" title="epitexam  Stack principale">
+        <div class="seg-body">
+            <div class="seg-title">Technologies clés</div>
+            <div class="chips">
+                <span class="node n-purple"> TYPESCRIPT</span>
+                <span class="node n-blue"> REACT / NEXT.JS</span>
+                <span class="node n-orange"> NESTJS</span>
+                <span class="node n-teal"> POSTGRESQL / REDIS</span>
+                <span class="node n-red"> DOCKER</span>
+            </div>
+            <div class="seg-add">
+                <span class="seg-input">Ajouter une techno...</span>
+                <span class="seg-btn">+ Voir toute la stack</span>
+            </div>
+            <div class="seg-match">
+                <div>
+                    <span class="m-label">▪ Stack complète</span>
+                    <span class="m-sub">Détail sur la page dédiée</span>
+                </div>
+                <div class="m-right">
+                    <b>25+</b>
+                    <span>technologies</span>
+                </div>
+            </div>
+        </div>
+    </WindowMockup>
+</FeatureBand>

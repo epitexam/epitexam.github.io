@@ -1,0 +1,18 @@
+---
+interface Props {
+    values: number[];
+    hotIndex?: number;
+}
+const { values, hotIndex } = Astro.props;
+---
+
+<div class="bars">
+    {
+        values.map((v, i) => (
+            <span
+                class:list={["bar", { hot: i === hotIndex }]}
+                style={`--h:${v}%`}
+            />
+        ))
+    }
+</div>
