@@ -1,0 +1,173 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE } from "../consts";
+---
+
+<!doctype html>
+<html lang="fr">
+    <head>
+        <BaseHead
+            title={`Page introuvable  ${SITE_TITLE}`}
+            description="Cette page n'existe pas ou plus."
+        />
+    </head>
+    <body>
+        <Header />
+
+        <main>
+            <div class="error-page animate-fade-in">
+                <div class="header-eyebrow">
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="label">Erreur 404</span>
+                </div>
+
+                <h1 class="error-code">404</h1>
+                <p class="error-title">Page introuvable</p>
+                <p class="subtitle">
+                    La page que vous cherchez n'existe pas, a été déplacée ou
+                    supprimée.
+                </p>
+
+                <a href="/" class="back-link">
+                    Retour à l'accueil
+                    <svg
+                        class="arrow-icon"
+                        width="14"
+                        height="14"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        aria-hidden="true"
+                    >
+                        <path
+                            d="M3.5 8H12.5M12.5 8L8.5 4M12.5 8L8.5 12"
+                            stroke="currentColor"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"></path>
+                    </svg>
+                </a>
+            </div>
+        </main>
+
+        <Footer />
+    </body>
+</html>
+
+<style>
+    .error-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        flex-grow: 1;
+        gap: 1rem;
+        padding-block: 4rem;
+    }
+
+    .header-eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .header-eyebrow .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--color-accent);
+        flex-shrink: 0;
+    }
+
+    .header-eyebrow .label {
+        font-family: var(--font-title);
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--color-accent);
+    }
+
+    .error-code {
+        font-family: var(--font-title);
+        font-size: clamp(4rem, 16vw, 8rem);
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: -0.04em;
+        margin: 0;
+        background: linear-gradient(
+            180deg,
+            var(--color-text) 0%,
+            var(--color-muted) 100%
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+    }
+
+    .error-title {
+        font-family: var(--font-title);
+        font-size: clamp(1.25rem, 3vw, 1.75rem);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        color: var(--color-text);
+        margin: 0;
+    }
+
+    .subtitle {
+        font-size: clamp(0.95rem, 2vw, 1.1rem);
+        color: var(--color-muted);
+        margin: 0;
+        max-width: 42ch;
+        line-height: 1.7;
+        text-wrap: pretty;
+    }
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+        padding: 0.75rem 1.5rem;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        color: var(--color-text);
+        font-family: var(--font-title);
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-decoration: none;
+        box-shadow: var(--shadow-soft);
+        transition:
+            border-color var(--duration-base) var(--ease-spring),
+            transform var(--duration-base) var(--ease-spring),
+            box-shadow var(--duration-base) var(--ease-spring);
+    }
+
+    @media (hover: hover) {
+        .back-link:hover {
+            border-color: rgba(var(--accent), 0.2);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-strong);
+        }
+        .back-link:hover .arrow-icon {
+            transform: translateX(4px);
+        }
+    }
+
+    .arrow-icon {
+        transition: transform var(--duration-base) var(--ease-spring);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .animate-fade-in,
+        .back-link:hover,
+        .back-link:hover .arrow-icon {
+            animation: none !important;
+            transform: none;
+        }
+    }
+</style>
