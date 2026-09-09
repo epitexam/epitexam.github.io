@@ -1,7 +1,6 @@
 ---
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
-import FormattedDate from "./FormattedDate.astro";
 import fallBackImage from "../assets/pexels-pixabay-270488.webp";
 
 interface Props {
@@ -22,19 +21,17 @@ const IMG_W = 800;
 const IMG_H = 450;
 ---
 
-<a
-    href={`/project/${id}/`}
-    class="project-card"
-    aria-label={`Voir les détails du projet : ${data.title}`}
->
+<article class="project-card" data-href={`/project/${id.replace(/\.mdx?$/, "")}/`}>
     <div class="card-media">
         <Image
             src={imageSrc}
             alt={imageAlt}
             width={IMG_W}
             widths={[400, 800, 1200, 1600, 2000]}
+            sizes="(max-width: 540px) 100vw, (max-width: 1024px) 50vw, 400px"
             height={IMG_H}
             loading={isEager ? "eager" : "lazy"}
+            fetchpriority={isEager ? "high" : "auto"}
             decoding={isEager ? "sync" : "async"}
             class="card-image"
         />
@@ -43,7 +40,12 @@ const IMG_H = 450;
 
     <div class="card-body">
         <HeadingTag class="card-title">
-            {data.title}
+            <a
+                href={`/project/${id.replace(/\.mdx?$/, "")}/`}
+                class="card-main-link"
+            >
+                {data.title}
+            </a>
         </HeadingTag>
 
         <p class="card-description">{data.description}</p>
@@ -59,42 +61,71 @@ const IMG_H = 450;
         }
 
         <div class="card-footer">
-            <span class="btn-primary">Détails</span>
+            <span class="btn-primary" aria-hidden="true">Détails</span>
             {
                 (data.liveUrl || data.sourceUrl) && (
                     <div class="card-links">
                         {data.liveUrl && (
-                            <object>
-                                <a
-                                    href={data.liveUrl}
-                                    class="btn-secondary"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    onclick="event.stopPropagation();"
-                                >
-                                    Live
-                                </a>
-                            </object>
+                            <a
+                                href={data.liveUrl}
+                                class="btn-secondary"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                data-stop-propagation
+                                aria-label={`Voir la démo du projet : ${data.title} (nouvel onglet)`}
+                            >
+                                Live
+                            </a>
                         )}
                         {data.sourceUrl && (
-                            <object>
-                                <a
-                                    href={data.sourceUrl}
-                                    class="btn-secondary"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    onclick="event.stopPropagation();"
-                                >
-                                    Code
-                                </a>
-                            </object>
+                            <a
+                                href={data.sourceUrl}
+                                class="btn-secondary"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                data-stop-propagation
+                                aria-label={`Voir le code source du projet : ${data.title} (nouvel onglet)`}
+                            >
+                                Code
+                            </a>
                         )}
                     </div>
                 )
             }
         </div>
     </div>
-</a>
+</article>
+
+<script>
+    document
+        .querySelectorAll<HTMLElement>(".project-card[data-href]")
+        .forEach((card) => {
+            const target = card.dataset.href;
+            if (!target) return;
+
+            const go = () => {
+                window.location.href = target;
+            };
+
+            card.addEventListener("click", (event) => {
+                const interactive = (event.target as HTMLElement).closest(
+                    "a, button",
+                );
+                if (interactive) return;
+                go();
+            });
+
+            card.addEventListener("keydown", (event) => {
+                if (event.key !== "Enter" && event.key !== " ") return;
+                const interactive = (event.target as HTMLElement).closest(
+                    "a, button",
+                );
+                if (interactive) return;
+                event.preventDefault();
+                go();
+            });
+        });
+</script>
 
 <style>
     .project-card {
@@ -105,13 +136,29 @@ const IMG_H = 450;
         border-radius: var(--radius-lg);
         overflow: hidden;
         box-shadow: var(--shadow-soft);
-        text-decoration: none;
         color: inherit;
         height: 100%;
+        cursor: pointer;
         transition:
             transform var(--duration-base) var(--ease-spring),
             box-shadow var(--duration-base) var(--ease-spring),
             border-color var(--duration-base) ease;
+    }
+
+    .project-card:focus-within {
+        border-color: rgba(var(--accent), 0.4);
+        box-shadow: var(--shadow-strong);
+    }
+
+    .card-main-link {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .card-main-link:focus-visible {
+        outline: 2px solid var(--color-accent);
+        outline-offset: 4px;
+        border-radius: 2px;
     }
 
     .project-card :is(h1, h2, h3, h4, h5, h6) {

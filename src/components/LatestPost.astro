@@ -1,5 +1,6 @@
 ---
 import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
 
 export interface Props {
     post: {
@@ -9,7 +10,7 @@ export interface Props {
             description: string;
             pubDate: Date;
             updatedDate?: Date;
-            heroImage?: any;
+            heroImage?: ImageMetadata;
             heroImageDescription?: string;
         };
     };
