@@ -567,12 +567,3 @@ export const ABOUT_META_DESCRIPTION =
 
 export const TOOLS_META_DESCRIPTION =
   "Stack technique d'epitexam : TypeScript, React, Node.js, PostgreSQL, Docker. Langages, frameworks et environnements utilisés en production.";
-
-export const EXCLUDED_REPOS = [
-  "exercise",
-  "tutorial",
-  "test",
-  "practice",
-  "workshop",
-  "epitexam.github.io",
-];
