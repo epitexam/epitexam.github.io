@@ -12,7 +12,7 @@ const {
 } = Astro.props;
 
 const terminalId = `terminal-${Math.random().toString(36).slice(2, 9)}`;
-const wsApiUrl = import.meta.env.WS_API_URL ?? "wss://echo.websocket.org";
+const wsApiUrl = import.meta.env.WS_API_URL ?? "";
 ---
 
 <div class="terminal-card" id={terminalId} data-ws-url={wsApiUrl}>
@@ -36,8 +36,14 @@ const wsApiUrl = import.meta.env.WS_API_URL ?? "wss://echo.websocket.org";
     </div>
 
     <div class="terminal-input-line">
-      <span class="terminal-prompt" data-prompt>{user}@{machine}:~$</span>
+      <label class="sr-only" for={`${terminalId}-input`}>
+        Commande terminal
+      </label>
+      <span class="terminal-prompt" data-prompt aria-hidden="true"
+        >{user}@{machine}:~$</span
+      >
       <input
+        id={`${terminalId}-input`}
         type="text"
         class="terminal-input"
         data-input

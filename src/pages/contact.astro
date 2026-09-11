@@ -105,7 +105,7 @@ const success = Astro.url.searchParams.get("success") === "true";
                     ) : (
                         <form
                             id="contactForm"
-                            action="https://formspree.io/f/xovgkrbn"
+                            action={`https://formspree.io/f/${import.meta.env.PUBLIC_FORMSPREE_ID ?? "xovgkrbn"}`}
                             method="POST"
                             class="contact-form"
                             autocomplete="on"

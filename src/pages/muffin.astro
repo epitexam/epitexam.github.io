@@ -4,6 +4,8 @@ import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import TerminalCard from "../components/TerminalCard.astro";
 import { SITE_TITLE } from "../consts";
+
+Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
 ---
 
 <!doctype html>
@@ -13,6 +15,7 @@ import { SITE_TITLE } from "../consts";
             title={SITE_TITLE}
             description={"Not supposed to be here but wait."}
         />
+        <meta name="robots" content="noindex, nofollow" />
     </head>
     <body>
         <Header />

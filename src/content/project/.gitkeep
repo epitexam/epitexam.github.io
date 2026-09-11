@@ -1,0 +1,3 @@
+# Ce dossier alimente la collection `projects` (voir src/content.config.ts).
+# Ajoutez vos projets en Markdown/MDX ici. Les fichiers avec `draft: true`
+# sont exclus des pages, des slugs et du flux RSS.
