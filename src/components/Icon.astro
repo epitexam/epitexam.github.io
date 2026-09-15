@@ -1,0 +1,38 @@
+---
+interface Props {
+    name: "arrow-right" | "arrow-up-right" | "arrow-down" | "chevron-right";
+    size?: number;
+}
+
+const { name, size = 16 } = Astro.props;
+
+const paths: Record<Props["name"], string> = {
+    // Line + head, same language as SectionHeader (stroke 1.8, round)
+    "arrow-right": `<line x1="2.5" y1="8" x2="13.5" y2="8"/><path d="M9 3.5 13.5 8 9 12.5"/>`,
+    "arrow-up-right": `<line x1="4.5" y1="11.5" x2="11.5" y2="4.5"/><path d="M6 4.5h5.5V10"/>`,
+    "arrow-down": `<line x1="8" y1="2.5" x2="8" y2="13.5"/><path d="M3.5 9.5 8 14 12.5 9.5"/>`,
+    "chevron-right": `<path d="M6 3.5 10.5 8 6 12.5"/>`,
+};
+---
+
+<svg
+    class="icon"
+    width={size}
+    height={size}
+    viewBox="0 0 16 16"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+    set:html={paths[name]}
+/>
+
+<style>
+    .icon {
+        flex-shrink: 0;
+        vertical-align: -0.15em;
+        transition: transform var(--duration-base) var(--ease-spring);
+    }
+</style>
