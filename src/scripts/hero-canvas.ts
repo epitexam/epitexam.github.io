@@ -1,9 +1,11 @@
 /**
  * hero-canvas — Dotted planet & starfield canvas animation.
  *
- * Responsive: runs on all screens. On mobile (hero < 768px) quality
- * is scaled down (capped DPR, fewer stars/dots, dimmed glow) and mouse
- * parallax is off. Renders a single static frame under
+ * Responsive: runs on all screens. Below laptop (< 1024px) we switch to a
+ * "compact" staging: single smaller planet pinned top-right away from text,
+ * bigger dots, tilted ring, no second planet. On phones (< 768px) quality
+ * is also scaled down (capped DPR, fewer stars). Mouse parallax needs a
+ * fine pointer. Renders a single static frame under
  * `prefers-reduced-motion`, and pauses offscreen or in hidden tabs.
  *
  * Expects a `<canvas id="am-canvas">` element in the DOM whose parent
@@ -67,6 +69,8 @@ export const initHeroCanvas = (): (() => void) | undefined => {
     /**
      * Generate an off-screen canvas that renders a sphere made of
      * individual dotted points (a la "planet" look).
+     * The offscreen canvas is rendered at device-pixel scale (dpr) so
+     * dots stay crisp after the main ctx.setTransform(dpr,...).
      */
     const generateSphereCanvas = (
         radius: number,
@@ -74,13 +78,16 @@ export const initHeroCanvas = (): (() => void) | undefined => {
         color: RGB,
         alphaBoost: number,
         density = 1,
+        dotPx = 2.2,
+        dprScale = 1,
     ): HTMLCanvasElement => {
-        const padding = radius * 0.2;
+        const padding = radius * 0.35;
         const size = Math.ceil(radius * 2 + padding * 2);
         const sphereCanvas = document.createElement("canvas");
-        sphereCanvas.width = size;
-        sphereCanvas.height = size;
+        sphereCanvas.width = Math.ceil(size * dprScale);
+        sphereCanvas.height = Math.ceil(size * dprScale);
         const sphereCtx = sphereCanvas.getContext("2d")!;
+        sphereCtx.scale(dprScale, dprScale);
         const centerX = size / 2;
         const centerY = size / 2;
 
@@ -103,7 +110,7 @@ export const initHeroCanvas = (): (() => void) | undefined => {
             if (alpha > 1) alpha = 1;
 
             sphereCtx.fillStyle = `rgba(${color.r},${color.g},${color.b},${alpha})`;
-            sphereCtx.fillRect(centerX + x, centerY + y, 2.2, 2.2);
+            sphereCtx.fillRect(centerX + x, centerY + y, dotPx, dotPx);
         }
         return sphereCanvas;
     };
@@ -112,6 +119,7 @@ export const initHeroCanvas = (): (() => void) | undefined => {
         radius: number,
         alphaBoost: number,
         density = 1,
+        spread: [number, number] = [1.35, 0.3],
     ): RingPoint[] => {
         const points: RingPoint[] = [];
         const dotCount = Math.floor(radius * 3 * density);
@@ -120,8 +128,9 @@ export const initHeroCanvas = (): (() => void) | undefined => {
             if (ringAlpha > 1) ringAlpha = 1;
             points.push({
                 baseT: Math.random() * Math.PI * 2,
-                // Tight spread: rings stay near their planet.
-                rad: radius * (1.35 + Math.random() * 0.3),
+                // Rings stay near their planet; wider spread on compact
+                // layouts so the ellipse reads on narrow screens.
+                rad: radius * (spread[0] + Math.random() * spread[1]),
                 alpha: ringAlpha,
             });
         }
@@ -139,6 +148,7 @@ export const initHeroCanvas = (): (() => void) | undefined => {
         time: number,
         color: RGB,
         renderBack: boolean,
+        dotPx = 2.0,
     ) => {
         const sinTilt = Math.sin(tilt);
         const cosTilt = Math.cos(tilt);
@@ -162,7 +172,7 @@ export const initHeroCanvas = (): (() => void) | undefined => {
             }
 
             ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${point.alpha})`;
-            ctx.fillRect(centerX + x, centerY + projectedY, 2.0, 2.0);
+            ctx.fillRect(centerX + x, centerY + projectedY, dotPx, dotPx);
         }
     };
 
@@ -173,15 +183,22 @@ export const initHeroCanvas = (): (() => void) | undefined => {
     let isLight = false;
     let alphaBoost = 1;
     let stars: Star[] = [];
+    let starPx = 1;
 
-    let sphere1Canvas: HTMLCanvasElement;
+    let sphere1Canvas: HTMLCanvasElement | null = null;
     let rings1Data: RingPoint[] = [];
-    let sphere2Canvas: HTMLCanvasElement;
+    let sphere2Canvas: HTMLCanvasElement | null = null;
     let rings2Data: RingPoint[] = [];
+    let sceneReady = false;
 
     let animFrame = 0;
     let inView = true;
+    let isCompactLayout = false;
     let isMobileLayout = false;
+    let sphereDotPx = 2.2;
+    let ringDotPx = 2.0;
+    let ringTilt1 = -0.25;
+    let ringTilt2 = -0.22;
     let targetMouseX = 0,
         targetMouseY = 0;
     let mouseX = 0,
@@ -191,26 +208,42 @@ export const initHeroCanvas = (): (() => void) | undefined => {
     const setupScene = () => {
         w = hero.clientWidth;
         h = hero.clientHeight;
+        // Le hero peut ne pas être mis en page encore (w/h à 0) si
+        // setupScene tourne avant le layout : on réessaie plus tard.
+        if (w <= 0 || h <= 0 || !Number.isFinite(w) || !Number.isFinite(h)) {
+            sceneReady = false;
+            return false;
+        }
+        // Compact = tout ce qui est plus petit qu'un laptop : mobile + tablette.
+        isCompactLayout = w < 1024;
         isMobileLayout = w < 768;
 
-        // Mobile: capped DPR, dimmed glow keeps text legible.
+        // Mobile: capped DPR. Compact garde un alpha lisible (0.9) au lieu
+        // de 0.65 qui rendait les points illisibles.
         dpr = Math.min(
             isMobileLayout ? 1.5 : 2,
             window.devicePixelRatio || 1,
         );
-        canvas.width = w * dpr;
-        canvas.height = h * dpr;
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
         canvas.style.width = w + "px";
         canvas.style.height = h + "px";
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
         color = getTextColor();
         isLight = isLightMode();
-        alphaBoost = (isLight ? 2.5 : 1) * (isMobileLayout ? 0.65 : 1);
+        alphaBoost = (isLight ? 2.2 : 1) * (isCompactLayout ? 0.9 : 1);
+
+        // Dots plus gros sur petit écran : lisibles sans augmenter le count.
+        sphereDotPx = isCompactLayout ? 3.0 : 2.2;
+        ringDotPx = isCompactLayout ? 2.6 : 2.0;
+        starPx = isCompactLayout ? 1.6 : 1;
+        ringTilt1 = isCompactLayout ? -0.42 : -0.25;
+        ringTilt2 = -0.22;
 
         stars = [];
         const starCount = Math.floor(
-            (w * h) / (isMobileLayout ? 22000 : 12000),
+            (w * h) / (isCompactLayout ? 24000 : 12000),
         );
         for (let i = 0; i < starCount; i++) {
             stars.push({
@@ -226,39 +259,66 @@ export const initHeroCanvas = (): (() => void) | undefined => {
 
         const m = Math.min(w, h);
 
-        // Planet 1 — large sphere + ring
-        const r1 = m * 0.7;
+        // Planet 1 — sur compact : petite, calée en haut-droite hors du texte.
+        // Math.min(w*0.52, h*0.22) garantit qu'elle ne recouvre pas le titre.
+        const r1 = isCompactLayout
+            ? Math.min(w * 0.52, h * 0.22, 220)
+            : m * 0.7;
         sphere1Canvas = generateSphereCanvas(
             r1,
             [-0.55, -0.35],
             color,
             alphaBoost,
-            isMobileLayout ? 0.55 : 1,
+            isCompactLayout ? 0.8 : 1,
+            sphereDotPx,
+            dpr,
         );
         rings1Data = generateRingData(
             r1,
             alphaBoost,
-            isMobileLayout ? 0.6 : 1,
+            isCompactLayout ? 0.9 : 1,
+            isCompactLayout ? [1.45, 0.4] : [1.35, 0.3],
         );
 
-        // Planet 2 — smaller sphere + ring
-        const r2 = m * 0.5;
-        sphere2Canvas = generateSphereCanvas(
-            r2,
-            [0.55, -0.4],
-            color,
-            alphaBoost,
-            isMobileLayout ? 0.55 : 1,
-        );
-        rings2Data = generateRingData(
-            r2,
-            alphaBoost,
-            isMobileLayout ? 0.6 : 1,
-        );
+        // Planet 2 — désactivée sur compact : deux sphères énormes qui se
+        // chevauchent = illisible sur 390–820px de large.
+        if (isCompactLayout) {
+            sphere2Canvas = null;
+            rings2Data = [];
+        } else {
+            const r2 = m * 0.5;
+            sphere2Canvas = generateSphereCanvas(
+                r2,
+                [0.55, -0.4],
+                color,
+                alphaBoost,
+                1,
+                sphereDotPx,
+                dpr,
+            );
+            rings2Data = generateRingData(r2, alphaBoost, 1);
+        }
 
         startTime = performance.now();
+        sceneReady = true;
+        return true;
+    };
+    const drawSphere = (
+        img: HTMLCanvasElement | null,
+        cx: number,
+        cy: number,
+    ) => {
+        if (!img || !img.width || !img.height) return;
+        // img est en pixels device (size*dpr), on le redessine à sa taille CSS.
+        const dw = img.width / dpr;
+        const dh = img.height / dpr;
+        ctx.drawImage(img, cx - dw / 2, cy - dh / 2, dw, dh);
     };
     const drawFrame = (time: number) => {
+        // La boucle peut démarrer (IntersectionObserver / visibilitychange)
+        // avant que setupScene ait tourné via requestIdleCallback :
+        // on ignore les frames tant que la scène n'est pas prête.
+        if (!sceneReady || !sphere1Canvas) return;
         const relativeTime = time - startTime;
         ctx.clearRect(0, 0, w, h);
 
@@ -275,78 +335,84 @@ export const initHeroCanvas = (): (() => void) | undefined => {
                         relativeTime * 0.001 * star.speed + star.phase,
                     );
             ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${star.a * twinkle})`;
-            ctx.fillRect(star.x - px * 10, star.y - py * 10, 1, 1);
+            ctx.fillRect(star.x - px * 10, star.y - py * 10, starPx, starPx);
         }
 
         // --- Planet 1 ---
-        // Pinned to the right edge, rings clear of hero center.
-        const p1X = w * 1.0 - px * 40 + Math.sin(relativeTime / 3000) * 8;
-        const p1Y = h * 0.4 - py * 40 + Math.cos(relativeTime / 3000) * 8;
-        const r1 = Math.min(w, h) * 0.7;
+        // Desktop : bord droit à mi-hauteur. Compact : haut-droite, au-dessus
+        // du titre, pour libérer la zone de lecture.
+        const p1X =
+            (isCompactLayout ? w * 0.82 : w * 1.0) -
+            px * 40 +
+            Math.sin(relativeTime / 3000) * 8;
+        const p1Y =
+            (isCompactLayout ? h * 0.2 : h * 0.4) -
+            py * 40 +
+            Math.cos(relativeTime / 3000) * 8;
+        const r1 = isCompactLayout
+            ? Math.min(w * 0.52, h * 0.22, 220)
+            : Math.min(w, h) * 0.7;
 
         drawRing(
             rings1Data,
             p1X,
             p1Y,
             r1,
-            -0.25,
+            ringTilt1,
             0.00008,
             relativeTime,
             color,
             true,
+            ringDotPx,
         );
-        ctx.drawImage(
-            sphere1Canvas,
-            p1X - sphere1Canvas.width / 2,
-            p1Y - sphere1Canvas.height / 2,
-        );
+        drawSphere(sphere1Canvas, p1X, p1Y);
         drawRing(
             rings1Data,
             p1X,
             p1Y,
             r1,
-            -0.25,
+            ringTilt1,
             0.00008,
             relativeTime,
             color,
             false,
+            ringDotPx,
         );
 
-        // --- Planet 2 ---
-        // Slightly offscreen left, mirrored.
-        const p2X =
-            w * -0.02 - px * 25 + Math.sin(relativeTime / 4000 + 1) * 6;
-        const p2Y =
-            h * 0.74 - py * 25 + Math.cos(relativeTime / 4000 + 1) * 6;
-        const r2 = Math.min(w, h) * 0.5;
+        // --- Planet 2 (desktop uniquement) ---
+        if (sphere2Canvas) {
+            const p2X =
+                w * -0.02 - px * 25 + Math.sin(relativeTime / 4000 + 1) * 6;
+            const p2Y =
+                h * 0.74 - py * 25 + Math.cos(relativeTime / 4000 + 1) * 6;
+            const r2 = Math.min(w, h) * 0.5;
 
-        drawRing(
-            rings2Data,
-            p2X,
-            p2Y,
-            r2,
-            -0.22,
-            -0.00012,
-            relativeTime,
-            color,
-            true,
-        );
-        ctx.drawImage(
-            sphere2Canvas,
-            p2X - sphere2Canvas.width / 2,
-            p2Y - sphere2Canvas.height / 2,
-        );
-        drawRing(
-            rings2Data,
-            p2X,
-            p2Y,
-            r2,
-            -0.22,
-            -0.00012,
-            relativeTime,
-            color,
-            false,
-        );
+            drawRing(
+                rings2Data,
+                p2X,
+                p2Y,
+                r2,
+                ringTilt2,
+                -0.00012,
+                relativeTime,
+                color,
+                true,
+                ringDotPx,
+            );
+            drawSphere(sphere2Canvas, p2X, p2Y);
+            drawRing(
+                rings2Data,
+                p2X,
+                p2Y,
+                r2,
+                ringTilt2,
+                -0.00012,
+                relativeTime,
+                color,
+                false,
+                ringDotPx,
+            );
+        }
 
         // Smooth mouse-parallax interpolation
         mouseX += (targetMouseX - mouseX) * 0.05;
@@ -361,6 +427,7 @@ export const initHeroCanvas = (): (() => void) | undefined => {
 
     const play = () => {
         if (staticMode || animFrame || !inView || document.hidden) return;
+        if (!sceneReady) return;
         animFrame = requestAnimationFrame(loop);
     };
 
@@ -371,7 +438,12 @@ export const initHeroCanvas = (): (() => void) | undefined => {
 
     const startAnimation = () => {
         pause();
-        setupScene();
+        const ok = setupScene();
+        if (!ok) {
+            // Hero pas encore mis en page : on réessaie à la prochaine frame.
+            requestAnimationFrame(startAnimation);
+            return;
+        }
         if (staticMode) {
             // Reduced motion: single static frame, no loop.
             drawFrame(performance.now());
