@@ -1,0 +1,987 @@
+---
+import { getCollection } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import Icon from "../components/Icon.astro";
+import { SITE_TITLE, SITE_DESCRIPTION, GITHUB_URL } from "../consts";
+
+const posts = (await getCollection("blog"))
+    .filter((p) => !p.data.draft)
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+    .slice(0, 3);
+
+const missions = [
+    {
+        context: "Startup SaaS B2C",
+        badge: "Audit & Refonte",
+        title: "Optimisation critique & refonte backend",
+        description:
+            "Audit et refonte complète d'un SaaS à forte dette technique : stabilisation de la base de code, sécurisation des endpoints, optimisation des requêtes SQL et stratégie de cache Redis. Conseil sur la stack et documentation technique exhaustive.",
+        metrics: [
+            { value: "-40%", label: "temps de chargement (cache Redis)" },
+            { value: "SQL", label: "requêtes optimisées" },
+        ],
+        tags: ["Bun", "TypeScript", "PostgreSQL", "Redis", "Docker"],
+    },
+    {
+        context: "IoT & Audio embarqué",
+        badge: "App Desktop & API",
+        title: "API sécurisée & pilotage d'imprimantes",
+        description:
+            "API REST modulaire et sécurisée (JWT) avec Node.js, Express et TypeScript. SPA React optimisée (mémoïsation, hooks) et application desktop Electron pour la gestion d'imprimantes CUPS en mode hors-ligne.",
+        metrics: [
+            { value: "-30%", label: "temps de chargement (React)" },
+            { value: "CUPS", label: "imprimantes Zebra hors-ligne" },
+        ],
+        tags: ["React", "TypeScript", "Express", "Electron", "CUPS"],
+    },
+];
+
+const stats = [
+    {
+        label: "Expérience",
+        value: "3 ans d'activité",
+        desc: "Web, Backend & Systèmes embarqués",
+    },
+    {
+        label: "Fullstack & Systèmes",
+        value: "Go, TS, C & Linux",
+        desc: "De l'assembleur aux frameworks web",
+    },
+    {
+        label: "Architecture & API",
+        value: "NestJS, Fastify, SQL",
+        desc: "PostgreSQL, Redis & microservices",
+    },
+    {
+        label: "Approche",
+        value: "Clean Code & Craft",
+        desc: "Précision, sobriété et maintenabilité",
+    },
+];
+
+const formatShortDate = (d: Date) =>
+    d
+        .toLocaleDateString("fr-FR", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric",
+        })
+        .replace(".", "");
+
+const readingTime = (body?: string) => {
+    if (!body) return "6 min";
+    const words = body.trim().split(/\s+/).length;
+    return `${Math.max(3, Math.round(words / 200))} min`;
+};
+
+const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE_TITLE,
+    url: "https://epitexam.github.io",
+    description: SITE_DESCRIPTION,
+    author: {
+        "@type": "Person",
+        name: "Epitexam",
+        url: "https://epitexam.github.io",
+        sameAs: [GITHUB_URL],
+    },
+};
+---
+
+<!doctype html>
+<html lang="fr">
+    <head>
+        <BaseHead title={`${SITE_TITLE} — Développeur Fullstack & Ingénierie Logicielle`} description={SITE_DESCRIPTION} />
+        <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    </head>
+    <body>
+        <Header />
+
+        <main class="home">
+            <!-- HERO -->
+            <section class="hero" aria-labelledby="hero-title">
+                <canvas id="am-canvas" aria-hidden="true"></canvas>
+                <div class="hero-inner">
+                    <h1 id="hero-title">
+                        Développeur Fullstack &<br />
+                        Ingénierie Logicielle
+                    </h1>
+                    <p class="hero-sub">
+                        Développeur passionné par les technologies et
+                        l'innovation. Conception de systèmes robustes, de
+                        plateformes web réactives aux solutions embarquées et
+                        microservices haute fiabilité.
+                    </p>
+                    <div class="hero-cta">
+                        <a href="/project" class="btn-dark">
+                            Voir les réalisations
+                            <Icon name="arrow-down" size={17} />
+                        </a>
+                        <a href="/tools" class="btn-ghost">
+                            Expertise & stack
+                            <Icon name="arrow-right" size={17} />
+                        </a>
+                    </div>
+
+                    <dl class="hero-stats">
+                        {
+                            stats.map((s) => (
+                                <div class="stat">
+                                    <dt>{s.label}</dt>
+                                    <dd class="stat-value">{s.value}</dd>
+                                    <dd class="stat-desc">{s.desc}</dd>
+                                </div>
+                            ))
+                        }
+                    </dl>
+                </div>
+            </section>
+
+            <!-- MISSIONS -->
+            <section class="section" aria-labelledby="missions-title">
+                <div class="wrap">
+                    <p class="eyebrow">
+                        <span>01 / Parcours & réalisations</span>
+                        <span class="eyebrow-right">02 missions majeures</span>
+                    </p>
+                    <h2 id="missions-title">Missions en Production</h2>
+
+                    <div class="mission-grid">
+                        {
+                            missions.map((m, i) => (
+                                <article
+                                    class="mission-card reveal"
+                                    style={`--reveal-delay:${i * 0.08}s`}
+                                >
+                                    <div class="mission-top">
+                                        <p class="mission-context">
+                                            <span
+                                                class="pulse"
+                                                aria-hidden="true"
+                                            />
+                                            {m.context}
+                                        </p>
+                                        <span class="mission-badge">
+                                            {m.badge}
+                                        </span>
+                                    </div>
+                                    <h3>{m.title}</h3>
+                                    <p class="mission-desc">{m.description}</p>
+                                    <div class="mission-metrics">
+                                        {m.metrics.map((metric) => (
+                                            <div class="metric">
+                                                <span class="metric-value">
+                                                    {metric.value}
+                                                </span>
+                                                <span class="metric-label">
+                                                    {metric.label}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <ul class="tag-list">
+                                        {m.tags.map((t) => (
+                                            <li>{t}</li>
+                                        ))}
+                                    </ul>
+                                </article>
+                            ))
+                        }
+                    </div>
+
+                    <div class="section-more reveal">
+                        <a href="/about" class="btn-dark btn-sm">
+                            Explorer l'ensemble du parcours
+                            <Icon name="arrow-right" size={16} />
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NOTES -->
+            <section class="section section-alt" aria-labelledby="notes-title">
+                <div class="wrap">
+                    <p class="eyebrow">
+                        <span>02 / Écrits</span>
+                    </p>
+                    <div class="notes-head">
+                        <h2 id="notes-title">Notes Techniques</h2>
+                        <a href="/blog" class="link-more">
+                            Archives complètes
+                            <Icon name="arrow-up-right" size={15} />
+                        </a>
+                    </div>
+
+                    <ul class="note-list reveal">
+                        {
+                            posts.map((post) => {
+                                const slug = post.id.replace(/\.mdx?$/, "");
+                                return (
+                                    <li>
+                                        <a
+                                            href={`/blog/${slug}/`}
+                                            class="note-row"
+                                        >
+                                            <span class="note-date">
+                                                {formatShortDate(
+                                                    post.data.pubDate,
+                                                )}
+                                            </span>
+                                            <span class="note-title">
+                                                {post.data.title}
+                                            </span>
+                                            <span class="note-tags">
+                                                {post.data.tags
+                                                    .slice(0, 2)
+                                                    .join(" · ")}
+                                            </span>
+                                            <span class="note-time">
+                                                {readingTime(post.body)}
+                                                <Icon
+                                                    name="arrow-right"
+                                                    size={15}
+                                                />
+                                            </span>
+                                        </a>
+                                    </li>
+                                );
+                            })
+                        }
+                    </ul>
+                </div>
+            </section>
+
+            <!-- CONTACT -->
+            <section class="section contact" aria-labelledby="contact-title">
+                <div class="wrap contact-inner reveal">
+                    <p class="eyebrow eyebrow-center">
+                        Disponibilité & contact
+                    </p>
+                    <h2 id="contact-title">
+                        Un projet ou un système à<br />concevoir ?
+                    </h2>
+                    <p class="contact-sub">
+                        Disponible pour des missions d'ingénierie logicielle,
+                        refontes d'architectures critiques ou développements
+                        fullstack exigeants.
+                    </p>
+                    <ul class="contact-badges">
+                        <li>Code audité & testé</li>
+                        <li>CI/CD & environnements reproductibles</li>
+                        <li>Documentation exhaustive</li>
+                    </ul>
+                    <a href="/contact" class="btn-light">
+                        Lancer un échange
+                        <Icon name="arrow-up-right" size={17} />
+                    </a>
+                </div>
+            </section>
+        </main>
+
+        <Footer />
+
+        <script>
+            import { initHeroCanvas } from "../scripts/hero-canvas.ts";
+            const cleanup = initHeroCanvas();
+            document.addEventListener(
+                "astro:before-swap",
+                () => {
+                    if (cleanup) cleanup();
+                },
+                { once: true },
+            );
+        </script>
+
+        <script>
+            // Scroll reveal: desktop only, single observer,
+            // disconnect after reveal (~zero cost).
+            const rootEl = document.documentElement;
+            const okMotion = window.matchMedia(
+                "(prefers-reduced-motion: no-preference)",
+            ).matches;
+            const okScreen = window.matchMedia("(min-width: 769px)").matches;
+            if (okMotion && okScreen && "IntersectionObserver" in window) {
+                rootEl.classList.add("js");
+                const revealEls = document.querySelectorAll(".reveal");
+                const io = new IntersectionObserver(
+                    (entries) => {
+                        for (const entry of entries) {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.add("is-visible");
+                                io.unobserve(entry.target);
+                            }
+                        }
+                    },
+                    { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
+                );
+                revealEls.forEach((el) => io.observe(el));
+                document.addEventListener(
+                    "astro:before-swap",
+                    () => io.disconnect(),
+                    { once: true },
+                );
+            }
+        </script>
+
+        <style>
+            .home {
+                max-width: none;
+                margin: 0;
+                padding: 0;
+                padding-block: var(--header-height) 0;
+                display: block;
+                min-height: 100dvh;
+            }
+            .home .section :is(h1, h2, h3),
+            .home .mission-card h3 {
+                animation: none;
+            }
+
+            /* ——— HERO ——— */
+            .hero {
+                position: relative;
+                overflow: hidden;
+                background: rgb(var(--bg));
+                border-bottom: 1px solid var(--color-border);
+                isolation: isolate;
+                /* Full-height hero: header + hero = 100vh viewport,
+                   next section starts below the fold */
+                min-height: calc(100svh - var(--header-height));
+                min-height: calc(100dvh - var(--header-height));
+                display: flex;
+            }
+            #am-canvas {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+                pointer-events: none;
+            }
+            .hero-inner {
+                position: relative;
+                z-index: 1;
+                width: 100%;
+                max-width: var(--max-width);
+                margin-inline: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: clamp(4rem, 8vw, 7rem)
+                    var(--content-padding) 0;
+            }
+            .hero h1 {
+                /* Auto top margin splits free space above/below,
+                   centering the title block */
+                margin: auto 0 2rem;
+                font-size: clamp(2.75rem, 6vw, 4.5rem);
+                line-height: 1.03;
+                font-weight: 700;
+                letter-spacing: -0.04em;
+                text-wrap: balance;
+            }
+            .hero-sub {
+                max-width: 60ch;
+                font-size: clamp(1rem, 1.6vw, 1.15rem);
+                line-height: 1.7;
+                color: var(--color-muted);
+                margin: 0 0 3rem;
+            }
+            .hero-cta {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                align-items: center;
+                justify-content: center;
+                margin-bottom: 0;
+                /* Minimum air above the stats */
+                padding-bottom: clamp(3rem, 6vw, 5rem);
+            }
+            .btn-dark,
+            .btn-ghost,
+            .btn-light {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.65rem;
+                font-family: var(--font-title);
+                font-weight: 500;
+                font-size: 0.95rem;
+                letter-spacing: -0.01em;
+                padding: 0.95rem 1.6rem;
+                border-radius: var(--radius-sm);
+                border: 1px solid var(--color-border);
+                text-decoration: none;
+                transition:
+                    transform 0.2s var(--ease-spring),
+                    background 0.2s ease,
+                    border-color 0.2s ease,
+                    color 0.2s ease;
+            }
+            .btn-dark {
+                background: var(--tint-05);
+                color: var(--color-text);
+            }
+            .btn-ghost {
+                border-color: transparent;
+                color: var(--color-muted);
+            }
+            .btn-light {
+                background: rgb(var(--text));
+                color: rgb(var(--bg));
+                border-color: transparent;
+            }
+            @media (hover: hover) {
+                .btn-dark:hover {
+                    border-color: var(--tint-30);
+                    transform: translateY(-1px);
+                }
+                .btn-dark:hover :global(.icon) {
+                    transform: translateY(2px);
+                }
+                .btn-ghost:hover {
+                    color: var(--color-text);
+                }
+                .btn-ghost:hover :global(.icon),
+                .btn-sm:hover :global(.icon) {
+                    transform: translateX(3px);
+                }
+                .btn-light:hover {
+                    transform: translateY(-1px);
+                }
+                .btn-light:hover :global(.icon) {
+                    transform: translate(2px, -2px);
+                }
+            }
+            .btn-sm {
+                font-size: 0.85rem;
+                padding: 0.8rem 1.3rem;
+            }
+
+            .hero-stats {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 2rem;
+                /* Stats span full width, left-aligned text */
+                align-self: stretch;
+                text-align: left;
+                /* Pinned to the full-height hero bottom (auto margin
+                   absorbs remaining free space) */
+                margin: auto 0 0;
+                padding: 2rem 0 3rem;
+                border-top: 1px solid var(--color-border);
+                list-style: none;
+            }
+            .stat dt {
+                font-family: var(--font-code);
+                font-size: 0.72rem;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                color: var(--color-muted);
+                opacity: 0.8;
+                margin-bottom: 0.6rem;
+            }
+            .stat dd {
+                margin: 0;
+            }
+            .stat-value {
+                font-family: var(--font-title);
+                font-weight: 600;
+                font-size: 1.05rem;
+                letter-spacing: -0.01em;
+                color: var(--color-text);
+            }
+            .stat-desc {
+                font-size: 0.85rem;
+                line-height: 1.55;
+                color: var(--color-muted);
+                margin-top: 0.3rem !important;
+            }
+
+            /* ——— SECTIONS ——— */
+            .section {
+                border-bottom: 1px solid var(--color-border);
+                padding: clamp(4rem, 7vw, 6rem) 0 clamp(4rem, 7vw, 5.5rem);
+            }
+            .section-alt {
+                background: var(--tint-05);
+            }
+            .wrap {
+                max-width: var(--max-width);
+                margin-inline: auto;
+                padding-inline: var(--content-padding);
+            }
+            .eyebrow {
+                display: flex;
+                justify-content: space-between;
+                gap: 1rem;
+                font-family: var(--font-code);
+                font-size: 0.74rem;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                color: var(--color-muted);
+                opacity: 0.8;
+                margin: 0 0 0.6rem;
+            }
+            .eyebrow-center {
+                justify-content: center;
+            }
+            .eyebrow-right {
+                text-transform: none;
+                letter-spacing: 0.02em;
+            }
+            .section h2 {
+                margin: 0 0 2.5rem;
+                font-size: clamp(2rem, 4.5vw, 2.9rem);
+                letter-spacing: -0.03em;
+                font-weight: 700;
+            }
+
+            /* ——— MISSIONS ——— */
+            .mission-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.75rem;
+            }
+            .mission-card {
+                background: var(--color-surface);
+                border: 1px solid var(--color-border);
+                border-radius: var(--radius-lg);
+                padding: 2rem;
+                display: flex;
+                flex-direction: column;
+                gap: 1.1rem;
+                box-shadow: var(--shadow-soft);
+                transition:
+                    border-color 0.25s ease,
+                    transform 0.3s var(--ease-spring);
+            }
+            @media (hover: hover) {
+                .mission-card:hover {
+                    border-color: rgba(var(--accent), 0.22);
+                    transform: translateY(-2px);
+                }
+            }
+            .mission-top {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+            }
+            .mission-context {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.55rem;
+                font-family: var(--font-code);
+                font-size: 0.78rem;
+                color: var(--color-text);
+                margin: 0;
+            }
+            .pulse {
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: rgb(var(--badge-green-rgb));
+                box-shadow: 0 0 8px rgba(var(--badge-green-rgb), 0.8);
+                flex-shrink: 0;
+            }
+            .mission-badge {
+                font-family: var(--font-code);
+                font-size: 0.7rem;
+                color: var(--color-muted);
+                border: 1px solid var(--color-border);
+                border-radius: var(--radius-sm);
+                padding: 0.3rem 0.7rem;
+                white-space: nowrap;
+            }
+            .mission-card h3 {
+                margin: 0;
+                font-size: 1.3rem;
+                letter-spacing: -0.02em;
+                line-height: 1.3;
+            }
+            .mission-desc {
+                margin: 0;
+                font-size: 0.98rem;
+                line-height: 1.7;
+            }
+            .mission-metrics {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.75rem;
+            }
+            .metric {
+                border: 1px solid var(--color-border);
+                border-radius: var(--radius-sm);
+                background: var(--tint-05);
+                padding: 0.9rem 1rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.2rem;
+            }
+            .metric-value {
+                font-family: var(--font-code);
+                font-size: 1rem;
+                font-weight: 500;
+                color: rgb(var(--badge-green-rgb));
+            }
+            .metric-label {
+                font-family: var(--font-code);
+                font-size: 0.7rem;
+                color: var(--color-muted);
+                line-height: 1.4;
+            }
+            .tag-list {
+                list-style: none;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                margin: auto 0 0;
+                padding: 1.25rem 0 0;
+            }
+            .tag-list li {
+                font-family: var(--font-code);
+                font-size: 0.72rem;
+                color: var(--color-muted);
+                border: 1px solid var(--color-border);
+                background: var(--tint-05);
+                border-radius: var(--radius-sm);
+                padding: 0.32rem 0.7rem;
+            }
+            .section-more {
+                display: flex;
+                justify-content: flex-end;
+                margin-top: 2rem;
+            }
+
+            /* ——— NOTES ——— */
+            .notes-head {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+            }
+            .notes-head h2 {
+                margin-bottom: 2rem;
+                font-size: clamp(1.7rem, 3.5vw, 2.3rem);
+            }
+            .link-more {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-family: var(--font-title);
+                font-size: 0.85rem;
+                font-weight: 500;
+                color: var(--color-muted);
+                white-space: nowrap;
+                padding-bottom: 2rem;
+            }
+            .link-more:hover {
+                color: var(--color-text);
+            }
+            .link-more:hover :global(.icon) {
+                transform: translate(2px, -2px);
+            }
+            .note-list {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+            .note-row {
+                display: grid;
+                grid-template-columns: 130px 1fr auto auto;
+                align-items: center;
+                gap: 1.5rem;
+                padding: 1.35rem 0.25rem;
+                border-top: 1px solid var(--color-border);
+                text-decoration: none;
+            }
+            .note-list li:last-child .note-row {
+                border-bottom: 1px solid var(--color-border);
+            }
+            .note-date {
+                font-family: var(--font-code);
+                font-size: 0.76rem;
+                color: var(--color-muted);
+                opacity: 0.85;
+            }
+            .note-title {
+                font-family: var(--font-title);
+                font-size: 1.02rem;
+                font-weight: 600;
+                letter-spacing: -0.01em;
+                color: var(--color-text);
+                min-width: 0;
+            }
+            .note-tags {
+                font-family: var(--font-code);
+                font-size: 0.7rem;
+                color: var(--color-muted);
+                border: 1px solid var(--color-border);
+                border-radius: var(--radius-sm);
+                padding: 0.3rem 0.7rem;
+                white-space: nowrap;
+            }
+            .note-time {
+                font-family: var(--font-code);
+                font-size: 0.76rem;
+                color: var(--color-muted);
+                display: inline-flex;
+                gap: 0.65rem;
+                align-items: center;
+                white-space: nowrap;
+            }
+            @media (hover: hover) {
+                .note-row:hover .note-title {
+                    text-decoration: underline;
+                    text-underline-offset: 4px;
+                }
+                .note-row:hover .note-time {
+                    color: var(--color-text);
+                }
+                .note-row:hover :global(.icon) {
+                    transform: translateX(3px);
+                }
+            }
+
+            /* ——— CONTACT ——— */
+            .contact {
+                text-align: center;
+            }
+            .contact-inner {
+                max-width: 780px;
+            }
+            .contact h2 {
+                font-size: clamp(2.2rem, 5vw, 3.2rem);
+                line-height: 1.12;
+                margin-bottom: 1.25rem;
+            }
+            .contact-sub {
+                font-size: 1rem;
+                max-width: 58ch;
+                margin: 0 auto 1.75rem;
+            }
+            .contact-badges {
+                list-style: none;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.65rem;
+                margin: 0 0 2.25rem;
+                padding: 0;
+            }
+            .contact-badges li {
+                font-family: var(--font-code);
+                font-size: 0.72rem;
+                color: var(--color-muted);
+                border: 1px solid var(--color-border);
+                border-radius: var(--radius-sm);
+                padding: 0.4rem 0.8rem;
+                background: var(--tint-05);
+            }
+
+            @media (max-width: 900px) {
+                .note-row {
+                    grid-template-columns: 100px 1fr auto;
+                }
+                .note-tags {
+                    display: none;
+                }
+            }
+            @media (max-width: 768px) {
+                .hero {
+                    min-height: auto;
+                }
+                .hero-inner {
+                    padding-inline: var(--content-padding-mobile);
+                }
+                .wrap {
+                    padding-inline: var(--content-padding-mobile);
+                }
+                .hero h1 {
+                    font-size: clamp(2rem, 10vw, 2.75rem);
+                    line-height: 1.08;
+                    text-wrap: balance;
+                }
+                .hero-stats {
+                    grid-template-columns: 1fr 1fr;
+                    gap: 1.5rem;
+                }
+                .mission-grid {
+                    grid-template-columns: 1fr;
+                }
+                .mission-card {
+                    padding: 1.5rem;
+                }
+                .notes-head {
+                    flex-wrap: wrap;
+                    row-gap: 0;
+                }
+                .link-more {
+                    /* Large enough touch target */
+                    padding-block: 0.75rem;
+                }
+                .note-row {
+                    grid-template-columns: 1fr auto;
+                    gap: 0.5rem 1rem;
+                }
+                .note-date {
+                    grid-column: 1 / -1;
+                }
+            }
+            @media (max-width: 480px) {
+                .hero-inner {
+                    padding-top: 3rem;
+                }
+                .hero h1 {
+                    font-size: clamp(1.85rem, 9.5vw, 2.2rem);
+                }
+                .hero-sub {
+                    font-size: 0.95rem;
+                }
+                .hero-cta {
+                    flex-direction: column;
+                    align-items: stretch;
+                }
+                .btn-dark,
+                .btn-ghost,
+                .btn-light {
+                    justify-content: center;
+                    min-height: 48px;
+                }
+                .hero-stats {
+                    gap: 1.25rem 1rem;
+                }
+                .stat-value {
+                    font-size: 0.95rem;
+                }
+                .stat-desc {
+                    font-size: 0.78rem;
+                }
+                .section h2 {
+                    font-size: 1.7rem;
+                    margin-bottom: 1.75rem;
+                }
+                .eyebrow {
+                    font-size: 0.66rem;
+                    flex-wrap: wrap;
+                    row-gap: 0.25rem;
+                }
+                .eyebrow-right {
+                    display: none;
+                }
+                .mission-top {
+                    flex-wrap: wrap;
+                    row-gap: 0.6rem;
+                }
+                .mission-card h3 {
+                    font-size: 1.15rem;
+                }
+                .mission-metrics {
+                    grid-template-columns: 1fr;
+                }
+                .notes-head h2 {
+                    margin-bottom: 0.25rem;
+                }
+                .note-row {
+                    padding-block: 1.1rem;
+                }
+                .note-title {
+                    font-size: 0.95rem;
+                }
+                .contact h2 {
+                    font-size: 1.9rem;
+                }
+                .contact-sub {
+                    font-size: 0.92rem;
+                }
+            }
+            @media (prefers-reduced-motion: reduce) {
+                .mission-card,
+                .btn-dark,
+                .btn-ghost,
+                .btn-light {
+                    transition: none;
+                    transform: none !important;
+                }
+            }
+
+            /* ——— ANIMATIONS (desktop only, GPU-friendly) ——— */
+            /* Cascading hero entrance: transform/opacity only,
+               GPU-composited with no reflow. */
+            @media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
+                @keyframes hero-rise {
+                    from {
+                        opacity: 0;
+                        transform: translateY(26px);
+                    }
+                    to {
+                        opacity: 1;
+                        transform: none;
+                    }
+                }
+                .hero h1 {
+                    animation: hero-rise 0.7s var(--ease-spring) both;
+                    animation-delay: 0.05s;
+                }
+                .hero-sub {
+                    animation: hero-rise 0.7s var(--ease-spring) both;
+                    animation-delay: 0.15s;
+                }
+                .hero-cta {
+                    animation: hero-rise 0.7s var(--ease-spring) both;
+                    animation-delay: 0.25s;
+                }
+                .hero-stats {
+                    animation: hero-rise 0.8s var(--ease-spring) both;
+                    animation-delay: 0.35s;
+                }
+            }
+
+            /* Scroll reveal: hidden state applies only with JS on
+               (the `js` class), so content stays visible without JS,
+               on mobile, and with reduced motion. */
+            .reveal {
+                transition:
+                    opacity 0.7s ease,
+                    transform 0.7s var(--ease-spring);
+                transition-delay: var(--reveal-delay, 0s);
+            }
+            html.js .reveal {
+                opacity: 0;
+                transform: translateY(28px);
+            }
+            html.js .reveal.is-visible {
+                opacity: 1;
+                transform: none;
+            }
+            @media (max-width: 768px), (prefers-reduced-motion: reduce) {
+                html.js .reveal {
+                    opacity: 1;
+                    transform: none;
+                    transition: none;
+                }
+            }
+
+            /* Green dot pulse (6px, negligible paint cost) */
+            @media (prefers-reduced-motion: no-preference) {
+                @keyframes pulse-dot {
+                    0%,
+                    100% {
+                        box-shadow: 0 0 8px rgba(var(--badge-green-rgb), 0.8);
+                    }
+                    50% {
+                        box-shadow: 0 0 0 6px rgba(var(--badge-green-rgb), 0);
+                    }
+                }
+                .pulse {
+                    animation: pulse-dot 2.4s ease-out infinite;
+                }
+            }
+        </style>
+    </body>
+</html>
