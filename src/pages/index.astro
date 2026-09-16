@@ -284,8 +284,27 @@ const jsonLd = {
         <Footer />
 
         <script>
-            import { initHeroCanvas } from "../scripts/hero-canvas.ts";
-            const cleanup = initHeroCanvas();
+            let cleanup: (() => void) | undefined;
+            const startHero = () => {
+                import("../scripts/hero-canvas.ts")
+                    .then((m) => {
+                        cleanup = m.initHeroCanvas();
+                    })
+                    .catch(() => {});
+            };
+            const scheduleHero = () => {
+                const ric = (window as any).requestIdleCallback;
+                if (typeof ric === "function") {
+                    ric.call(window, startHero, { timeout: 2000 });
+                } else {
+                    setTimeout(startHero, 1500);
+                }
+            };
+            if (document.readyState === "complete") {
+                scheduleHero();
+            } else {
+                window.addEventListener("load", scheduleHero, { once: true });
+            }
             document.addEventListener(
                 "astro:before-swap",
                 () => {

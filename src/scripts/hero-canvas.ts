@@ -209,8 +209,9 @@ export const initHeroCanvas = (): (() => void) | undefined => {
     let startTime = 0;
 
     const setupScene = () => {
-        w = hero.clientWidth;
-        h = hero.clientHeight;
+        const rect = hero.getBoundingClientRect();
+        w = rect.width;
+        h = rect.height;
         // Le hero peut ne pas être mis en page encore (w/h à 0) si
         // setupScene tourne avant le layout : on réessaie plus tard.
         if (w <= 0 || h <= 0 || !Number.isFinite(w) || !Number.isFinite(h)) {
@@ -501,13 +502,20 @@ export const initHeroCanvas = (): (() => void) | undefined => {
         else play();
     };
     document.addEventListener("visibilitychange", onVisibilityChange);
-
-    if ("requestIdleCallback" in window) {
-        (window as any).requestIdleCallback(startAnimation, {
-            timeout: 300,
+    const scheduleStart = () => {
+        requestAnimationFrame(() => {
+            const ric = (window as any).requestIdleCallback;
+            if (typeof ric === "function") {
+                ric.call(window, startAnimation, { timeout: 1500 });
+            } else {
+                setTimeout(startAnimation, 100);
+            }
         });
+    };
+    if (document.readyState === "complete") {
+        scheduleStart();
     } else {
-        requestAnimationFrame(startAnimation);
+        window.addEventListener("load", scheduleStart, { once: true });
     }
 
     return () => {
