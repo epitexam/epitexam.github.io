@@ -36,6 +36,28 @@ export default defineConfig({
     }
   ],
   integrations: [
+    mermaid({
+      theme: 'dark',
+      autoTheme: false,
+      enableLog: false,
+      mermaidConfig: {
+        themeVariables: {
+          fontFamily: 'sans-serif',
+          background: 'transparent',
+          primaryColor: 'transparent',
+          primaryTextColor: 'rgb(232, 232, 234)',
+          primaryBorderColor: 'rgba(232, 232, 234, 0.11)',
+          lineColor: 'rgba(232, 232, 234, 0.30)',
+        },
+        flowchart: {
+          htmlLabels: false,
+          useMaxWidth: true,
+          nodeSpacing: 60,
+          rankSpacing: 80,
+          padding: 20,
+        },
+      },
+    }),
     mdx({
       optimize: true,
     }),
@@ -44,24 +66,6 @@ export default defineConfig({
       priority: 0.7,
       filter: (page) => !page.includes("/muffin"),
     }),
-    mermaid({
-      theme: 'dark',
-      themeVariables: {
-        fontFamily: 'sans-serif',
-        background: 'transparent',
-        primaryColor: 'transparent',
-        primaryTextColor: 'rgb(232, 232, 234)',
-        primaryBorderColor: 'rgba(232, 232, 234, 0.11)',
-        lineColor: 'rgba(232, 232, 234, 0.30)',
-      },
-      flowchart: {
-        htmlLabels: false,
-        useMaxWidth: true,
-        nodeSpacing: 60,
-        rankSpacing: 80,
-        padding: 20,
-      }
-    })
   ],
 
   image: {
