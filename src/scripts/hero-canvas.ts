@@ -3,8 +3,8 @@
  *
  * Responsive: runs on all screens. Below laptop (< 1024px) we switch to a
  * "compact" staging: single smaller planet pinned top-right away from text,
- * bigger dots, tilted ring, no second planet. On phones (< 768px) quality
- * is also scaled down (capped DPR, fewer stars). Mouse parallax needs a
+ * bigger dots, tilted ring, no second planet. On phones (< 768px) we render
+ * a single static frame (no rAF loop) with capped DPR. Mouse parallax needs a
  * fine pointer. Renders a single static frame under
  * `prefers-reduced-motion`, and pauses offscreen or in hidden tabs.
  *
@@ -91,7 +91,7 @@ export const initHeroCanvas = (): (() => void) | undefined => {
         const centerX = size / 2;
         const centerY = size / 2;
 
-        const dotCount = Math.floor(radius * radius * 0.15 * density);
+        const dotCount = Math.floor(radius * radius * 0.05 * density);
         for (let i = 0; i < dotCount; i++) {
             const angle = Math.random() * Math.PI * 2;
             const dotRadius = Math.sqrt(Math.random()) * radius;
@@ -137,7 +137,8 @@ export const initHeroCanvas = (): (() => void) | undefined => {
         return points;
     };
 
-    /** Draw a ring of dotted points with a simple 3-D tilt projection. */
+    /** Draw a ring of dotted points with a simple 3-D tilt projection.
+     * Uses a single fillStyle + globalAlpha (no per-dot rgba string). */
     const drawRing = (
         points: RingPoint[],
         centerX: number,
@@ -153,6 +154,7 @@ export const initHeroCanvas = (): (() => void) | undefined => {
         const sinTilt = Math.sin(tilt);
         const cosTilt = Math.cos(tilt);
 
+        ctx.fillStyle = `rgb(${color.r},${color.g},${color.b})`;
         for (let i = 0; i < points.length; i++) {
             const point = points[i];
             const angle = point.baseT + time * rotationSpeed;
@@ -171,9 +173,10 @@ export const initHeroCanvas = (): (() => void) | undefined => {
                 if (depthZ < 0) continue;
             }
 
-            ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${point.alpha})`;
+            ctx.globalAlpha = point.alpha;
             ctx.fillRect(centerX + x, centerY + projectedY, dotPx, dotPx);
         }
+        ctx.globalAlpha = 1;
     };
 
     let w = 0,
@@ -218,10 +221,10 @@ export const initHeroCanvas = (): (() => void) | undefined => {
         isCompactLayout = w < 1024;
         isMobileLayout = w < 768;
 
-        // Mobile: capped DPR. Compact garde un alpha lisible (0.9) au lieu
-        // de 0.65 qui rendait les points illisibles.
+        // DPR plafonné : 1 sur mobile (1 frame statique de toute façon),
+        // 1.5 sur desktop — 2x doublait le coût fillRect/drawImage.
         dpr = Math.min(
-            isMobileLayout ? 1.5 : 2,
+            isMobileLayout ? 1 : 1.5,
             window.devicePixelRatio || 1,
         );
         canvas.width = Math.round(w * dpr);
@@ -243,7 +246,7 @@ export const initHeroCanvas = (): (() => void) | undefined => {
 
         stars = [];
         const starCount = Math.floor(
-            (w * h) / (isCompactLayout ? 24000 : 12000),
+            (w * h) / (isCompactLayout ? 36000 : 24000),
         );
         for (let i = 0; i < starCount; i++) {
             stars.push({
@@ -269,14 +272,14 @@ export const initHeroCanvas = (): (() => void) | undefined => {
             [-0.55, -0.35],
             color,
             alphaBoost,
-            isCompactLayout ? 0.8 : 1,
+            isCompactLayout ? 0.6 : 0.7,
             sphereDotPx,
             dpr,
         );
         rings1Data = generateRingData(
             r1,
             alphaBoost,
-            isCompactLayout ? 0.9 : 1,
+            isCompactLayout ? 0.6 : 0.7,
             isCompactLayout ? [1.45, 0.4] : [1.35, 0.3],
         );
 
@@ -292,11 +295,11 @@ export const initHeroCanvas = (): (() => void) | undefined => {
                 [0.55, -0.4],
                 color,
                 alphaBoost,
-                1,
+                0.7,
                 sphereDotPx,
                 dpr,
             );
-            rings2Data = generateRingData(r2, alphaBoost, 1);
+            rings2Data = generateRingData(r2, alphaBoost, 0.7);
         }
 
         startTime = performance.now();
@@ -326,6 +329,8 @@ export const initHeroCanvas = (): (() => void) | undefined => {
         const py = (mouseY - h / 2) / h;
 
         // --- Background stars (with subtle twinkling) ---
+        // Un seul fillStyle + globalAlpha : zéro alloc de string rgba/frame.
+        ctx.fillStyle = `rgb(${color.r},${color.g},${color.b})`;
         for (let i = 0; i < stars.length; i++) {
             const star = stars[i];
             const twinkle =
@@ -334,9 +339,10 @@ export const initHeroCanvas = (): (() => void) | undefined => {
                     Math.sin(
                         relativeTime * 0.001 * star.speed + star.phase,
                     );
-            ctx.fillStyle = `rgba(${color.r},${color.g},${color.b},${star.a * twinkle})`;
+            ctx.globalAlpha = star.a * twinkle;
             ctx.fillRect(star.x - px * 10, star.y - py * 10, starPx, starPx);
         }
+        ctx.globalAlpha = 1;
 
         // --- Planet 1 ---
         // Desktop : bord droit à mi-hauteur. Compact : haut-droite, au-dessus
@@ -419,15 +425,23 @@ export const initHeroCanvas = (): (() => void) | undefined => {
         mouseY += (targetMouseY - mouseY) * 0.05;
     };
 
+    let lastFrameTime = 0;
     const loop = (time: number) => {
         animFrame = 0;
-        drawFrame(time);
+        // Throttle ~30fps : divise par 2 le travail du thread principal,
+        // imperceptible pour un fond d'étoiles/planètes.
+        if (time - lastFrameTime >= 33) {
+            lastFrameTime = time;
+            drawFrame(time);
+        }
         animFrame = requestAnimationFrame(loop);
     };
 
     const play = () => {
-        if (staticMode || animFrame || !inView || document.hidden) return;
+        // Mobile (<768px) : 1 frame statique, jamais de boucle.
+        if (staticMode || isMobileLayout || animFrame || !inView || document.hidden) return;
         if (!sceneReady) return;
+        lastFrameTime = 0;
         animFrame = requestAnimationFrame(loop);
     };
 
@@ -444,8 +458,8 @@ export const initHeroCanvas = (): (() => void) | undefined => {
             requestAnimationFrame(startAnimation);
             return;
         }
-        if (staticMode) {
-            // Reduced motion: single static frame, no loop.
+        if (staticMode || isMobileLayout) {
+            // Reduced motion ou mobile : une seule frame statique, pas de boucle.
             drawFrame(performance.now());
         } else {
             play();
