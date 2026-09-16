@@ -31,10 +31,12 @@ export const initMermaid = (): void => {
                     "mermaid-" + Math.random().toString(36).slice(2, 11);
                 try {
                     const { svg } = await mermaid.render(id, source);
+                    // NOTE: ne pas faire de getElementById(id)?.remove() ici :
+                    // la racine <svg> générée porte elle-même cet id, et
+                    // mermaid nettoie déjà son propre conteneur temporaire.
                     block.innerHTML = svg;
                     block.classList.add("mermaid");
                     block.setAttribute("data-processed", "true");
-                    document.getElementById(id)?.remove();
                 } catch (err) {
                     console.error(
                         "[mermaid] rendering error:",
