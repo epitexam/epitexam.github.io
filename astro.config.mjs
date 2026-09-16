@@ -86,7 +86,9 @@ export default defineConfig({
     build: {
       cssMinify: "lightningcss",
       minify: "esbuild",
-      chunkSizeWarningLimit: 2500,
+      // Mermaid (~654K, lazy via dynamic import() uniquement sur pages avec diagrammes)
+      // Seuil juste au-dessus pour garder un garde-fou sans bruit à chaque build.
+      chunkSizeWarningLimit: 700,
     }
   },
 
