@@ -114,16 +114,6 @@ const IMG_H = 450;
                 if (interactive) return;
                 go();
             });
-
-            card.addEventListener("keydown", (event) => {
-                if (event.key !== "Enter" && event.key !== " ") return;
-                const interactive = (event.target as HTMLElement).closest(
-                    "a, button",
-                );
-                if (interactive) return;
-                event.preventDefault();
-                go();
-            });
         });
 </script>
 
