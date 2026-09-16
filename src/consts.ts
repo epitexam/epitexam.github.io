@@ -3,7 +3,7 @@
 
 export const SITE_TITLE = "Epitexam";
 export const SITE_DESCRIPTION =
-  "Portfolio de Epitexam - Développeur passionné par les technologies et l'innovation. Découvrez mes projets et articles dans domaine du développement logiciel.";
+  "Portfolio de Epitexam - Développeur passionné par les technologies et l'innovation. Découvrez mes projets et articles dans le domaine du développement logiciel.";
 export const GITHUB_URL = "https://github.com/epitexam";
 export const ALT_DESCRIPTION =
   "Vue en contre-plongée de plusieurs immeubles de bureaux imposants plongés dans l'obscurité";
