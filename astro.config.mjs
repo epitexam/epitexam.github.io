@@ -12,7 +12,7 @@ export default defineConfig({
   build: {
     format: "directory",
     assets: "_assets",
-    inlineStylesheets: "always",
+    inlineStylesheets: "auto",
   },
 
   fonts: [

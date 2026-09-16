@@ -1,0 +1,182 @@
+/* Mermaid diagrams — importé uniquement par les layouts d articles (BlogPost, ProjectPost).
+   Sorti de global.css pour ne pas peser sur les pages sans diagramme. */
+/* ============================================================
+   MERMAID DIAGRAMS HARMONIZATION
+   ============================================================ */
+.mermaid {
+    background: var(--color-surface) !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: var(--radius-lg) !important;
+    padding: 2.5rem !important;
+    margin-block: 3rem !important;
+    box-shadow: var(--shadow-strong) !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+
+    contain: layout paint style;
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
+
+    svg {
+        font-family: var(--font-title) !important;
+        overflow: visible !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        font-size: 17px !important;
+    }
+
+    .label foreignObject,
+    & foreignObject {
+        overflow: visible !important;
+        width: 100% !important;
+
+        div,
+        span,
+        p,
+        .nodeLabel,
+        .edgeLabel {
+            color: var(--color-text) !important;
+            background-color: transparent !important;
+            font-weight: 600 !important;
+        }
+    }
+
+    g.node rect,
+    g.node circle,
+    g.node polygon,
+    g.node path,
+    .node .main-gradient-element {
+        fill: var(--color-bg) !important;
+        stroke: var(--color-accent) !important;
+        stroke-width: 1.5px !important;
+        rx: 8px !important;
+        ry: 8px !important;
+        filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1)) !important;
+    }
+
+    .cluster rect,
+    rect.cluster,
+    .subgraph-border {
+        fill: var(--tint-05) !important;
+        stroke: var(--tint-14) !important;
+        stroke-width: 1px !important;
+        rx: 12px !important;
+        ry: 12px !important;
+        filter: none !important;
+    }
+
+    text,
+    tspan,
+    .label,
+    .cluster-label text {
+        color: var(--color-text) !important;
+        fill: var(--color-text) !important;
+        font-weight: 600 !important;
+        font-size: 16px !important;
+        letter-spacing: -0.01em !important;
+    }
+
+    .cluster-label text,
+    .cluster-label span {
+        font-size: 18px !important;
+        letter-spacing: 0.02em !important;
+        color: var(--color-muted) !important;
+        fill: var(--color-muted) !important;
+
+        div,
+        p {
+            color: var(--color-muted) !important;
+        }
+    }
+
+    .edgePath .path,
+    .flowchart-link,
+    path.link,
+    path.connection,
+    .transition {
+        stroke: var(--tint-30) !important;
+        stroke-width: 1.5px !important;
+        opacity: 1 !important;
+    }
+
+    [id^="mermaid-"] .edgeArrowMarker,
+    marker,
+    marker path,
+    .arrowheadPath,
+    #arrowhead,
+    [class*="arrowhead"] {
+        fill: var(--tint-30) !important;
+        stroke: var(--tint-30) !important;
+        stroke-width: 1px !important;
+    }
+
+    .edgeLabel {
+
+        rect,
+        .labelBox {
+            fill: var(--color-surface) !important;
+            stroke: var(--color-border) !important;
+            stroke-width: 1px !important;
+            rx: 4px !important;
+            ry: 4px !important;
+        }
+
+        text,
+        tspan,
+        div,
+        span {
+            fill: var(--color-text) !important;
+            color: var(--color-text) !important;
+            font-weight: 500 !important;
+            font-size: 14px !important;
+            background-color: transparent !important;
+        }
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    .mermaid {
+
+        g.node rect,
+        g.node circle,
+        g.node polygon,
+        g.node path,
+        .node .main-gradient-element {
+            fill: var(--color-surface) !important;
+            stroke: var(--color-accent) !important;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05)) !important;
+        }
+
+        .edgeLabel {
+            opacity: 1 !important;
+
+            rect,
+            .labelBox {
+                fill: var(--color-surface) !important;
+                opacity: 1 !important;
+            }
+
+            text,
+            tspan,
+            div,
+            span {
+                color: var(--color-text) !important;
+                fill: var(--color-text) !important;
+            }
+        }
+
+        foreignObject {
+
+            div,
+            span,
+            p,
+            .nodeLabel,
+            .edgeLabel {
+                color: var(--color-text) !important;
+            }
+        }
+    }
+}
