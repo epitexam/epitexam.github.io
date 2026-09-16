@@ -32,7 +32,7 @@ const IMG_H = 450;
             height={IMG_H}
             loading={isEager ? "eager" : "lazy"}
             fetchpriority={isEager ? "high" : "auto"}
-            decoding={isEager ? "sync" : "async"}
+            decoding="async"
             class="card-image"
         />
         {data.featured && <span class="badge-featured">Featured</span>}
