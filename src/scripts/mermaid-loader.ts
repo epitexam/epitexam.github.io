@@ -23,7 +23,29 @@ export const initMermaid = (): void => {
         rendered = true;
         try {
             const { default: mermaid } = await import("mermaid");
-            mermaid.initialize({ startOnLoad: false, theme: "dark" });
+            // Config identique à l'ancienne intégration astro-mermaid :
+            // - htmlLabels: false -> labels en texte SVG (mesurés au plus
+            //   juste ; en mode HTML les polices forcées par le CSS du site
+            //   débordaient des boîtes).
+            mermaid.initialize({
+                startOnLoad: false,
+                theme: "dark",
+                themeVariables: {
+                    fontFamily: "sans-serif",
+                    background: "transparent",
+                    primaryColor: "transparent",
+                    primaryTextColor: "rgb(232, 232, 234)",
+                    primaryBorderColor: "rgba(232, 232, 234, 0.11)",
+                    lineColor: "rgba(232, 232, 234, 0.30)",
+                },
+                flowchart: {
+                    htmlLabels: false,
+                    useMaxWidth: true,
+                    nodeSpacing: 60,
+                    rankSpacing: 80,
+                    padding: 20,
+                },
+            });
             for (const block of blocks) {
                 const source = block.textContent ?? "";
                 if (!source.trim()) continue;
@@ -36,6 +58,11 @@ export const initMermaid = (): void => {
                     // mermaid nettoie déjà son propre conteneur temporaire.
                     block.innerHTML = svg;
                     block.classList.add("mermaid");
+                    // Nettoie les restes Shiki (fond/bordures inline) pour ne
+                    // garder que le style .mermaid du site.
+                    block.classList.remove("astro-code", "css-variables");
+                    block.removeAttribute("style");
+                    block.removeAttribute("tabindex");
                     block.setAttribute("data-processed", "true");
                 } catch (err) {
                     console.error(
