@@ -72,7 +72,6 @@ export default defineConfig({
     service: {
       entrypoint: "astro/assets/services/sharp",
     },
-    domains: ["shared.fastly.steamstatic.com"],
     remotePatterns: [
       {
         protocol: "https",
@@ -106,11 +105,8 @@ export default defineConfig({
     },
   },
 
-  server: {
-    headers: {
-      "X-Content-Type-Options": "nosniff",
-      "X-Frame-Options": "DENY",
-      "X-XSS-Protection": "1; mode=block",
-    },
-  },
+  // NOTE: pas de `server.headers` ici — ils ne s'appliquent qu'au serveur de dev
+  // et GitHub Pages (hébergeur statique) ne supporte aucun header custom.
+  // Les vrais headers de sécurité (nosniff, frame-ancestors, ...) doivent être
+  // définis au niveau du CDN/front (ex. Cloudflare) devant GitHub Pages.
 });
