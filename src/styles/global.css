@@ -65,6 +65,12 @@
     --badge-green-rgb: 134, 239, 172;
     --color-error-rgb: 248, 113, 113;
 
+    /* Grille body::before : même alpha illisible en light (noir sur blanc),
+       donc opacité pilotée par thème (0.018 en dark, 0.08 en light). */
+    --grid-line: 0.018;
+    --grid-glow-a: 0.025;
+    --grid-glow-b: 0.015;
+
     --badge-featured-bg: rgb(var(--accent));
     --badge-featured-text: rgb(var(--bg));
 }
@@ -75,33 +81,36 @@
 @media (prefers-color-scheme: light) {
     :root {
         color-scheme: light;
-        --bg: 248, 248, 248;
-        --text: 20, 20, 20;
-        --accent: 20, 20, 20;
+        --bg: 244, 241, 234;
+        --text: 28, 25, 23;
+        --accent: 28, 25, 23;
         --color-bg: rgb(var(--bg));
         --color-text: rgb(var(--text));
         --color-accent: rgb(var(--accent));
-        --color-surface: rgb(255, 255, 255);
+        --color-surface: rgb(253, 251, 246);
         --color-surface-elevated: rgb(255, 255, 255);
-        --color-border: rgba(20, 20, 20, 0.65);
-        --color-border-glare: rgba(20, 20, 20, 0.85);
-        --color-muted: rgba(var(--text), 0.85);
-        --tint-05: rgba(20, 20, 20, 0.04);
-        --tint-10: rgba(20, 20, 20, 0.08);
-        --tint-14: rgba(20, 20, 20, 0.12);
-        --tint-20: rgba(20, 20, 20, 0.50);
-        --tint-30: rgba(20, 20, 20, 0.65);
-        --tint-40: rgba(20, 20, 20, 0.80);
-        --accent-subtle: rgba(var(--accent), 0.04);
+        --color-border: rgba(28, 25, 23, 0.12);
+        --color-border-glare: rgba(28, 25, 23, 0.22);
+        --color-muted: rgba(var(--text), 0.72);
+        --tint-05: rgba(28, 25, 23, 0.04);
+        --tint-10: rgba(28, 25, 23, 0.06);
+        --tint-14: rgba(28, 25, 23, 0.09);
+        --tint-20: rgba(28, 25, 23, 0.14);
+        --tint-30: rgba(28, 25, 23, 0.22);
+        --tint-40: rgba(28, 25, 23, 0.32);
+        --accent-subtle: rgba(var(--accent), 0.05);
         --accent-muted: rgba(var(--accent), 0.12);
         --accent-strong: rgba(var(--accent), 0.95);
-        --shadow-soft: 0 1px 2px rgba(20, 20, 20, 0.05), 0 8px 24px rgba(20, 20, 20, 0.08);
-        --shadow-strong: 0 0 0 1px rgba(20, 20, 20, 0.08), 0 12px 32px rgba(20, 20, 20, 0.12), 0 24px 60px rgba(20, 20, 20, 0.1);
+        --shadow-soft: 0 1px 2px rgba(28, 25, 23, 0.05), 0 8px 24px rgba(28, 25, 23, 0.08);
+        --shadow-strong: 0 0 0 1px rgba(28, 25, 23, 0.06), 0 12px 32px rgba(28, 25, 23, 0.12), 0 24px 60px rgba(28, 25, 23, 0.1);
         --glow: 0 0 1px rgba(var(--accent), 0.1);
         --badge-green-rgb: 22, 101, 52;
-        --color-error-rgb: 220, 38, 38;
+        --color-error-rgb: 185, 28, 28;
+        --grid-line: 0.1;
+        --grid-glow-a: 0.06;
+        --grid-glow-b: 0.05;
         --badge-featured-bg: rgb(var(--accent));
-        --badge-featured-text: rgb(248, 248, 248);
+        --badge-featured-text: rgb(244, 241, 234);
     }
 }
 
@@ -214,10 +223,10 @@
             z-index: -1;
             pointer-events: none;
             background-image:
-                radial-gradient(circle at 0% 0%, rgba(var(--accent), 0.025) 0%, transparent 35%),
-                radial-gradient(circle at 100% 100%, rgba(var(--accent), 0.015) 0%, transparent 35%),
-                linear-gradient(rgba(var(--text), 0.018) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(var(--text), 0.018) 1px, transparent 1px);
+                radial-gradient(circle at 0% 0%, rgba(var(--accent), var(--grid-glow-a)) 0%, transparent 35%),
+                radial-gradient(circle at 100% 100%, rgba(var(--accent), var(--grid-glow-b)) 0%, transparent 35%),
+                linear-gradient(rgba(var(--text), var(--grid-line)) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(var(--text), var(--grid-line)) 1px, transparent 1px);
             background-size: 100% 100%, 100% 100%, 64px 64px, 64px 64px;
             mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);
             -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);

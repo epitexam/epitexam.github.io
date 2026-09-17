@@ -11,7 +11,7 @@ const posts = (await getCollection("blog"))
     .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
     .slice(0, 3);
 
-const missions = [
+const works = [
     {
         context: "Startup SaaS B2C",
         badge: "Audit & Refonte",
@@ -46,7 +46,7 @@ const stats = [
     },
     {
         label: "Fullstack & Systèmes",
-        value: "Go, TS, C & Linux",
+        value: "Python, TS, C & Linux",
         desc: "De l'assembleur aux frameworks web",
     },
     {
@@ -140,18 +140,18 @@ const jsonLd = {
                 </div>
             </section>
 
-            <!-- MISSIONS -->
-            <section class="section" aria-labelledby="missions-title">
+            <!-- TRAVAIL -->
+            <section class="section" aria-labelledby="work-title">
                 <div class="wrap">
                     <p class="eyebrow">
-                        <span>01 / Parcours & réalisations</span>
-                        <span class="eyebrow-right">02 missions majeures</span>
+                        <span>01 / Mon travail</span>
+                        <span class="eyebrow-right">02 réalisations</span>
                     </p>
-                    <h2 id="missions-title">Missions en Production</h2>
+                    <h2 id="work-title">Mon travail</h2>
 
                     <div class="mission-grid">
                         {
-                            missions.map((m, i) => (
+                            works.map((m, i) => (
                                 <article
                                     class="mission-card reveal"
                                     style={`--reveal-delay:${i * 0.08}s`}
@@ -201,19 +201,23 @@ const jsonLd = {
                 </div>
             </section>
 
-            <!-- NOTES -->
+            <!-- BLOG -->
             <section class="section section-alt" aria-labelledby="notes-title">
                 <div class="wrap">
                     <p class="eyebrow">
-                        <span>02 / Écrits</span>
+                        <span>02 / Blog</span>
                     </p>
                     <div class="notes-head">
-                        <h2 id="notes-title">Notes Techniques</h2>
+                        <h2 id="notes-title">Blog</h2>
                         <a href="/blog" class="link-more">
-                            Archives complètes
+                            Tous les articles
                             <Icon name="arrow-up-right" size={15} />
                         </a>
                     </div>
+                    <p class="notes-sub">
+                        Des articles sur la tech et le développement, mais
+                        aussi sur les jeux vidéo.
+                    </p>
 
                     <ul class="note-list reveal">
                         {
@@ -516,8 +520,6 @@ const jsonLd = {
                 text-transform: uppercase;
                 letter-spacing: 0.08em;
                 color: var(--color-muted);
-                opacity: 0.8;
-                margin-bottom: 0.6rem;
             }
             .stat dd {
                 margin: 0;
@@ -560,8 +562,6 @@ const jsonLd = {
                 text-transform: uppercase;
                 letter-spacing: 0.1em;
                 color: var(--color-muted);
-                opacity: 0.8;
-                margin: 0 0 0.6rem;
             }
             .eyebrow-center {
                 justify-content: center;
@@ -702,8 +702,15 @@ const jsonLd = {
                 gap: 1rem;
             }
             .notes-head h2 {
-                margin-bottom: 2rem;
+                margin-bottom: 0.5rem;
                 font-size: clamp(1.7rem, 3.5vw, 2.3rem);
+            }
+            .notes-sub {
+                margin: 0 0 2rem;
+                color: var(--color-muted);
+                font-size: 1rem;
+                line-height: 1.6;
+                max-width: 60ch;
             }
             .link-more {
                 display: inline-flex;
@@ -743,7 +750,6 @@ const jsonLd = {
                 font-family: var(--font-code);
                 font-size: 0.76rem;
                 color: var(--color-muted);
-                opacity: 0.85;
             }
             .note-title {
                 font-family: var(--font-title);

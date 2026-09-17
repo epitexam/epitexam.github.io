@@ -117,7 +117,6 @@ const jsonLd = {
                                     <a
                                         href={`/blog/${post.id}/`}
                                         class="blog-card"
-                                        aria-label={`Lire l'article : ${post.data.title}`}
                                     >
                                         <div
                                             class="card-glow"
@@ -554,7 +553,7 @@ const jsonLd = {
 
     .page-link.disabled {
         color: var(--color-muted);
-        opacity: 0.5;
+        cursor: not-allowed;
         pointer-events: none;
     }
 
