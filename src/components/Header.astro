@@ -113,7 +113,11 @@ const navLinks = [
 
     const updateScrollState = () =>
         header.classList.toggle("is-scrolled", window.scrollY > 20);
-    updateScrollState();
+    if ("requestAnimationFrame" in window) {
+        requestAnimationFrame(updateScrollState);
+    } else {
+        updateScrollState();
+    }
     window.addEventListener("scroll", updateScrollState, { passive: true });
 
     const handleToggleClick = (e: MouseEvent) => {
