@@ -209,14 +209,8 @@
             pointer-events: none;
             background-image:
                 radial-gradient(circle at 0% 0%, rgba(var(--accent), 0.025) 0%, transparent 35%),
-                radial-gradient(circle at 100% 100%, rgba(var(--accent), 0.015) 0%, transparent 35%),
-                linear-gradient(rgba(var(--text), 0.018) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(var(--text), 0.018) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 64px 64px, 64px 64px;
-            mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);
-            -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);
-            transform: translateZ(0);
-            will-change: transform;
+                radial-gradient(circle at 100% 100%, rgba(var(--accent), 0.015) 0%, transparent 35%);
+            background-size: 100% 100%, 100% 100%;
         }
     }
 
@@ -409,6 +403,9 @@
     i {
         font-style: italic;
         color: var(--color-text);
+        /* Pas de fonte italic téléchargée (perf) : le navigateur
+           synthétise l'oblique pour ces éléments uniquement. */
+        font-synthesis: style;
     }
 
     small {

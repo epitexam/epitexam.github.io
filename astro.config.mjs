@@ -12,7 +12,7 @@ export default defineConfig({
   build: {
     format: "directory",
     assets: "_assets",
-    inlineStylesheets: "always",
+    inlineStylesheets: "auto",
   },
 
   fonts: [
@@ -20,19 +20,25 @@ export default defineConfig({
       name: "Geist",
       cssVariable: "--font-body",
       provider: fontProviders.bunny(),
-      weights: ["400", "500"]
+      weights: ["400", "500"],
+      styles: ["normal"],
+      subsets: ["latin"]
     },
     {
       name: "Geist",
       cssVariable: "--font-title",
       provider: fontProviders.bunny(),
-      weights: ["500", "600", "700"]
+      weights: ["500", "600", "700"],
+      styles: ["normal"],
+      subsets: ["latin"]
     },
     {
       name: "Geist Mono",
       cssVariable: "--font-code",
       provider: fontProviders.bunny(),
-      weights: ["400"]
+      weights: ["400"],
+      styles: ["normal"],
+      subsets: ["latin"]
     }
   ],
   integrations: [

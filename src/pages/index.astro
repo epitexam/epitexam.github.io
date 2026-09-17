@@ -287,12 +287,27 @@ const jsonLd = {
                     })
                     .catch(() => {});
             };
+            const heroAllowed = () => {
+                if (
+                    !window.matchMedia(
+                        "(prefers-reduced-motion: no-preference)",
+                    ).matches
+                )
+                    return false;
+                if (!window.matchMedia("(min-width: 769px)").matches)
+                    return false;
+                const conn = (navigator as any).connection;
+                if (conn && (conn.saveData || /2g/.test(conn.effectiveType || "")))
+                    return false;
+                return true;
+            };
             const scheduleHero = () => {
+                if (!heroAllowed()) return;
                 const ric = (window as any).requestIdleCallback;
                 if (typeof ric === "function") {
-                    ric.call(window, startHero, { timeout: 2000 });
+                    ric.call(window, startHero, { timeout: 2500 });
                 } else {
-                    setTimeout(startHero, 1500);
+                    setTimeout(startHero, 2000);
                 }
             };
             if (document.readyState === "complete") {
@@ -374,6 +389,11 @@ const jsonLd = {
                 height: 100%;
                 z-index: 0;
                 pointer-events: none;
+            }
+            @media (max-width: 768px) {
+                #am-canvas {
+                    display: none;
+                }
             }
             .hero-inner {
                 position: relative;
@@ -520,6 +540,8 @@ const jsonLd = {
             .section {
                 border-bottom: 1px solid var(--color-border);
                 padding: clamp(4rem, 7vw, 6rem) 0 clamp(4rem, 7vw, 5.5rem);
+                content-visibility: auto;
+                contain-intrinsic-size: auto 800px;
             }
             .section-alt {
                 background: var(--tint-05);
