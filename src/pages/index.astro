@@ -233,11 +233,6 @@ const jsonLd = {
                                             <span class="note-title">
                                                 {post.data.title}
                                             </span>
-                                            <span class="note-tags">
-                                                {post.data.tags
-                                                    .slice(0, 2)
-                                                    .join(" · ")}
-                                            </span>
                                             <span class="note-time">
                                                 {readingTime(post.body)}
                                                 <Icon
@@ -485,9 +480,9 @@ const jsonLd = {
                 display: grid;
                 grid-template-columns: repeat(4, 1fr);
                 gap: 2rem;
-                /* Stats span full width, left-aligned text */
+                /* Stats span full width, centered text */
                 align-self: stretch;
-                text-align: left;
+                text-align: center;
                 /* Pinned to the full-height hero bottom (auto margin
                    absorbs remaining free space) */
                 margin: auto 0 0;
@@ -712,7 +707,7 @@ const jsonLd = {
             }
             .note-row {
                 display: grid;
-                grid-template-columns: 130px 1fr auto auto;
+                grid-template-columns: 130px 1fr auto;
                 align-items: center;
                 gap: 1.5rem;
                 padding: 1.35rem 0.25rem;
@@ -735,15 +730,6 @@ const jsonLd = {
                 letter-spacing: -0.01em;
                 color: var(--color-text);
                 min-width: 0;
-            }
-            .note-tags {
-                font-family: var(--font-code);
-                font-size: 0.7rem;
-                color: var(--color-muted);
-                border: 1px solid var(--color-border);
-                border-radius: var(--radius-sm);
-                padding: 0.3rem 0.7rem;
-                white-space: nowrap;
             }
             .note-time {
                 font-family: var(--font-code);
@@ -806,9 +792,6 @@ const jsonLd = {
             @media (max-width: 900px) {
                 .note-row {
                     grid-template-columns: 100px 1fr auto;
-                }
-                .note-tags {
-                    display: none;
                 }
             }
             @media (max-width: 768px) {
