@@ -1,0 +1,66 @@
+/* ============================================================
+   PRINT — chargé avec media="print" : ne bloque jamais
+   le rendu écran et ne pèse pas sur le CSS critique.
+   ============================================================ */
+@media print {
+
+    *,
+    *::before,
+    *::after {
+        background: transparent !important;
+        color: #000 !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+        animation: none !important;
+        transition: none !important;
+
+        content-visibility: visible !important;
+        contain: none !important;
+    }
+
+    body {
+        font-size: 12pt;
+        line-height: 1.5;
+    }
+
+    a[href]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.85em;
+        color: #555 !important;
+    }
+
+    a[href^="#"]::after,
+    a[href^="/"]::after {
+        content: "";
+    }
+
+    abbr[title]::after {
+        content: " (" attr(title) ")";
+    }
+
+    pre {
+        white-space: pre-wrap !important;
+        border: 1px solid #ccc !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    :is(tr, img, figure) {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    :is(h1, h2, h3) {
+        break-after: avoid;
+        page-break-after: avoid;
+    }
+
+    .table-wrapper {
+        overflow: visible;
+        border: 1px solid #ccc;
+    }
+}

@@ -1,0 +1,381 @@
+/* ============================================================
+   ARTICLE — styles réservés aux pages d'articles
+   (layouts BlogPost / ProjectPost : contenu Markdown/MDX rendu :
+   .prose, tableaux, citations, blocs de code, details, kbd).
+   Importé uniquement par ces layouts : le CSS critique des autres
+   pages (accueil, contact, outils...) ne l'embarque plus.
+   Mêmes noms de couches que global.css — l'ordre global
+   (@layer base, layout, typography, components, utilities,
+   animations) reste fixé par la déclaration de global.css.
+   ============================================================ */
+
+@layer typography {
+    .prose {
+        max-width: 68ch;
+
+        a {
+            color: var(--color-text);
+            background-image: linear-gradient(currentColor, currentColor);
+            background-position: 0% 100%;
+            background-repeat: no-repeat;
+            background-size: 0% 1px;
+            transition: background-size var(--duration-base) var(--ease-spring), color var(--duration-fast) ease;
+
+            @media (hover: hover) {
+                &:hover {
+                    background-size: 100% 1px;
+                    color: var(--color-accent);
+                }
+            }
+        }
+
+        ul {
+            list-style: none;
+
+            li {
+                position: relative;
+                padding-inline-start: 1.5rem;
+                margin-block: 0.5rem;
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    inset-inline-start: 0;
+                    top: 0.7em;
+                    width: 0.4rem;
+                    height: 0.4rem;
+                    background-color: var(--color-accent);
+                    border-radius: 2px;
+                    transform: rotate(45deg);
+                    opacity: 0.7;
+                }
+            }
+        }
+
+        ol {
+            list-style: decimal;
+
+            ::marker {
+                color: var(--color-accent);
+                font-weight: 600;
+                font-size: 0.95em;
+                font-family: var(--font-title);
+            }
+        }
+
+        aside {
+            margin-block: 2rem;
+            padding: 1.25rem 1.5rem;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-inline-start: 3px solid var(--color-accent);
+            border-radius: var(--radius-md);
+            color: var(--color-muted);
+            font-size: 0.95rem;
+            box-shadow: var(--shadow-soft);
+        }
+    }
+
+    blockquote {
+        margin-inline: 0;
+        padding: 1rem 1.5rem;
+        border-inline-start: 3px solid var(--color-accent);
+        background: var(--tint-05);
+        border-radius: 0 var(--radius-md) var(--radius-md) 0;
+        color: var(--color-muted);
+        font-style: italic;
+
+        &>*+* {
+            margin-block-start: 0.75rem;
+        }
+    }
+}
+
+@layer components {
+
+    /* ── Tables ────────────────────────────────────────────── */
+    .table-wrapper,
+    .prose table {
+        display: block;
+        overflow-x: auto;
+        width: max-content;
+        max-width: 100%;
+        margin-block: 2.5rem;
+        border-radius: var(--radius-md);
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        box-shadow: var(--shadow-soft);
+        transition: border-color var(--duration-base) ease, box-shadow var(--duration-base) ease;
+        contain: layout paint style;
+        content-visibility: auto;
+        contain-intrinsic-size: auto 400px;
+        will-change: border-color, box-shadow;
+
+        @media (hover: hover) {
+            &:hover {
+                border-color: rgba(var(--accent), 0.2);
+                box-shadow: var(--shadow-strong);
+            }
+        }
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95em;
+    }
+
+    caption {
+        padding-block-end: 0.75rem;
+        font-size: 0.8rem;
+        font-family: var(--font-title);
+        font-style: italic;
+        letter-spacing: 0.02em;
+        color: var(--color-muted);
+        text-align: start;
+        caption-side: top;
+    }
+
+    :is(th, td) {
+        text-align: start;
+        padding: 1rem 1.25rem;
+        border-bottom: 1px solid var(--color-border);
+        vertical-align: top;
+        color: var(--color-text);
+    }
+
+    thead th {
+        color: var(--color-muted);
+        text-transform: uppercase;
+        font-size: 0.75em;
+        letter-spacing: 0.05em;
+        font-family: var(--font-title);
+        background: var(--tint-05);
+        border-bottom: 1px solid var(--color-border);
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    tfoot :is(th, td) {
+        background: var(--tint-05);
+        font-weight: 600;
+        color: var(--color-text);
+        border-top: 1px solid var(--color-border);
+        border-bottom: none;
+        font-size: 0.9em;
+    }
+
+    tbody tr {
+        transition: background var(--duration-fast) ease;
+
+        &:last-child :is(th, td) {
+            border-bottom: none;
+        }
+
+        @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+            &:hover {
+                background: var(--tint-05);
+            }
+        }
+    }
+
+    @media (max-width: 768px) {
+
+        .table-wrapper,
+        .prose table {
+            margin-inline: calc(-1 * var(--content-padding-mobile));
+            width: calc(100% + 2 * var(--content-padding-mobile));
+            max-width: calc(100% + 2 * var(--content-padding-mobile));
+            border-radius: 0;
+            border-inline: none;
+        }
+
+        table {
+            white-space: nowrap;
+        }
+
+        :is(th, td) {
+            padding: 0.75rem 1rem;
+            font-size: 0.9em;
+        }
+    }
+
+    details {
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-md);
+        background: var(--color-surface);
+        overflow: hidden;
+        transition: all var(--duration-fast) ease;
+        margin-block: 1rem;
+
+        &[open] {
+            background: var(--color-surface);
+            box-shadow: var(--shadow-soft);
+            border-color: rgba(var(--accent), 0.2);
+        }
+
+        &[open]>summary {
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        &[open]>summary::after {
+            transform: rotate(180deg);
+            color: var(--color-text);
+        }
+
+        &> :not(summary) {
+            padding-inline: 1.25rem;
+        }
+
+        &> :not(summary):last-child {
+            padding-bottom: 1.25rem;
+        }
+
+        details> :not(summary) {
+            padding-inline: 0;
+        }
+
+        details> :not(summary):last-child {
+            padding-bottom: 0;
+        }
+    }
+
+    summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 1rem 1.25rem;
+        font-weight: 500;
+        font-family: var(--font-title);
+        font-size: 1rem;
+        color: var(--color-text);
+        cursor: pointer;
+        user-select: none;
+        list-style: none;
+        transition: color var(--duration-fast) ease;
+
+        &::-webkit-details-marker {
+            display: none;
+        }
+
+        &::after {
+            content: "⌄";
+            font-size: 1.2em;
+            font-weight: 300;
+            color: var(--color-muted);
+            flex-shrink: 0;
+            transform: rotate(0deg);
+            transition: transform var(--duration-base) var(--ease-spring), color var(--duration-fast) ease;
+        }
+
+        @media (hover: hover) {
+            &:hover {
+                color: var(--color-accent);
+            }
+        }
+    }
+
+    pre {
+        margin-block: 2.5rem;
+        padding: 1.5rem 1.75rem;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        overflow-x: auto;
+        box-shadow: var(--shadow-strong);
+        contain: layout style;
+        position: relative;
+        content-visibility: auto;
+        contain-intrinsic-size: auto 300px;
+
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(145deg, rgba(var(--accent), 0.03), transparent 50%);
+            pointer-events: none;
+        }
+
+        & code {
+            background: none;
+            padding: 0;
+            color: rgba(var(--text), 0.9);
+            border: none;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 480px) {
+            margin-block: 1.5rem;
+            margin-inline: -1rem;
+            padding: 1.25rem;
+            font-size: 0.85em;
+            border-radius: 0;
+        }
+    }
+
+    kbd {
+        font-family: var(--font-code);
+        font-size: 0.82em;
+        padding: 0.2em 0.5em;
+        background: var(--color-surface);
+        border: 1px solid var(--tint-20);
+        border-bottom-width: 2px;
+        border-radius: var(--radius-sm);
+        color: var(--color-text);
+        white-space: nowrap;
+        box-shadow: 0 2px 0 var(--tint-10);
+    }
+}
+
+@layer animations {
+    /* Révélation des articles au scroll (desktop uniquement,
+       même condition que les animations globales). */
+    @media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
+        .prose p {
+            animation: fade-in var(--duration-slow) var(--ease-spring) both;
+            animation-delay: var(--anim-delay, calc(var(--stagger) * 4));
+        }
+
+        .prose li {
+            animation: fade-left 0.5s var(--ease-spring) both;
+            animation-delay: var(--anim-delay, calc(var(--stagger) * 5));
+
+            &:nth-child(1) {
+                --anim-delay: calc(var(--stagger) * 5);
+            }
+
+            &:nth-child(2) {
+                --anim-delay: calc(var(--stagger) * 5.5);
+            }
+
+            &:nth-child(3) {
+                --anim-delay: calc(var(--stagger) * 6);
+            }
+
+            &:nth-child(4) {
+                --anim-delay: calc(var(--stagger) * 6.5);
+            }
+
+            &:nth-child(5) {
+                --anim-delay: calc(var(--stagger) * 7);
+            }
+
+            &:nth-child(n + 6) {
+                --anim-delay: calc(var(--stagger) * 7.5);
+            }
+        }
+
+        .table-wrapper {
+            animation: scale-in 0.5s var(--ease-spring) both;
+            animation-delay: calc(var(--stagger) * 6);
+        }
+
+        pre {
+            --ty: 30px;
+            animation: fade-in var(--duration-slow) var(--ease-spring) both;
+            animation-delay: calc(var(--stagger) * 5);
+        }
+    }
+}

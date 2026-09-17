@@ -1,6 +1,7 @@
 ---
 import { Font } from "astro:assets";
 import "../styles/global.css";
+import printUrl from "../styles/print.css?url";
 import type { ImageMetadata } from "astro";
 import OgImage from "../assets/og-image.webp";
 import { SITE_TITLE, ALT_DESCRIPTION, SITE_THEME_COLOR } from "../consts";
@@ -31,6 +32,7 @@ const ogImageType = image.format ? `image/${image.format}` : "image/webp";
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="stylesheet" href={printUrl} media="print" />
 <link
     rel="alternate"
     type="application/rss+xml"
