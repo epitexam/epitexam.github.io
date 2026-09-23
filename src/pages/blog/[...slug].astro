@@ -13,8 +13,50 @@ type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
 const { Content } = await render(post);
+const isTeaser = post.data.teaser;
 ---
 
 <BlogPost {...post.data}>
-	<Content />
+	{isTeaser ? (
+		<div class="teaser-content">
+			<p class="teaser-notice" role="status">
+				<strong>Article en préparation</strong>
+				<span>Le contenu complet n’est pas encore disponible. Voici son synopsis.</span>
+			</p>
+			<p class="teaser-synopsis">{post.data.description}</p>
+		</div>
+	) : (
+		<Content />
+	)}
 </BlogPost>
+
+
+<style>
+    .teaser-content {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .teaser-notice {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin: 0;
+        padding: 1.25rem 1.5rem;
+        border: 1px solid rgba(var(--accent), 0.35);
+        border-inline-start: 3px solid var(--color-accent);
+        border-radius: var(--radius-md);
+        background: var(--tint-05);
+        color: var(--color-muted);
+    }
+
+    .teaser-notice strong {
+        color: var(--color-text);
+        font-family: var(--font-title);
+    }
+
+    .teaser-synopsis {
+        margin: 0;
+    }
+</style>
