@@ -4,6 +4,7 @@ import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import Icon from "../components/Icon.astro";
+import TeaserProgress from "../components/TeaserProgress.astro";
 import { SITE_TITLE, SITE_DESCRIPTION, GITHUB_URL } from "../consts";
 
 const posts = (await getCollection("blog"))
@@ -227,7 +228,10 @@ const jsonLd = {
                                     <li>
                                         <a
                                             href={`/blog/${slug}/`}
-                                            class="note-row"
+                                            class:list={[
+                                                "note-row",
+                                                { "note-row--teaser": post.data.teaser },
+                                            ]}
                                         >
                                             <span class="note-date">
                                                 {formatShortDate(
@@ -243,6 +247,17 @@ const jsonLd = {
                                                 )}
                                             </span>
                                             <span class="note-time">
+                                                {post.data.teaser &&
+                                                    post.data.progress !==
+                                                        undefined && (
+                                                        <TeaserProgress
+                                                            progress={
+                                                                post.data
+                                                                    .progress
+                                                            }
+                                                            compact
+                                                        />
+                                                    )}
                                                 {readingTime(post.body)}
                                                 <Icon
                                                     name="arrow-right"
@@ -886,6 +901,23 @@ const jsonLd = {
                 .note-date {
                     grid-column: 1 / -1;
                 }
+                .note-row--teaser .note-title {
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+                .note-row--teaser .note-status {
+                    margin-left: 0;
+                }
+                .note-row--teaser .note-time {
+                    grid-column: 1 / -1;
+                    justify-content: flex-end;
+                    flex-wrap: wrap;
+                    width: 100%;
+                    row-gap: 0.5rem;
+                    white-space: normal;
+                }
             }
             @media (max-width: 480px) {
                 .hero-inner {
@@ -944,6 +976,12 @@ const jsonLd = {
                 }
                 .note-row {
                     padding-block: 1.1rem;
+                }
+                .note-row--teaser .note-title {
+                    align-items: flex-start;
+                }
+                .note-row--teaser .note-time {
+                    justify-content: space-between;
                 }
                 .note-title {
                     font-size: 0.95rem;

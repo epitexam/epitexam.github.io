@@ -2,6 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
+import TeaserProgress from "../../components/TeaserProgress.astro";
 import BaseHead from "../../components/BaseHead.astro";
 import { SITE_TITLE } from "../../consts";
 import Header from "../../components/Header.astro";
@@ -190,6 +191,16 @@ const jsonLd = {
                                                     {post.data.description}
                                                 </p>
                                             )}
+
+                                            {post.data.teaser &&
+                                                post.data.progress !==
+                                                    undefined && (
+                                                    <TeaserProgress
+                                                        progress={
+                                                            post.data.progress
+                                                        }
+                                                    />
+                                                )}
 
                                             <span
                                                 class="read-more"

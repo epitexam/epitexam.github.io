@@ -1,6 +1,7 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
+import TeaserProgress from '../../components/TeaserProgress.astro';
 
 export async function getStaticPaths() {
 	const posts = (await getCollection('blog')).filter(({ data }) => !data.draft);
@@ -22,6 +23,12 @@ const isTeaser = post.data.teaser;
 			<p class="teaser-notice" role="status">
 				<strong>Article en préparation</strong>
 				<span>Le contenu complet n’est pas encore disponible. Voici un aperçu de l’article.</span>
+				{post.data.progress !== undefined && (
+					<TeaserProgress
+						progress={post.data.progress}
+						centered
+					/>
+				)}
 			</p>
 			<p class="teaser-synopsis">{post.data.description}</p>
 		</div>
