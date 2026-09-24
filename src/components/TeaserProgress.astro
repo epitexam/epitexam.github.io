@@ -1,0 +1,109 @@
+---
+interface Props {
+    progress: number;
+    compact?: boolean;
+    centered?: boolean;
+}
+
+const { progress, compact = false, centered = false } = Astro.props;
+const tone = progress <= 33 ? "low" : progress <= 66 ? "medium" : "high";
+const progressLabel = `Avancement de l'article : ${progress} %`;
+---
+
+<span
+    class:list={[
+        "teaser-progress",
+        { "teaser-progress--compact": compact, "teaser-progress--centered": centered },
+    ]}
+>
+    <span class="teaser-progress__meta">
+        {!compact && <span>Avancement</span>}
+        <span>{progress}%</span>
+    </span>
+    <span
+        class="teaser-progress__track"
+        role="progressbar"
+        aria-label={progressLabel}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={progress}
+    >
+        <span
+            class:list={["teaser-progress__bar", `teaser-progress__bar--${tone}`]}
+            style={`width: ${progress}%`}
+        />
+    </span>
+</span>
+
+<style>
+    .teaser-progress {
+        display: block;
+        width: 100%;
+        margin: 0.25rem 0 1.25rem;
+    }
+
+    .teaser-progress__meta {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 0.45rem;
+        color: var(--color-muted);
+        font-family: var(--font-code);
+        font-size: 0.7rem;
+        line-height: 1.2;
+    }
+
+    .teaser-progress__track {
+        display: block;
+        height: 0.3rem;
+        overflow: hidden;
+        border-radius: 999px;
+        background: var(--tint-20);
+    }
+
+    .teaser-progress__bar {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+    }
+
+    .teaser-progress__bar--low {
+        background: rgb(var(--color-error-rgb));
+    }
+
+    .teaser-progress__bar--medium {
+        background: #f59e0b;
+    }
+
+    .teaser-progress__bar--high {
+        background: rgb(var(--badge-green-rgb));
+    }
+
+    .teaser-progress--centered {
+        width: min(100%, 28rem);
+        margin-inline: auto;
+    }
+
+    .teaser-progress--centered .teaser-progress__meta {
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .teaser-progress--compact {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        width: auto;
+        margin: 0 0.15rem 0 0;
+        vertical-align: middle;
+    }
+
+    .teaser-progress--compact .teaser-progress__meta {
+        margin: 0;
+    }
+
+    .teaser-progress--compact .teaser-progress__track {
+        width: 2.5rem;
+        height: 0.22rem;
+    }
+</style>

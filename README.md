@@ -24,6 +24,32 @@ Construit avec [Astro](https://astro.build), déployé sur [GitHub Pages](https:
 | `/tools`   | Stack & outils                                   |
 | `/contact` | Formulaire de contact                            |
 
+## Articles
+
+Les articles sont stockés dans `src/content/blog`. Pour publier le contenu
+complet d'un article, utilisez `draft: false`. Pour annoncer un article qui
+n'est pas encore finalisé, utilisez `teaser: true` : il restera visible et
+cliquable dans le blog, mais sa page n'affichera que le champ `description`
+(aperçu) et une mention indiquant qu'il est en préparation.
+
+```yaml
+---
+title: "Mon article à venir"
+description: "L'aperçu de l'article."
+pubDate: '2026-09-01'
+draft: false
+teaser: true
+progress: 35
+---
+```
+
+Les deux options sont indépendantes : `draft: true` masque complètement
+l'article, tandis que `teaser: true` conserve sa page et sa présentation dans
+les listes. Le champ optionnel `progress` peut être ajouté pour afficher
+l'avancement de l'article, avec une valeur entre 0 et 100.
+
+---
+
 ## Développement
 
 ```sh
