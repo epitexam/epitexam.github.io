@@ -1,6 +1,7 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
+import TeaserProgress from '../../components/TeaserProgress.astro';
 
 export async function getStaticPaths() {
 	const posts = (await getCollection('blog')).filter(({ data }) => !data.draft);
@@ -13,8 +14,88 @@ type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
 const { Content } = await render(post);
+const isTeaser = post.data.teaser;
 ---
 
 <BlogPost {...post.data}>
-	<Content />
+	{isTeaser ? (
+		<div class="teaser-content">
+			<p class="teaser-notice" role="status">
+				<strong>Article en préparation</strong>
+				<span>Le contenu complet n’est pas encore disponible. Voici un aperçu de l’article.</span>
+				{post.data.progress !== undefined && (
+					<TeaserProgress progress={post.data.progress} centered />
+				)}
+			</p>
+			<p class="teaser-preview">{post.data.description}</p>
+		</div>
+	) : (
+		<Content />
+	)}
 </BlogPost>
+
+
+<style>
+    /* Centrage : seule exception typographique de global.css = figcaption
+       (@layer typography : text-align: center). Contenu centré + aéré,
+       boîte calquée sur fieldset (@layer components). */
+    .teaser-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2.5rem;
+        text-align: center;
+    }
+
+    .teaser-notice {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.25rem;
+        width: min(100%, 38rem);
+        padding: 2.5rem 2rem;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-soft);
+    }
+
+    .teaser-notice strong {
+        display: block;
+    }
+
+    .teaser-notice > span {
+        display: block;
+        max-width: 52ch;
+    }
+
+    /* TeaserProgress non touché (consigne) : variante centered native,
+       seule la marge basse plein-flux est neutralisée dans l'encadré. */
+    .teaser-notice .teaser-progress {
+        margin-block: 0.5rem 0;
+    }
+
+    .teaser-preview {
+        max-width: 62ch;
+        margin: 0;
+    }
+
+    @media (max-width: 480px) {
+        .teaser-content {
+            gap: 2rem;
+        }
+
+        .teaser-notice {
+            gap: 1rem;
+            padding: 1.5rem 1.25rem;
+        }
+    }
+
+    /* Très petits écrans (body min-width: 280px dans global.css) :
+       padding resserré pour préserver la zone de lecture. */
+    @media (max-width: 360px) {
+        .teaser-notice {
+            padding: 1.25rem 1rem;
+        }
+    }
+</style>
