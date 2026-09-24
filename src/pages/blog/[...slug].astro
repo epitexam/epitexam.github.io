@@ -39,21 +39,48 @@ const isTeaser = post.data.teaser;
     }
 
     .teaser-notice {
+        position: relative;
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        align-items: center;
+        gap: 0.6rem;
         margin: 0;
-        padding: 1.25rem 1.5rem;
-        border: 1px solid rgba(var(--accent), 0.35);
-        border-inline-start: 3px solid var(--color-accent);
+        padding: 1.35rem 1.5rem 1.35rem 1.65rem;
+        border: 1px solid var(--accent-muted);
         border-radius: var(--radius-md);
-        background: var(--tint-05);
+        background: linear-gradient(110deg, var(--accent-subtle), var(--tint-05));
+        box-shadow: var(--shadow-soft);
         color: var(--color-muted);
+        text-align: center;
+    }
+
+    .teaser-notice::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 3px;
+        border-radius: var(--radius-md) 0 0 var(--radius-md);
+        background: var(--color-accent);
+        opacity: 0.85;
     }
 
     .teaser-notice strong {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.55rem;
         color: var(--color-text);
         font-family: var(--font-title);
+        font-size: 0.95rem;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+    }
+
+    .teaser-notice > span {
+        max-width: 68ch;
+        font-size: 0.95rem;
+        line-height: 1.65;
+        text-align: center;
     }
 
     .teaser-synopsis {

@@ -236,6 +236,11 @@ const jsonLd = {
                                             </span>
                                             <span class="note-title">
                                                 {post.data.title}
+                                                {post.data.teaser && (
+                                                    <span class="note-status">
+                                                        En préparation
+                                                    </span>
+                                                )}
                                             </span>
                                             <span class="note-time">
                                                 {readingTime(post.body)}
@@ -758,6 +763,24 @@ const jsonLd = {
                 letter-spacing: -0.01em;
                 color: var(--color-text);
                 min-width: 0;
+            }
+            .note-status {
+                display: inline-flex;
+                align-items: center;
+                width: fit-content;
+                margin-left: 0.65rem;
+                padding: 0.2rem 0.5rem;
+                border: 1px solid rgba(var(--accent), 0.3);
+                border-radius: var(--radius-sm);
+                background: rgba(var(--accent), 0.1);
+                color: var(--color-accent);
+                font-family: var(--font-title);
+                font-size: 0.65rem;
+                font-weight: 600;
+                line-height: 1.2;
+                letter-spacing: 0.02em;
+                text-transform: uppercase;
+                vertical-align: middle;
             }
             .note-time {
                 font-family: var(--font-code);

@@ -165,14 +165,21 @@ const jsonLd = {
                                         )}
 
                                         <div class="card-body">
-                                            <time
-                                                class="card-date"
-                                                datetime={pubDatetime}
-                                            >
-                                                <FormattedDate
-                                                    date={post.data.pubDate}
-                                                />
-                                            </time>
+                                            <div class="card-meta">
+                                                <time
+                                                    class="card-date"
+                                                    datetime={pubDatetime}
+                                                >
+                                                    <FormattedDate
+                                                        date={post.data.pubDate}
+                                                    />
+                                                </time>
+                                                {post.data.teaser && (
+                                                    <span class="card-status">
+                                                        En préparation
+                                                    </span>
+                                                )}
+                                            </div>
 
                                             <h2 class="card-title">
                                                 {post.data.title}
@@ -462,13 +469,36 @@ const jsonLd = {
         flex-grow: 1;
     }
 
+    .card-meta {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.5rem 0.75rem;
+        margin: 0 0 0.75rem;
+    }
+
     .card-date {
-        display: block;
         font-family: var(--font-title);
         font-size: 0.8rem;
         color: var(--color-muted);
-        margin: 0 0 0.75rem;
         letter-spacing: -0.01em;
+    }
+
+    .card-status {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        padding: 0.2rem 0.5rem;
+        border: 1px solid rgba(var(--accent), 0.3);
+        border-radius: var(--radius-sm);
+        background: rgba(var(--accent), 0.1);
+        color: var(--color-accent);
+        font-family: var(--font-title);
+        font-size: 0.7rem;
+        font-weight: 600;
+        line-height: 1.2;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
     }
 
     .card-title {
