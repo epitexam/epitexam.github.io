@@ -35,7 +35,7 @@ cliquable dans le blog, mais sa page n'affichera que le champ `description`
 ```yaml
 ---
 title: "Mon article à venir"
-description: "Le synopsis de l'article."
+description: "L'aperçu de l'article."
 pubDate: '2026-09-01'
 draft: false
 teaser: true
