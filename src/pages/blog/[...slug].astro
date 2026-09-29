@@ -15,9 +15,11 @@ type Props = CollectionEntry<'blog'>;
 const post = Astro.props;
 const { Content } = await render(post);
 const isTeaser = post.data.teaser;
+const hasMermaid =
+	!isTeaser && (post.body?.includes('```mermaid') ?? false);
 ---
 
-<BlogPost {...post.data}>
+<BlogPost {...post.data} hasMermaid={hasMermaid}>
 	{isTeaser ? (
 		<div class="teaser-content">
 			<p class="teaser-notice" role="status">
