@@ -397,13 +397,6 @@ const jsonLd = {
                 p.classList.toggle("active", on);
                 p.hidden = !on;
             });
-
-            const activeTab = tabs[index];
-            activeTab?.scrollIntoView({
-                behavior: "smooth",
-                block: "nearest",
-                inline: "nearest",
-            });
         }
 
         tabs.forEach((tab, i) => {

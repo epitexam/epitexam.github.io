@@ -113,12 +113,21 @@ const navLinks = [
 
     const updateScrollState = () =>
         header.classList.toggle("is-scrolled", window.scrollY > 20);
+    let scrollQueued = false;
+    const onScroll = () => {
+        if (scrollQueued) return;
+        scrollQueued = true;
+        requestAnimationFrame(() => {
+            scrollQueued = false;
+            updateScrollState();
+        });
+    };
     if ("requestAnimationFrame" in window) {
         requestAnimationFrame(updateScrollState);
     } else {
         updateScrollState();
     }
-    window.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
 
     const handleToggleClick = (e: MouseEvent) => {
         e.stopPropagation();
@@ -142,21 +151,6 @@ const navLinks = [
     menuLinks.forEach((l) => l.addEventListener("click", handleLinkClick));
     document.addEventListener("click", handleOutsideClick);
     mediaQuery.addEventListener("change", handleMediaChange);
-
-    window.addEventListener(
-        "astro:before-swap",
-        () => {
-            toggle.removeEventListener("click", handleToggleClick);
-            menuLinks.forEach((l) =>
-                l.removeEventListener("click", handleLinkClick),
-            );
-            document.removeEventListener("click", handleOutsideClick);
-            mediaQuery.removeEventListener("change", handleMediaChange);
-            window.removeEventListener("scroll", updateScrollState);
-            toggle.removeAttribute("data-menu-initialized");
-        },
-        { once: true },
-    );
 </script>
 
 <style>
