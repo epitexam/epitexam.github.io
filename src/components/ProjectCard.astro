@@ -21,7 +21,7 @@ const IMG_W = 800;
 const IMG_H = 450;
 ---
 
-<article class="project-card" data-href={`/project/${id.replace(/\.mdx?$/, "")}/`}>
+<article class="project-card">
     <div class="card-media">
         <Image
             src={imageSrc}
@@ -71,7 +71,6 @@ const IMG_H = 450;
                                 class="btn-secondary"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                data-stop-propagation
                                 aria-label={`Voir la démo du projet : ${data.title} (nouvel onglet)`}
                             >
                                 Live
@@ -83,7 +82,6 @@ const IMG_H = 450;
                                 class="btn-secondary"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                data-stop-propagation
                                 aria-label={`Voir le code source du projet : ${data.title} (nouvel onglet)`}
                             >
                                 Code
@@ -96,29 +94,9 @@ const IMG_H = 450;
     </div>
 </article>
 
-<script>
-    document
-        .querySelectorAll<HTMLElement>(".project-card[data-href]")
-        .forEach((card) => {
-            const target = card.dataset.href;
-            if (!target) return;
-
-            const go = () => {
-                window.location.href = target;
-            };
-
-            card.addEventListener("click", (event) => {
-                const interactive = (event.target as HTMLElement).closest(
-                    "a, button",
-                );
-                if (interactive) return;
-                go();
-            });
-        });
-</script>
-
 <style>
     .project-card {
+        position: relative;
         display: flex;
         flex-direction: column;
         background: var(--color-surface);
@@ -143,6 +121,12 @@ const IMG_H = 450;
     .card-main-link {
         color: inherit;
         text-decoration: none;
+    }
+
+    .card-main-link::after {
+        content: "";
+        position: absolute;
+        inset: 0;
     }
 
     .card-main-link:focus-visible {
@@ -330,6 +314,8 @@ const IMG_H = 450;
     .card-links {
         display: flex;
         gap: 0.5rem;
+        position: relative;
+        z-index: 1;
     }
 
     .btn-secondary {
