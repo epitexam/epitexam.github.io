@@ -48,7 +48,7 @@ const {
                         loading="eager"
                         fetchpriority="high"
                         decoding="async"
-                        widths={[768, 1280, 1440, 1920]}
+                        widths={[768, 1024, 1440]}
                         sizes="100vw"
                     />
                 </div>
@@ -56,25 +56,22 @@ const {
         }
 
         <main class="blog-post-layout">
-            <article>
-                <div class="prose">
-                    <div class="title">
-                        <div class="date">
-                            <FormattedDate date={pubDate} />
-                            {
-                                updatedDate && (
-                                    <div class="last-updated-on">
-                                        Mis à jour le{" "}
-                                        <FormattedDate date={updatedDate} />
-                                    </div>
-                                )
-                            }
-                        </div>
-                        <h1>{title}</h1>
-                        <hr />
-                    </div>
-                    <slot />
-                </div>
+            <article class="prose">
+                <header class="title">
+                    <p class="date">
+                        <FormattedDate date={pubDate} />
+                        {
+                            updatedDate && (
+                                <span class="last-updated-on">
+                                    Mis à jour le{" "}
+                                    <FormattedDate date={updatedDate} />
+                                </span>
+                            )
+                        }
+                    </p>
+                    <h1>{title}</h1>
+                </header>
+                <slot />
             </article>
         </main>
 
@@ -152,8 +149,8 @@ const {
         line-height: 1.1;
     }
 
-    .date {
-        margin-bottom: 0.5em;
+    .title .date {
+        margin: 0 0 0.5em;
         color: var(--color-text);
         font-size: 1.1em;
         font-weight: 500;
@@ -161,12 +158,15 @@ const {
     }
 
     .last-updated-on {
+        display: block;
         font-style: italic;
         font-size: 0.8em;
         color: var(--color-muted);
     }
 
-    hr {
+    .title::after {
+        content: "";
+        display: block;
         border: none;
         height: 1px;
         background: linear-gradient(
