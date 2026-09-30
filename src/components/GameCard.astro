@@ -322,7 +322,9 @@ const isTopOne = game.rank === 1;
         border-radius: 999px;
         z-index: 10;
         box-shadow: var(--shadow-soft);
-        transition: all var(--duration-base) var(--ease-spring);
+        transition:
+            border-color var(--duration-base) var(--ease-spring),
+            box-shadow var(--duration-base) var(--ease-spring);
     }
 
     .rank-badge.rank-badge-top {

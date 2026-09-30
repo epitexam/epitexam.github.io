@@ -561,7 +561,9 @@ const success = Astro.url.searchParams.get("success") === "true";
         font-weight: 500;
         letter-spacing: -0.01em;
         cursor: pointer;
-        transition: all var(--duration-fast) var(--ease-spring);
+        transition:
+            transform var(--duration-fast) var(--ease-spring),
+            box-shadow var(--duration-fast) ease;
         box-shadow: var(--shadow-soft);
     }
 
