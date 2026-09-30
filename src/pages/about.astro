@@ -193,7 +193,7 @@ const jsonLd = {
 
                 <div class="contact-card">
                     <p>Vous recrutez ? Intéressé par une collaboration ?</p>
-                    <a href="/contact" class="btn-pill btn-solid"
+                    <a href="/contact" class="btn btn-pill btn-solid"
                         >Envoyer un message</a
                     >
                 </div>
@@ -210,10 +210,6 @@ const jsonLd = {
         gap: 5rem;
         display: flex;
         flex-direction: column;
-    }
-
-    .about-main :is(h1, h2, h3, h4, h5, h6) {
-        animation: none !important;
     }
 
     .content-section {
@@ -370,17 +366,17 @@ const jsonLd = {
     }
 
     .btn-pill {
-        display: inline-flex;
-        align-items: center;
         gap: 0.5rem;
-        font-family: var(--font-title);
-        font-weight: 500;
         font-size: 0.95rem;
-        letter-spacing: -0.01em;
         padding: 0.75rem 1.5rem;
         border-radius: 999px;
         text-decoration: none;
-        transition: all var(--duration-fast) var(--ease-spring);
+        transition:
+            transform var(--duration-fast) var(--ease-spring),
+            box-shadow var(--duration-fast) ease,
+            background-color var(--duration-fast) ease,
+            color var(--duration-fast) ease,
+            border-color var(--duration-fast) ease;
     }
 
     .btn-solid {

@@ -21,7 +21,7 @@ const IMG_W = 800;
 const IMG_H = 450;
 ---
 
-<article class="project-card">
+<article class="project-card card">
     <div class="card-media">
         <Image
             src={imageSrc}
@@ -61,14 +61,14 @@ const IMG_H = 450;
         }
 
         <div class="card-footer">
-            <span class="btn-primary" aria-hidden="true">Détails</span>
+            <span class="btn btn-primary" aria-hidden="true">Détails</span>
             {
                 (data.liveUrl || data.sourceUrl) && (
                     <div class="card-links">
                         {data.liveUrl && (
                             <a
                                 href={data.liveUrl}
-                                class="btn-secondary"
+                                class="btn btn-secondary"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label={`Voir la démo du projet : ${data.title} (nouvel onglet)`}
@@ -79,7 +79,7 @@ const IMG_H = 450;
                         {data.sourceUrl && (
                             <a
                                 href={data.sourceUrl}
-                                class="btn-secondary"
+                                class="btn btn-secondary"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 aria-label={`Voir le code source du projet : ${data.title} (nouvel onglet)`}
@@ -99,11 +99,7 @@ const IMG_H = 450;
         position: relative;
         display: flex;
         flex-direction: column;
-        background: var(--color-surface);
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-lg);
         overflow: hidden;
-        box-shadow: var(--shadow-soft);
         color: inherit;
         height: 100%;
         cursor: pointer;
@@ -133,10 +129,6 @@ const IMG_H = 450;
         outline: 2px solid var(--color-accent);
         outline-offset: 4px;
         border-radius: 2px;
-    }
-
-    .project-card :is(h1, h2, h3, h4, h5, h6) {
-        animation: none !important;
     }
 
     @media (hover: hover) {
@@ -277,16 +269,10 @@ const IMG_H = 450;
 
     .btn-primary,
     .btn-secondary {
-        display: inline-flex;
-        align-items: center;
         justify-content: center;
-        font-family: var(--font-title);
         font-size: 0.85rem;
-        font-weight: 500;
         padding: 0.65rem 1.2rem;
         border-radius: var(--radius-sm);
-        text-decoration: none;
-        cursor: pointer;
         transition:
             background var(--duration-fast) ease,
             color var(--duration-fast) ease,

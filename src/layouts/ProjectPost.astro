@@ -86,7 +86,7 @@ const imageSrc = heroImage ?? fallBackImage;
                                         {liveUrl && (
                                             <a
                                                 href={liveUrl}
-                                                class="link-btn"
+                                                class="btn link-btn"
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                             >
@@ -111,7 +111,7 @@ const imageSrc = heroImage ?? fallBackImage;
                                         {sourceUrl && (
                                             <a
                                                 href={sourceUrl}
-                                                class="link-btn secondary"
+                                                class="btn link-btn secondary"
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                             >
@@ -167,10 +167,6 @@ const imageSrc = heroImage ?? fallBackImage;
         display: flex;
         flex-direction: column;
         gap: 2.5rem;
-    }
-
-    .project-post-layout :is(h1, h2, h3, h4, h5, h6) {
-        animation: none !important;
     }
 
     .project-cover {
@@ -289,20 +285,19 @@ const imageSrc = heroImage ?? fallBackImage;
     }
 
     .link-btn {
-        display: inline-flex;
-        align-items: center;
         gap: 0.45rem;
-        font-family: var(--font-title);
         font-size: 0.85rem;
-        font-weight: 500;
         padding: 0.6rem 1.1rem;
         background: var(--color-accent);
         color: var(--color-bg);
         border: 1px solid transparent;
         border-radius: 999px;
-        text-decoration: none;
-        letter-spacing: -0.01em;
-        transition: all var(--duration-fast) var(--ease-spring);
+        transition:
+            transform var(--duration-fast) var(--ease-spring),
+            box-shadow var(--duration-fast) ease,
+            background-color var(--duration-fast) ease,
+            border-color var(--duration-fast) ease,
+            color var(--duration-fast) ease;
     }
 
     .link-btn:hover {

@@ -117,11 +117,11 @@ const jsonLd = {
                         microservices haute fiabilité.
                     </p>
                     <div class="hero-cta">
-                        <a href="/project" class="btn-dark">
+                        <a href="/project" class="btn btn-dark">
                             Voir les réalisations
                             <Icon name="arrow-down" size={17} />
                         </a>
-                        <a href="/tools" class="btn-ghost">
+                        <a href="/tools" class="btn btn-ghost">
                             Expertise & stack
                             <Icon name="arrow-right" size={17} />
                         </a>
@@ -154,7 +154,7 @@ const jsonLd = {
                         {
                             works.map((m, i) => (
                                 <article
-                                    class="mission-card reveal"
+                                    class="mission-card card reveal"
                                     style={`--reveal-delay:${i * 0.08}s`}
                                 >
                                     <div class="mission-top">
@@ -190,7 +190,7 @@ const jsonLd = {
                     </div>
 
                     <div class="section-more reveal">
-                        <a href="/about" class="btn-dark btn-sm">
+                        <a href="/about" class="btn btn-dark btn-sm">
                             Explorer l'ensemble du parcours
                             <Icon name="arrow-right" size={16} />
                         </a>
@@ -288,7 +288,7 @@ const jsonLd = {
                         <li>CI/CD & environnements reproductibles</li>
                         <li>Documentation exhaustive</li>
                     </ul>
-                    <a href="/contact" class="btn-light">
+                    <a href="/contact" class="btn btn-light">
                         Lancer un échange
                         <Icon name="arrow-up-right" size={17} />
                     </a>
@@ -371,11 +371,6 @@ const jsonLd = {
                 display: block;
                 min-height: 100dvh;
             }
-            .home .section :is(h1, h2, h3),
-            .home .mission-card h3 {
-                animation: none;
-            }
-
             /* ——— HERO ——— */
             .hero {
                 position: relative;
@@ -446,17 +441,11 @@ const jsonLd = {
             .btn-dark,
             .btn-ghost,
             .btn-light {
-                display: inline-flex;
-                align-items: center;
                 gap: 0.65rem;
-                font-family: var(--font-title);
-                font-weight: 500;
                 font-size: 0.95rem;
-                letter-spacing: -0.01em;
                 padding: 0.95rem 1.6rem;
                 border-radius: var(--radius-sm);
                 border: 1px solid var(--color-border);
-                text-decoration: none;
                 transition:
                     transform 0.2s var(--ease-spring),
                     background 0.2s ease,
@@ -587,14 +576,10 @@ const jsonLd = {
                 gap: 1.75rem;
             }
             .mission-card {
-                background: var(--color-surface);
-                border: 1px solid var(--color-border);
-                border-radius: var(--radius-lg);
                 padding: 2rem;
                 display: flex;
                 flex-direction: column;
                 gap: 1.1rem;
-                box-shadow: var(--shadow-soft);
                 transition:
                     border-color 0.25s ease,
                     transform 0.3s var(--ease-spring);

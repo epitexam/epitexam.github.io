@@ -169,10 +169,6 @@ const jsonLd = {
     .tools-main {
         gap: 5rem;
     }
-    .tools-main :is(h1, h2, h3, h4, h5, h6) {
-        animation: none !important;
-    }
-
     .page-header {
         display: flex;
         flex-direction: column;
@@ -294,7 +290,10 @@ const jsonLd = {
         flex-shrink: 0;
         white-space: nowrap;
         box-shadow: none;
-        transition: all var(--duration-fast) ease;
+        transition:
+            color var(--duration-fast) ease,
+            border-color var(--duration-fast) ease,
+            background-color var(--duration-fast) ease;
     }
 
     @media (hover: hover) {

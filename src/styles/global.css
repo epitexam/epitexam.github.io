@@ -68,8 +68,6 @@
     /* Grille body::before : même alpha illisible en light (noir sur blanc),
        donc opacité pilotée par thème (0.018 en dark, 0.08 en light). */
     --grid-line: 0.018;
-    --grid-glow-a: 0.025;
-    --grid-glow-b: 0.015;
 
     --badge-featured-bg: rgb(var(--accent));
     --badge-featured-text: rgb(var(--bg));
@@ -107,8 +105,6 @@
         --badge-green-rgb: 22, 101, 52;
         --color-error-rgb: 185, 28, 28;
         --grid-line: 0.1;
-        --grid-glow-a: 0.06;
-        --grid-glow-b: 0.05;
         --badge-featured-bg: rgb(var(--accent));
         --badge-featured-text: rgb(244, 241, 234);
     }
@@ -127,7 +123,6 @@
     }
 
     html {
-        scroll-behavior: smooth;
         scroll-padding-top: var(--header-height);
         scrollbar-gutter: stable;
         -webkit-text-size-adjust: none;
@@ -176,11 +171,6 @@
         display: block;
     }
 
-    audio {
-        width: 100%;
-        border-radius: var(--radius-sm);
-    }
-
     iframe {
         max-width: 100%;
         border: 1px solid var(--color-border);
@@ -223,15 +213,12 @@
             z-index: -1;
             pointer-events: none;
             background-image:
-                radial-gradient(circle at 0% 0%, rgba(var(--accent), var(--grid-glow-a)) 0%, transparent 35%),
-                radial-gradient(circle at 100% 100%, rgba(var(--accent), var(--grid-glow-b)) 0%, transparent 35%),
                 linear-gradient(rgba(var(--text), var(--grid-line)) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(var(--text), var(--grid-line)) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 64px 64px, 64px 64px;
+            background-size: 64px 64px, 64px 64px;
             mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);
             -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);
             transform: translateZ(0);
-            will-change: transform;
         }
     }
 
@@ -368,63 +355,6 @@
         color: var(--color-muted);
     }
 
-    abbr[title],
-    dfn {
-        text-decoration: underline dotted;
-        text-underline-offset: 3px;
-        cursor: help;
-    }
-
-    dfn {
-        font-style: italic;
-    }
-
-    sub,
-    sup {
-        font-size: 0.75em;
-        line-height: 0;
-        position: relative;
-        vertical-align: baseline;
-    }
-
-    sub {
-        bottom: -0.25em;
-    }
-
-    sup {
-        top: -0.5em;
-    }
-
-    mark {
-        background: rgba(var(--accent), 0.15);
-        color: var(--color-text);
-        border-radius: 0.3em;
-        padding: 0.1em 0.3em;
-    }
-
-    del,
-    s {
-        color: var(--color-muted);
-        opacity: 0.6;
-    }
-
-    ins {
-        text-decoration: none;
-        background: rgba(var(--badge-green-rgb), 0.12);
-        color: rgb(var(--badge-green-rgb));
-        border-radius: 0.2em;
-        padding: 0.1em 0.25em;
-    }
-
-    cite {
-        font-style: italic;
-        color: var(--color-muted);
-    }
-
-    q {
-        font-style: italic;
-    }
-
     /* kbd : voir article.css. samp/var supprimés (inutilisés). */
 
     :is(ul, ol) {
@@ -483,25 +413,6 @@
         cursor: pointer;
     }
 
-    fieldset {
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-lg);
-        padding: 1.5rem;
-        margin: 0;
-        background: var(--color-surface);
-        box-shadow: var(--shadow-soft);
-    }
-
-    legend {
-        font-size: 0.75rem;
-        font-weight: 600;
-        font-family: var(--font-title);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: var(--color-muted);
-        padding-inline: 0.5rem;
-    }
-
     input,
     textarea,
     select {
@@ -539,7 +450,11 @@
         font-weight: 500;
         cursor: pointer;
         box-shadow: var(--shadow-soft);
-        transition: all var(--duration-fast) var(--ease-spring);
+        transition:
+            background-color var(--duration-fast) var(--ease-spring),
+            border-color var(--duration-fast) var(--ease-spring),
+            transform var(--duration-fast) var(--ease-spring),
+            box-shadow var(--duration-fast) var(--ease-spring);
 
         &:active {
             transform: scale(0.97);
@@ -584,52 +499,6 @@
         cursor: pointer;
     }
 
-    input[type="range"] {
-        -webkit-appearance: none;
-        appearance: none;
-        height: 6px;
-        background: var(--tint-10);
-        border: 1px solid var(--color-border);
-        border-radius: 999px;
-        padding: 0;
-        cursor: pointer;
-
-        &::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: all var(--duration-fast) ease;
-        }
-
-        &::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition: all var(--duration-fast) ease;
-        }
-
-        @media (hover: hover) {
-            &:hover::-webkit-slider-thumb {
-                box-shadow: 0 0 0 6px rgba(var(--accent), 0.15);
-                border-color: var(--color-accent);
-            }
-
-            &:hover::-moz-range-thumb {
-                box-shadow: 0 0 0 6px rgba(var(--accent), 0.15);
-                border-color: var(--color-accent);
-            }
-        }
-    }
-
     :is(code, pre) {
         font-family: var(--font-code);
         font-variant-ligatures: none;
@@ -643,6 +512,23 @@
         border-radius: var(--radius-sm);
         border: 1px solid var(--tint-14);
         transition: background var(--duration-fast) ease, color var(--duration-fast) ease;
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        font-family: var(--font-title);
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    .card {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-soft);
     }
 
     /* pre : voir article.css (blocs de code MDX uniquement). */
@@ -715,25 +601,25 @@
     }
 
     @media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
-        h1 {
+        .animate-headings h1 {
             --tx: -30px;
             animation: fade-left var(--duration-slow) var(--ease-spring) both;
             animation-delay: var(--anim-delay, 0s);
         }
 
-        h2 {
+        .animate-headings h2 {
             --tx: -20px;
             animation: fade-left var(--duration-slow) var(--ease-spring) both;
             animation-delay: var(--anim-delay, calc(var(--stagger) * 1));
         }
 
-        h3 {
+        .animate-headings h3 {
             --ty: 20px;
             animation: fade-in var(--duration-slow) var(--ease-spring) both;
             animation-delay: var(--anim-delay, calc(var(--stagger) * 2));
         }
 
-        :is(h4, h5, h6) {
+        .animate-headings :is(h4, h5, h6) {
             --ty: 15px;
             animation: fade-in var(--duration-slow) var(--ease-spring) both;
             animation-delay: var(--anim-delay, calc(var(--stagger) * 3));

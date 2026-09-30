@@ -109,7 +109,6 @@
         contain: layout paint style;
         content-visibility: auto;
         contain-intrinsic-size: auto 400px;
-        will-change: border-color, box-shadow;
 
         @media (hover: hover) {
             &:hover {
@@ -205,7 +204,10 @@
         border-radius: var(--radius-md);
         background: var(--color-surface);
         overflow: hidden;
-        transition: all var(--duration-fast) ease;
+        transition:
+            background-color var(--duration-fast) ease,
+            border-color var(--duration-fast) ease,
+            box-shadow var(--duration-fast) ease;
         margin-block: 1rem;
 
         &[open] {
