@@ -22,36 +22,30 @@ const sortedTools = [...tools].sort(
 );
 ---
 
-<div class="tool-section">
-    {title && <p class="tool-section-label">{title}</p>}
-    <ul class="tool-grid" role="list">
-        {
-            sortedTools.map((tool) => (
-                <li class="tool-item">
-                    <ToolCard {...tool} />
-                </li>
-            ))
-        }
-    </ul>
-</div>
+{title && <p class="tool-section-label">{title}</p>}
+<ul class="tool-grid" role="list">
+    {
+        sortedTools.map((tool) => (
+            <li class="tool-item">
+                <ToolCard {...tool} />
+            </li>
+        ))
+    }
+</ul>
 
 <style>
-    .tool-section {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
+    .tool-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.25rem;
         width: 100%;
-    }
-
-    .tool-section ul,
-    .tool-section ol {
         margin: 0;
         padding: 0;
         list-style: none;
     }
 
-    .tool-section li::before,
-    .tool-section li::after {
+    .tool-grid > li::before,
+    .tool-grid > li::after {
         content: none !important;
         display: none;
     }
