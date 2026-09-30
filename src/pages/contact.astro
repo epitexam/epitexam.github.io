@@ -99,14 +99,14 @@ const success = Astro.url.searchParams.get("success") === "true";
                                 value={`Nouveau message - ${SITE_TITLE}`}
                             />
 
-                            <div class="honeypot" aria-hidden="true">
-                                <input
-                                    type="text"
-                                    name="website"
-                                    tabindex="-1"
-                                    autocomplete="off"
-                                />
-                            </div>
+                            <input
+                                type="text"
+                                name="website"
+                                tabindex="-1"
+                                autocomplete="off"
+                                aria-hidden="true"
+                                class="honeypot"
+                            />
 
                             <div class="field-group">
                                 <label for="name" class="field-label">
@@ -185,10 +185,8 @@ const success = Astro.url.searchParams.get("success") === "true";
                                         />
                                     </div>
                                     <span class="char-counter">
-                                        <>
-                                            <span id="charCount">0</span>
-                                            <span class="char-max">/2000</span>
-                                        </>
+                                        <span id="charCount">0</span>
+                                        <span class="char-max">/2000</span>
                                     </span>
                                 </div>
 

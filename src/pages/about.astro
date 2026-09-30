@@ -85,15 +85,13 @@ const jsonLd = {
 
                 <div class="journey-block">
                     <h3 class="journey-label">Expériences professionnelles</h3>
-                    <div class="journey-list">
+                    <ul class="journey-list">
                         {
                             EXPERIENCES.map((item) => (
-                                <div class="journey-item">
-                                    <div class="journey-header">
-                                        <p class="journey-title">
-                                            {item.title}
-                                        </p>
-                                    </div>
+                                <li class="journey-item">
+                                    <p class="journey-title">
+                                        {item.title}
+                                    </p>
                                     {item.context && (
                                         <p class="journey-context">
                                             {item.context}
@@ -107,10 +105,10 @@ const jsonLd = {
                                             <Tag tag={tag} />
                                         ))}
                                     </div>
-                                </div>
+                                </li>
                             ))
                         }
-                    </div>
+                    </ul>
                 </div>
             </section>
 
@@ -238,6 +236,9 @@ const jsonLd = {
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
+        margin: 0;
+        padding: 0;
+        list-style: none;
     }
 
     .journey-item {
@@ -266,28 +267,12 @@ const jsonLd = {
         }
     }
 
-    .journey-header {
-        display: flex;
-        align-items: baseline;
-        gap: 0.75rem;
-        flex-wrap: wrap;
-        margin-bottom: 0.5rem;
-    }
-
-    .journey-period {
-        font-family: var(--font-code);
-        font-size: 0.8rem;
-        color: var(--color-muted);
-        white-space: nowrap;
-        flex-shrink: 0;
-    }
-
     .journey-title {
         font-family: var(--font-title);
         font-size: 1.05rem;
         font-weight: 600;
         color: var(--color-text);
-        margin: 0;
+        margin: 0 0 0.5rem;
         letter-spacing: -0.01em;
     }
 
@@ -297,13 +282,6 @@ const jsonLd = {
         color: var(--color-accent);
         margin: 0.2rem 0 0.5rem;
         opacity: 0.9;
-    }
-
-    .journey-subtitle-text {
-        font-size: 0.9rem;
-        color: var(--color-muted);
-        font-style: italic;
-        margin: 0 0 0.3rem;
     }
 
     .journey-desc {
@@ -396,10 +374,6 @@ const jsonLd = {
     @media (max-width: 768px) {
         .about-main {
             gap: 3.5rem;
-        }
-        .journey-header {
-            flex-direction: column;
-            gap: 0.2rem;
         }
     }
 
