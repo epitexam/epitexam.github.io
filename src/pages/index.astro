@@ -299,11 +299,10 @@ const jsonLd = {
         <Footer />
 
         <script>
-            let cleanup: (() => void) | undefined;
             const startHero = () => {
                 import("../scripts/hero-canvas.ts")
                     .then((m) => {
-                        cleanup = m.initHeroCanvas();
+                        m.initHeroCanvas();
                     })
                     .catch(() => {});
             };
@@ -335,13 +334,6 @@ const jsonLd = {
             } else {
                 window.addEventListener("load", scheduleHero, { once: true });
             }
-            document.addEventListener(
-                "astro:before-swap",
-                () => {
-                    if (cleanup) cleanup();
-                },
-                { once: true },
-            );
         </script>
 
         <script>
@@ -367,11 +359,6 @@ const jsonLd = {
                     { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
                 );
                 revealEls.forEach((el) => io.observe(el));
-                document.addEventListener(
-                    "astro:before-swap",
-                    () => io.disconnect(),
-                    { once: true },
-                );
             }
         </script>
 

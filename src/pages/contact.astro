@@ -52,29 +52,6 @@ const success = Astro.url.searchParams.get("success") === "true";
                     )
                 }
 
-                <div
-                    id="errorNotification"
-                    class="notification error-notification hidden"
-                    role="alert"
-                    aria-live="assertive"
-                >
-                    <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2.5"
-                        aria-hidden="true"
-                        class="notif-icon"
-                    >
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="8" x2="12" y2="12"></line>
-                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                    </svg>
-                    <span id="errorMessage"></span>
-                </div>
-
                 {
                     success ? (
                         <div class="success-body">
@@ -345,20 +322,10 @@ const success = Astro.url.searchParams.get("success") === "true";
         animation: slideDown var(--duration-base) var(--ease-spring) both;
     }
 
-    .notif-icon {
-        flex-shrink: 0;
-    }
-
     .success-notification {
         background: rgba(var(--accent), 0.08);
         border: 1px solid rgba(var(--accent), 0.2);
         color: var(--color-accent);
-    }
-
-    .error-notification {
-        background: rgba(var(--color-error-rgb), 0.08);
-        border: 1px solid rgba(var(--color-error-rgb), 0.2);
-        color: rgb(var(--color-error-rgb));
     }
 
     .notification.hidden {
@@ -679,34 +646,30 @@ const success = Astro.url.searchParams.get("success") === "true";
 <script>
     (() => {
         const params = new URLSearchParams(window.location.search);
-        if (!params.has("success")) return;
+        if (params.has("success")) {
+            history.replaceState(null, "", window.location.pathname);
 
-        history.replaceState(null, "", window.location.pathname);
+            const backLink = document.getElementById(
+                "backLink",
+            ) as HTMLAnchorElement | null;
+            const backLabel = document.getElementById(
+                "backLinkLabel",
+            ) as HTMLElement | null;
 
-        const backLink = document.getElementById(
-            "backLink",
-        ) as HTMLAnchorElement | null;
-        const backLabel = document.getElementById(
-            "backLinkLabel",
-        ) as HTMLElement | null;
+            if (backLink && backLabel) {
+                const referrer = document.referrer;
+                const isSameOrigin =
+                    referrer && referrer.startsWith(window.location.origin);
+                const isNotContact =
+                    referrer && !new URL(referrer).pathname.includes("contact");
 
-        if (backLink && backLabel) {
-            const referrer = document.referrer;
-            const isSameOrigin =
-                referrer && referrer.startsWith(window.location.origin);
-            const isNotContact =
-                referrer && !new URL(referrer).pathname.includes("contact");
-
-            if (isSameOrigin && isNotContact) {
-                backLink.href = referrer;
-                backLabel.textContent = "Retour à la page précédente";
+                if (isSameOrigin && isNotContact) {
+                    backLink.href = referrer;
+                    backLabel.textContent = "Retour à la page précédente";
+                }
             }
         }
-    })();
-</script>
 
-<script>
-    (() => {
         const form = document.getElementById(
             "contactForm",
         ) as HTMLFormElement | null;
@@ -750,28 +713,10 @@ const success = Astro.url.searchParams.get("success") === "true";
         const submitSpinner = document.getElementById(
             "submitSpinner",
         ) as SVGElement | null;
-        const errorNotif = document.getElementById(
-            "errorNotification",
-        ) as HTMLElement | null;
-        const errorMessage = document.getElementById(
-            "errorMessage",
-        ) as HTMLElement | null;
-
-        let errorTimer: ReturnType<typeof setTimeout> | undefined;
-        let submitTimeout: ReturnType<typeof setTimeout> | undefined;
-
-        const showError = (msg: string): void => {
-            if (!errorNotif || !errorMessage) return;
-            if (errorTimer) clearTimeout(errorTimer);
-
-            errorMessage.textContent = msg;
-            errorNotif.classList.remove("hidden");
-            errorNotif.scrollIntoView({ behavior: "smooth", block: "nearest" });
-
-            errorTimer = setTimeout(() => {
-                errorNotif.classList.add("hidden");
-            }, 6000);
-        };
+        const nameError = document.getElementById("name-error");
+        const emailError = document.getElementById("email-error");
+        const messageError = document.getElementById("message-error");
+        const privacyError = document.getElementById("privacy-error");
 
         const showFieldError = (
             errorEl: HTMLElement | null,
@@ -804,60 +749,56 @@ const success = Astro.url.searchParams.get("success") === "true";
             /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
 
         const validateName = (): boolean => {
-            const errorEl = document.getElementById("name-error");
             const val = nameInput?.value.trim() ?? "";
             if (!val) {
                 showFieldError(
-                    errorEl,
+                    nameError,
                     "Veuillez indiquer votre nom.",
                     nameInput,
                 );
                 return false;
             }
-            clearFieldError(errorEl, nameInput);
+            clearFieldError(nameError, nameInput);
             markValid(nameInput);
             return true;
         };
 
         const validateEmail = (): boolean => {
-            const errorEl = document.getElementById("email-error");
             const val = emailInput?.value.trim() ?? "";
             if (!val || !EMAIL_REGEX.test(val)) {
-                showFieldError(errorEl, "Adresse email invalide.", emailInput);
+                showFieldError(emailError, "Adresse email invalide.", emailInput);
                 return false;
             }
-            clearFieldError(errorEl, emailInput);
+            clearFieldError(emailError, emailInput);
             markValid(emailInput);
             return true;
         };
 
         const validateMessage = (): boolean => {
-            const errorEl = document.getElementById("message-error");
             const len = textarea.value.trim().length;
             if (len < 20) {
                 showFieldError(
-                    errorEl,
+                    messageError,
                     `Encore ${20 - len} caractère${20 - len > 1 ? "s" : ""} minimum.`,
                     textarea,
                 );
                 return false;
             }
-            clearFieldError(errorEl, textarea);
+            clearFieldError(messageError, textarea);
             markValid(textarea);
             return true;
         };
 
         const validatePrivacy = (): boolean => {
-            const errorEl = document.getElementById("privacy-error");
             if (!privacy?.checked) {
                 showFieldError(
-                    errorEl,
+                    privacyError,
                     "Veuillez accepter la politique de confidentialité.",
                     null,
                 );
                 return false;
             }
-            clearFieldError(errorEl, null);
+            clearFieldError(privacyError, null);
             return true;
         };
 
@@ -878,15 +819,15 @@ const success = Astro.url.searchParams.get("success") === "true";
             if (emailInput.classList.contains("invalid")) validateEmail();
         });
         textarea.addEventListener("input", () => {
-            updateCount();
+            scheduleCount();
             if (textarea.classList.contains("invalid")) validateMessage();
         });
 
         privacy?.addEventListener("change", () => {
-            if (privacy.checked)
-                clearFieldError(document.getElementById("privacy-error"), null);
+            if (privacy.checked) clearFieldError(privacyError, null);
         });
 
+        let countQueued = false;
         const updateCount = (): void => {
             const len = textarea.value.length;
             const pct = (len / 2000) * 100;
@@ -909,10 +850,14 @@ const success = Astro.url.searchParams.get("success") === "true";
                 );
                 charProgress.classList.toggle("at-limit", len >= 2000);
             }
+            countQueued = false;
         };
 
-        window.addEventListener("pageshow", updateCount);
-        updateCount();
+        const scheduleCount = (): void => {
+            if (countQueued) return;
+            countQueued = true;
+            requestAnimationFrame(updateCount);
+        };
 
         const setLoading = (loading: boolean): void => {
             if (!submitBtn || !submitLabel || !submitArrow || !submitSpinner)
@@ -924,8 +869,10 @@ const success = Astro.url.searchParams.get("success") === "true";
         };
 
         window.addEventListener("pageshow", (e: PageTransitionEvent) => {
+            updateCount();
             if (e.persisted) setLoading(false);
         });
+        updateCount();
 
         form.addEventListener("submit", (e: SubmitEvent) => {
             if (honeypot?.value.trim()) {
@@ -962,23 +909,6 @@ const success = Astro.url.searchParams.get("success") === "true";
             }
 
             setLoading(true);
-
-            if (submitTimeout) clearTimeout(submitTimeout);
-
-            submitTimeout = setTimeout(() => {
-                setLoading(false);
-                showError(
-                    "La soumission a pris trop de temps. Veuillez réessayer.",
-                );
-            }, 10000);
-
-            window.addEventListener(
-                "pagehide",
-                () => {
-                    if (submitTimeout) clearTimeout(submitTimeout);
-                },
-                { once: true },
-            );
         });
     })();
 </script>
