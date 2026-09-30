@@ -127,7 +127,6 @@
     }
 
     html {
-        scroll-behavior: smooth;
         scroll-padding-top: var(--header-height);
         scrollbar-gutter: stable;
         -webkit-text-size-adjust: none;
@@ -174,11 +173,6 @@
         max-width: 100%;
         height: auto;
         display: block;
-    }
-
-    audio {
-        width: 100%;
-        border-radius: var(--radius-sm);
     }
 
     iframe {
@@ -367,63 +361,6 @@
         color: var(--color-muted);
     }
 
-    abbr[title],
-    dfn {
-        text-decoration: underline dotted;
-        text-underline-offset: 3px;
-        cursor: help;
-    }
-
-    dfn {
-        font-style: italic;
-    }
-
-    sub,
-    sup {
-        font-size: 0.75em;
-        line-height: 0;
-        position: relative;
-        vertical-align: baseline;
-    }
-
-    sub {
-        bottom: -0.25em;
-    }
-
-    sup {
-        top: -0.5em;
-    }
-
-    mark {
-        background: rgba(var(--accent), 0.15);
-        color: var(--color-text);
-        border-radius: 0.3em;
-        padding: 0.1em 0.3em;
-    }
-
-    del,
-    s {
-        color: var(--color-muted);
-        opacity: 0.6;
-    }
-
-    ins {
-        text-decoration: none;
-        background: rgba(var(--badge-green-rgb), 0.12);
-        color: rgb(var(--badge-green-rgb));
-        border-radius: 0.2em;
-        padding: 0.1em 0.25em;
-    }
-
-    cite {
-        font-style: italic;
-        color: var(--color-muted);
-    }
-
-    q {
-        font-style: italic;
-    }
-
     /* kbd : voir article.css. samp/var supprimés (inutilisés). */
 
     :is(ul, ol) {
@@ -480,25 +417,6 @@
         color: var(--color-text);
         margin-block-end: 0.5rem;
         cursor: pointer;
-    }
-
-    fieldset {
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-lg);
-        padding: 1.5rem;
-        margin: 0;
-        background: var(--color-surface);
-        box-shadow: var(--shadow-soft);
-    }
-
-    legend {
-        font-size: 0.75rem;
-        font-weight: 600;
-        font-family: var(--font-title);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: var(--color-muted);
-        padding-inline: 0.5rem;
     }
 
     input,
@@ -585,56 +503,6 @@
         border: none;
         background: none;
         cursor: pointer;
-    }
-
-    input[type="range"] {
-        -webkit-appearance: none;
-        appearance: none;
-        height: 6px;
-        background: var(--tint-10);
-        border: 1px solid var(--color-border);
-        border-radius: 999px;
-        padding: 0;
-        cursor: pointer;
-
-        &::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition:
-                border-color var(--duration-fast) ease,
-                box-shadow var(--duration-fast) ease;
-        }
-
-        &::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--color-surface);
-            border: 1px solid var(--color-border);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            cursor: pointer;
-            transition:
-                border-color var(--duration-fast) ease,
-                box-shadow var(--duration-fast) ease;
-        }
-
-        @media (hover: hover) {
-            &:hover::-webkit-slider-thumb {
-                box-shadow: 0 0 0 6px rgba(var(--accent), 0.15);
-                border-color: var(--color-accent);
-            }
-
-            &:hover::-moz-range-thumb {
-                box-shadow: 0 0 0 6px rgba(var(--accent), 0.15);
-                border-color: var(--color-accent);
-            }
-        }
     }
 
     :is(code, pre) {
@@ -738,7 +606,7 @@
         }
     }
 
-    @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+    @media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
         .animate-headings h1 {
             --tx: -30px;
             animation: fade-left var(--duration-slow) var(--ease-spring) both;
