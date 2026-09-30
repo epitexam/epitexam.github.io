@@ -714,26 +714,26 @@
         }
     }
 
-    @media (min-width: 769px) and (prefers-reduced-motion: no-preference) {
-        h1 {
+    @media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+        .animate-headings h1 {
             --tx: -30px;
             animation: fade-left var(--duration-slow) var(--ease-spring) both;
             animation-delay: var(--anim-delay, 0s);
         }
 
-        h2 {
+        .animate-headings h2 {
             --tx: -20px;
             animation: fade-left var(--duration-slow) var(--ease-spring) both;
             animation-delay: var(--anim-delay, calc(var(--stagger) * 1));
         }
 
-        h3 {
+        .animate-headings h3 {
             --ty: 20px;
             animation: fade-in var(--duration-slow) var(--ease-spring) both;
             animation-delay: var(--anim-delay, calc(var(--stagger) * 2));
         }
 
-        :is(h4, h5, h6) {
+        .animate-headings :is(h4, h5, h6) {
             --ty: 15px;
             animation: fade-in var(--duration-slow) var(--ease-spring) both;
             animation-delay: var(--anim-delay, calc(var(--stagger) * 3));

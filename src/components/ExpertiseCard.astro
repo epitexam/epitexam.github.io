@@ -31,10 +31,6 @@ const { title, description } = Astro.props;
             transform var(--duration-base) var(--ease-spring);
     }
 
-    .expertise-card :is(h1, h2, h3, h4, h5, h6) {
-        animation: none !important;
-    }
-
     .expertise-card:hover {
         transform: translateY(-2px);
         border-color: rgba(var(--accent), 0.25);
