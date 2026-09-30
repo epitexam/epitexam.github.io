@@ -68,8 +68,6 @@
     /* Grille body::before : même alpha illisible en light (noir sur blanc),
        donc opacité pilotée par thème (0.018 en dark, 0.08 en light). */
     --grid-line: 0.018;
-    --grid-glow-a: 0.025;
-    --grid-glow-b: 0.015;
 
     --badge-featured-bg: rgb(var(--accent));
     --badge-featured-text: rgb(var(--bg));
@@ -107,8 +105,6 @@
         --badge-green-rgb: 22, 101, 52;
         --color-error-rgb: 185, 28, 28;
         --grid-line: 0.1;
-        --grid-glow-a: 0.06;
-        --grid-glow-b: 0.05;
         --badge-featured-bg: rgb(var(--accent));
         --badge-featured-text: rgb(244, 241, 234);
     }
@@ -217,11 +213,9 @@
             z-index: -1;
             pointer-events: none;
             background-image:
-                radial-gradient(circle at 0% 0%, rgba(var(--accent), var(--grid-glow-a)) 0%, transparent 35%),
-                radial-gradient(circle at 100% 100%, rgba(var(--accent), var(--grid-glow-b)) 0%, transparent 35%),
                 linear-gradient(rgba(var(--text), var(--grid-line)) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(var(--text), var(--grid-line)) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 64px 64px, 64px 64px;
+            background-size: 64px 64px, 64px 64px;
             mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);
             -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 100%);
             transform: translateZ(0);
