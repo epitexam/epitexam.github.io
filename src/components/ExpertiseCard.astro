@@ -8,16 +8,16 @@ const { title, description } = Astro.props;
 ---
 
 <article class="expertise-card card">
-    <div class="card-glow" aria-hidden="true"></div>
-    <div class="card-inner">
-        <h3 class="card-title">{title}</h3>
-        <p class="card-desc">{description}</p>
-    </div>
+    <h3 class="card-title">{title}</h3>
+    <p class="card-desc">{description}</p>
 </article>
 
 <style>
     .expertise-card {
         position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
         padding: 1.5rem;
         overflow: hidden;
         isolation: isolate;
@@ -27,13 +27,19 @@ const { title, description } = Astro.props;
             transform var(--duration-base) var(--ease-spring);
     }
 
+    .expertise-card > * {
+        position: relative;
+        z-index: 1;
+    }
+
     .expertise-card:hover {
         transform: translateY(-2px);
         border-color: rgba(var(--accent), 0.25);
         box-shadow: var(--shadow-strong);
     }
 
-    .card-glow {
+    .expertise-card::before {
+        content: "";
         position: absolute;
         inset: -1px;
         border-radius: inherit;
@@ -48,16 +54,8 @@ const { title, description } = Astro.props;
         transition: opacity var(--duration-base) ease;
     }
 
-    .expertise-card:hover .card-glow {
+    .expertise-card:hover::before {
         opacity: 1;
-    }
-
-    .card-inner {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
     }
 
     .card-title {

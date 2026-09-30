@@ -2,13 +2,13 @@
 title: "Home Server : architecture et retour d'expérience d'un développeur"
 description: "Conception d'un home server auto-hébergé pour centraliser mes services, sécuriser mes données et automatiser une infrastructure Linux complète."
 pubDate: '2025-12-01'
-updatedDate: '2026-04-21'
+updatedDate: '2026-10-04'
 heroImage: '../../assets/danny-sdt-gray.webp'
 draft: false
 tags: ['linux', 'devops', 'self-hosting', 'docker-compose', 'docker', 'homelab', 'réseau', 'sécurité']
 ---
 
-Un soir de 2022, ma box est tombée. Rien de dramatique en soi, juste une vingtaine de minutes d'interruption. Le problème, c'est ce que cette coupure a révélé : en un instant, je me suis retrouvé privé de ma musique, de mes documents et de mes prises de notes. Tout était chez Google, Spotify ou Dropbox. Je ne possédais plus rien en local, je ne contrôlais plus rien.
+Un soir de 2022, ma box est tombée. Rien de dramatique en soi, juste une vingtaine de minutes d'interruption. Le problème, c'est qu'en un instant, je me suis retrouvé privé de ma musique, de mes documents et de mes prises de notes. Tout était chez Google, Spotify ou Dropbox. Je ne possédais plus rien en local, je ne contrôlais plus rien.
 
 J'avais déjà tenté l'aventure du serveur perso avant le COVID, mais sans méthode : du distro hopping compulsif, des configs bancales et des nuits entières à passer au peigne fin des paquets orphelins. Résultat, je finissais toujours par tout abandonner.
 
@@ -192,7 +192,7 @@ On passe d'une gestion réactive ("quelque chose est cassé, qu'est-ce que c'est
 
 Avec un seul serveur et une dizaine de conteneurs, la tentation de surcharger la stack est réelle. Voici ce que j'ai consciemment mis de côté :
 
-**Kubernetes** : K3s, K8s, peu importe la déclinaison. L'orchestration de pods, la gestion du réseau overlay, les ConfigMaps, les Secrets Kubernetes... tout ça a du sens quand on gère des dizaines de services sur plusieurs nœuds. Pour un serveur unique, c'est ajouter dix couches de complexité pour résoudre des problèmes qu'on n'a pas. Un `docker compose up` suffit.
+**Kubernetes** : K3s, K8s, peu importe la déclinaison. L'orchestration de pods, la gestion du réseau overlay, les ConfigMaps, les Secrets Kubernetes… tout ça a du sens quand on gère des dizaines de services sur plusieurs nœuds. Pour un serveur unique, c'est ajouter dix couches de complexité pour résoudre des problèmes qu'on n'a pas. Un `docker compose up` suffit.
 
 **Ansible, Puppet, Chef** : l'automatisation de configuration est séduisante sur le papier. En pratique, pour une seule machine, des scripts bash bien commentés et des services systemd font exactement le même travail sans la surcharge cognitive. J'expérimente Ansible en parallèle pour monter en compétence, mais je ne l'utilise pas en production ici.
 
@@ -224,11 +224,13 @@ L'idée de décrire l'intégralité du système dans un fichier versionné et de
 
 Les choix ennuyeux sont souvent les bons.
 
-Debian plutôt qu'Arch. Docker plutôt que Kubernetes. Caddy plutôt que Traefik.
+Debian plutôt qu'Arch.
+
+Docker plutôt que Kubernetes.
+
+Caddy plutôt que Traefik.
 
 À chaque fois, j'ai choisi la solution qui demande le moins d'attention quotidienne et à chaque fois, c'était la bonne décision.
-
-La documentation est le vrai produit.
 
 Le code, les configs, les scripts : tout ça peut se reconstruire. Ce qui prend du temps, c'est de se souvenir *pourquoi* on a fait tel choix six mois plus tôt.
 
@@ -236,4 +238,4 @@ Aujourd'hui, chaque service a son propre `README.md` qui explique l'installation
 
 Et j'ai appris qu'un home server n'est jamais vraiment "terminé" mais qu'il peut atteindre un état où on n'a plus besoin de s'en préoccuper en permanence.
 
-La prochaine panne internet peut venir. Ma musique jouera quand même.
+La prochaine panne internet peut venir, ma musique jouera quand même.

@@ -17,8 +17,14 @@ const progressLabel = `Avancement de l'article : ${progress} %`;
     ]}
 >
     <span class="teaser-progress__meta">
-        {!compact && <span>Avancement</span>}
-        <span>{progress}%</span>
+        {!compact ? (
+            <>
+                <span>Avancement</span>
+                <span>{progress}%</span>
+            </>
+        ) : (
+            `${progress}%`
+        )}
     </span>
     <span
         class="teaser-progress__track"

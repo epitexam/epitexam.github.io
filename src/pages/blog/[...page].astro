@@ -73,8 +73,7 @@ const jsonLd = {
     <body>
         <Header />
 
-        <main>
-            <div class="blog-index">
+        <main class="blog-index">
                 <header class="page-header animate-fade-in">
                     <div class="header-eyebrow">
                         <span class="label">Écriture</span>
@@ -118,11 +117,6 @@ const jsonLd = {
                                         href={`/blog/${post.id}/`}
                                         class="blog-card"
                                     >
-                                        <div
-                                            class="card-glow"
-                                            aria-hidden="true"
-                                        />
-
                                         {post.data.heroImage && (
                                             <div class="image-container">
                                                 <Image
@@ -258,7 +252,6 @@ const jsonLd = {
                         </nav>
                     )
                 }
-            </div>
         </main>
 
         <Footer />
@@ -373,7 +366,7 @@ const jsonLd = {
             border-color: rgba(var(--accent), 0.2);
             box-shadow: var(--shadow-strong);
         }
-        a.blog-card:hover .card-glow {
+        a.blog-card:hover::before {
             opacity: 1;
         }
         a.blog-card:hover .card-img {
@@ -416,7 +409,8 @@ const jsonLd = {
         -webkit-line-clamp: 4;
     }
 
-    .card-glow {
+    a.blog-card::before {
+        content: "";
         position: absolute;
         inset: 0;
         border-radius: inherit;

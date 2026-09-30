@@ -64,8 +64,7 @@ const jsonLd = {
     <body>
         <Header />
 
-        <main>
-            <div class="project-index">
+        <main class="project-index">
                 <header class="page-header animate-fade-in">
                     <div class="header-eyebrow">
                         <span class="label">Portfolio</span>
@@ -136,7 +135,6 @@ const jsonLd = {
                                 <h2 id="featured-heading" class="section-label">
                                     Sélection
                                 </h2>
-                                <span class="section-line" aria-hidden="true" />
                             </div>
                             <div class="projects-grid featured-grid">
                                 {featured.map((p, i) => (
@@ -161,7 +159,6 @@ const jsonLd = {
                                 <h2 id="archive-heading" class="section-label">
                                     Archive
                                 </h2>
-                                <span class="section-line" aria-hidden="true" />
                             </div>
                             <div class="projects-grid">
                                 {others.map((p, i) => (
@@ -203,7 +200,6 @@ const jsonLd = {
                         </nav>
                     )
                 }
-            </div>
         </main>
 
         <Footer />
@@ -292,6 +288,13 @@ const jsonLd = {
         gap: 1rem;
     }
 
+    .section-strip::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--color-border);
+    }
+
     .section-label {
         font-family: var(--font-title);
         font-size: 0.75rem;
@@ -302,12 +305,6 @@ const jsonLd = {
         white-space: nowrap;
         margin: 0;
         padding: 0;
-    }
-
-    .section-line {
-        flex: 1;
-        height: 1px;
-        background: var(--color-border);
     }
 
     .projects-grid {
