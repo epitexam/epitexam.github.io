@@ -30,7 +30,7 @@ const isTopOne = game.rank === 1;
 ---
 
 <article
-    class:list={["game-card", { "top-one": isTopOne }]}
+    class:list={["game-card", "card", { "top-one": isTopOne }]}
     itemscope
     itemtype="https://schema.org/VideoGame"
     id={game.slug}
@@ -273,10 +273,6 @@ const isTopOne = game.rank === 1;
         position: relative;
         margin: 0 0 5rem;
         padding: 2.5rem;
-        background: var(--color-surface);
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-soft);
         transition:
             border-color var(--duration-base) var(--ease-spring),
             box-shadow var(--duration-base) ease;

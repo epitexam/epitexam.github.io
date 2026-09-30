@@ -7,7 +7,7 @@ export interface Props {
 const { title, description } = Astro.props;
 ---
 
-<article class="expertise-card">
+<article class="expertise-card card">
     <div class="card-glow" aria-hidden="true"></div>
     <div class="card-inner">
         <h3 class="card-title">{title}</h3>
@@ -19,12 +19,8 @@ const { title, description } = Astro.props;
     .expertise-card {
         position: relative;
         padding: 1.5rem;
-        background: var(--color-surface);
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-lg);
         overflow: hidden;
         isolation: isolate;
-        box-shadow: var(--shadow-soft);
         transition:
             border-color var(--duration-base) var(--ease-spring),
             box-shadow var(--duration-base) var(--ease-spring),

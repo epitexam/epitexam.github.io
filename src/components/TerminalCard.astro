@@ -15,7 +15,7 @@ const terminalId = `terminal-${Math.random().toString(36).slice(2, 9)}`;
 const wsApiUrl = import.meta.env.WS_API_URL ?? "";
 ---
 
-<div class="terminal-card" id={terminalId} data-ws-url={wsApiUrl}>
+<div class="terminal-card card" id={terminalId} data-ws-url={wsApiUrl}>
   <div class="terminal-header">
     <div class="terminal-dots">
       <span class="dot dot-red"></span>
@@ -316,8 +316,6 @@ const wsApiUrl = import.meta.env.WS_API_URL ?? "";
 
 <style>
   .terminal-card {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-strong);
     overflow: hidden;
