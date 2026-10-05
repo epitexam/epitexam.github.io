@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import BaseHead from "../components/BaseHead.astro";
 import Footer from "../components/Footer.astro";
@@ -6,6 +7,7 @@ import FormattedDate from "../components/FormattedDate.astro";
 import GitHubIcon from "../components/GitHubIcon.astro";
 import Header from "../components/Header.astro";
 import "../styles/article.css";
+import fallBackImage from "../assets/pexels-pixabay-270488.webp";
 
 interface ProjectNavTarget {
     title: string;
@@ -34,6 +36,8 @@ const {
     prev,
     next,
 } = Astro.props;
+
+const imageSrc = heroImage ?? fallBackImage;
 ---
 
 <html lang="fr">
@@ -69,83 +73,98 @@ const {
                     Tous les projets
                 </a>
 
-                <header class="project-header animate-fade-in">
-                    <div class="project-eyebrow">
-                        <span class="label">{categoryTag}</span>
-                        <span class="date">
-                            <FormattedDate date={pubDate} />
+                <article class="project-cover animate-fade-in">
+                    <div class="cover-meta">
+                        <div class="cover-eyebrow">
+                            <span class="label">{categoryTag}</span>
+                            <span class="date">
+                                <FormattedDate date={pubDate} />
+                                {
+                                    updatedDate && (
+                                        <>
+                                            {" "}
+                                            ·{" "}
+                                            <FormattedDate date={updatedDate} />
+                                        </>
+                                    )
+                                }
+                            </span>
+                        </div>
+
+                        <h1>{title}</h1>
+                        <p class="cover-description">{description}</p>
+
+                        <div class="cover-footer">
                             {
-                                updatedDate && (
-                                    <>
-                                        {" "}
-                                        ·{" "}
-                                        <FormattedDate date={updatedDate} />
-                                    </>
+                                technologies.length > 0 && (
+                                    <ul class="tech-list">
+                                        {technologies.map((tech) => (
+                                            <li class="tech-item">
+                                                {tech}
+                                            </li>
+                                        ))}
+                                    </ul>
                                 )
                             }
-                        </span>
-                    </div>
 
-                    <h1>{title}</h1>
-                    <p class="project-description">{description}</p>
-
-                    <div class="project-meta">
-                        {
-                            technologies.length > 0 && (
-                                <ul class="tech-list">
-                                    {technologies.map((tech) => (
-                                        <li class="tech-item">
-                                            {tech}
-                                        </li>
-                                    ))}
-                                </ul>
-                            )
-                        }
-
-                        {
-                            (liveUrl || sourceUrl) && (
-                                <div class="external-links">
-                                    {liveUrl && (
-                                        <a
-                                            href={liveUrl}
-                                            class="btn link-btn"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Live Demo
-                                            <svg
-                                                width="11"
-                                                height="11"
-                                                viewBox="0 0 12 12"
-                                                fill="none"
-                                                aria-hidden="true"
+                            {
+                                (liveUrl || sourceUrl) && (
+                                    <div class="external-links">
+                                        {liveUrl && (
+                                            <a
+                                                href={liveUrl}
+                                                class="btn link-btn"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
                                             >
-                                                <path
-                                                    d="M1 11L11 1M11 1H1M11 1V11"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                />
-                                            </svg>
-                                        </a>
-                                    )}
-                                    {sourceUrl && (
-                                        <a
-                                            href={sourceUrl}
-                                            class="btn link-btn secondary"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Code source
-                                            <GitHubIcon size={13} />
-                                        </a>
-                                    )}
-                                </div>
-                            )
-                        }
+                                                Live Demo
+                                                <svg
+                                                    width="11"
+                                                    height="11"
+                                                    viewBox="0 0 12 12"
+                                                    fill="none"
+                                                    aria-hidden="true"
+                                                >
+                                                    <path
+                                                        d="M1 11L11 1M11 1H1M11 1V11"
+                                                        stroke="currentColor"
+                                                        stroke-width="2"
+                                                        stroke-linecap="round"
+                                                        stroke-linejoin="round"
+                                                    />
+                                                </svg>
+                                            </a>
+                                        )}
+                                        {sourceUrl && (
+                                            <a
+                                                href={sourceUrl}
+                                                class="btn link-btn secondary"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                            >
+                                                Code source
+                                                <GitHubIcon size={13} />
+                                            </a>
+                                        )}
+                                    </div>
+                                )
+                            }
+                        </div>
                     </div>
-                </header>
+
+                    <div class="cover-image">
+                        <Image
+                            src={imageSrc}
+                            alt={heroImageDescription ?? ""}
+                            loading="eager"
+                            fetchpriority="high"
+                            widths={[320, 640, 960]}
+                            sizes="(max-width: 768px) 100vw, 320px"
+                            quality={70}
+                            format="webp"
+                        />
+                    </div>
+                </article>
 
                 <div class="article-body animate-fade-in">
                     <div class="prose">
@@ -245,31 +264,32 @@ const {
         gap: 0.65rem;
     }
 
-    .project-header {
-        display: flex;
-        flex-direction: column;
-        padding-bottom: 2rem;
-        border-bottom: 1px solid var(--color-border);
+    .project-cover {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        box-shadow: var(--shadow-strong);
     }
 
-    .project-eyebrow {
+    .cover-meta {
+        padding: 2.5rem;
         display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin-bottom: 1.25rem;
+        flex-direction: column;
         min-width: 0;
     }
 
-    .project-eyebrow::before {
-        content: "";
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--color-accent);
-        flex-shrink: 0;
+    .cover-eyebrow {
+        display: flex;
+        align-items: baseline;
+        gap: 0.75rem;
+        margin-bottom: 1.75rem;
+        min-width: 0;
     }
 
-    .project-eyebrow .label {
+    .cover-eyebrow .label {
         font-family: var(--font-title);
         font-size: 0.75rem;
         font-weight: 600;
@@ -279,7 +299,7 @@ const {
         white-space: nowrap;
     }
 
-    .project-eyebrow .date {
+    .cover-eyebrow .date {
         font-family: var(--font-code);
         font-size: 0.75rem;
         color: var(--color-muted);
@@ -296,27 +316,64 @@ const {
         line-height: 1.2;
         letter-spacing: -0.03em;
         color: var(--color-text);
-        margin: 0 0 1rem;
+        margin: 0 0 1.25rem;
         word-break: break-word;
         text-wrap: balance;
     }
 
-    .project-description {
+    .cover-description {
         font-size: 1rem;
         line-height: 1.7;
         color: var(--color-muted);
-        margin: 0;
-        max-width: 62ch;
+        margin: 0 0 auto;
+        padding-bottom: 2rem;
         text-wrap: pretty;
     }
 
-    .project-meta {
-        margin-top: 1.75rem;
+    .cover-footer {
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--color-border);
         display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 1rem 1.5rem;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    .cover-image {
+        position: relative;
+        overflow: hidden;
+        background: var(--tint-05);
+        border-left: 1px solid var(--color-border);
+        min-height: 100%;
+    }
+
+    .cover-image img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        filter: brightness(0.9) contrast(1.05) saturate(0.95);
+        transition:
+            filter var(--duration-base) ease,
+            transform var(--duration-slow) var(--ease-spring);
+    }
+
+    :root[data-theme="light"] .cover-image img {
+        filter: brightness(1) contrast(1) saturate(1);
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root:not([data-theme]) .cover-image img {
+            filter: brightness(1) contrast(1) saturate(1);
+        }
+    }
+
+    @media (hover: hover) {
+        .project-cover:hover .cover-image img {
+            filter: brightness(1) contrast(1.1) saturate(1.05);
+            transform: scale(1.03);
+        }
     }
 
     .tech-list {
@@ -459,8 +516,25 @@ const {
             gap: 2rem;
         }
 
-        .project-header {
-            padding-bottom: 1.75rem;
+        .project-cover {
+            grid-template-columns: 1fr;
+        }
+
+        .cover-image {
+            order: -1;
+            aspect-ratio: 16 / 9;
+            max-height: 260px;
+            border-left: none;
+            border-bottom: 1px solid var(--color-border);
+            min-height: 0;
+        }
+
+        .cover-image img {
+            position: static;
+        }
+
+        .cover-meta {
+            padding: 2rem 1.75rem 1.75rem;
         }
 
         .article-body {
@@ -484,20 +558,21 @@ const {
     }
 
     @media (max-width: 480px) {
-        .project-header {
-            padding-bottom: 1.5rem;
+        .cover-meta {
+            padding: 1.75rem 1.25rem 1.5rem;
         }
 
-        .project-eyebrow {
-            margin-bottom: 1rem;
+        .cover-eyebrow {
+            margin-bottom: 1.5rem;
         }
 
-        .project-description {
+        .cover-description {
             font-size: 0.95rem;
+            padding-bottom: 1.75rem;
         }
 
-        .project-meta {
-            margin-top: 1.5rem;
+        .cover-footer {
+            padding-top: 1.25rem;
         }
 
         .article-body {
