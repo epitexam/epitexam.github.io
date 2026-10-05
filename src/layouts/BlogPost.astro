@@ -84,53 +84,8 @@ const {
             </svg>
         </button>
         <script>
-            (() => {
-                const bar = document.querySelector<HTMLElement>("[data-progress]");
-                const toTop = document.querySelector<HTMLElement>("[data-to-top]");
-                const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-                let queued = false;
-                const update = () => {
-                    queued = false;
-                    const max = document.documentElement.scrollHeight - window.innerHeight;
-                    const ratio = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
-                    if (bar) bar.style.transform = `scaleX(${ratio})`;
-                    if (toTop) toTop.classList.toggle("is-visible", window.scrollY > 600);
-                };
-                const onScroll = () => {
-                    if (queued) return;
-                    queued = true;
-                    requestAnimationFrame(update);
-                };
-                update();
-                window.addEventListener("scroll", onScroll, { passive: true });
-                toTop?.addEventListener("click", () => {
-                    window.scrollTo({ top: 0, behavior: reduceMotion ? "auto" : "smooth" });
-                });
-                document.querySelectorAll("pre").forEach((pre) => {
-                    if (pre.querySelector(".copy-btn")) return;
-                    const code = pre.querySelector("code");
-                    if (!code) return;
-                    const btn = document.createElement("button");
-                    btn.type = "button";
-                    btn.className = "copy-btn";
-                    btn.textContent = "Copier";
-                    btn.setAttribute("aria-label", "Copier le bloc de code");
-                    btn.addEventListener("click", async () => {
-                        try {
-                            await navigator.clipboard.writeText(code.innerText);
-                            btn.textContent = "Copié";
-                            btn.setAttribute("data-copied", "true");
-                        } catch {
-                            btn.textContent = "Échec";
-                        }
-                        window.setTimeout(() => {
-                            btn.textContent = "Copier";
-                            btn.removeAttribute("data-copied");
-                        }, 1600);
-                    });
-                    pre.appendChild(btn);
-                });
-            })();
+            import { initReading } from "../scripts/reading.ts";
+            initReading();
         </script>
     </body>
 </html>
