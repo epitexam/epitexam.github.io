@@ -576,18 +576,45 @@ const jsonLd = {
                 gap: 1.75rem;
             }
             .mission-card {
+                position: relative;
+                overflow: hidden;
+                isolation: isolate;
                 padding: 2rem;
                 display: flex;
                 flex-direction: column;
                 gap: 1.1rem;
                 transition:
                     border-color 0.25s ease,
-                    transform 0.3s var(--ease-spring);
+                    transform 0.3s var(--ease-spring),
+                    box-shadow 0.3s var(--ease-spring);
+            }
+            .mission-card::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: inherit;
+                background: radial-gradient(
+                    ellipse at 50% 0%,
+                    rgba(var(--accent), 0.08) 0%,
+                    transparent 60%
+                );
+                opacity: 0;
+                z-index: 0;
+                pointer-events: none;
+                transition: opacity var(--duration-base) ease;
+            }
+            .mission-card > * {
+                position: relative;
+                z-index: 1;
             }
             @media (hover: hover) {
                 .mission-card:hover {
                     border-color: rgba(var(--accent), 0.22);
                     transform: translateY(-2px);
+                    box-shadow: var(--shadow-strong);
+                }
+                .mission-card:hover::before {
+                    opacity: 1;
                 }
             }
             .mission-top {
@@ -666,7 +693,18 @@ const jsonLd = {
                 border: 1px solid var(--color-border);
                 background: var(--tint-05);
                 border-radius: var(--radius-sm);
-                padding: 0.32rem 0.7rem;
+                padding: 0.3rem 0.8rem;
+                line-height: 1.4;
+                white-space: nowrap;
+                transition:
+                    background-color var(--duration-fast) ease,
+                    border-color var(--duration-fast) ease,
+                    color var(--duration-fast) ease;
+            }
+            .tag-list li:hover {
+                background: var(--tint-10);
+                border-color: var(--tint-20);
+                color: var(--color-text);
             }
             .section-more {
                 display: flex;
@@ -808,10 +846,12 @@ const jsonLd = {
             .contact-badges li {
                 font-family: var(--font-code);
                 font-size: 0.72rem;
+                line-height: 1.4;
+                white-space: nowrap;
                 color: var(--color-muted);
                 border: 1px solid var(--color-border);
                 border-radius: var(--radius-sm);
-                padding: 0.4rem 0.8rem;
+                padding: 0.3rem 0.8rem;
                 background: var(--tint-05);
             }
 

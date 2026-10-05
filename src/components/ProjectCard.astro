@@ -114,6 +114,28 @@ const IMG_H = 450;
         box-shadow: var(--shadow-strong);
     }
 
+    .project-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(
+            ellipse at 50% 0%,
+            rgba(var(--accent), 0.08) 0%,
+            transparent 60%
+        );
+        opacity: 0;
+        z-index: 0;
+        pointer-events: none;
+        transition: opacity var(--duration-base) ease;
+    }
+
+    @media (hover: hover) {
+        .project-card:hover::before {
+            opacity: 1;
+        }
+    }
+
     .card-main-link {
         color: inherit;
         text-decoration: none;
@@ -150,12 +172,26 @@ const IMG_H = 450;
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform var(--duration-slow) var(--ease-spring);
+        filter: brightness(0.92) contrast(1.05) saturate(0.95);
+        transition:
+            transform var(--duration-slow) var(--ease-spring),
+            filter var(--duration-slow) ease;
+    }
+
+    :root[data-theme="light"] .card-image {
+        filter: brightness(1) contrast(1) saturate(1);
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root:not([data-theme]) .card-image {
+            filter: brightness(1) contrast(1) saturate(1);
+        }
     }
 
     @media (hover: hover) {
         .project-card:hover .card-image {
             transform: scale(1.05);
+            filter: brightness(1) contrast(1.1) saturate(1.05);
         }
     }
 
@@ -178,6 +214,8 @@ const IMG_H = 450;
     }
 
     .card-body {
+        position: relative;
+        z-index: 1;
         display: flex;
         flex-direction: column;
         flex: 1;
