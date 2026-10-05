@@ -166,8 +166,10 @@ const imageSrc = heroImage ?? fallBackImage;
                     </div>
                 </article>
 
-                <div class="prose animate-fade-in">
-                    <slot />
+                <div class="article-body animate-fade-in">
+                    <div class="prose">
+                        <slot />
+                    </div>
                 </div>
 
                 {
@@ -441,10 +443,12 @@ const imageSrc = heroImage ?? fallBackImage;
         background: var(--tint-05);
     }
 
-    .prose {
-        width: 100%;
-        max-width: 68ch;
-        margin-inline: auto;
+    .article-body {
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        padding: 2rem 2.5rem;
+        box-shadow: var(--shadow-soft);
     }
 
     .project-nav {
@@ -532,6 +536,10 @@ const imageSrc = heroImage ?? fallBackImage;
         .cover-meta {
             padding: 2rem 1.75rem 1.75rem;
         }
+
+        .article-body {
+            padding: 1.75rem 1.5rem;
+        }
     }
 
     @media (max-width: 640px) {
@@ -565,6 +573,10 @@ const imageSrc = heroImage ?? fallBackImage;
 
         .cover-footer {
             padding-top: 1.25rem;
+        }
+
+        .article-body {
+            padding: 1.5rem 1.25rem;
         }
 
         .project-nav-link {
