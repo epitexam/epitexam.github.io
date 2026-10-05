@@ -175,42 +175,72 @@ const imageSrc = heroImage ?? fallBackImage;
                 {
                     (prev || next) && (
                         <nav
-                            class="project-nav"
+                            class="project-pager"
                             aria-label="Navigation entre projets"
                         >
                             {prev ? (
                                 <a
                                     href={`/project/${prev.slug}/`}
-                                    class="project-nav-link"
+                                    class="pager-link"
                                 >
-                                    <span class="project-nav-label">
-                                        Projet précédent
-                                    </span>
-                                    <span class="project-nav-title">
-                                        {prev.title}
+                                    <svg
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 16 16"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        aria-hidden="true"
+                                    >
+                                        <path d="M12.5 8H3.5M3.5 8L7.5 4M3.5 8L7.5 12" />
+                                    </svg>
+                                    <span class="pager-text">
+                                        <span class="pager-label">
+                                            Projet précédent
+                                        </span>
+                                        <span class="pager-title">
+                                            {prev.title}
+                                        </span>
                                     </span>
                                 </a>
                             ) : (
                                 <span
-                                    class="project-nav-empty"
+                                    class="pager-empty"
                                     aria-hidden="true"
                                 />
                             )}
                             {next ? (
                                 <a
                                     href={`/project/${next.slug}/`}
-                                    class="project-nav-link project-nav-next"
+                                    class="pager-link pager-next"
                                 >
-                                    <span class="project-nav-label">
-                                        Projet suivant
+                                    <span class="pager-text">
+                                        <span class="pager-label">
+                                            Projet suivant
+                                        </span>
+                                        <span class="pager-title">
+                                            {next.title}
+                                        </span>
                                     </span>
-                                    <span class="project-nav-title">
-                                        {next.title}
-                                    </span>
+                                    <svg
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 16 16"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.5"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        aria-hidden="true"
+                                    >
+                                        <path d="M3.5 8H12.5M12.5 8L8.5 4M12.5 8L8.5 12" />
+                                    </svg>
                                 </a>
                             ) : (
                                 <span
-                                    class="project-nav-empty"
+                                    class="pager-empty"
                                     aria-hidden="true"
                                 />
                             )}
@@ -468,45 +498,46 @@ const imageSrc = heroImage ?? fallBackImage;
         margin-inline: auto;
     }
 
-    .project-nav {
+    .project-pager {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 1.25rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--color-border);
     }
 
-    .project-nav-link {
+    .pager-link {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.65rem;
+        min-width: 0;
+        text-decoration: none;
+        color: var(--color-accent);
+    }
+
+    .pager-link svg {
+        flex-shrink: 0;
+        margin-top: 0.2rem;
+        transition: transform var(--duration-base) var(--ease-spring);
+    }
+
+    .pager-text {
         display: flex;
         flex-direction: column;
-        gap: 0.4rem;
-        padding: 1.25rem 1.5rem;
-        background: var(--color-surface);
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-lg);
-        box-shadow: var(--shadow-soft);
-        text-decoration: none;
-        transition:
-            border-color var(--duration-base) ease,
-            box-shadow var(--duration-base) ease,
-            transform var(--duration-base) var(--ease-spring);
+        gap: 0.25rem;
+        min-width: 0;
     }
 
-    @media (hover: hover) {
-        .project-nav-link:hover {
-            border-color: rgba(var(--accent), 0.2);
-            box-shadow: var(--shadow-strong);
-            transform: translateY(-2px);
-        }
-        .project-nav-link:hover .project-nav-title {
-            color: var(--color-accent);
-        }
-    }
-
-    .project-nav-next {
+    .pager-next {
+        justify-content: flex-end;
         text-align: right;
+    }
+
+    .pager-next .pager-text {
         align-items: flex-end;
     }
 
-    .project-nav-label {
+    .pager-label {
         font-family: var(--font-code);
         font-size: 0.7rem;
         text-transform: uppercase;
@@ -514,18 +545,30 @@ const imageSrc = heroImage ?? fallBackImage;
         color: var(--color-muted);
     }
 
-    .project-nav-title {
+    .pager-title {
         font-family: var(--font-title);
-        font-size: 1rem;
+        font-size: 0.95rem;
         font-weight: 600;
         letter-spacing: -0.01em;
-        line-height: 1.35;
+        line-height: 1.4;
         color: var(--color-text);
         transition: color var(--duration-fast) ease;
     }
 
-    .project-nav-empty {
+    .pager-empty {
         display: block;
+    }
+
+    @media (hover: hover) {
+        .pager-link:hover .pager-title {
+            color: var(--color-accent);
+        }
+        .pager-link:not(.pager-next):hover svg {
+            transform: translateX(-4px);
+        }
+        .pager-next:hover svg {
+            transform: translateX(4px);
+        }
     }
 
     @media (max-width: 768px) {
@@ -560,21 +603,29 @@ const imageSrc = heroImage ?? fallBackImage;
     }
 
     @media (max-width: 640px) {
-        .project-nav {
+        .project-pager {
             grid-template-columns: 1fr;
         }
 
-        .project-nav-next {
+        .pager-next {
+            justify-content: flex-start;
             text-align: left;
+        }
+
+        .pager-next .pager-text {
             align-items: flex-start;
         }
 
-        .project-nav-empty {
+        .pager-empty {
             display: none;
         }
     }
 
     @media (max-width: 480px) {
+        .project-pager {
+            gap: 1rem;
+        }
+
         .cover-meta {
             padding: 1.75rem 1.25rem 1.5rem;
         }
@@ -596,10 +647,6 @@ const imageSrc = heroImage ?? fallBackImage;
             padding: 1.5rem 1.25rem;
         }
 
-        .project-nav-link {
-            padding: 1.1rem 1.25rem;
-        }
-
         .external-links {
             gap: 0.6rem;
         }
@@ -616,7 +663,7 @@ const imageSrc = heroImage ?? fallBackImage;
         .link-btn:hover {
             transform: none;
         }
-        .project-nav-link:hover {
+        .pager-link:hover svg {
             transform: none;
         }
         .back-link:hover {
