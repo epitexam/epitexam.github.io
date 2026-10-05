@@ -5,12 +5,6 @@ const today = new Date();
 ---
 
 <footer class="footer">
-    <nav class="footer-nav" aria-label="Navigation secondaire">
-        <a href="/">Accueil</a>
-        <a href="/blog">Blog</a>
-        <a href="/project">Projects</a>
-        <a href="/contact">Contact</a>
-    </nav>
     <p class="copyright">
         <span class="copyright-symbol">&copy;</span>
         {today.getFullYear()}
@@ -51,28 +45,6 @@ const today = new Date();
             var(--tint-20),
             transparent
         );
-    }
-
-    .footer-nav {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 0.25rem 1.5rem;
-    }
-
-    .footer-nav a {
-        font-family: var(--font-title);
-        font-size: 0.82rem;
-        font-weight: 500;
-        letter-spacing: 0.02em;
-        color: var(--color-muted);
-        text-decoration: none;
-        padding-block: 0.4rem;
-        transition: color var(--duration-fast) ease;
-    }
-
-    .footer-nav a:hover {
-        color: var(--color-text);
     }
 
     .copyright {
