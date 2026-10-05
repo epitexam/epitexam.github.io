@@ -246,6 +246,22 @@ const jsonLd = {
         padding: 0.75rem 0 0.75rem 1.5rem;
     }
 
+    .journey-item::after {
+        content: "";
+        position: absolute;
+        inset-inline-start: -3px;
+        top: 1.35rem;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--color-surface-elevated);
+        border: 1px solid var(--tint-20);
+        transition:
+            background var(--duration-base) ease,
+            border-color var(--duration-base) ease,
+            box-shadow var(--duration-base) ease;
+    }
+
     .journey-item::before {
         content: "";
         position: absolute;
@@ -264,6 +280,11 @@ const jsonLd = {
         .journey-item:hover::before {
             background: rgba(var(--accent), 0.6);
             transform: scaleY(1.1) scaleX(1.5);
+        }
+        .journey-item:hover::after {
+            background: var(--color-accent);
+            border-color: var(--color-accent);
+            box-shadow: 0 0 8px rgba(var(--accent), 0.35);
         }
     }
 
