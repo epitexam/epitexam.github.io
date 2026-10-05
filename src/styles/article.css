@@ -329,6 +329,52 @@
         white-space: nowrap;
         box-shadow: 0 2px 0 var(--tint-10);
     }
+
+    .copy-btn {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.35rem 0.7rem;
+        background: var(--color-surface-elevated);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        color: var(--color-muted);
+        font-family: var(--font-code);
+        font-size: 0.7rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        cursor: pointer;
+        opacity: 0;
+        transition:
+            opacity var(--duration-fast) ease,
+            color var(--duration-fast) ease,
+            border-color var(--duration-fast) ease;
+    }
+
+    pre:hover .copy-btn,
+    pre:focus-within .copy-btn {
+        opacity: 1;
+    }
+
+    .copy-btn:hover {
+        color: var(--color-text);
+        border-color: var(--tint-20);
+    }
+
+    .copy-btn[data-copied="true"] {
+        color: var(--color-text);
+        border-color: rgba(var(--accent), 0.4);
+        opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+        .copy-btn {
+            opacity: 1;
+        }
+    }
 }
 
 @layer animations {
