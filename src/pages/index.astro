@@ -106,6 +106,10 @@ const jsonLd = {
             <section class="hero" aria-labelledby="hero-title">
                 <canvas id="am-canvas" aria-hidden="true"></canvas>
                 <div class="hero-inner">
+                    <p class="hero-status">
+                        <span class="hero-status-dot" aria-hidden="true"></span>
+                        Disponible pour missions — 2026
+                    </p>
                     <h1 id="hero-title">
                         Développeur Fullstack &<br />
                         Ingénierie Logicielle
@@ -411,9 +415,32 @@ const jsonLd = {
                 padding: clamp(4rem, 8vw, 7rem)
                     var(--content-padding) 0;
             }
+            .hero-status {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.55rem;
+                margin: 0 0 1.5rem;
+                padding: 0.4rem 1rem;
+                background: var(--tint-05);
+                border: 1px solid var(--color-border);
+                border-radius: 999px;
+                font-family: var(--font-code);
+                font-size: 0.72rem;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                color: var(--color-muted);
+            }
+
+            .hero-status-dot {
+                width: 7px;
+                height: 7px;
+                border-radius: 50%;
+                background: rgb(var(--badge-green-rgb));
+                box-shadow: 0 0 8px rgba(var(--badge-green-rgb), 0.5);
+                flex-shrink: 0;
+            }
+
             .hero h1 {
-                /* Auto top margin splits free space above/below,
-                   centering the title block */
                 margin: auto 0 2rem;
                 font-size: clamp(2.75rem, 6vw, 4.5rem);
                 line-height: 1.03;
@@ -453,8 +480,10 @@ const jsonLd = {
                     color 0.2s ease;
             }
             .btn-dark {
-                background: var(--tint-05);
+                background: var(--color-surface-elevated);
+                border-color: var(--tint-20);
                 color: var(--color-text);
+                box-shadow: var(--shadow-soft);
             }
             .btn-ghost {
                 border-color: transparent;
@@ -512,6 +541,12 @@ const jsonLd = {
                 text-transform: uppercase;
                 letter-spacing: 0.08em;
                 color: var(--color-muted);
+            }
+            @media (min-width: 769px) {
+                .stat + .stat {
+                    border-left: 1px solid var(--color-border);
+                    padding-left: 2rem;
+                }
             }
             .stat dd {
                 margin: 0;
@@ -1017,21 +1052,25 @@ const jsonLd = {
                         transform: none;
                     }
                 }
+                .hero-status {
+                    animation: hero-rise 0.7s var(--ease-spring) both;
+                    animation-delay: 0s;
+                }
                 .hero h1 {
                     animation: hero-rise 0.7s var(--ease-spring) both;
-                    animation-delay: 0.05s;
+                    animation-delay: 0.08s;
                 }
                 .hero-sub {
                     animation: hero-rise 0.7s var(--ease-spring) both;
-                    animation-delay: 0.15s;
+                    animation-delay: 0.16s;
                 }
                 .hero-cta {
                     animation: hero-rise 0.7s var(--ease-spring) both;
-                    animation-delay: 0.25s;
+                    animation-delay: 0.24s;
                 }
                 .hero-stats {
                     animation: hero-rise 0.8s var(--ease-spring) both;
-                    animation-delay: 0.35s;
+                    animation-delay: 0.32s;
                 }
             }
 
