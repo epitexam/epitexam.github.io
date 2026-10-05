@@ -13,6 +13,7 @@ const navLinks = [
 ];
 ---
 
+<a href="#main-content" class="skip-link">Aller au contenu</a>
 <header class="site-header">
     <div class="header-inner">
         <a href="/" class="brand-link">{SITE_TITLE}</a>
@@ -117,6 +118,11 @@ const navLinks = [
                 isLight ? "Basculer en thème sombre" : "Basculer en thème clair",
             );
         };
+        const main = document.querySelector("main");
+        if (main && !main.getAttribute("id")) {
+            main.setAttribute("id", "main-content");
+            main.setAttribute("tabindex", "-1");
+        }
         const currentTheme = () =>
             root.getAttribute("data-theme") === "light" ? "light" : "dark";
         syncThemeButton(currentTheme());
@@ -259,6 +265,29 @@ const navLinks = [
         .header-inner {
             padding-inline: var(--content-padding-mobile);
         }
+    }
+
+    .skip-link {
+        position: fixed;
+        top: 0.5rem;
+        left: 50%;
+        z-index: 2000;
+        padding: 0.65rem 1.1rem;
+        background: var(--color-surface-elevated);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        box-shadow: var(--shadow-strong);
+        color: var(--color-text);
+        font-family: var(--font-title);
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-decoration: none;
+        transform: translate(-50%, -200%);
+        transition: transform var(--duration-fast) var(--ease-spring);
+    }
+
+    .skip-link:focus-visible {
+        transform: translate(-50%, 0);
     }
 
     .brand-link {
