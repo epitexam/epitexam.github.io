@@ -184,7 +184,11 @@ const success = Astro.url.searchParams.get("success") === "true";
                                             role="alert"
                                         />
                                     </div>
-                                    <span class="char-counter">
+                                    <span
+                                        class="char-counter"
+                                        aria-live="polite"
+                                        aria-atomic="true"
+                                    >
                                         <span id="charCount">0</span>
                                         <span class="char-max">/2000</span>
                                     </span>
@@ -192,7 +196,12 @@ const success = Astro.url.searchParams.get("success") === "true";
 
                                 <div
                                     class="char-progress-track"
-                                    aria-hidden="true"
+                                    role="progressbar"
+                                    aria-label="Progression du message"
+                                    aria-valuemin={0}
+                                    aria-valuemax={2000}
+                                    aria-valuenow={0}
+                                    id="charProgressTrack"
                                 >
                                     <div
                                         class="char-progress-bar"
@@ -680,6 +689,9 @@ const success = Astro.url.searchParams.get("success") === "true";
         const charProgress = document.getElementById(
             "charProgress",
         ) as HTMLElement | null;
+        const charProgressTrack = document.getElementById(
+            "charProgressTrack",
+        ) as HTMLElement | null;
         const submitBtn = document.getElementById(
             "submitBtn",
         ) as HTMLButtonElement | null;
@@ -812,6 +824,12 @@ const success = Astro.url.searchParams.get("success") === "true";
             const pct = (len / 2000) * 100;
 
             if (charCountEl) charCountEl.textContent = String(len);
+
+            if (charProgressTrack)
+                charProgressTrack.setAttribute(
+                    "aria-valuenow",
+                    String(Math.min(len, 2000)),
+                );
 
             if (charCounter) {
                 charCounter.classList.toggle(

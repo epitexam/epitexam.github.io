@@ -23,7 +23,7 @@ const progressLabel = `Avancement de l'article : ${progress} %`;
                 <span>{progress}%</span>
             </>
         ) : (
-            `${progress}%`
+            <span aria-hidden="true">{`${progress}%`}</span>
         )}
     </span>
     <span

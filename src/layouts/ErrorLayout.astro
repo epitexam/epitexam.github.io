@@ -27,13 +27,13 @@ const { headTitle, headDescription, label, code, title, subtitle, detail } =
 
         <main>
             <div class="error-page animate-fade-in">
-                <div class="header-eyebrow">
+                <p class="header-eyebrow">
                     <span class="dot" aria-hidden="true"></span>
                     <span class="label">{label}</span>
-                </div>
+                </p>
 
-                <h1 class="error-code">{code}</h1>
-                <p class="error-title">{title}</p>
+                <p class="error-code" aria-hidden="true">{code}</p>
+                <h1 class="error-title">{title}</h1>
                 <p class="subtitle">{subtitle}</p>
 
                 {
@@ -87,6 +87,7 @@ const { headTitle, headDescription, label, code, title, subtitle, detail } =
         align-items: center;
         gap: 0.75rem;
         margin-bottom: 0.5rem;
+        line-height: 1.7;
     }
 
     .header-eyebrow .dot {
