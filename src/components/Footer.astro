@@ -6,9 +6,19 @@ const today = new Date();
 
 <footer class="footer">
     <p class="copyright">
-        <span class="copyright-symbol">&copy;</span>
-        {today.getFullYear()}
-        <span class="site-name">{SITE_TITLE}</span>. All rights reserved.
+        <span class="copyright-line">
+            <span class="copyright-symbol">&copy;</span>
+            <span class="copyright-year">{today.getFullYear()}</span>
+            <span class="site-name">{SITE_TITLE}</span>
+        </span>
+        <span class="copyright-sep" aria-hidden="true">—</span>
+        <span class="copyright-rights">Tous droits réservés.</span>
+    </p>
+    <p class="colophon">
+        Conçu avec
+        <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a>
+        · Hébergé sur
+        <a href="https://pages.github.com" target="_blank" rel="noopener noreferrer">GitHub Pages</a>
     </p>
     <a
         href={GITHUB_URL}
@@ -25,10 +35,8 @@ const today = new Date();
     .footer {
         width: 100%;
         max-width: var(--max-width);
-        margin: 0 auto;
+        margin: auto auto 0;
         padding: 3rem 1.5rem 2.5rem;
-        background: transparent;
-        margin-top: auto;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -47,17 +55,39 @@ const today = new Date();
         );
     }
 
+    /* Desktop : une seule ligne centrée, dont les espaces sont pilotés
+       par column-gap (plus de dépendance aux espaces du template). */
     .copyright {
         margin: 0;
         font-family: var(--font-title);
         font-size: 0.85rem;
         letter-spacing: -0.01em;
         color: var(--color-muted);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: center;
+        column-gap: 0.35rem;
+        row-gap: 0.15rem;
+        text-align: center;
+    }
+
+    /* « © 2026 Epitexam » reste groupé ; le wrap interne n'intervient
+       que sur les très petits écrans. */
+    .copyright-line {
+        display: inline-flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        justify-content: center;
+        column-gap: 0.35rem;
     }
 
     .copyright-symbol {
         color: var(--color-accent);
-        margin-right: 0.25rem;
+    }
+
+    .copyright-sep {
+        opacity: 0.6;
     }
 
     .site-name {
@@ -68,6 +98,24 @@ const today = new Date();
 
     .footer:hover .site-name {
         color: var(--color-accent);
+    }
+
+    .colophon {
+        margin: 0;
+        font-family: var(--font-code);
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
+        color: var(--color-muted);
+    }
+
+    .colophon a {
+        color: var(--color-muted);
+        text-decoration: none;
+        transition: color var(--duration-fast) ease;
+    }
+
+    .colophon a:hover {
+        color: var(--color-text);
     }
 
     .social-icon {
@@ -92,13 +140,18 @@ const today = new Date();
             padding: 2.5rem 1rem 2rem;
         }
 
+        /* Mobile : deux lignes centrées et équilibrées
+           (« © 2026 Epitexam » / « Tous droits réservés. »)
+           au lieu d'un fragment par ligne. */
         .copyright {
-            margin: 0;
-            font-size: 0.8rem;
-            display: flex;
             flex-direction: column;
-            gap: 0.25rem;
-            text-align: center;
+            align-items: center;
+            row-gap: 0.2rem;
+            font-size: 0.8rem;
+        }
+
+        .copyright-sep {
+            display: none;
         }
     }
 

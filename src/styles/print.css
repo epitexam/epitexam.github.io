@@ -45,10 +45,6 @@
         page-break-inside: avoid;
     }
 
-    thead {
-        display: table-header-group;
-    }
-
     :is(tr, img, figure) {
         break-inside: avoid;
         page-break-inside: avoid;

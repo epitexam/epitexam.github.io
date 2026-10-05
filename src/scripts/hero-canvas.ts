@@ -123,8 +123,12 @@ export const initHeroCanvas = (): (() => void) | undefined => {
         return { r, g, b };
     };
 
-    const isLightMode = (): boolean =>
-        window.matchMedia("(prefers-color-scheme: light)").matches;
+    const isLightMode = (): boolean => {
+        const themed = document.documentElement.getAttribute("data-theme");
+        if (themed === "light") return true;
+        if (themed === "dark") return false;
+        return window.matchMedia("(prefers-color-scheme: light)").matches;
+    };
 
     /** Hardened devicePixelRatio: some embeds/iframes report 0/NaN. */
     const getDevicePixelRatio = (): number => {
@@ -713,6 +717,7 @@ export const initHeroCanvas = (): (() => void) | undefined => {
     }
     const themeMedia = window.matchMedia("(prefers-color-scheme: light)");
     const unlistenTheme = listenMediaQuery(themeMedia, onThemeChange);
+    window.addEventListener("theme-change", onThemeChange);
 
     // Pause when the hero leaves the viewport (battery).
     // Guard for browsers without IntersectionObserver: stay visible.
@@ -757,6 +762,7 @@ export const initHeroCanvas = (): (() => void) | undefined => {
         if (resizeTimeout !== undefined) clearTimeout(resizeTimeout);
         window.removeEventListener("resize", debouncedDraw);
         window.removeEventListener("mousemove", onMouseMove);
+        window.removeEventListener("theme-change", onThemeChange);
         unlistenTheme();
         document.removeEventListener("visibilitychange", onVisibilityChange);
         viewObserver?.disconnect();

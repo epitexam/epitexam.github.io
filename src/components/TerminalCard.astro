@@ -17,13 +17,13 @@ const wsApiUrl = import.meta.env.WS_API_URL ?? "";
 
 <div class="terminal-card card" id={terminalId} data-ws-url={wsApiUrl}>
   <div class="terminal-header">
-    <div class="terminal-dots">
-      <span class="dot dot-red"></span>
-      <span class="dot dot-yellow"></span>
-      <span class="dot dot-green"></span>
+    <div class="terminal-dots" aria-hidden="true">
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
     </div>
     <div class="terminal-title">{title}</div>
-    <div class="terminal-status" data-status></div>
+    <div class="terminal-status" data-status role="status"></div>
   </div>
 
   <div class="terminal-body">
@@ -325,10 +325,18 @@ const wsApiUrl = import.meta.env.WS_API_URL ?? "";
       box-shadow var(--duration-base) ease;
   }
 
+  .terminal-card:focus-within {
+    border-color: rgba(var(--accent), 0.4);
+    box-shadow: var(--shadow-strong);
+  }
+
   @media (hover: hover) {
     .terminal-card:hover {
       border-color: rgba(var(--accent), 0.2);
       box-shadow: var(--shadow-strong), var(--glow);
+    }
+    .terminal-card:hover .dot {
+      border-color: rgba(var(--accent), 0.4);
     }
   }
 
@@ -343,40 +351,42 @@ const wsApiUrl = import.meta.env.WS_API_URL ?? "";
 
   .terminal-dots {
     display: flex;
-    gap: 0.4rem;
+    gap: 0.45rem;
   }
   .dot {
-    width: 0.75rem;
-    height: 0.75rem;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: var(--tint-20);
-  }
-  .dot-red {
-    background: rgba(248, 113, 113, 0.7);
-  }
-  .dot-yellow {
-    background: rgba(251, 191, 36, 0.7);
-  }
-  .dot-green {
-    background: rgba(134, 239, 172, 0.7);
+    background: var(--color-surface-elevated);
+    border: 1px solid var(--tint-20);
+    transition: border-color var(--duration-base) ease;
   }
 
   .terminal-title {
     flex: 1;
     text-align: center;
-    font-size: 0.8rem;
+    min-width: 0;
     font-family: var(--font-title);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     color: var(--color-muted);
-    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .terminal-status {
-    min-width: 3.2rem;
+    min-width: 5.5rem;
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 0.35rem;
+    gap: 0.4rem;
+    font-family: var(--font-code);
     font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     color: var(--color-muted);
     white-space: nowrap;
   }
@@ -390,7 +400,7 @@ const wsApiUrl = import.meta.env.WS_API_URL ?? "";
   }
 
   .status-connecting {
-    background: rgba(251, 191, 36, 0.85);
+    background: rgba(var(--accent), 0.7);
     animation: status-pulse 1.2s ease-in-out infinite;
   }
 
@@ -514,6 +524,12 @@ const wsApiUrl = import.meta.env.WS_API_URL ?? "";
     }
     .terminal-title {
       display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .status-connecting {
+      animation: none;
     }
   }
 </style>

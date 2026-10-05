@@ -1,0 +1,79 @@
+---
+interface Props {
+    prevUrl?: string;
+    nextUrl?: string;
+    currentPage: number;
+    lastPage: number;
+}
+
+const { prevUrl, nextUrl, currentPage, lastPage } = Astro.props;
+---
+
+<nav class="pagination" aria-label="Pagination">
+    {
+        prevUrl ? (
+            <a href={prevUrl} class="page-link prev">
+                Précédent
+            </a>
+        ) : (
+            <span class="page-link disabled">Précédent</span>
+        )
+    }
+
+    <span class="page-status">
+        Page {currentPage} / {lastPage}
+    </span>
+
+    {
+        nextUrl ? (
+            <a href={nextUrl} class="page-link next">
+                Suivant
+            </a>
+        ) : (
+            <span class="page-link disabled">Suivant</span>
+        )
+    }
+</nav>
+
+<style>
+    .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    .page-link {
+        font-family: var(--font-title);
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-decoration: none;
+        color: var(--color-accent);
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        transition:
+            border-color var(--duration-base) var(--ease-spring),
+            transform var(--duration-base) var(--ease-spring);
+    }
+
+    .page-link.disabled {
+        color: var(--color-muted);
+        opacity: 0.5;
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+
+    @media (hover: hover) {
+        .page-link:not(.disabled):hover {
+            border-color: rgba(var(--accent), 0.4);
+            transform: translateY(-1px);
+        }
+    }
+
+    .page-status {
+        font-size: 0.85rem;
+        color: var(--color-muted);
+    }
+</style>

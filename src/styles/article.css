@@ -221,8 +221,8 @@
         }
 
         &[open]>summary::after {
-            transform: rotate(180deg);
-            color: var(--color-text);
+            transform: rotate(225deg);
+            border-color: var(--color-text);
         }
 
         &> :not(summary) {
@@ -262,13 +262,15 @@
         }
 
         &::after {
-            content: "⌄";
-            font-size: 1.2em;
-            font-weight: 300;
-            color: var(--color-muted);
+            content: "";
             flex-shrink: 0;
-            transform: rotate(0deg);
-            transition: transform var(--duration-base) var(--ease-spring), color var(--duration-fast) ease;
+            width: 0.45rem;
+            height: 0.45rem;
+            border-right: 1.8px solid var(--color-muted);
+            border-bottom: 1.8px solid var(--color-muted);
+            border-radius: 1px;
+            transform: rotate(45deg);
+            transition: transform var(--duration-base) var(--ease-spring), border-color var(--duration-fast) ease;
         }
 
         @media (hover: hover) {
@@ -328,6 +330,52 @@
         color: var(--color-text);
         white-space: nowrap;
         box-shadow: 0 2px 0 var(--tint-10);
+    }
+
+    .prose pre button.copy-btn {
+        position: absolute;
+        top: 0.75rem;
+        right: 0.75rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.35rem 0.7rem;
+        background: var(--color-surface-elevated);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        color: var(--color-muted);
+        font-family: var(--font-code);
+        font-size: 0.7rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        cursor: pointer;
+        opacity: 0;
+        transition:
+            opacity var(--duration-fast) ease,
+            color var(--duration-fast) ease,
+            border-color var(--duration-fast) ease;
+    }
+
+    .prose pre:hover button.copy-btn,
+    .prose pre:focus-within button.copy-btn {
+        opacity: 1;
+    }
+
+    .prose pre button.copy-btn:hover {
+        color: var(--color-text);
+        border-color: var(--tint-20);
+    }
+
+    .prose pre button.copy-btn[data-copied="true"] {
+        color: var(--color-text);
+        border-color: rgba(var(--accent), 0.4);
+        opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+        .prose pre button.copy-btn {
+            opacity: 1;
+        }
     }
 }
 

@@ -42,23 +42,23 @@ const works = [
 const stats = [
     {
         label: "Expérience",
-        value: "3 ans d'activité",
-        desc: "Web, Backend & Systèmes embarqués",
+        value: "3 ans",
+        desc: "Applications web performantes, en production",
     },
     {
-        label: "Fullstack & Systèmes",
-        value: "Python, TS, C & Linux",
-        desc: "De l'assembleur aux frameworks web",
+        label: "Fullstack",
+        value: "TypeScript, React & Node.js",
+        desc: "De l'interface au back-end, jusqu'au déploiement",
     },
     {
         label: "Architecture & API",
-        value: "NestJS, Fastify, SQL",
-        desc: "PostgreSQL, Redis & microservices",
+        value: "NestJS, PostgreSQL, Redis",
+        desc: "API sécurisées, cache et microservices",
     },
     {
-        label: "Approche",
-        value: "Clean Code & Craft",
-        desc: "Précision, sobriété et maintenabilité",
+        label: "Qualité & DevOps",
+        value: "Docker & CI/CD",
+        desc: "Code reviews, pipelines et livraison fiable",
     },
 ];
 
@@ -95,7 +95,10 @@ const jsonLd = {
 <!doctype html>
 <html lang="fr">
     <head>
-        <BaseHead title={`${SITE_TITLE} — Développeur Fullstack & Ingénierie Logicielle`} description={SITE_DESCRIPTION} />
+        <BaseHead
+            title={`${SITE_TITLE} — Développeur Fullstack & Ingénierie Logicielle`}
+            description={SITE_DESCRIPTION}
+        />
         <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     </head>
     <body>
@@ -111,15 +114,14 @@ const jsonLd = {
                         Ingénierie Logicielle
                     </h1>
                     <p class="hero-sub">
-                        Développeur passionné par les technologies et
-                        l'innovation. Conception de systèmes robustes, de
-                        plateformes web réactives aux solutions embarquées et
-                        microservices haute fiabilité.
+                        Je conçois des plateformes web réactives et des services
+                        back-end robustes, de l'interface à la mise en
+                        production.
                     </p>
                     <div class="hero-cta">
                         <a href="/project" class="btn btn-dark">
                             Voir les réalisations
-                            <Icon name="arrow-down" size={17} />
+                            <Icon name="arrow-right" size={17} />
                         </a>
                         <a href="/tools" class="btn btn-ghost">
                             Expertise & stack
@@ -212,8 +214,8 @@ const jsonLd = {
                         </a>
                     </div>
                     <p class="notes-sub">
-                        Des articles sur la tech et le développement, mais
-                        aussi sur les jeux vidéo.
+                        Des articles sur la tech et le développement, mais aussi
+                        sur les jeux vidéo.
                     </p>
 
                     <ul class="note-list reveal">
@@ -226,7 +228,10 @@ const jsonLd = {
                                             href={`/blog/${slug}/`}
                                             class:list={[
                                                 "note-row",
-                                                { "note-row--teaser": post.data.teaser },
+                                                {
+                                                    "note-row--teaser":
+                                                        post.data.teaser,
+                                                },
                                             ]}
                                         >
                                             <span class="note-date">
@@ -276,20 +281,19 @@ const jsonLd = {
                         Disponibilité & contact
                     </p>
                     <h2 id="contact-title">
-                        Un projet ou un système à<br />concevoir ?
+                        Un produit web à concevoir<br />ou à faire évoluer ?
                     </h2>
                     <p class="contact-sub">
-                        Disponible pour des missions d'ingénierie logicielle,
-                        refontes d'architectures critiques ou développements
-                        fullstack exigeants.
+                        Disponible pour concevoir des plateformes web, refondre
+                        et optimiser des applications existantes.
                     </p>
                     <ul class="contact-badges">
-                        <li>Code audité & testé</li>
-                        <li>CI/CD & environnements reproductibles</li>
-                        <li>Documentation exhaustive</li>
+                        <li>Performance mesurée</li>
+                        <li>Code reviews & CI/CD</li>
+                        <li>Documentation technique</li>
                     </ul>
                     <a href="/contact" class="btn btn-light">
-                        Lancer un échange
+                        Me contacter
                         <Icon name="arrow-up-right" size={17} />
                     </a>
                 </div>
@@ -316,7 +320,10 @@ const jsonLd = {
                 if (!window.matchMedia("(min-width: 769px)").matches)
                     return false;
                 const conn = (navigator as any).connection;
-                if (conn && (conn.saveData || /2g/.test(conn.effectiveType || "")))
+                if (
+                    conn &&
+                    (conn.saveData || /2g/.test(conn.effectiveType || ""))
+                )
                     return false;
                 return true;
             };
@@ -408,12 +415,9 @@ const jsonLd = {
                 justify-content: center;
                 align-items: center;
                 text-align: center;
-                padding: clamp(4rem, 8vw, 7rem)
-                    var(--content-padding) 0;
+                padding: clamp(4rem, 8vw, 7rem) var(--content-padding) 0;
             }
             .hero h1 {
-                /* Auto top margin splits free space above/below,
-                   centering the title block */
                 margin: auto 0 2rem;
                 font-size: clamp(2.75rem, 6vw, 4.5rem);
                 line-height: 1.03;
@@ -447,14 +451,15 @@ const jsonLd = {
                 border-radius: var(--radius-sm);
                 border: 1px solid var(--color-border);
                 transition:
-                    transform 0.2s var(--ease-spring),
                     background 0.2s ease,
                     border-color 0.2s ease,
                     color 0.2s ease;
             }
             .btn-dark {
-                background: var(--tint-05);
+                background: var(--color-surface-elevated);
+                border-color: var(--tint-20);
                 color: var(--color-text);
+                box-shadow: var(--shadow-soft);
             }
             .btn-ghost {
                 border-color: transparent;
@@ -464,14 +469,15 @@ const jsonLd = {
                 background: rgb(var(--text));
                 color: rgb(var(--bg));
                 border-color: transparent;
+                transition:
+                    transform 0.2s var(--ease-spring),
+                    background 0.2s ease,
+                    border-color 0.2s ease,
+                    color 0.2s ease;
             }
             @media (hover: hover) {
                 .btn-dark:hover {
                     border-color: var(--tint-30);
-                    transform: translateY(-1px);
-                }
-                .btn-dark:hover :global(.icon) {
-                    transform: translateY(2px);
                 }
                 .btn-ghost:hover {
                     color: var(--color-text);
@@ -504,7 +510,6 @@ const jsonLd = {
                 margin: auto 0 0;
                 padding: 2rem 0 3rem;
                 border-top: 1px solid var(--color-border);
-                list-style: none;
             }
             .stat dt {
                 font-family: var(--font-code);
@@ -512,6 +517,12 @@ const jsonLd = {
                 text-transform: uppercase;
                 letter-spacing: 0.08em;
                 color: var(--color-muted);
+            }
+            @media (min-width: 769px) {
+                .stat + .stat {
+                    border-left: 1px solid var(--color-border);
+                    padding-left: 2rem;
+                }
             }
             .stat dd {
                 margin: 0;
@@ -576,18 +587,45 @@ const jsonLd = {
                 gap: 1.75rem;
             }
             .mission-card {
+                position: relative;
+                overflow: hidden;
+                isolation: isolate;
                 padding: 2rem;
                 display: flex;
                 flex-direction: column;
                 gap: 1.1rem;
                 transition:
                     border-color 0.25s ease,
-                    transform 0.3s var(--ease-spring);
+                    transform 0.3s var(--ease-spring),
+                    box-shadow 0.3s var(--ease-spring);
+            }
+            .mission-card::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                border-radius: inherit;
+                background: radial-gradient(
+                    ellipse at 50% 0%,
+                    rgba(var(--accent), 0.08) 0%,
+                    transparent 60%
+                );
+                opacity: 0;
+                z-index: 0;
+                pointer-events: none;
+                transition: opacity var(--duration-base) ease;
+            }
+            .mission-card > * {
+                position: relative;
+                z-index: 1;
             }
             @media (hover: hover) {
                 .mission-card:hover {
                     border-color: rgba(var(--accent), 0.22);
                     transform: translateY(-2px);
+                    box-shadow: var(--shadow-strong);
+                }
+                .mission-card:hover::before {
+                    opacity: 1;
                 }
             }
             .mission-top {
@@ -597,9 +635,6 @@ const jsonLd = {
                 gap: 1rem;
             }
             .mission-context {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.55rem;
                 font-family: var(--font-code);
                 font-size: 0.78rem;
                 color: var(--color-text);
@@ -666,7 +701,18 @@ const jsonLd = {
                 border: 1px solid var(--color-border);
                 background: var(--tint-05);
                 border-radius: var(--radius-sm);
-                padding: 0.32rem 0.7rem;
+                padding: 0.3rem 0.8rem;
+                line-height: 1.4;
+                white-space: nowrap;
+                transition:
+                    background-color var(--duration-fast) ease,
+                    border-color var(--duration-fast) ease,
+                    color var(--duration-fast) ease;
+            }
+            .tag-list li:hover {
+                background: var(--tint-10);
+                border-color: var(--tint-20);
+                color: var(--color-text);
             }
             .section-more {
                 display: flex;
@@ -719,6 +765,7 @@ const jsonLd = {
                 grid-template-columns: 130px 1fr auto;
                 align-items: center;
                 gap: 1.5rem;
+                min-height: 56px;
                 padding: 1.35rem 0.25rem;
                 border-top: 1px solid var(--color-border);
                 text-decoration: none;
@@ -789,7 +836,7 @@ const jsonLd = {
             .contact h2 {
                 font-size: clamp(2.2rem, 5vw, 3.2rem);
                 line-height: 1.12;
-                margin-bottom: 1.25rem;
+                margin: 1rem 0 1.25rem;
             }
             .contact-sub {
                 font-size: 1rem;
@@ -808,10 +855,12 @@ const jsonLd = {
             .contact-badges li {
                 font-family: var(--font-code);
                 font-size: 0.72rem;
+                line-height: 1.4;
+                white-space: nowrap;
                 color: var(--color-muted);
                 border: 1px solid var(--color-border);
                 border-radius: var(--radius-sm);
-                padding: 0.4rem 0.8rem;
+                padding: 0.3rem 0.8rem;
                 background: var(--tint-05);
             }
 
@@ -838,7 +887,6 @@ const jsonLd = {
                 .hero-stats {
                     grid-template-columns: 1fr;
                     gap: 1.5rem;
-                    text-align: center;
                 }
                 .mission-grid {
                     grid-template-columns: 1fr;
@@ -1019,8 +1067,6 @@ const jsonLd = {
                     transition: none;
                 }
             }
-
-
         </style>
     </body>
 </html>

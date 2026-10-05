@@ -184,7 +184,11 @@ const success = Astro.url.searchParams.get("success") === "true";
                                             role="alert"
                                         />
                                     </div>
-                                    <span class="char-counter">
+                                    <span
+                                        class="char-counter"
+                                        aria-live="polite"
+                                        aria-atomic="true"
+                                    >
                                         <span id="charCount">0</span>
                                         <span class="char-max">/2000</span>
                                     </span>
@@ -192,7 +196,12 @@ const success = Astro.url.searchParams.get("success") === "true";
 
                                 <div
                                     class="char-progress-track"
-                                    aria-hidden="true"
+                                    role="progressbar"
+                                    aria-label="Progression du message"
+                                    aria-valuemin={0}
+                                    aria-valuemax={2000}
+                                    aria-valuenow={0}
+                                    id="charProgressTrack"
                                 >
                                     <div
                                         class="char-progress-bar"
@@ -322,10 +331,6 @@ const success = Astro.url.searchParams.get("success") === "true";
         color: var(--color-accent);
     }
 
-    .notification.hidden {
-        display: none !important;
-    }
-
     @keyframes slideDown {
         from {
             opacity: 0;
@@ -421,6 +426,12 @@ const success = Astro.url.searchParams.get("success") === "true";
         box-shadow: 0 0 0 4px rgba(var(--color-error-rgb), 0.1);
     }
 
+    .contact-form .input-field:user-invalid:not(.invalid):not(:focus),
+    .contact-form .consent-checkbox:user-invalid {
+        border-color: var(--color-border);
+        box-shadow: none;
+    }
+
     .input-field.valid {
         border-color: rgba(var(--accent), 0.4);
     }
@@ -449,10 +460,6 @@ const success = Astro.url.searchParams.get("success") === "true";
         display: flex;
         align-items: center;
         gap: 0.3rem;
-    }
-
-    .field-error.hidden {
-        display: none !important;
     }
 
     .textarea-meta {
@@ -543,6 +550,7 @@ const success = Astro.url.searchParams.get("success") === "true";
     .submit-btn {
         justify-content: center;
         gap: 0.5rem;
+        min-height: 48px;
         padding: 0.85rem 1.5rem;
         background: var(--color-accent);
         color: var(--color-bg);
@@ -687,6 +695,9 @@ const success = Astro.url.searchParams.get("success") === "true";
         const charProgress = document.getElementById(
             "charProgress",
         ) as HTMLElement | null;
+        const charProgressTrack = document.getElementById(
+            "charProgressTrack",
+        ) as HTMLElement | null;
         const submitBtn = document.getElementById(
             "submitBtn",
         ) as HTMLButtonElement | null;
@@ -819,6 +830,12 @@ const success = Astro.url.searchParams.get("success") === "true";
             const pct = (len / 2000) * 100;
 
             if (charCountEl) charCountEl.textContent = String(len);
+
+            if (charProgressTrack)
+                charProgressTrack.setAttribute(
+                    "aria-valuenow",
+                    String(Math.min(len, 2000)),
+                );
 
             if (charCounter) {
                 charCounter.classList.toggle(

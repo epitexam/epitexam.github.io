@@ -52,26 +52,27 @@ const jsonLd = {
 
                 <div class="interests-content">
                     <p>
-                        Développeur Fullstack, je conçois des applications
-                        robustes en m'appuyant sur <strong>TypeScript</strong>,
-                        <strong>Node.js</strong> et des architectures pensées pour
-                        durer, en SaaS comme en EdTech.
+                        Développeur Fullstack, je conçois des applications web
+                        robustes, de l'interface au déploiement. Je m'appuie
+                        principalement sur
+                        <strong>TypeScript</strong>, <strong>React</strong> et
+                        <strong>Node.js</strong>, avec <strong>Bun</strong> de plus
+                        en plus présent dans mes projets.
                     </p>
                     <p>
-                        J'accorde autant d'importance à la <strong
+                        Mais au-delà des outils, c'est la <strong
                             >lisibilité du code</strong
                         >
-                        qu'à ses performances : nommage clair, découpage cohérent,
-                        tests qui couvrent ce qui compte. Chaque décision technique
-                        doit pouvoir s'expliquer et s'assumer dans le temps, surtout
-                        quand plusieurs personnes travaillent sur le même code.
+                        qui compte pour moi, autant que ses performances. Un nommage
+                        clair, un découpage cohérent et des code reviews systématiques
+                        permettent à toute l'équipe de le faire évoluer sereinement.
                     </p>
                     <p>
-                        Je m'intéresse aussi à ce qui sort de mon stack
-                        principal :
-                        <strong>Go</strong> et <strong>Rust</strong> pour le bas niveau,
-                        les systèmes embarqués et tout ce qui touche à la performance
-                        et à la gestion fine de la mémoire.
+                        Pour le plaisir, j'explore aussi ce qui se passe sous le
+                        capot :
+                        <strong>C</strong>, <strong>Rust</strong> et assembleur pour
+                        programmer des microcontrôleurs ESP32 ou développer des jeux
+                        sur Atari 2600.
                     </p>
                 </div>
             </section>
@@ -89,9 +90,7 @@ const jsonLd = {
                         {
                             EXPERIENCES.map((item) => (
                                 <li class="journey-item">
-                                    <p class="journey-title">
-                                        {item.title}
-                                    </p>
+                                    <h4 class="journey-title">{item.title}</h4>
                                     {item.context && (
                                         <p class="journey-context">
                                             {item.context}
@@ -100,11 +99,13 @@ const jsonLd = {
                                     <p class="journey-desc">
                                         {item.description}
                                     </p>
-                                    <div class="journey-tags">
+                                    <ul class="journey-tags">
                                         {item.tags.map((tag) => (
-                                            <Tag tag={tag} />
+                                            <li>
+                                                <Tag tag={tag} />
+                                            </li>
                                         ))}
-                                    </div>
+                                    </ul>
                                 </li>
                             ))
                         }
@@ -180,7 +181,7 @@ const jsonLd = {
                 </div>
             </section>
 
-            <aside class="contact-section" aria-labelledby="contact-heading">
+            <section class="contact-section" aria-labelledby="contact-heading">
                 <SectionHeader
                     label="Contact"
                     href="/contact"
@@ -195,7 +196,7 @@ const jsonLd = {
                         >Envoyer un message</a
                     >
                 </div>
-            </aside>
+            </section>
         </main>
 
         <Footer />
@@ -254,7 +255,6 @@ const jsonLd = {
         width: 2px;
         background: var(--color-border);
         border-radius: 2px;
-        transform-origin: center;
         transition:
             background var(--duration-base) ease,
             transform var(--duration-base) var(--ease-spring);
@@ -295,7 +295,14 @@ const jsonLd = {
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
-        margin-top: 1rem;
+        margin: 1rem 0 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .journey-tags li {
+        margin: 0;
+        padding: 0;
     }
 
     .interests-content {
@@ -338,13 +345,7 @@ const jsonLd = {
         margin: 0;
     }
 
-    .contact-card .btn-pill {
-        min-width: 200px;
-        justify-content: center;
-    }
-
     .btn-pill {
-        gap: 0.5rem;
         font-size: 0.95rem;
         padding: 0.75rem 1.5rem;
         border-radius: 999px;
@@ -392,9 +393,6 @@ const jsonLd = {
         }
         .contact-card {
             padding: 2rem 1.5rem;
-        }
-        .contact-card .btn-pill {
-            min-width: 100%;
         }
     }
 

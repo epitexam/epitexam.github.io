@@ -4,28 +4,25 @@ import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import TerminalCard from "../components/TerminalCard.astro";
 import { SITE_TITLE } from "../consts";
-
-Astro.response.headers.set("X-Robots-Tag", "noindex, nofollow");
 ---
 
 <!doctype html>
 <html lang="fr">
     <head>
         <BaseHead
-            title={SITE_TITLE}
-            description={"Not supposed to be here but wait."}
+            title={`Terminal  ${SITE_TITLE}`}
+            description="Terminal interactif expérimental : commandes locales et canal WebSocket."
         />
         <meta name="robots" content="noindex, nofollow" />
     </head>
     <body>
         <Header />
 
-        <main class="home-main">
+        <main>
+            <h1 class="sr-only">Terminal interactif</h1>
             <TerminalCard />
         </main>
 
         <Footer />
     </body>
 </html>
-
-<style></style>
