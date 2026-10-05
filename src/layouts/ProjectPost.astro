@@ -9,10 +9,17 @@ import Header from "../components/Header.astro";
 import "../styles/article.css";
 import fallBackImage from "../assets/pexels-pixabay-270488.webp";
 
+interface ProjectNavTarget {
+    title: string;
+    slug: string;
+}
+
 type Props = CollectionEntry<"projects">["data"] & {
     technologies?: string[];
     liveUrl?: string;
     sourceUrl?: string;
+    prev?: ProjectNavTarget;
+    next?: ProjectNavTarget;
 };
 
 const {
@@ -26,6 +33,8 @@ const {
     technologies = [],
     liveUrl,
     sourceUrl,
+    prev,
+    next,
 } = Astro.props;
 
 const imageSrc = heroImage ?? fallBackImage;
@@ -47,23 +56,51 @@ const imageSrc = heroImage ?? fallBackImage;
 
         <main>
             <div class="project-post-layout">
+                <a href="/project" class="back-link">
+                    <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true"
+                    >
+                        <path d="M12.5 8H3.5M3.5 8L7.5 4M3.5 8L7.5 12" />
+                    </svg>
+                    Tous les projets
+                </a>
+
                 <article class="project-cover animate-fade-in">
+                    <div class="cover-image">
+                        <Image
+                            src={imageSrc}
+                            alt={heroImageDescription ?? ""}
+                            loading="eager"
+                            fetchpriority="high"
+                            widths={[640, 1024, 1440]}
+                            sizes="(max-width: 768px) 100vw, 900px"
+                            quality={70}
+                            format="webp"
+                        />
+                        <span class="cover-pill">{categoryTag}</span>
+                    </div>
+
                     <div class="cover-meta">
-                        <div class="cover-eyebrow">
-                            <span class="label">{categoryTag}</span>
-                            <span class="date">
-                                <FormattedDate date={pubDate} />
-                                {
-                                    updatedDate && (
-                                        <>
-                                            {" "}
-                                            ·{" "}
-                                            <FormattedDate date={updatedDate} />
-                                        </>
-                                    )
-                                }
-                            </span>
-                        </div>
+                        <p class="cover-date">
+                            <FormattedDate date={pubDate} />
+                            {
+                                updatedDate && (
+                                    <>
+                                        {" "}
+                                        ·{" "}
+                                        <FormattedDate date={updatedDate} />
+                                    </>
+                                )
+                            }
+                        </p>
 
                         <h1>{title}</h1>
                         <p class="cover-description">{description}</p>
@@ -125,19 +162,6 @@ const imageSrc = heroImage ?? fallBackImage;
                             }
                         </div>
                     </div>
-
-                    <div class="cover-image">
-                        <Image
-                            src={imageSrc}
-                            alt={heroImageDescription ?? ""}
-                            loading="eager"
-                            fetchpriority="high"
-                            widths={[340, 680, 1024]}
-                            sizes="(max-width: 768px) 100vw, 340px"
-                            quality={70}
-                            format="webp"
-                        />
-                    </div>
                 </article>
 
                 <div class="article-body animate-fade-in">
@@ -145,6 +169,52 @@ const imageSrc = heroImage ?? fallBackImage;
                         <slot />
                     </div>
                 </div>
+
+                {
+                    (prev || next) && (
+                        <nav
+                            class="project-nav"
+                            aria-label="Navigation entre projets"
+                        >
+                            {prev ? (
+                                <a
+                                    href={`/project/${prev.slug}/`}
+                                    class="project-nav-link"
+                                >
+                                    <span class="project-nav-label">
+                                        Projet précédent
+                                    </span>
+                                    <span class="project-nav-title">
+                                        {prev.title}
+                                    </span>
+                                </a>
+                            ) : (
+                                <span
+                                    class="project-nav-empty"
+                                    aria-hidden="true"
+                                />
+                            )}
+                            {next ? (
+                                <a
+                                    href={`/project/${next.slug}/`}
+                                    class="project-nav-link project-nav-next"
+                                >
+                                    <span class="project-nav-label">
+                                        Projet suivant
+                                    </span>
+                                    <span class="project-nav-title">
+                                        {next.title}
+                                    </span>
+                                </a>
+                            ) : (
+                                <span
+                                    class="project-nav-empty"
+                                    aria-hidden="true"
+                                />
+                            )}
+                        </nav>
+                    )
+                }
             </div>
         </main>
 
@@ -172,9 +242,27 @@ const imageSrc = heroImage ?? fallBackImage;
         gap: 2.5rem;
     }
 
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        align-self: flex-start;
+        gap: 0.45rem;
+        font-family: var(--font-title);
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--color-muted);
+        text-decoration: none;
+        transition:
+            color var(--duration-fast) ease,
+            gap var(--duration-fast) ease;
+    }
+
+    .back-link:hover {
+        color: var(--color-text);
+        gap: 0.65rem;
+    }
+
     .project-cover {
-        display: grid;
-        grid-template-columns: 1fr 340px;
         background: var(--color-surface);
         border: 1px solid var(--color-border);
         border-radius: var(--radius-lg);
@@ -182,49 +270,74 @@ const imageSrc = heroImage ?? fallBackImage;
         box-shadow: var(--shadow-strong);
     }
 
+    .cover-image {
+        position: relative;
+        aspect-ratio: 16 / 7;
+        max-height: 380px;
+        overflow: hidden;
+        background: var(--tint-05);
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .cover-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        filter: brightness(0.9) contrast(1.05) saturate(0.95);
+        transition:
+            filter var(--duration-base) ease,
+            transform var(--duration-slow) var(--ease-spring);
+    }
+
+    :root[data-theme="light"] .cover-image img {
+        filter: brightness(1) contrast(1) saturate(1);
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root:not([data-theme]) .cover-image img {
+            filter: brightness(1) contrast(1) saturate(1);
+        }
+    }
+
+    @media (hover: hover) {
+        .project-cover:hover .cover-image img {
+            filter: brightness(1) contrast(1.1) saturate(1.05);
+            transform: scale(1.02);
+        }
+    }
+
+    .cover-pill {
+        position: absolute;
+        left: 1.5rem;
+        bottom: 1.25rem;
+        padding: 0.35rem 0.8rem;
+        font-family: var(--font-code);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--color-text);
+        background: rgba(var(--bg), 0.72);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-sm);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        white-space: nowrap;
+    }
+
     .cover-meta {
-        padding: 2.5rem 2.5rem 2rem;
+        padding: 2.5rem;
         display: flex;
         flex-direction: column;
-        border-right: 1px solid var(--color-border);
         min-width: 0;
     }
 
-    .cover-eyebrow {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin-bottom: 1.5rem;
-        min-width: 0;
-    }
-
-    .cover-eyebrow::before {
-        content: "";
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--color-accent);
-        flex-shrink: 0;
-    }
-
-    .cover-eyebrow .label {
-        font-family: var(--font-title);
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.05em;
-        color: var(--color-accent);
-        text-transform: uppercase;
-        white-space: nowrap;
-    }
-
-    .cover-eyebrow .date {
+    .cover-date {
+        margin: 0 0 1rem;
         font-family: var(--font-code);
-        font-size: 0.75rem;
-        color: var(--color-muted);
-        margin-left: auto;
+        font-size: 0.78rem;
         letter-spacing: 0.02em;
-        white-space: nowrap;
-        padding-left: 0.5rem;
+        color: var(--color-muted);
     }
 
     .project-post-layout h1 {
@@ -243,12 +356,12 @@ const imageSrc = heroImage ?? fallBackImage;
         font-size: 1rem;
         line-height: 1.7;
         color: var(--color-muted);
-        margin: 0 0 auto;
-        padding-bottom: 1.75rem;
+        margin: 0;
         text-wrap: pretty;
     }
 
     .cover-footer {
+        margin-top: 1.75rem;
         padding-top: 1.5rem;
         border-top: 1px solid var(--color-border);
         display: flex;
@@ -323,29 +436,6 @@ const imageSrc = heroImage ?? fallBackImage;
         background: var(--tint-05);
     }
 
-    .cover-image {
-        position: relative;
-        overflow: hidden;
-        background: var(--color-bg);
-    }
-
-    .cover-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        display: block;
-
-        filter: brightness(0.9) contrast(1.05) saturate(0.95);
-        transition:
-            filter var(--duration-base) ease,
-            transform var(--duration-slow) var(--ease-spring);
-    }
-
-    .project-cover:hover .cover-image img {
-        filter: brightness(1) contrast(1.1) saturate(1.05);
-        transform: scale(1.02);
-    }
-
     .article-body {
         background: var(--color-surface);
         border: 1px solid var(--color-border);
@@ -354,24 +444,82 @@ const imageSrc = heroImage ?? fallBackImage;
         box-shadow: var(--shadow-soft);
     }
 
+    .project-nav {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+    }
+
+    .project-nav-link {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        padding: 1.25rem 1.5rem;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-soft);
+        text-decoration: none;
+        transition:
+            border-color var(--duration-base) ease,
+            box-shadow var(--duration-base) ease,
+            transform var(--duration-base) var(--ease-spring);
+    }
+
+    @media (hover: hover) {
+        .project-nav-link:hover {
+            border-color: rgba(var(--accent), 0.2);
+            box-shadow: var(--shadow-strong);
+            transform: translateY(-2px);
+        }
+        .project-nav-link:hover .project-nav-title {
+            color: var(--color-accent);
+        }
+    }
+
+    .project-nav-next {
+        text-align: right;
+        align-items: flex-end;
+    }
+
+    .project-nav-label {
+        font-family: var(--font-code);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--color-muted);
+    }
+
+    .project-nav-title {
+        font-family: var(--font-title);
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        line-height: 1.35;
+        color: var(--color-text);
+        transition: color var(--duration-fast) ease;
+    }
+
+    .project-nav-empty {
+        display: block;
+    }
+
     @media (max-width: 768px) {
         .project-post-layout {
             gap: 2rem;
         }
 
-        .project-cover {
-            grid-template-columns: 1fr;
-            grid-template-rows: 240px auto;
+        .cover-image {
+            aspect-ratio: 16 / 9;
+            max-height: 260px;
         }
 
-        .cover-image {
-            order: -1;
-            border-right: none;
-            border-bottom: 1px solid var(--color-border);
+        .cover-pill {
+            left: 1.25rem;
+            bottom: 1rem;
         }
 
         .cover-meta {
-            border-right: none;
             padding: 2rem 1.75rem 1.5rem;
         }
 
@@ -380,27 +528,46 @@ const imageSrc = heroImage ?? fallBackImage;
         }
     }
 
+    @media (max-width: 640px) {
+        .project-nav {
+            grid-template-columns: 1fr;
+        }
+
+        .project-nav-next {
+            text-align: left;
+            align-items: flex-start;
+        }
+
+        .project-nav-empty {
+            display: none;
+        }
+    }
+
     @media (max-width: 480px) {
         .cover-meta {
             padding: 1.5rem 1.25rem 1.25rem;
         }
 
-        .cover-eyebrow {
-            margin-bottom: 1.25rem;
+        .cover-date {
+            margin-bottom: 0.75rem;
         }
 
         .cover-description {
             font-size: 0.95rem;
-            padding-bottom: 1.5rem;
         }
 
         .cover-footer {
+            margin-top: 1.5rem;
             padding-top: 1.25rem;
             gap: 1rem;
         }
 
         .article-body {
             padding: 1.75rem 1.25rem;
+        }
+
+        .project-nav-link {
+            padding: 1.1rem 1.25rem;
         }
 
         .external-links {
@@ -421,6 +588,12 @@ const imageSrc = heroImage ?? fallBackImage;
         }
         .link-btn:hover {
             transform: none;
+        }
+        .project-nav-link:hover {
+            transform: none;
+        }
+        .back-link:hover {
+            gap: 0.45rem;
         }
     }
 </style>
