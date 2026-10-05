@@ -8,7 +8,14 @@ const today = new Date();
     <p class="copyright">
         <span class="copyright-symbol">&copy;</span>
         {today.getFullYear()}
-        <span class="site-name">{SITE_TITLE}</span>. All rights reserved.
+        <span class="site-name">{SITE_TITLE}</span>
+        <span class="rights"> — Tous droits réservés.</span>
+    </p>
+    <p class="colophon">
+        Conçu avec
+        <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a>
+        · Hébergé sur
+        <a href="https://pages.github.com" target="_blank" rel="noopener noreferrer">GitHub Pages</a>
     </p>
     <a
         href={GITHUB_URL}
@@ -68,6 +75,24 @@ const today = new Date();
 
     .footer:hover .site-name {
         color: var(--color-accent);
+    }
+
+    .colophon {
+        margin: 0;
+        font-family: var(--font-code);
+        font-size: 0.72rem;
+        letter-spacing: 0.04em;
+        color: var(--color-muted);
+    }
+
+    .colophon a {
+        color: var(--color-muted);
+        text-decoration: none;
+        transition: color var(--duration-fast) ease;
+    }
+
+    .colophon a:hover {
+        color: var(--color-text);
     }
 
     .social-icon {
