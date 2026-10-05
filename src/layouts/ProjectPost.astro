@@ -158,8 +158,8 @@ const imageSrc = heroImage ?? fallBackImage;
                             alt={heroImageDescription ?? ""}
                             loading="eager"
                             fetchpriority="high"
-                            widths={[320, 640, 960]}
-                            sizes="(max-width: 768px) 100vw, 320px"
+                            widths={[300, 600, 900]}
+                            sizes="(max-width: 768px) 100vw, 300px"
                             quality={70}
                             format="webp"
                         />
@@ -266,7 +266,7 @@ const imageSrc = heroImage ?? fallBackImage;
 
     .project-cover {
         display: grid;
-        grid-template-columns: 1fr 320px;
+        grid-template-columns: 1fr 300px;
         background: var(--color-surface);
         border: 1px solid var(--color-border);
         border-radius: var(--radius-lg);
@@ -275,7 +275,7 @@ const imageSrc = heroImage ?? fallBackImage;
     }
 
     .cover-meta {
-        padding: 2.5rem;
+        padding: 2.25rem;
         display: flex;
         flex-direction: column;
         min-width: 0;
@@ -311,10 +311,10 @@ const imageSrc = heroImage ?? fallBackImage;
 
     .project-post-layout h1 {
         font-family: var(--font-title);
-        font-size: clamp(1.75rem, 4vw, 2.5rem);
+        font-size: clamp(2rem, 5vw, 3rem);
         font-weight: 700;
-        line-height: 1.2;
-        letter-spacing: -0.03em;
+        line-height: 1.15;
+        letter-spacing: -0.035em;
         color: var(--color-text);
         margin: 0 0 1.25rem;
         word-break: break-word;
@@ -327,6 +327,7 @@ const imageSrc = heroImage ?? fallBackImage;
         color: var(--color-muted);
         margin: 0 0 auto;
         padding-bottom: 2rem;
+        max-width: 56ch;
         text-wrap: pretty;
     }
 
@@ -335,15 +336,27 @@ const imageSrc = heroImage ?? fallBackImage;
         border-top: 1px solid var(--color-border);
         display: flex;
         flex-direction: column;
-        gap: 1.25rem;
+        gap: 1rem;
     }
 
     .cover-image {
         position: relative;
         overflow: hidden;
         background: var(--tint-05);
-        border-left: 1px solid var(--color-border);
         min-height: 100%;
+    }
+
+    @media (min-width: 769px) {
+        .cover-image::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 28px;
+            background: linear-gradient(to right, var(--color-surface), transparent);
+            pointer-events: none;
+        }
     }
 
     .cover-image img {
@@ -372,7 +385,7 @@ const imageSrc = heroImage ?? fallBackImage;
     @media (hover: hover) {
         .project-cover:hover .cover-image img {
             filter: brightness(1) contrast(1.1) saturate(1.05);
-            transform: scale(1.03);
+            transform: scale(1.02);
         }
     }
 
