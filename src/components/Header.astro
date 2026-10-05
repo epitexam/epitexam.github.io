@@ -45,8 +45,8 @@ const navLinks = [
                     stroke-linecap="round"
                     aria-hidden="true"
                 >
-                    <circle cx="12" cy="12" r="4"></circle>
-                    <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+                    <circle cx="12" cy="12" r="4.25"></circle>
+                    <path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5"></path>
                 </svg>
                 <svg
                     class="icon-moon"
@@ -336,45 +336,58 @@ const navLinks = [
     }
 
     .theme-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: grid;
+        place-items: center;
         width: 36px;
         height: 36px;
         padding: 0;
         background: none;
-        border: 1px solid transparent;
+        border: none;
         border-radius: var(--radius-sm);
         color: var(--color-muted);
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
         transition:
             color var(--duration-fast) ease,
-            background var(--duration-fast) ease,
-            border-color var(--duration-fast) ease,
-            transform var(--duration-fast) var(--ease-spring);
+            background var(--duration-fast) ease;
     }
 
     .theme-toggle:hover {
         color: var(--color-text);
         background: var(--tint-05);
-        border-color: var(--color-border);
     }
 
-    .theme-toggle:active {
-        transform: scale(0.94);
+    .theme-toggle svg {
+        grid-area: 1 / 1;
+        transition:
+            opacity var(--duration-fast) ease,
+            transform var(--duration-base) var(--ease-spring);
+    }
+
+    .theme-toggle .icon-sun {
+        opacity: 1;
     }
 
     .theme-toggle .icon-moon {
-        display: none;
+        opacity: 0;
+        transform: rotate(-45deg) scale(0.85);
     }
 
     :root[data-theme="light"] .theme-toggle .icon-sun {
-        display: none;
+        opacity: 0;
+        transform: rotate(45deg) scale(0.85);
     }
 
     :root[data-theme="light"] .theme-toggle .icon-moon {
-        display: block;
+        opacity: 1;
+        transform: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .theme-toggle svg {
+            transition: none;
+            transform: none;
+        }
     }
 
     .menu-toggle {
