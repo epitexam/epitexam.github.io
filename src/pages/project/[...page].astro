@@ -133,6 +133,7 @@ const jsonLd = {
                         >
                             <div class="section-strip">
                                 <h2 id="featured-heading" class="section-label">
+                                    <span class="section-index">01</span>
                                     Sélection
                                 </h2>
                             </div>
@@ -157,6 +158,7 @@ const jsonLd = {
                         >
                             <div class="section-strip">
                                 <h2 id="archive-heading" class="section-label">
+                                    <span class="section-index">02</span>
                                     Archive
                                 </h2>
                             </div>
@@ -296,6 +298,9 @@ const jsonLd = {
     }
 
     .section-label {
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.6rem;
         font-family: var(--font-title);
         font-size: 0.75rem;
         font-weight: 600;
@@ -305,6 +310,14 @@ const jsonLd = {
         white-space: nowrap;
         margin: 0;
         padding: 0;
+    }
+
+    .section-index {
+        font-family: var(--font-code);
+        font-weight: 400;
+        font-size: 0.75rem;
+        letter-spacing: 0.02em;
+        color: var(--color-accent);
     }
 
     .projects-grid {
