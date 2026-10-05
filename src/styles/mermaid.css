@@ -137,8 +137,48 @@
     }
 }
 
+html[data-theme="light"] .mermaid {
+    g.node rect,
+    g.node circle,
+    g.node polygon,
+    g.node path,
+    .node .main-gradient-element {
+        fill: var(--color-surface) !important;
+        stroke: var(--color-accent) !important;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05)) !important;
+    }
+
+    .edgeLabel {
+        opacity: 1 !important;
+
+        rect,
+        .labelBox {
+            fill: var(--color-surface) !important;
+            opacity: 1 !important;
+        }
+
+        text,
+        tspan,
+        div,
+        span {
+            color: var(--color-text) !important;
+            fill: var(--color-text) !important;
+        }
+    }
+
+    foreignObject {
+        div,
+        span,
+        p,
+        .nodeLabel,
+        .edgeLabel {
+            color: var(--color-text) !important;
+        }
+    }
+}
+
 @media (prefers-color-scheme: light) {
-    .mermaid {
+    html:not([data-theme]) .mermaid {
 
         g.node rect,
         g.node circle,

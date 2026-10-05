@@ -445,8 +445,12 @@ const jsonLd = {
             filter var(--duration-slow) ease;
     }
 
+    :root[data-theme="light"] .card-img {
+        filter: brightness(1) contrast(1) saturate(1);
+    }
+
     @media (prefers-color-scheme: light) {
-        .card-img {
+        :root:not([data-theme]) .card-img {
             filter: brightness(1) contrast(1) saturate(1);
         }
     }
