@@ -11,10 +11,6 @@ const today = new Date();
         <a href="/project">Projects</a>
         <a href="/contact">Contact</a>
     </nav>
-    <p class="status">
-        <span class="status-dot" aria-hidden="true"></span>
-        Disponible pour missions
-    </p>
     <p class="copyright">
         <span class="copyright-symbol">&copy;</span>
         {today.getFullYear()}
@@ -77,26 +73,6 @@ const today = new Date();
 
     .footer-nav a:hover {
         color: var(--color-text);
-    }
-
-    .status {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin: 0;
-        font-family: var(--font-code);
-        font-size: 0.72rem;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: var(--color-muted);
-    }
-
-    .status-dot {
-        width: 7px;
-        height: 7px;
-        border-radius: 50%;
-        background: rgb(var(--badge-green-rgb));
-        box-shadow: 0 0 8px rgba(var(--badge-green-rgb), 0.5);
     }
 
     .copyright {

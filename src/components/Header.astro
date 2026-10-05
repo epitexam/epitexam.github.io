@@ -121,7 +121,6 @@ const navLinks = [
         const main = document.querySelector("main");
         if (main && !main.getAttribute("id")) {
             main.setAttribute("id", "main-content");
-            main.setAttribute("tabindex", "-1");
         }
         const currentTheme = () =>
             root.getAttribute("data-theme") === "light" ? "light" : "dark";
