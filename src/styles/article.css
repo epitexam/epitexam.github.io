@@ -221,8 +221,8 @@
         }
 
         &[open]>summary::after {
-            transform: rotate(180deg);
-            color: var(--color-text);
+            transform: rotate(225deg);
+            border-color: var(--color-text);
         }
 
         &> :not(summary) {
@@ -262,13 +262,15 @@
         }
 
         &::after {
-            content: "⌄";
-            font-size: 1.2em;
-            font-weight: 300;
-            color: var(--color-muted);
+            content: "";
             flex-shrink: 0;
-            transform: rotate(0deg);
-            transition: transform var(--duration-base) var(--ease-spring), color var(--duration-fast) ease;
+            width: 0.45rem;
+            height: 0.45rem;
+            border-right: 1.8px solid var(--color-muted);
+            border-bottom: 1.8px solid var(--color-muted);
+            border-radius: 1px;
+            transform: rotate(45deg);
+            transition: transform var(--duration-base) var(--ease-spring), border-color var(--duration-fast) ease;
         }
 
         @media (hover: hover) {
