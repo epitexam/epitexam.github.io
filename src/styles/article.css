@@ -330,7 +330,7 @@
         box-shadow: 0 2px 0 var(--tint-10);
     }
 
-    .copy-btn {
+    .prose pre button.copy-btn {
         position: absolute;
         top: 0.75rem;
         right: 0.75rem;
@@ -354,24 +354,24 @@
             border-color var(--duration-fast) ease;
     }
 
-    pre:hover .copy-btn,
-    pre:focus-within .copy-btn {
+    .prose pre:hover button.copy-btn,
+    .prose pre:focus-within button.copy-btn {
         opacity: 1;
     }
 
-    .copy-btn:hover {
+    .prose pre button.copy-btn:hover {
         color: var(--color-text);
         border-color: var(--tint-20);
     }
 
-    .copy-btn[data-copied="true"] {
+    .prose pre button.copy-btn[data-copied="true"] {
         color: var(--color-text);
         border-color: rgba(var(--accent), 0.4);
         opacity: 1;
     }
 
     @media (max-width: 768px) {
-        .copy-btn {
+        .prose pre button.copy-btn {
             opacity: 1;
         }
     }
