@@ -383,13 +383,6 @@ const navLinks = [
         transform: none;
     }
 
-    @media (prefers-reduced-motion: reduce) {
-        .theme-toggle svg {
-            transition: none;
-            transform: none;
-        }
-    }
-
     .menu-toggle {
         --bar-w: 18px;
         --bar-h: 2px;
@@ -587,6 +580,10 @@ const navLinks = [
         .mobile-menu.is-open :global(a.mobile-link) {
             animation: none;
             opacity: 1;
+        }
+        .theme-toggle svg {
+            transition: none;
+            transform: none;
         }
     }
 </style>
