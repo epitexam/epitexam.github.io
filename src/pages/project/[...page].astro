@@ -5,6 +5,7 @@ import BaseHead from "../../components/BaseHead.astro";
 import Header from "../../components/Header.astro";
 import Footer from "../../components/Footer.astro";
 import ProjectCard from "../../components/ProjectCard.astro";
+import Pagination from "../../components/Pagination.astro";
 import { SITE_TITLE, GITHUB_URL } from "../../consts";
 
 export const getStaticPaths = (async ({ paginate }) => {
@@ -177,29 +178,12 @@ const jsonLd = {
 
                 {
                     page.lastPage > 1 && (
-                        <nav class="pagination" aria-label="Pagination">
-                            {page.url.prev ? (
-                                <a href={page.url.prev} class="page-link prev">
-                                    Précédent
-                                </a>
-                            ) : (
-                                <span class="page-link disabled">
-                                    Précédent
-                                </span>
-                            )}
-
-                            <span class="page-status">
-                                Page {page.currentPage} / {page.lastPage}
-                            </span>
-
-                            {page.url.next ? (
-                                <a href={page.url.next} class="page-link next">
-                                    Suivant
-                                </a>
-                            ) : (
-                                <span class="page-link disabled">Suivant</span>
-                            )}
-                        </nav>
+                        <Pagination
+                            prevUrl={page.url.prev}
+                            nextUrl={page.url.next}
+                            currentPage={page.currentPage}
+                            lastPage={page.lastPage}
+                        />
                     )
                 }
         </main>
@@ -351,45 +335,6 @@ const jsonLd = {
         margin: 0;
         max-width: 36ch;
         line-height: 1.6;
-    }
-
-    .pagination {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1.5rem;
-    }
-
-    .page-link {
-        font-family: var(--font-title);
-        font-size: 0.9rem;
-        font-weight: 500;
-        text-decoration: none;
-        color: var(--color-accent);
-        padding: 0.5rem 1rem;
-        border: 1px solid var(--color-border);
-        border-radius: var(--radius-lg);
-        transition:
-            border-color var(--duration-base) var(--ease-spring),
-            transform var(--duration-base) var(--ease-spring);
-    }
-
-    .page-link.disabled {
-        color: var(--color-muted);
-        opacity: 0.5;
-        pointer-events: none;
-    }
-
-    @media (hover: hover) {
-        .page-link:not(.disabled):hover {
-            border-color: rgba(var(--accent), 0.4);
-            transform: translateY(-1px);
-        }
-    }
-
-    .page-status {
-        font-size: 0.85rem;
-        color: var(--color-muted);
     }
 
     @media (max-width: 768px) {
