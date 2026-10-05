@@ -2,6 +2,7 @@
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import fallBackImage from "../assets/pexels-pixabay-270488.webp";
+import FormattedDate from "./FormattedDate.astro";
 
 interface Props {
     project: CollectionEntry<"projects">;
@@ -39,6 +40,13 @@ const IMG_H = 450;
     </div>
 
     <div class="card-body">
+        <div class="card-meta">
+            <span class="card-date">
+                <FormattedDate date={data.pubDate} />
+            </span>
+            <span class="card-category">{data.categoryTag}</span>
+        </div>
+
         <HeadingTag class="card-title">
             <a
                 href={`/project/${id.replace(/\.mdx?$/, "")}/`}
@@ -61,7 +69,25 @@ const IMG_H = 450;
         }
 
         <div class="card-footer">
-            <span class="btn btn-primary" aria-hidden="true">Détails</span>
+            <span class="card-open" aria-hidden="true">
+                Voir le projet
+                <svg
+                    class="arrow-icon"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M3.5 8H12.5M12.5 8L8.5 4M12.5 8L8.5 12"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                </svg>
+            </span>
             {
                 (data.liveUrl || data.sourceUrl) && (
                     <div class="card-links">
@@ -223,6 +249,29 @@ const IMG_H = 450;
         gap: 1rem;
     }
 
+    .card-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+    }
+
+    .card-date {
+        font-family: var(--font-title);
+        font-size: 0.8rem;
+        color: var(--color-muted);
+        letter-spacing: -0.01em;
+    }
+
+    .card-category {
+        font-family: var(--font-code);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--color-muted);
+        white-space: nowrap;
+    }
+
     .card-title {
         margin: 0;
         font-size: clamp(1.1rem, 2vw, 1.35rem);
@@ -305,34 +354,45 @@ const IMG_H = 450;
         border-top: 1px solid var(--color-border);
     }
 
-    .btn-primary,
-    .btn-secondary {
-        justify-content: center;
+    .card-open {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--color-accent);
+        font-family: var(--font-title);
         font-size: 0.85rem;
-        padding: 0.65rem 1.2rem;
-        border-radius: var(--radius-sm);
-        transition:
-            background var(--duration-fast) ease,
-            color var(--duration-fast) ease,
-            border-color var(--duration-fast) ease,
-            transform var(--duration-fast) ease;
+        font-weight: 500;
+        letter-spacing: -0.01em;
+        position: relative;
+        padding-bottom: 2px;
+        white-space: nowrap;
     }
 
-    .btn-primary {
+    .card-open::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
         background: var(--color-accent);
-        color: var(--color-bg);
-        border: 1px solid transparent;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform var(--duration-base) var(--ease-spring);
+    }
+
+    .card-open .arrow-icon {
+        flex-shrink: 0;
+        transition: transform var(--duration-base) var(--ease-spring);
     }
 
     @media (hover: hover) {
-        .project-card:hover .btn-primary {
-            background: rgba(var(--accent), 0.9);
-            transform: translateY(-1px);
+        .project-card:hover .card-open::after {
+            transform: scaleX(1);
         }
-    }
-
-    .btn-primary:active {
-        transform: scale(0.98);
+        .project-card:hover .card-open .arrow-icon {
+            transform: translateX(4px);
+        }
     }
 
     .card-links {
@@ -343,9 +403,18 @@ const IMG_H = 450;
     }
 
     .btn-secondary {
+        justify-content: center;
+        font-size: 0.85rem;
+        padding: 0.65rem 1.2rem;
+        border-radius: var(--radius-sm);
         background: transparent;
         color: var(--color-text);
         border: 1px solid var(--color-border);
+        transition:
+            background var(--duration-fast) ease,
+            color var(--duration-fast) ease,
+            border-color var(--duration-fast) ease,
+            transform var(--duration-fast) ease;
     }
 
     @media (hover: hover) {
@@ -365,7 +434,6 @@ const IMG_H = 450;
             align-items: stretch;
             gap: 0.75rem;
         }
-        .btn-primary,
         .btn-secondary {
             width: 100%;
             text-align: center;
@@ -380,6 +448,9 @@ const IMG_H = 450;
             transform: none;
         }
         .project-card:hover .card-image {
+            transform: none;
+        }
+        .project-card:hover .card-open .arrow-icon {
             transform: none;
         }
     }
