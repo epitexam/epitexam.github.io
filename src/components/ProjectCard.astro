@@ -69,7 +69,7 @@ const IMG_H = 450;
         }
 
         <div class="card-footer">
-            <span class="card-open" aria-hidden="true">
+            <span class="card-open more-link" aria-hidden="true">
                 Voir le projet
                 <svg
                     class="arrow-icon"
@@ -207,12 +207,6 @@ const IMG_H = 450;
 
     :root[data-theme="light"] .card-image {
         filter: brightness(1) contrast(1) saturate(1);
-    }
-
-    @media (prefers-color-scheme: light) {
-        :root:not([data-theme]) .card-image {
-            filter: brightness(1) contrast(1) saturate(1);
-        }
     }
 
     @media (hover: hover) {
@@ -355,42 +349,14 @@ const IMG_H = 450;
     }
 
     .card-open {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--color-accent);
-        font-family: var(--font-title);
-        font-size: 0.85rem;
-        font-weight: 500;
-        letter-spacing: -0.01em;
-        position: relative;
-        padding-bottom: 2px;
         white-space: nowrap;
     }
 
-    .card-open::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 1px;
-        background: var(--color-accent);
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform var(--duration-base) var(--ease-spring);
-    }
-
-    .card-open .arrow-icon {
-        flex-shrink: 0;
-        transition: transform var(--duration-base) var(--ease-spring);
-    }
-
     @media (hover: hover) {
-        .project-card:hover .card-open::after {
+        .project-card:hover .more-link::after {
             transform: scaleX(1);
         }
-        .project-card:hover .card-open .arrow-icon {
+        .project-card:hover .more-link .arrow-icon {
             transform: translateX(4px);
         }
     }

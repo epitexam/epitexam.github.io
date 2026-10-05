@@ -196,7 +196,7 @@ const jsonLd = {
                                                 )}
 
                                             <span
-                                                class="read-more"
+                                                class="read-more more-link"
                                                 aria-hidden="true"
                                             >
                                                 Lire l'article
@@ -376,10 +376,10 @@ const jsonLd = {
         a.blog-card:hover .card-title {
             color: var(--color-accent);
         }
-        a.blog-card:hover .read-more::after {
+        a.blog-card:hover .more-link::after {
             transform: scaleX(1);
         }
-        a.blog-card:hover .arrow-icon {
+        a.blog-card:hover .more-link .arrow-icon {
             transform: translateX(4px);
         }
     }
@@ -449,12 +449,6 @@ const jsonLd = {
         filter: brightness(1) contrast(1) saturate(1);
     }
 
-    @media (prefers-color-scheme: light) {
-        :root:not([data-theme]) .card-img {
-            filter: brightness(1) contrast(1) saturate(1);
-        }
-    }
-
     .card-body {
         position: relative;
         z-index: 2;
@@ -522,36 +516,8 @@ const jsonLd = {
     }
 
     .read-more {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--color-accent);
-        font-family: var(--font-title);
-        font-size: 0.85rem;
-        font-weight: 500;
-        letter-spacing: -0.01em;
         margin-top: auto;
         width: fit-content;
-        position: relative;
-        padding-bottom: 2px;
-    }
-
-    .read-more::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 1px;
-        background: var(--color-accent);
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform var(--duration-base) var(--ease-spring);
-    }
-
-    .arrow-icon {
-        transition: transform var(--duration-base) var(--ease-spring);
-        flex-shrink: 0;
     }
 
     .pagination {
