@@ -90,9 +90,6 @@ export default defineConfig({
     plugins: [tailwindcss()],
     build: {
       cssMinify: "lightningcss",
-      minify: "esbuild",
-      // Mermaid (~654K, lazy via dynamic import() uniquement sur pages avec diagrammes)
-      // Seuil juste au-dessus pour garder un garde-fou sans bruit à chaque build.
       chunkSizeWarningLimit: 700,
     }
   },
