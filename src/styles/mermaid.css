@@ -1,5 +1,4 @@
 /* Mermaid diagrams — importé uniquement par les layouts d articles (BlogPost, ProjectPost).
-   Sorti de global.css pour ne pas peser sur les pages sans diagramme. */
 /* ============================================================
    MERMAID DIAGRAMS HARMONIZATION
    ============================================================ */
@@ -15,7 +14,8 @@
     display: flex !important;
     justify-content: center !important;
 
-    contain: layout paint style;
+    /* content-visibility: auto implique déjà contain: layout paint
+       style — la ligne explicite était redondante. */
     content-visibility: auto;
     contain-intrinsic-size: auto 500px;
 

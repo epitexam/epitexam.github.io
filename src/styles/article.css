@@ -105,8 +105,12 @@
         background: var(--color-surface);
         border: 1px solid var(--color-border);
         box-shadow: var(--shadow-soft);
-        transition: border-color var(--duration-base) ease, box-shadow var(--duration-base) ease;
-        contain: layout paint style;
+        transition: border-color var(--duration-base) ease;
+        /* Audit perf : box-shadow retiré de la transition. Une transition
+           d'ombre repeint tout le tableau à chaque frame pendant 350 ms ;
+           en bascule instantanée, l'état final reste identique. */
+        /* content-visibility: auto implique déjà contain: layout paint
+           style — la ligne explicite était redondante. */
         content-visibility: auto;
         contain-intrinsic-size: auto 400px;
 
@@ -165,7 +169,8 @@
     }
 
     tbody tr {
-        transition: background var(--duration-fast) ease;
+        /* Propriété longue : seule la couleur est invalidée au hover. */
+        transition: background-color var(--duration-fast) ease;
 
         &:last-child :is(th, td) {
             border-bottom: none;
@@ -288,8 +293,8 @@
         border-radius: var(--radius-lg);
         overflow-x: auto;
         box-shadow: var(--shadow-strong);
-        contain: layout style;
         position: relative;
+        /* content-visibility: auto implique déjà contain: layout style. */
         content-visibility: auto;
         contain-intrinsic-size: auto 300px;
 
@@ -427,5 +432,25 @@
             animation: fade-in var(--duration-slow) var(--ease-spring) both;
             animation-delay: calc(var(--stagger) * 5);
         }
+
+        /* ── Option — reveals pilotés par le scroll (DÉSACTIVÉ) ───────
+           Décommenter le bloc @supports ci-dessous pour que les reveals
+           se déclenchent à l'entrée dans le viewport au lieu de se jouer
+           tous au chargement. Support : Chrome/Edge 115+, Safari 26+,
+           Firefox partiel — le @supports garde le comportement actuel
+           partout ailleurs. Trade-off : le contenu visible dès le
+           chargement (au-dessus du fold) apparaît sans animation. */
+        /*
+        @supports (animation-timeline: view()) {
+            .prose p,
+            .prose li,
+            .prose pre,
+            .table-wrapper {
+                animation-timeline: view();
+                animation-range: entry 0% entry 70%;
+                animation-delay: 0s;
+            }
+        }
+        */
     }
 }
